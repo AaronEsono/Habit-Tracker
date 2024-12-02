@@ -1,5 +1,11 @@
 package aeb.proyecto.habittracker
 
+import aeb.proyecto.habittracker.ui.components.text.BodyLargeText
+import aeb.proyecto.habittracker.ui.components.text.BodyMediumText
+import aeb.proyecto.habittracker.ui.components.text.BodySmallText
+import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
+import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
+import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
 import aeb.proyecto.habittracker.ui.components.text.TitleMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
@@ -16,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.text.font.FontFamily
 
 class MainActivity : ComponentActivity() {
@@ -24,41 +32,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             HabitTrackerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Column (modifier = Modifier.fillMaxSize()){
-        TitleLargeText(
-            text = "Esto es un texto de prueba para verificar como se ve el texto especificado",
-            modifier = modifier
-        )
-
-        TitleMediumText(
-            text = "Esto es un texto de prueba para verificar como se ve el texto especificado",
-            modifier = modifier
-        )
-
-        TitleSmallText(
-            text = "Esto es un texto de prueba para verificar como se ve el texto especificado",
-            modifier = modifier,
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HabitTrackerTheme {
-        Greeting("Android")
-    }
-}
