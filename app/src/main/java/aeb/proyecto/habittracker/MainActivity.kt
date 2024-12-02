@@ -1,5 +1,8 @@
 package aeb.proyecto.habittracker
 
+import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
+import aeb.proyecto.habittracker.ui.components.text.TitleMediumText
+import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
+import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.text.font.FontFamily
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +37,22 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name! 2",
-        modifier = modifier
-    )
+    Column (modifier = Modifier.fillMaxSize()){
+        TitleLargeText(
+            text = "Esto es un texto de prueba para verificar como se ve el texto especificado",
+            modifier = modifier
+        )
+
+        TitleMediumText(
+            text = "Esto es un texto de prueba para verificar como se ve el texto especificado",
+            modifier = modifier
+        )
+
+        TitleSmallText(
+            text = "Esto es un texto de prueba para verificar como se ve el texto especificado",
+            modifier = modifier,
+        )
+    }
 }
 
 @Preview(showBackground = true)
