@@ -21,7 +21,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             HabitTrackerTheme {
                 val navController = rememberNavController()
-
                 AppContent()
             }
         }
