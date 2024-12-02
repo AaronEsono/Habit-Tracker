@@ -3,11 +3,17 @@ package aeb.proyecto.habittracker
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
 import aeb.proyecto.habittracker.ui.components.text.TitleMediumText
+import aeb.proyecto.habittracker.ui.navigation.Achievements
+import aeb.proyecto.habittracker.ui.navigation.Habits
+import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
+import aeb.proyecto.habittracker.ui.navigation.Settings
+import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.ui.theme.primaryColorApp
 import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
 import aeb.proyecto.habittracker.utils.Constans.NAVIGATIONBARITEMS
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -35,6 +41,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
@@ -45,25 +57,25 @@ class MainActivity : ComponentActivity() {
         setContent {
             HabitTrackerTheme {
                 val navController = rememberNavController()
-                AppContent()
+                AppContent(navController)
             }
         }
     }
 }
 
 @Composable
-fun AppContent() {
+fun AppContent(navController: NavHostController) {
     Scaffold(
-        topBar = { TopBatHabit() },
+        topBar = { TopBatHabit(navController) },
         bottomBar = {
-            BottomNavigationHabit()
+            BottomNavigationHabit(navController)
         }
     ) { innerPadding ->
         Column(modifier = Modifier
             .padding(innerPadding)
             .fillMaxSize()
             .background(primaryColorApp)) {
-
+            NavigationWrapper(navController = navController)
         }
     }
 }
@@ -71,7 +83,8 @@ fun AppContent() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBatHabit(){
+fun TopBatHabit(navController: NavHostController){
+
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = secondaryColorApp,
@@ -84,9 +97,10 @@ fun TopBatHabit(){
 }
 
 @Composable
-fun BottomNavigationHabit() {
+fun BottomNavigationHabit(navController: NavHostController) {
 
     val menuItems = NAVIGATIONBARITEMS
+    val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
     NavigationBar(
         contentColor = secondaryColorApp,
@@ -94,8 +108,9 @@ fun BottomNavigationHabit() {
     ) {
         menuItems.forEach {
             NavigationBarItem(
-                selected = it.title == R.string.bottombar_habit,
-                onClick = { /*TODO*/ },
+                selected = currentDestination?.hierarchy?.any {
+                    item -> item.hasRoute(it.optionNavigation::class) } == true,
+                onClick = { navController.navigate(it.optionNavigation) },
                 icon = {
                     Icon(
                         painter = painterResource(it.icon),
