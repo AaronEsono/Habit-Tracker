@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Habit Tracker</string>
+
+    <!-- TopBar-->
+    <string name="topbar_habit">Hábitos</string>
+    <string name="topbar_stadistics">Estadísticas</string>
+    <string name="topbar_achievements">Logros</string>
+    <string name="topbar_settins">Opciones</string>
+
 </resources>
