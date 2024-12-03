@@ -1,5 +1,6 @@
 package aeb.proyecto.habittracker.ui.navigation
 
+import aeb.proyecto.habittracker.ui.screens.habits.HabitsScreen
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,9 +17,7 @@ fun NavigationWrapper(navController: NavHostController){
 
     NavHost(navController = navController, startDestination = Habits){
         composable<Habits>{
-            LaunchedEffect(Unit) {
-                Toast.makeText(context, "Habits", Toast.LENGTH_SHORT).show()
-            }
+            HabitsScreen()
         }
         composable<Statistics>{
             LaunchedEffect(Unit) {

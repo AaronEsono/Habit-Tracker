@@ -7,6 +7,7 @@ import aeb.proyecto.habittracker.ui.navigation.listBottomBarScreens
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.ui.theme.primaryColorApp
 import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.MainLocalViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,6 +28,8 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -54,7 +57,9 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val mainViewModel: MainViewModel = hiltViewModel()
 
-                AppContent(navController)
+                CompositionLocalProvider(MainLocalViewModel provides mainViewModel) {
+                    AppContent(navController)
+                }
             }
         }
     }
@@ -84,6 +89,9 @@ fun AppContent(navController: NavHostController) {
 @Composable
 fun TopBatHabit(navController: NavHostController) {
 
+    val mainViewModel = MainLocalViewModel.current
+    val title = mainViewModel.titleTopBar.collectAsState().value
+
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = secondaryColorApp,
@@ -91,7 +99,7 @@ fun TopBatHabit(navController: NavHostController) {
         ),
         title = {
             TitleLargeText(
-                text = stringResource(R.string.topbar_habit),
+                text = stringResource(title),
                 textAlign = TextAlign.Center
             )
         }
