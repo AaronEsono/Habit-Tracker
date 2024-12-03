@@ -34,6 +34,9 @@ fun NavigationWrapper(navController: NavHostController){
                 Toast.makeText(context, "Settins", Toast.LENGTH_SHORT).show()
             }
         }
+        composable<AddHabit>{
+
+        }
     }
 
 }

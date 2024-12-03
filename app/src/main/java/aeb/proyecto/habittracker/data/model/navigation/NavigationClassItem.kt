@@ -1,4 +1,4 @@
-package aeb.proyecto.habittracker.data.model
+package aeb.proyecto.habittracker.data.model.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

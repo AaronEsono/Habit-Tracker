@@ -7,10 +7,15 @@
     <string name="topbar_achievements">Logros</string>
     <string name="topbar_settins">Opciones</string>
 
+    <string name="topbar_description">Descripcion icono</string>
+
     <!-- BottomBar -->
     <string name="bottombar_habit">Hábitos</string>
     <string name="bottombar_stadistics">Estadísticas</string>
     <string name="bottombar_achievements">Logros</string>
     <string name="bottombar_settins">Opciones</string>
+
+    <!-- Habits screen -->
+    <string name="habits_screen_no_habit">De momento no tienes ningún hábito registrado. Pulsa sobre el botón de arriba para crear uno.</string>
 
 </resources>

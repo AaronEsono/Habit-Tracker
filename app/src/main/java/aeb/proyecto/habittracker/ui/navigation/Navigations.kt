@@ -18,6 +18,9 @@ object Achievements
 object Settings
 
 @Serializable
+object AddHabit
+
+@Serializable
 sealed class BottomBarScreens<T>(@StringRes val label:Int, @DrawableRes val icon:Int, val route:T){
     @Serializable
     data object HabitsBottom:BottomBarScreens<Habits>(R.string.bottombar_habit, R.drawable.ic_calendar, Habits)

@@ -7,6 +7,7 @@ import aeb.proyecto.habittracker.ui.navigation.listBottomBarScreens
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.ui.theme.primaryColorApp
 import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.LocalNavController
 import aeb.proyecto.habittracker.utils.MainLocalViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -57,7 +59,10 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val mainViewModel: MainViewModel = hiltViewModel()
 
-                CompositionLocalProvider(MainLocalViewModel provides mainViewModel) {
+                CompositionLocalProvider(
+                    MainLocalViewModel provides mainViewModel,
+                    LocalNavController provides navController
+                ) {
                     AppContent(navController)
                 }
             }
@@ -90,7 +95,9 @@ fun AppContent(navController: NavHostController) {
 fun TopBatHabit(navController: NavHostController) {
 
     val mainViewModel = MainLocalViewModel.current
+
     val title = mainViewModel.titleTopBar.collectAsState().value
+    val icons = mainViewModel.iconsTopBar.collectAsState().value
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -102,6 +109,16 @@ fun TopBatHabit(navController: NavHostController) {
                 text = stringResource(title),
                 textAlign = TextAlign.Center
             )
+        },
+        actions = {
+            icons.forEach {
+                IconButton( onClick = it.onClick) {
+                    Icon(
+                        painter = painterResource(it.icon),
+                        contentDescription = stringResource(R.string.topbar_description)
+                    )
+                }
+            }
         }
     )
 }
