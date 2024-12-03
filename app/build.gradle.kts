@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.hilt)
+    kotlin("kapt")
 }
 
 android {
@@ -38,6 +40,9 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
+    }
 }
 
 dependencies {
@@ -63,4 +68,8 @@ dependencies {
 
     //Serializable
     implementation (libs.kotlinx.serialization.json)
+
+    //Hilt y Dagger
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler.v248)
 }
