@@ -1,6 +1,14 @@
 package aeb.proyecto.habittracker.ui.navigation
 
+import aeb.proyecto.habittracker.MainViewModel
+import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.model.action.ActionIcon
+import aeb.proyecto.habittracker.ui.screens.achievements.AchievementsScreen
+import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitScreen
 import aeb.proyecto.habittracker.ui.screens.habits.HabitsScreen
+import aeb.proyecto.habittracker.ui.screens.settings.SettingsScreen
+import aeb.proyecto.habittracker.ui.screens.statistics.StatisticsScreen
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,31 +19,23 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 @Composable
-fun NavigationWrapper(navController: NavHostController){
-
-    val context = LocalContext.current
+fun NavigationWrapper(navController: NavHostController,mainViewModel: MainViewModel){
 
     NavHost(navController = navController, startDestination = Habits){
         composable<Habits>{
             HabitsScreen()
         }
         composable<Statistics>{
-            LaunchedEffect(Unit) {
-                Toast.makeText(context, "Statistics", Toast.LENGTH_SHORT).show()
-            }
+            StatisticsScreen()
         }
         composable<Achievements>{
-            LaunchedEffect(Unit) {
-                Toast.makeText(context, "Achievements", Toast.LENGTH_SHORT).show()
-            }
+            AchievementsScreen()
         }
         composable<Settings>{
-            LaunchedEffect(Unit) {
-                Toast.makeText(context, "Settins", Toast.LENGTH_SHORT).show()
-            }
+            SettingsScreen()
         }
         composable<AddHabit>{
-
+            AddHabitScreen()
         }
     }
 

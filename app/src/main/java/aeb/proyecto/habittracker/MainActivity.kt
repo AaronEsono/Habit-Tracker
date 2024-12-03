@@ -1,8 +1,15 @@
 package aeb.proyecto.habittracker
 
+import aeb.proyecto.habittracker.data.model.action.ActionIcon
+import aeb.proyecto.habittracker.data.model.action.TopbarSetUp
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
+import aeb.proyecto.habittracker.ui.navigation.Achievements
+import aeb.proyecto.habittracker.ui.navigation.AddHabit
+import aeb.proyecto.habittracker.ui.navigation.Habits
 import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
+import aeb.proyecto.habittracker.ui.navigation.Settings
+import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.listBottomBarScreens
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.ui.theme.primaryColorApp
@@ -33,6 +40,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,6 +51,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -63,7 +74,7 @@ class MainActivity : ComponentActivity() {
                     MainLocalViewModel provides mainViewModel,
                     LocalNavController provides navController
                 ) {
-                    AppContent(navController)
+                    AppContent(navController, mainViewModel)
                 }
             }
         }
@@ -71,7 +82,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AppContent(navController: NavHostController) {
+fun AppContent(navController: NavHostController, mainViewModel: MainViewModel) {
     Scaffold(
         topBar = { TopBatHabit(navController) },
         bottomBar = {
@@ -84,7 +95,7 @@ fun AppContent(navController: NavHostController) {
                 .fillMaxSize()
                 .background(primaryColorApp)
         ) {
-            NavigationWrapper(navController = navController)
+            NavigationWrapper(navController = navController, mainViewModel)
         }
     }
 }
@@ -94,10 +105,20 @@ fun AppContent(navController: NavHostController) {
 @Composable
 fun TopBatHabit(navController: NavHostController) {
 
-    val mainViewModel = MainLocalViewModel.current
+    val menuItems = remember { listBottomBarScreens }
 
-    val title = mainViewModel.titleTopBar.collectAsState().value
-    val icons = mainViewModel.iconsTopBar.collectAsState().value
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    val showNavigation = currentDestination?.hierarchy?.any { item ->
+        menuItems.any {
+            it.route::class.qualifiedName == item.route
+        }
+    }
+
+    val title = remember { mutableStateOf(TopbarSetUp(R.string.topbar_habit, listOf())) }
+
+    title.value = setTopBarTitle(currentDestination, navController)
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -106,15 +127,27 @@ fun TopBatHabit(navController: NavHostController) {
         ),
         title = {
             TitleLargeText(
-                text = stringResource(title),
+                text = stringResource(title.value.title),
                 textAlign = TextAlign.Center
             )
         },
         actions = {
-            icons.forEach {
-                IconButton( onClick = it.onClick) {
+            title.value.listAction.forEach {
+                IconButton(onClick = { it.onClick() }) {
                     Icon(
                         painter = painterResource(it.icon),
+                        contentDescription = stringResource(R.string.topbar_description)
+                    )
+                }
+            }
+        },
+        navigationIcon = {
+            if (showNavigation == false) {
+                IconButton(onClick = {
+                    navController.popBackStack()
+                }) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_arrow_back),
                         contentDescription = stringResource(R.string.topbar_description)
                     )
                 }
@@ -131,39 +164,78 @@ fun BottomNavigationHabit(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    NavigationBar(
-        contentColor = secondaryColorApp,
-        containerColor = secondaryColorApp
-    ) {
-        menuItems.forEach {
-            NavigationBarItem(
-                selected = currentDestination?.hierarchy?.any
-                    {item -> item.route == it.route::class.qualifiedName } == true,
-                onClick = {
-                    navController.navigate(it.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-                icon = {
-                    Icon(
-                        painter = painterResource(it.icon),
-                        contentDescription = stringResource(it.label),
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-                label = {
-                    LabelSmallText(stringResource(it.label))
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color.Black,
-                    indicatorColor = Color.White
-                )
-            )
+    val showNavigation = currentDestination?.hierarchy?.any { item ->
+        menuItems.any {
+            it.route::class.qualifiedName == item.route
         }
     }
 
+    if (showNavigation == true) {
+        NavigationBar(
+            contentColor = secondaryColorApp,
+            containerColor = secondaryColorApp
+        ) {
+            menuItems.forEach {
+                NavigationBarItem(
+                    selected = currentDestination.hierarchy.any { item -> item.route == it.route::class.qualifiedName },
+                    onClick = {
+                        navController.navigate(it.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(it.icon),
+                            contentDescription = stringResource(it.label),
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
+                    label = {
+                        LabelSmallText(stringResource(it.label))
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.Black,
+                        indicatorColor = Color.White
+                    )
+                )
+            }
+        }
+    }
+
+}
+
+fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostController): TopbarSetUp {
+    var title = TopbarSetUp(R.string.topbar_habit, listOf())
+
+    when (navDestination?.route) {
+        Habits::class.qualifiedName -> {
+            title = TopbarSetUp(R.string.topbar_habit, listOf(
+                ActionIcon(R.drawable.ic_add) {
+                    navController.navigate(AddHabit)
+                }
+            ))
+        }
+
+        Statistics::class.qualifiedName -> {
+            title = TopbarSetUp(R.string.topbar_stadistics, listOf())
+        }
+
+        Achievements::class.qualifiedName -> {
+            title = TopbarSetUp(R.string.topbar_achievements, listOf())
+        }
+
+        Settings::class.qualifiedName -> {
+            title = TopbarSetUp(R.string.topbar_settings, listOf())
+        }
+
+        AddHabit::class.qualifiedName -> {
+            title = TopbarSetUp(R.string.topbar_add_habit, listOf())
+        }
+    }
+
+    return title
 }

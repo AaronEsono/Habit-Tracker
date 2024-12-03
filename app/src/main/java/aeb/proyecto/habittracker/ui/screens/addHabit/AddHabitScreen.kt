@@ -1,4 +1,7 @@
 package aeb.proyecto.habittracker.ui.screens.addHabit
 
-class AddHabitScreen {
+import androidx.compose.runtime.Composable
+
+@Composable
+fun AddHabitScreen(){
 }
