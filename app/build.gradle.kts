@@ -72,4 +72,8 @@ dependencies {
     //Hilt y Dagger
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler.v248)
+
+
+    // Integración de Hilt con Compose
+    implementation(libs.androidx.hilt.navigation.compose)
 }
