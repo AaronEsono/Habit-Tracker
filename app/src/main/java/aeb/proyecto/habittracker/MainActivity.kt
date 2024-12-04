@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppContent(navController: NavHostController, mainViewModel: MainViewModel) {
     Scaffold(
-        topBar = { TopBatHabit(navController) },
+        topBar = { TopBarHabit(navController) },
         bottomBar = {
             BottomNavigationHabit(navController)
         }
@@ -99,7 +99,7 @@ fun AppContent(navController: NavHostController, mainViewModel: MainViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBatHabit(navController: NavHostController) {
+fun TopBarHabit(navController: NavHostController) {
 
     val menuItems = remember { listBottomBarScreens }
 

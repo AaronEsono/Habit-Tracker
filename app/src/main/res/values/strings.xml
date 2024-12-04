@@ -7,7 +7,6 @@
     <string name="topbar_achievements">Logros</string>
     <string name="topbar_settings">Opciones</string>
     <string name="topbar_add_habit">Añadir hábito</string>
-
     <string name="topbar_description">Descripcion icono</string>
 
     <!-- BottomBar -->
@@ -17,6 +16,6 @@
     <string name="bottombar_settins">Opciones</string>
 
     <!-- Habits screen -->
-    <string name="habits_screen_no_habit">De momento no tienes ningún hábito registrado. Pulsa sobre el botón de arriba para crear uno.</string>
+    <string name="habits_screen_no_habit">De momento no tienes ningún hábito registrado. Pulsa en el botón de arriba para crear uno.</string>
 
 </resources>

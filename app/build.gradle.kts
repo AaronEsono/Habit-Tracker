@@ -75,7 +75,10 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler.v248)
 
-
     // Integración de Hilt con Compose
     implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.material3)
+    implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
+    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.4.0-alpha04")
 }
