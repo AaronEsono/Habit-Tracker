@@ -20,7 +20,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,10 +37,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -110,7 +106,7 @@ fun TopBatHabit(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val showNavigation = currentDestination?.hierarchy?.any { item ->
+    val showBottomBar = currentDestination?.hierarchy?.any { item ->
         menuItems.any {
             it.route::class.qualifiedName == item.route
         }
@@ -136,19 +132,21 @@ fun TopBatHabit(navController: NavHostController) {
                 IconButton(onClick = { it.onClick() }) {
                     Icon(
                         painter = painterResource(it.icon),
-                        contentDescription = stringResource(R.string.topbar_description)
+                        contentDescription = stringResource(R.string.topbar_description),
+                        tint = Color.White
                     )
                 }
             }
         },
         navigationIcon = {
-            if (showNavigation == false) {
+            if (showBottomBar == false) {
                 IconButton(onClick = {
                     navController.popBackStack()
                 }) {
                     Icon(
                         painter = painterResource(R.drawable.ic_arrow_back),
-                        contentDescription = stringResource(R.string.topbar_description)
+                        contentDescription = stringResource(R.string.topbar_description),
+                        tint = Color.White
                     )
                 }
             }
@@ -164,13 +162,13 @@ fun BottomNavigationHabit(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val showNavigation = currentDestination?.hierarchy?.any { item ->
+    val showBottomBar = currentDestination?.hierarchy?.any { item ->
         menuItems.any {
             it.route::class.qualifiedName == item.route
         }
     }
 
-    if (showNavigation == true) {
+    if (showBottomBar == true) {
         NavigationBar(
             contentColor = secondaryColorApp,
             containerColor = secondaryColorApp
@@ -199,7 +197,8 @@ fun BottomNavigationHabit(navController: NavHostController) {
                     },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Color.Black,
-                        indicatorColor = Color.White
+                        indicatorColor = Color.White,
+                        unselectedIconColor = Color.White
                     )
                 )
             }
