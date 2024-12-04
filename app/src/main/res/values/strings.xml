@@ -18,4 +18,10 @@
     <!-- Habits screen -->
     <string name="habits_screen_no_habit">De momento no tienes ningún hábito registrado. Pulsa en el botón de arriba para crear uno.</string>
 
+    <!-- Add habit screen-->
+    <string name="add_habit_screen_name">Nombre</string>
+    <string name="add_habit_screen_description">Descripción</string>
+    <string name="add_habit_screen_no_name">Tienes que añadir un nombre.</string>
+    <string name="add_habit_screen_placeholder">Nombre</string>
+
 </resources>

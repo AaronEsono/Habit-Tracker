@@ -80,5 +80,8 @@ dependencies {
 
     implementation(libs.material3)
     implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
-    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.4.0-alpha04")
+    implementation(libs.androidx.material3.adaptive.navigation.suite)
+
+    //Mas iconos
+    implementation(libs.material.icons.extended)
 }
