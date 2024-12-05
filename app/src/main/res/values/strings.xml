@@ -21,10 +21,20 @@
     <!-- Add habit screen-->
     <string name="add_habit_screen_name">Nombre</string>
     <string name="add_habit_screen_description">Descripción</string>
+
     <string name="add_habit_screen_no_name">Tienes que añadir un nombre.</string>
+    <string name="add_habit_screen_no_units">Tienes que seleccionar un número de unidades.</string>
+
     <string name="add_habit_screen_placeholder">Nombre</string>
 
     <string name="add_habit_screen_color">Color</string>
     <string name="add_habit_screen_icon">Icono</string>
+
+    <string name="add_habit_pick_unit">Seleccione el número de repeticiones</string>
+    <string name="add_habit_pick_date">Recordarme a las</string>
+    <string name="add_habit_add_hour">Añadir hora</string>
+
+
+    <string name="add_habit_unit_1">Vez</string>
 
 </resources>
