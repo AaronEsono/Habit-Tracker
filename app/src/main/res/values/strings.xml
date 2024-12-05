@@ -24,4 +24,7 @@
     <string name="add_habit_screen_no_name">Tienes que añadir un nombre.</string>
     <string name="add_habit_screen_placeholder">Nombre</string>
 
+    <string name="add_habit_screen_color">Color</string>
+    <string name="add_habit_screen_icon">Icono</string>
+
 </resources>

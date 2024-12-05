@@ -21,3 +21,14 @@ val primaryColorApp = Color(0xFF201f1e)
 
 val borderTextField = Color(0xFF848484)
 val containerTextFieldColor = Color(0xFF1A1818)
+
+
+//Grupo de colores a elegir
+val pickColor1 = Color(0xFF5C38E5)
+val pickColor2 = Color(0xFF3BD7D7)
+val pickColor3 = Color(0xFFC22EE8)
+val pickColor4 = Color(0xFFEEFF15)
+val pickColor5 = Color(0xFF35EF38)
+val pickColor6 = Color(0xFFEA0C0F)
+val pickColor7 = Color(0xFFFC7D0F)
+val pickColor8 = Color(0xFF534B4B)
