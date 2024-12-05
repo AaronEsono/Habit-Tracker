@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.screens.addHabit
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPickUnit
 import aeb.proyecto.habittracker.ui.components.card.CardInfoAddHabit
 import aeb.proyecto.habittracker.ui.components.card.CardPickColorAddHabit
 import aeb.proyecto.habittracker.ui.components.items.ColorItem
@@ -15,6 +16,7 @@ import aeb.proyecto.habittracker.utils.Constans.ListColors
 import aeb.proyecto.habittracker.utils.Constans.ListIcons
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
+import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.animation.AnimatedContent
@@ -78,6 +80,8 @@ fun AddHabitScreen() {
     val colorSelected = remember { mutableStateOf(false) }
     val iconSelected = remember { mutableStateOf(false) }
 
+    val showBottomSheet = remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -138,6 +142,8 @@ fun AddHabitScreen() {
             GridOptions(color, colorSelected, false, icon, iconSelected)
         }
 
+        Spacer(modifier = Modifier.padding(vertical = spacing2))
+
         BodySmallText(stringResource(R.string.add_habit_pick_unit))
 
         Spacer(modifier = Modifier.padding(vertical = spacing4))
@@ -162,7 +168,8 @@ fun AddHabitScreen() {
                 color = color,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = spacing8)
+                    .padding(top = spacing8),
+                onClick = {showBottomSheet.value = true}
             )
         }
 
@@ -181,6 +188,12 @@ fun AddHabitScreen() {
         )
 
     }
+
+
+    if(showBottomSheet.value){
+        BottomSheetPickUnit(showBottomSheet)
+    }
+
 }
 
 @Composable

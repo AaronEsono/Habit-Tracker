@@ -22,6 +22,7 @@ val primaryColorApp = Color(0xFF201f1e)
 val borderTextField = Color(0xFF848484)
 val containerTextFieldColor = Color(0xFF1A1818)
 
+val DarKThemeText = Color.White
 
 //Grupo de colores a elegir
 val pickColor1 = Color(0xFF5C38E5)

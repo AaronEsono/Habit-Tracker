@@ -34,7 +34,38 @@
     <string name="add_habit_pick_date">Recordarme a las</string>
     <string name="add_habit_add_hour">Añadir hora</string>
 
+    <!-- Add habit screen Bottom Sheet-->
+    <string name="add_habit_bottom_sheet_add_habit_title">Categoría</string>
+    <string name="add_habit_bottom_sheet_add_habit_subtitle">Elija la unidad de medida para el hábito</string>
 
+    <!-- Add habit screen questions -->
+    <string name="add_habit_question_1">Establece el número de repeticiones</string>
+    <string name="add_habit_question_2">¿Cuántos pasos va a realizar al día?</string>
+    <string name="add_habit_question_3">¿Cuántas páginas va a leer al día?</string>
+    <string name="add_habit_question_4">¿Cuántos km va a recorrer al día?</string>
+    <string name="add_habit_question_5">¿Cuántos minutos al día?</string>
+    <string name="add_habit_question_6">¿Cuántas calorías al día?</string>
+    <string name="add_habit_question_7">¿Cuántos vasos al día?</string>
+    <string name="add_habit_question_8">¿Cuántas ejercicios al día?</string>
+
+    <!-- Add habit unit singular-->
     <string name="add_habit_unit_1">Vez</string>
+    <string name="add_habit_unit_2">Paso</string>
+    <string name="add_habit_unit_3">Página</string>
+    <string name="add_habit_unit_4">Km</string>
+    <string name="add_habit_unit_5">Minuto</string>
+    <string name="add_habit_unit_6">Caloría</string>
+    <string name="add_habit_unit_7">Vaso</string>
+    <string name="add_habit_unit_8">Ejercicio</string>
+
+    <!-- Add habit unit plural-->
+    <string name="add_habit_unit_pl_1">Veces</string>
+    <string name="add_habit_unit_pl_2">Pasos</string>
+    <string name="add_habit_unit_pl_3">Páginas</string>
+    <string name="add_habit_unit_pl_4">Km</string>
+    <string name="add_habit_unit_pl_5">Minutos</string>
+    <string name="add_habit_unit_pl_6">Calorías</string>
+    <string name="add_habit_unit_pl_7">Vasos</string>
+    <string name="add_habit_unit_pl_8">Ejercicios</string>
 
 </resources>
