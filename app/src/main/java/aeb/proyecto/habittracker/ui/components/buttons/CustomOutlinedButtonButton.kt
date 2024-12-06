@@ -2,6 +2,7 @@ package aeb.proyecto.habittracker.ui.components.buttons
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.BodyMediumText
+import aeb.proyecto.habittracker.ui.components.text.BodySmallText
 import aeb.proyecto.habittracker.ui.theme.DarKThemeText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
@@ -43,7 +44,7 @@ fun CustomOutlinedButtonButton(
 
         Spacer(modifier = Modifier.padding(horizontal = spacing4))
 
-        BodyMediumText(text = stringResource(title))
+        BodySmallText(text = stringResource(title))
     }
 }
 

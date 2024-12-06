@@ -1,16 +1,16 @@
 package aeb.proyecto.habittracker.ui.screens.addHabit
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.model.time.TimeNotification
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPickUnit
+import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.card.CardInfoAddHabit
 import aeb.proyecto.habittracker.ui.components.card.CardPickColorAddHabit
 import aeb.proyecto.habittracker.ui.components.items.ColorItem
 import aeb.proyecto.habittracker.ui.components.items.IconItem
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
-import aeb.proyecto.habittracker.ui.components.text.TitleMediumText
-import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
-import aeb.proyecto.habittracker.ui.components.timePicker.DialExample
+import aeb.proyecto.habittracker.ui.components.timePicker.TimePickerHabit
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Constans.ListColors
 import aeb.proyecto.habittracker.utils.Constans.ListIcons
@@ -18,16 +18,12 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
+import aeb.proyecto.habittracker.utils.Dimmens.spacing72
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.with
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -37,38 +33,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.text.input.setTextAndSelectAll
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddAlert
 import androidx.compose.material.icons.filled.ColorLens
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
-import kotlin.reflect.KProperty
 
 @Composable
 fun AddHabitScreen() {
@@ -83,121 +73,213 @@ fun AddHabitScreen() {
     val iconSelected = remember { mutableStateOf(false) }
 
     val showBottomSheet = remember { mutableStateOf(false) }
+    val showTimePicker = remember { mutableStateOf(false) }
+
+    val notifications: MutableState<List<TimeNotification>> = remember { mutableStateOf(listOf()) }
 
     val unitPicked = remember { mutableStateOf(Constans.Units.TIMES) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(spacing16)
-            .verticalScroll(rememberScrollState())
-    ) {
+    val notificationSelected: MutableState<TimeNotification?> = remember { mutableStateOf(null) }
 
-        CustomOutlinedTextField(
-            rememberTextFieldState = nameHabit,
-            label = R.string.add_habit_screen_name,
-            isNeeded = true,
-            modifier = Modifier.fillMaxWidth()
-        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = spacing16, start = spacing16, end = spacing16, bottom = spacing72)
+                .verticalScroll(rememberScrollState())
+        ) {
 
-        Spacer(modifier = Modifier.padding(vertical = spacing8))
+            CustomOutlinedTextField(
+                rememberTextFieldState = nameHabit,
+                label = R.string.add_habit_screen_name,
+                isNeeded = true,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        CustomOutlinedTextField(
-            rememberTextFieldState = descriptionHabit,
-            label = R.string.add_habit_screen_description,
-            modifier = Modifier.fillMaxWidth()
-        )
+            Spacer(modifier = Modifier.padding(vertical = spacing8))
 
-        Spacer(modifier = Modifier.padding(vertical = spacing12))
+            CustomOutlinedTextField(
+                rememberTextFieldState = descriptionHabit,
+                label = R.string.add_habit_screen_description,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            CardPickColorAddHabit(
-                text = R.string.add_habit_screen_color,
-                color = color.value,
-                icon = Icons.Filled.ColorLens,
-                modifier = Modifier.weight(1f)
+            Spacer(modifier = Modifier.padding(vertical = spacing12))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                colorSelected.value = !colorSelected.value
-                iconSelected.value = false
+                CardPickColorAddHabit(
+                    text = R.string.add_habit_screen_color,
+                    color = color.value,
+                    icon = Icons.Filled.ColorLens,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    colorSelected.value = !colorSelected.value
+                    iconSelected.value = false
+                }
+
+
+                CardPickColorAddHabit(
+                    text = R.string.add_habit_screen_icon,
+                    color = color.value,
+                    icon = icon.value,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    iconSelected.value = !iconSelected.value
+                    colorSelected.value = false
+                }
             }
 
+            Spacer(modifier = Modifier.padding(vertical = spacing12))
 
-            CardPickColorAddHabit(
-                text = R.string.add_habit_screen_icon,
-                color = color.value,
-                icon = icon.value,
-                modifier = Modifier.weight(1f)
+            AnimatedVisibility(
+                visible = colorSelected.value,
             ) {
-                iconSelected.value = !iconSelected.value
-                colorSelected.value = false
+                GridOptions(color, colorSelected, true, icon, iconSelected)
             }
-        }
 
-        Spacer(modifier = Modifier.padding(vertical = spacing12))
+            AnimatedVisibility(
+                visible = iconSelected.value,
+            ) {
+                GridOptions(color, colorSelected, false, icon, iconSelected)
+            }
 
-        AnimatedVisibility(
-            visible = colorSelected.value,
-        ) {
-            GridOptions(color, colorSelected, true, icon, iconSelected)
-        }
+            Spacer(modifier = Modifier.padding(vertical = spacing2))
 
-        AnimatedVisibility(
-            visible = iconSelected.value,
-        ) {
-            GridOptions(color, colorSelected, false, icon, iconSelected)
-        }
+            BodySmallText(stringResource(unitPicked.value.question))
 
-        Spacer(modifier = Modifier.padding(vertical = spacing2))
+            Spacer(modifier = Modifier.padding(vertical = spacing4))
 
-        BodySmallText(stringResource(unitPicked.value.question))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+                    CustomOutlinedTextField(
+                        rememberTextFieldState = timesHabit,
+                        label = R.string.add_habit_screen_name,
+                        labelError = R.string.add_habit_screen_no_units,
+                        isNeeded = true,
+                        showLabel = false,
+                        isNumeric = true,
+                    )
+                }
 
-        Spacer(modifier = Modifier.padding(vertical = spacing4))
+                Spacer(modifier = Modifier.padding(horizontal = spacing8))
 
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.fillMaxWidth(0.5f)) {
-                CustomOutlinedTextField(
-                    rememberTextFieldState = timesHabit,
-                    label = R.string.add_habit_screen_name,
-                    labelError = R.string.add_habit_screen_no_units,
-                    isNeeded = true,
-                    showLabel = false,
-                    isNumeric = true,
+                CardInfoAddHabit(
+                    title = if (timesHabit.text.toString() == "1" || timesHabit.text.toString() == "") stringResource(
+                        unitPicked.value.title
+                    ) else stringResource(unitPicked.value.pluralTitle),
+                    finalIcon = Icons.Filled.KeyboardArrowDown,
+                    color = color,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = spacing8),
+                    onClick = { showBottomSheet.value = true },
+                    onDelete = { showBottomSheet.value = true }
                 )
             }
 
-            Spacer(modifier = Modifier.padding(horizontal = spacing8))
+            Spacer(modifier = Modifier.padding(vertical = spacing12))
+
+            BodySmallText(stringResource(R.string.add_habit_pick_date))
 
             CardInfoAddHabit(
-                title = if (timesHabit.text.toString() == "1" || timesHabit.text.toString() == "") unitPicked.value.title else unitPicked.value.pluralTitle,
-                finalIcon = Icons.Filled.KeyboardArrowDown,
+                title = stringResource(R.string.add_habit_add_hour),
+                icon = Icons.Filled.Add,
+                finalIcon = Icons.Filled.KeyboardArrowRight,
                 color = color,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = spacing8),
-                onClick = {showBottomSheet.value = true}
+                onClick = {
+                    notificationSelected.value = null
+                    showTimePicker.value = true
+                },
+                onDelete = {
+                    notificationSelected.value = null
+                    showTimePicker.value = true
+                }
             )
+
+            notifications.value.forEach { it ->
+                CardInfoAddHabit(
+                    title = stringResource(R.string.add_habit_pick_time, it.hour, it.minute),
+                    icon = Icons.Filled.AddAlert,
+                    finalIcon = Icons.Filled.Delete,
+                    color = color,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = spacing8),
+                    onClick = {
+                        notificationSelected.value = it
+                        showTimePicker.value = true
+                    },
+                    onDelete = { notifications.value = notifications.value.minus(it) },
+                    colorInFinalIcon = true
+                )
+            }
+
         }
 
-        Spacer(modifier = Modifier.padding(vertical = spacing12))
-
-        BodySmallText(stringResource(R.string.add_habit_pick_date))
-
-        CardInfoAddHabit(
-            title = R.string.add_habit_add_hour,
-            icon = Icons.Filled.DateRange,
-            finalIcon = Icons.Filled.KeyboardArrowRight,
-            color = color,
+        // Fondo degradado en la parte inferior
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = spacing8)
+                .height(64.dp) // Altura del área del degradado
+                .align(Alignment.BottomCenter) // Fija en la parte inferior
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent, // Comienza transparente
+                            Color.Black.copy(alpha = 0.5f) // Termina en negro semitransparente
+                        )
+                    )
+                )
+        )
+        CustomFilledButton(
+            title = R.string.buttons_save,
+            icon = R.drawable.ic_check,
+            color = color.value,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(spacing16)
+                .align(Alignment.BottomCenter) // Fija el botón en la parte inferior
+                .height(48.dp)
+
         )
 
     }
 
 
-    if(showBottomSheet.value){
-        BottomSheetPickUnit(showBottomSheet,color = color,unitPicked)
+
+    if (showBottomSheet.value) {
+        BottomSheetPickUnit(showBottomSheet, color = color, unitPicked)
     }
+
+    if (showTimePicker.value) {
+        TimePickerHabit(
+            color = color,
+            onDismiss = { showTimePicker.value = false },
+            onConfirm = { it ->
+                //Pasar al viewModel cuando se implemente room
+                if (notificationSelected.value == null) {
+                    notifications.value = notifications.value.plus(it)
+                } else {
+                    val temporalList = notifications.value.toMutableList()
+
+                    temporalList.find { item -> item == notificationSelected.value }?.let { item2 ->
+                        item2.minute = it.minute
+                        item2.hour = it.hour
+                    }
+
+                    notifications.value = temporalList
+                }
+            },
+            notification = notificationSelected.value
+        )
+    }
+
 
 }
 

@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker.ui.components.card
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
+import aeb.proyecto.habittracker.ui.theme.DarKThemeText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -35,10 +36,12 @@ import androidx.compose.ui.unit.dp
 fun CardInfoAddHabit(
     onClick: () -> Unit = {},
     icon: ImageVector? = null,
-    @StringRes title: Int,
+    title: String,
     finalIcon: ImageVector? = null,
     color: MutableState<Color>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    colorInFinalIcon: Boolean = false,
+    onDelete: () -> Unit = {}
 ) {
 
     Card(
@@ -49,16 +52,24 @@ fun CardInfoAddHabit(
             defaultElevation = spacing8
         )
     ) {
-        Row(modifier = Modifier.fillMaxWidth().height(45.dp).padding(spacing8), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(45.dp)
+                .padding(spacing8),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
             icon?.let {
                 Icon(icon, "", tint = color.value)
             }
 
             Spacer(modifier = Modifier.padding(horizontal = spacing8))
-            TitleSmallText(stringResource(title), Modifier.weight(1f), TextAlign.Left)
+            TitleSmallText(title, Modifier.weight(1f), TextAlign.Left)
 
             finalIcon?.let {
-                Icon(finalIcon, "")
+                Icon(finalIcon, "", tint = if (colorInFinalIcon) color.value else DarKThemeText,
+                    modifier = Modifier.clickable { onDelete() })
             }
         }
     }

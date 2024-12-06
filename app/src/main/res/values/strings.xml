@@ -34,6 +34,8 @@
     <string name="add_habit_pick_date">Recordarme a las</string>
     <string name="add_habit_add_hour">Añadir hora</string>
 
+    <string name="add_habit_pick_time">%1$s : %2$s</string>
+
     <!-- Add habit screen Bottom Sheet-->
     <string name="add_habit_bottom_sheet_add_habit_title">Categoría</string>
     <string name="add_habit_bottom_sheet_add_habit_subtitle">Elija la unidad de medida para el hábito</string>
@@ -70,6 +72,7 @@
 
     <!-- Buttons-->
     <string name="buttons_accept">Aceptar</string>
-    <string name="buttons_cancel">Cancel</string>
+    <string name="buttons_save">Guardar</string>
+    <string name="buttons_cancel">Cancelar</string>
 
 </resources>

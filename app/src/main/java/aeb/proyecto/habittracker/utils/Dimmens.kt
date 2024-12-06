@@ -11,4 +11,6 @@ object Dimmens {
     val spacing16 = 16.dp
     val spacing20 = 20.dp
     val spacing24 = 24.dp
+    val spacing64 = 64.dp
+    val spacing72 = 72.dp
 }
