@@ -1,6 +1,8 @@
 package aeb.proyecto.habittracker.ui.components.bottomSheets
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
+import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButtonButton
 import aeb.proyecto.habittracker.ui.components.card.CardPickUnitAddHabit
 import aeb.proyecto.habittracker.ui.components.items.ColorItem
 import aeb.proyecto.habittracker.ui.components.items.IconItem
@@ -18,12 +20,14 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
+import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,6 +49,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,10 +59,13 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun BottomSheetPickUnit(
-    showBottomSheet: MutableState<Boolean>
+    showBottomSheet: MutableState<Boolean>,
+    color: MutableState<Color>,
+    units: MutableState<Constans.Units>
 ) {
 
     val sheetState = rememberModalBottomSheetState()
+    val selected = remember { mutableStateOf(units.value) }
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -85,13 +93,45 @@ fun BottomSheetPickUnit(
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
-            FlowRow (modifier = Modifier.fillMaxWidth().padding(vertical = spacing8),
+            FlowRow (modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = spacing8),
                 verticalArrangement = Arrangement.spacedBy(spacing8, Alignment.CenterVertically),
                 horizontalArrangement = Arrangement.spacedBy(spacing8)){
                 Constans.Units.entries.forEach {
-                    CardPickUnitAddHabit(selected = false, unit = it)
+                    CardPickUnitAddHabit(selected = it == selected.value, unit = it, color = color, onClick = {
+                        selected.value = it
+                    })
                 }
             }
+
+            Spacer(modifier = Modifier.padding(vertical = spacing4))
+
+            Row(modifier = Modifier.fillMaxWidth()) {
+
+                CustomOutlinedButtonButton(
+                    title = R.string.buttons_cancel, icon = R.drawable.ic_cancel,
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        showBottomSheet.value = false
+                    }
+                )
+
+                Spacer(modifier = Modifier.padding(horizontal = spacing8))
+
+                CustomFilledButton(
+                    title = R.string.buttons_accept,
+                    icon = R.drawable.ic_check,
+                    color = color.value,
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        units.value = selected.value
+                        showBottomSheet.value = false
+                    }
+                )
+
+            }
+
         }
 
     }

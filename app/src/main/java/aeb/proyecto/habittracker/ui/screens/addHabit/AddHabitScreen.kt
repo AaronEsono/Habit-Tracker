@@ -42,8 +42,10 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndSelectAll
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ColorLens
@@ -82,10 +84,13 @@ fun AddHabitScreen() {
 
     val showBottomSheet = remember { mutableStateOf(false) }
 
+    val unitPicked = remember { mutableStateOf(Constans.Units.TIMES) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(spacing16)
+            .verticalScroll(rememberScrollState())
     ) {
 
         CustomOutlinedTextField(
@@ -144,7 +149,7 @@ fun AddHabitScreen() {
 
         Spacer(modifier = Modifier.padding(vertical = spacing2))
 
-        BodySmallText(stringResource(R.string.add_habit_pick_unit))
+        BodySmallText(stringResource(unitPicked.value.question))
 
         Spacer(modifier = Modifier.padding(vertical = spacing4))
 
@@ -163,7 +168,7 @@ fun AddHabitScreen() {
             Spacer(modifier = Modifier.padding(horizontal = spacing8))
 
             CardInfoAddHabit(
-                title = R.string.add_habit_unit_1,
+                title = if (timesHabit.text.toString() == "1" || timesHabit.text.toString() == "") unitPicked.value.title else unitPicked.value.pluralTitle,
                 finalIcon = Icons.Filled.KeyboardArrowDown,
                 color = color,
                 modifier = Modifier
@@ -191,7 +196,7 @@ fun AddHabitScreen() {
 
 
     if(showBottomSheet.value){
-        BottomSheetPickUnit(showBottomSheet)
+        BottomSheetPickUnit(showBottomSheet,color = color,unitPicked)
     }
 
 }

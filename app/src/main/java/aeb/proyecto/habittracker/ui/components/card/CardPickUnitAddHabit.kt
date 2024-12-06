@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.components.card
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.theme.DarKThemeText
 import aeb.proyecto.habittracker.ui.theme.primaryColorApp
@@ -24,8 +25,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,7 +41,8 @@ fun CardPickUnitAddHabit(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     selected: Boolean,
-    unit: Constans.Units
+    unit: Constans.Units,
+    color: MutableState<Color>
 ) {
 
     Card(
@@ -44,11 +50,11 @@ fun CardPickUnitAddHabit(
         modifier = modifier
             .wrapContentWidth()
             .clickable { onClick() }
-            .border(if (selected) 2.dp else 0.dp, DarKThemeText, RoundedCornerShape(spacing8))
+            .border(if (selected) 2.dp else 0.dp, if (selected) color.value else DarKThemeText, RoundedCornerShape(spacing8))
     ) {
         Row(
             modifier = Modifier
-                .height(30.dp)
+                .height(40.dp)
                 .wrapContentWidth()
                 .background(primaryColorApp)
                 .padding(horizontal = spacing8),
@@ -57,13 +63,13 @@ fun CardPickUnitAddHabit(
             Icon(
                 painter = painterResource(unit.icon),
                 "",
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(25.dp),
                 tint = DarKThemeText
             )
 
             Spacer(modifier = Modifier.padding(horizontal = spacing4))
 
-            LabelSmallText(stringResource(unit.title))
+            LabelMediumText(stringResource(unit.title))
         }
     }
 }
@@ -73,6 +79,7 @@ fun CardPickUnitAddHabit(
 fun CardPickUnitAddHabitPreview() {
     CardPickUnitAddHabit(
         selected = false,
-        unit = Constans.Units.PAGES
+        unit = Constans.Units.PAGES,
+        color =  remember { mutableStateOf(Color.Red) }
     )
 }

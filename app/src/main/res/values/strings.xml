@@ -68,4 +68,8 @@
     <string name="add_habit_unit_pl_7">Vasos</string>
     <string name="add_habit_unit_pl_8">Ejercicios</string>
 
+    <!-- Buttons-->
+    <string name="buttons_accept">Aceptar</string>
+    <string name="buttons_cancel">Cancel</string>
+
 </resources>
