@@ -73,7 +73,7 @@ fun BottomSheetGeneral(
 
             Spacer(modifier = Modifier.padding(vertical = spacing8))
 
-            LabelLargeText(
+            LabelMediumText(
                 text = stringResource(subtitle),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center

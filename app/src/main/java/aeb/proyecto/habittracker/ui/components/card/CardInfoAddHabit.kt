@@ -8,6 +8,7 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -69,7 +70,10 @@ fun CardInfoAddHabit(
 
             finalIcon?.let {
                 Icon(finalIcon, "", tint = if (colorInFinalIcon) color.value else DarKThemeText,
-                    modifier = Modifier.clickable { onDelete() })
+                    modifier = Modifier.clickable(
+                        indication = null,
+                        interactionSource = MutableInteractionSource()
+                    ) { onDelete() })
             }
         }
     }

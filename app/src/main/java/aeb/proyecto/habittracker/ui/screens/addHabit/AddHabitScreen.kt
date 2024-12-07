@@ -26,6 +26,7 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -62,6 +63,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -82,7 +84,7 @@ fun AddHabitScreen() {
 
     val showBottomSheet = remember { mutableStateOf(false) }
     val showTimePicker = remember { mutableStateOf(false) }
-    val showGeneralDx = remember {mutableStateOf(false)}
+    val showGeneralDx = remember { mutableStateOf(false) }
 
     val notifications: MutableState<List<TimeNotification>> = remember { mutableStateOf(listOf()) }
 
@@ -90,13 +92,14 @@ fun AddHabitScreen() {
 
     val notificationSelected: MutableState<TimeNotification?> = remember { mutableStateOf(null) }
 
-    // TODO - Agregar degradado al boton del final
-    // TODO - Quitar foreground de los botones
+    val attentionText = remember { mutableStateOf(R.string.general_dx_attention_subtitile_time_picker) }
 
-    LaunchedEffect (timesHabit.text){
-        if(!timesHabit.text.toString().matches(onlyDigits) && timesHabit.text.toString().isNotEmpty()){
+    LaunchedEffect(timesHabit.text) {
+        if (!timesHabit.text.toString().matches(onlyDigits) && timesHabit.text.toString()
+                .isNotEmpty()
+        ) {
             timesHabit.edit {
-               delete(timesHabit.text.length - 1, timesHabit.text.length)
+                delete(timesHabit.text.length - 1, timesHabit.text.length)
             }
         }
     }
@@ -224,7 +227,11 @@ fun AddHabitScreen() {
 
             notifications.value.forEach { it ->
                 CardInfoAddHabit(
-                    title = stringResource(R.string.add_habit_pick_time, it.hour, if(it.minute < 10) "0${it.minute}" else it.minute),
+                    title = stringResource(
+                        R.string.add_habit_pick_time,
+                        it.hour,
+                        if (it.minute < 10) "0${it.minute}" else it.minute
+                    ),
                     icon = Icons.Filled.AddAlert,
                     finalIcon = Icons.Filled.Delete,
                     color = color,
@@ -250,21 +257,27 @@ fun AddHabitScreen() {
                 .fillMaxWidth()
                 .padding(spacing16)
                 .align(Alignment.BottomCenter) // Fija el botón en la parte inferior
-                .height(48.dp)
+                .height(48.dp),
+            onClick = {
+                if (nameHabit.text.isEmpty() && timesHabit.text.isEmpty()) {
+                    attentionText.value = R.string.general_dx_attention_fill_data
+                    showGeneralDx.value = true
+                }
+            }
 
         )
 
     }
 
 
-    if(showGeneralDx.value){
+    if (showGeneralDx.value) {
         BottomSheetGeneral(
             showGeneralDx,
             color = color,
             titleAccept = R.string.buttons_accept,
             iconAccept = R.drawable.ic_check,
             title = R.string.general_dx_attention,
-            subtitle = R.string.general_dx_attention_subtitile_time_picker
+            subtitle = attentionText.value
         )
     }
 
@@ -280,9 +293,10 @@ fun AddHabitScreen() {
                 //Pasar al viewModel cuando se implemente room
                 if (notificationSelected.value == null) {
 
-                    if(notifications.value.find {item -> item == it } == null){
+                    if (notifications.value.find { item -> item == it } == null) {
                         notifications.value = notifications.value.plus(it)
-                    }else{
+                    } else {
+                        attentionText.value = R.string.general_dx_attention_subtitile_time_picker
                         showGeneralDx.value = true
                     }
 
