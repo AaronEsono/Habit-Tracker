@@ -2,6 +2,7 @@ package aeb.proyecto.habittracker.ui.screens.addHabit
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.time.TimeNotification
+import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPickUnit
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.card.CardInfoAddHabit
@@ -12,16 +13,19 @@ import aeb.proyecto.habittracker.ui.components.text.BodySmallText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
 import aeb.proyecto.habittracker.ui.components.timePicker.TimePickerHabit
 import aeb.proyecto.habittracker.utils.Constans
+import aeb.proyecto.habittracker.utils.Constans.InPlural
 import aeb.proyecto.habittracker.utils.Constans.ListColors
 import aeb.proyecto.habittracker.utils.Constans.ListIcons
+import aeb.proyecto.habittracker.utils.Constans.onlyDigits
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing72
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +41,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -49,17 +54,20 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun AddHabitScreen() {
     val nameHabit = rememberTextFieldState("")
@@ -74,12 +82,24 @@ fun AddHabitScreen() {
 
     val showBottomSheet = remember { mutableStateOf(false) }
     val showTimePicker = remember { mutableStateOf(false) }
+    val showGeneralDx = remember {mutableStateOf(false)}
 
     val notifications: MutableState<List<TimeNotification>> = remember { mutableStateOf(listOf()) }
 
     val unitPicked = remember { mutableStateOf(Constans.Units.TIMES) }
 
     val notificationSelected: MutableState<TimeNotification?> = remember { mutableStateOf(null) }
+
+    // TODO - Agregar degradado al boton del final
+    // TODO - Quitar foreground de los botones
+
+    LaunchedEffect (timesHabit.text){
+        if(!timesHabit.text.toString().matches(onlyDigits) && timesHabit.text.toString().isNotEmpty()){
+            timesHabit.edit {
+               delete(timesHabit.text.length - 1, timesHabit.text.length)
+            }
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -167,7 +187,7 @@ fun AddHabitScreen() {
                 Spacer(modifier = Modifier.padding(horizontal = spacing8))
 
                 CardInfoAddHabit(
-                    title = if (timesHabit.text.toString() == "1" || timesHabit.text.toString() == "") stringResource(
+                    title = if (InPlural.contains(timesHabit.text.toString())) stringResource(
                         unitPicked.value.title
                     ) else stringResource(unitPicked.value.pluralTitle),
                     finalIcon = Icons.Filled.KeyboardArrowDown,
@@ -204,7 +224,7 @@ fun AddHabitScreen() {
 
             notifications.value.forEach { it ->
                 CardInfoAddHabit(
-                    title = stringResource(R.string.add_habit_pick_time, it.hour, it.minute),
+                    title = stringResource(R.string.add_habit_pick_time, it.hour, if(it.minute < 10) "0${it.minute}" else it.minute),
                     icon = Icons.Filled.AddAlert,
                     finalIcon = Icons.Filled.Delete,
                     color = color,
@@ -222,21 +242,6 @@ fun AddHabitScreen() {
 
         }
 
-        // Fondo degradado en la parte inferior
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp) // Altura del área del degradado
-                .align(Alignment.BottomCenter) // Fija en la parte inferior
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent, // Comienza transparente
-                            Color.Black.copy(alpha = 0.5f) // Termina en negro semitransparente
-                        )
-                    )
-                )
-        )
         CustomFilledButton(
             title = R.string.buttons_save,
             icon = R.drawable.ic_check,
@@ -252,6 +257,16 @@ fun AddHabitScreen() {
     }
 
 
+    if(showGeneralDx.value){
+        BottomSheetGeneral(
+            showGeneralDx,
+            color = color,
+            titleAccept = R.string.buttons_accept,
+            iconAccept = R.drawable.ic_check,
+            title = R.string.general_dx_attention,
+            subtitle = R.string.general_dx_attention_subtitile_time_picker
+        )
+    }
 
     if (showBottomSheet.value) {
         BottomSheetPickUnit(showBottomSheet, color = color, unitPicked)
@@ -264,7 +279,13 @@ fun AddHabitScreen() {
             onConfirm = { it ->
                 //Pasar al viewModel cuando se implemente room
                 if (notificationSelected.value == null) {
-                    notifications.value = notifications.value.plus(it)
+
+                    if(notifications.value.find {item -> item == it } == null){
+                        notifications.value = notifications.value.plus(it)
+                    }else{
+                        showGeneralDx.value = true
+                    }
+
                 } else {
                     val temporalList = notifications.value.toMutableList()
 

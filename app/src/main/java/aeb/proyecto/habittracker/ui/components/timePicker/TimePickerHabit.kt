@@ -62,9 +62,9 @@ fun TimePickerHabit(
                     colors = TimePickerDefaults.colors(
                         selectorColor = color.value.copy(alpha = 0.8f),
                         timeSelectorSelectedContainerColor = color.value,
-                        clockDialSelectedContentColor = DarKThemeText
+                        clockDialSelectedContentColor = DarKThemeText,
+                        periodSelectorSelectedContainerColor = color.value.copy(alpha = 0.5f)
                     )
-
                 )
 
                 Row(modifier = Modifier.fillMaxWidth()) {

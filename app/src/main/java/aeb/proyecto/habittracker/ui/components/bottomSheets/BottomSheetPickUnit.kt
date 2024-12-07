@@ -47,6 +47,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,6 +56,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -66,6 +68,7 @@ fun BottomSheetPickUnit(
 
     val sheetState = rememberModalBottomSheetState()
     val selected = remember { mutableStateOf(units.value) }
+    val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -113,7 +116,11 @@ fun BottomSheetPickUnit(
                     title = R.string.buttons_cancel, icon = R.drawable.ic_cancel,
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        showBottomSheet.value = false
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showBottomSheet.value = false
+                            }
+                        }
                     }
                 )
 
@@ -126,7 +133,12 @@ fun BottomSheetPickUnit(
                     modifier = Modifier.weight(1f),
                     onClick = {
                         units.value = selected.value
-                        showBottomSheet.value = false
+
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showBottomSheet.value = false
+                            }
+                        }
                     }
                 )
 

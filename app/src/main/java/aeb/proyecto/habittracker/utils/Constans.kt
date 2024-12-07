@@ -23,6 +23,12 @@ import androidx.compose.material.icons.filled.SmartToy
 
 object Constans {
 
+    val onlyDigits = "-?[0-9]+(\\\\.[0-9]+)?".toRegex()
+
+    val InPlural = listOf(
+        "","0","1"
+    )
+
     val ListColors = listOf(
         pickColor1,
         pickColor2,
