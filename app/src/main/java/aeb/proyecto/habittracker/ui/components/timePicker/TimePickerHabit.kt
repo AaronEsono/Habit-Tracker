@@ -86,7 +86,7 @@ fun TimePickerHabit(
                         color = color.value,
                         modifier = Modifier.weight(1f),
                         onClick = {
-                            onConfirm(Notification(timePickerState.hour,timePickerState.minute))
+                            onConfirm(Notification( hour = timePickerState.hour,minute =  timePickerState.minute))
                             onDismiss()
                         }
                     )

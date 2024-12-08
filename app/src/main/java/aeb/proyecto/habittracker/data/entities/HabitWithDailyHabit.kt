@@ -9,5 +9,5 @@ data class HabitWithDailyHabit(
         parentColumn = "id",
         entityColumn = "idHabit"
     )
-    val dailyHabits: List<DailyHabit> = listOf()
+    val dailyHabits: MutableList<DailyHabit> = mutableListOf()
 )

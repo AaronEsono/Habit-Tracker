@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey
 @Entity
 data class Habit(
     @PrimaryKey(autoGenerate = true)
-    val id:Int = 0,
+    val id:Long = 0,
     var name:String = "",
     var description:String? = "",
-    var color:String = "",
+    var color:Int = 0,
     var icon:String = "",
     var times:Int = 0,
     var unit:Int = 0,

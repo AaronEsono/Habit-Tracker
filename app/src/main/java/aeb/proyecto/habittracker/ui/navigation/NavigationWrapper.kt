@@ -2,6 +2,7 @@ package aeb.proyecto.habittracker.ui.navigation
 
 import aeb.proyecto.habittracker.MainViewModel
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.data.model.action.ActionIcon
 import aeb.proyecto.habittracker.ui.screens.achievements.AchievementsScreen
 import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitScreen
@@ -35,7 +36,9 @@ fun NavigationWrapper(navController: NavHostController,mainViewModel: MainViewMo
             SettingsScreen()
         }
         composable<AddHabit>{
-            AddHabitScreen()
+            AddHabitScreen(){
+                navController.navigate(Habits)
+            }
         }
     }
 

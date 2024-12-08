@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 @Entity
 data class Notification(
     @PrimaryKey(autoGenerate = true)
-    val id:Int = 0,
-    val habitId:Int = 0,
+    val id:Long = 0,
+    var habitId:Long = 0,
     var hour:Int = 0,
     var minute:Int = 0,
 )

@@ -67,6 +67,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -74,7 +75,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel()) {
+fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel(), navigateToHabit: () -> Unit) {
     val nameHabit = rememberTextFieldState("")
     val descriptionHabit = rememberTextFieldState("")
     val timesHabit = rememberTextFieldState("")
@@ -266,16 +267,20 @@ fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel()) {
                     attentionText.value = R.string.general_dx_attention_fill_data
                     showGeneralDx.value = true
                 }else{
-                    val habit = Habit().let {
+                    val habit = Habit()
+
+                    habit.let{
                         it.name = nameHabit.text.toString()
                         it.description = descriptionHabit.text.toString()
-                        it.color = color.value.toString()
-                        it.icon = icon.value.toString()
+                        it.color = color.value.toArgb()
+                        it.icon = icon.value.name.split(".")[1]
                         it.times = timesHabit.text.toString().toInt()
                         it.unit = unitPicked.value.id
                     }
 
-
+                    addHabitViewModel.createHabit(habit, notifications.value){
+                        navigateToHabit()
+                    }
 
                 }
             }
@@ -306,6 +311,7 @@ fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel()) {
             onDismiss = { showTimePicker.value = false },
             onConfirm = { it ->
                 //Pasar al viewModel cuando se implemente room
+                Log.d("TIME", it.toString())
                 if (notificationSelected.value == null) {
 
                     if (notifications.value.find { item -> item == it } == null) {
