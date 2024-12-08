@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.components.timePicker
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.entities.Notification
 import aeb.proyecto.habittracker.data.model.time.TimeNotification
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButtonButton
@@ -35,10 +36,10 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimePickerHabit(
-    onConfirm: (TimeNotification) -> Unit = {},
+    onConfirm: (Notification) -> Unit = {},
     onDismiss: () -> Unit = {},
     color: MutableState<Color>,
-    notification: TimeNotification?
+    notification: Notification?
 ) {
     val currentTime = Calendar.getInstance()
 
@@ -85,7 +86,7 @@ fun TimePickerHabit(
                         color = color.value,
                         modifier = Modifier.weight(1f),
                         onClick = {
-                            onConfirm(TimeNotification(timePickerState.hour,timePickerState.minute))
+                            onConfirm(Notification(timePickerState.hour,timePickerState.minute))
                             onDismiss()
                         }
                     )

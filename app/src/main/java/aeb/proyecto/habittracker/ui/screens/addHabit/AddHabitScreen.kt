@@ -1,6 +1,8 @@
 package aeb.proyecto.habittracker.ui.screens.addHabit
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.entities.Habit
+import aeb.proyecto.habittracker.data.entities.Notification
 import aeb.proyecto.habittracker.data.model.time.TimeNotification
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPickUnit
@@ -68,10 +70,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun AddHabitScreen() {
+fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel()) {
     val nameHabit = rememberTextFieldState("")
     val descriptionHabit = rememberTextFieldState("")
     val timesHabit = rememberTextFieldState("")
@@ -86,11 +89,11 @@ fun AddHabitScreen() {
     val showTimePicker = remember { mutableStateOf(false) }
     val showGeneralDx = remember { mutableStateOf(false) }
 
-    val notifications: MutableState<List<TimeNotification>> = remember { mutableStateOf(listOf()) }
+    val notifications: MutableState<List<Notification>> = remember { mutableStateOf(listOf()) }
 
     val unitPicked = remember { mutableStateOf(Constans.Units.TIMES) }
 
-    val notificationSelected: MutableState<TimeNotification?> = remember { mutableStateOf(null) }
+    val notificationSelected: MutableState<Notification?> = remember { mutableStateOf(null) }
 
     val attentionText = remember { mutableStateOf(R.string.general_dx_attention_subtitile_time_picker) }
 
@@ -263,7 +266,17 @@ fun AddHabitScreen() {
                     attentionText.value = R.string.general_dx_attention_fill_data
                     showGeneralDx.value = true
                 }else{
-                    //Seguir Aqui
+                    val habit = Habit().let {
+                        it.name = nameHabit.text.toString()
+                        it.description = descriptionHabit.text.toString()
+                        it.color = color.value.toString()
+                        it.icon = icon.value.toString()
+                        it.times = timesHabit.text.toString().toInt()
+                        it.unit = unitPicked.value.id
+                    }
+
+
+
                 }
             }
 

@@ -4,13 +4,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Habit(
+data class Notification(
     @PrimaryKey(autoGenerate = true)
     val id:Int = 0,
-    var name:String = "",
-    var description:String? = "",
-    var color:String = "",
-    var icon:String = "",
-    var times:Int = 0,
-    var unit:Int = 0,
+    val habitId:Int = 0,
+    var hour:Int = 0,
+    var minute:Int = 0,
 )

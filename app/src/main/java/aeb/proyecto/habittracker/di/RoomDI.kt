@@ -25,5 +25,14 @@ object RoomDI {
     }
 
     @Provides
+    @Singleton
     fun provideHabitDao(databaseHabit: DatabaseHabit) = databaseHabit.habitDao()
+
+    @Provides
+    @Singleton
+    fun provideNotificationDao(databaseHabit: DatabaseHabit) = databaseHabit.notificationDao()
+
+    @Provides
+    @Singleton
+    fun provideDailyHabitDao(databaseHabit: DatabaseHabit) = databaseHabit.dailyHabitDao()
 }
