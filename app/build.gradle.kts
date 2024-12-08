@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinSerialization)
     alias(libs.plugins.hilt)
     kotlin("kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -84,4 +85,9 @@ dependencies {
 
     //Mas iconos
     implementation(libs.material.icons.extended)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    ksp (libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 }

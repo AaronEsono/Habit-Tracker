@@ -259,9 +259,11 @@ fun AddHabitScreen() {
                 .align(Alignment.BottomCenter) // Fija el botón en la parte inferior
                 .height(48.dp),
             onClick = {
-                if (nameHabit.text.isEmpty() && timesHabit.text.isEmpty()) {
+                if (nameHabit.text.isEmpty() || timesHabit.text.isEmpty()) {
                     attentionText.value = R.string.general_dx_attention_fill_data
                     showGeneralDx.value = true
+                }else{
+                    //Seguir Aqui
                 }
             }
 
