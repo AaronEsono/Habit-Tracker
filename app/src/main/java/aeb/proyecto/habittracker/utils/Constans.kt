@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Headset
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Shower
 import androidx.compose.material.icons.filled.SmartToy
+import java.time.DayOfWeek
 
 object Constans {
 
@@ -28,6 +29,10 @@ object Constans {
     val InPlural = listOf(
         "","0","1"
     )
+
+    val dayOfWeek = DayOfWeek.MONDAY.value
+
+    const val requiredDays = 364
 
     val ListColors = listOf(
         pickColor1,
