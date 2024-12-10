@@ -50,6 +50,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,20 +69,20 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
     val dimensIcon = remember { mutableStateOf(30.dp) }
     val dimensDay = remember { mutableStateOf(9.dp) }
 
-    val items = requiredDays + getPrintDays()
-    val listOfDays = LocalDate.now().minusDays(items.toLong()).datesUntil(LocalDate.now().plusDays(1)).toList()
+    val items = rememberUpdatedState(requiredDays + getPrintDays())
+    val listOfDays = rememberUpdatedState(LocalDate.now().minusDays(items.value.toLong()).datesUntil(LocalDate.now().plusDays(1)).toList())
 
     val colorIcons = remember { mutableStateOf(Color(habitWithDailyHabit.habit.color).copy(alpha = 0.1f)) }
 
     val lazyGridState = rememberLazyGridState(
-        initialFirstVisibleItemIndex = listOfDays.size
+        initialFirstVisibleItemIndex = listOfDays.value.size
     )
 
-    val icon = getIcon(habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit)
+    val icon = rememberUpdatedState(getIcon(habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit))
 
     val animatedProgress by
     animateFloatAsState(
-        targetValue = getProgress(habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit),
+        targetValue = rememberUpdatedState(getProgress(habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit)).value,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec, label = ""
     )
 
@@ -174,7 +175,7 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
                             )
 
                             Icon(
-                                imageVector = icon,
+                                imageVector = icon.value,
                                 contentDescription = "Add",
                                 tint = Color.White,
                                 modifier = Modifier.size(animatedIconSize)
@@ -199,12 +200,12 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
                     horizontalArrangement = Arrangement.spacedBy(spacing2), // Espaciado entre columnas
                     verticalArrangement = Arrangement.spacedBy(spacing2) // Espaciado entre filas
                 ) {
-                    items(listOfDays.size) { index ->
+                    items(listOfDays.value.size) { index ->
                         Card(
                             modifier = Modifier
                                 .size(dimensDay.value), // Tamaño fijo de cada celda
                             colors = CardDefaults.cardColors(
-                                containerColor = getColorDay(listOfDays[index], habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit)
+                                containerColor = getColorDay(listOfDays.value[index], habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit)
                             ),
                             shape = RoundedCornerShape(spacing3)
                         ) {}
