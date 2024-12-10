@@ -9,6 +9,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -25,34 +27,23 @@ class HabitsViewModel @Inject constructor(
     private val habitRepo: HabitRepo,
     private val dailyHabitRepo: DailyHabitRepo
 ): ViewModel(){
-    private val _habits: MutableStateFlow<MutableList<HabitWithDailyHabit>> = MutableStateFlow(
-        mutableListOf()
-    )
-    val habits:StateFlow<MutableList<HabitWithDailyHabit>> = _habits.asStateFlow()
 
-    init {
-        getHabits()
-    }
+    val habits: LiveData<List<HabitWithDailyHabit>> = habitRepo.getHabits()
 
-    @SuppressLint("NewApi")
-    private fun getHabits() = viewModelScope.launch(Dispatchers.IO){
-        val habitsRoom = habitRepo.getHabits()
+    fun plusOneHabit(id:Long) = viewModelScope.launch(Dispatchers.IO) {
+        var daily = habits.value?.find { it.habit.id == id }?.dailyHabits?.find { LocalDate.parse(it.date) == LocalDate.now() }
 
-        habitsRoom.forEach {
-            if(habitWithNotTodayDate(it.dailyHabits)){
-                val dailyHabit = DailyHabit(idHabit = it.habit.id, date = LocalDate.now().toString(), timesDone = 0)
-                dailyHabit.id = dailyHabitRepo.insertDailyHabit(dailyHabit)
-                it.dailyHabits.add(dailyHabit)
+        if(daily == null){
+            val dailyHabit = DailyHabit(idHabit = id, date = LocalDate.now().toString(), timesDone =  1)
+            dailyHabitRepo.insertDailyHabit(dailyHabit)
+        }else{
+            daily = daily.copy(timesDone = daily.timesDone + 1)
+
+            if(daily.timesDone > habits.value?.find { it.habit.id == id }!!.habit.times){
+                daily = daily.copy(timesDone = 0)
             }
+
+            dailyHabitRepo.updateDailyHabit(daily)
         }
-
-        Log.d("HABITDEPPRUEBA",habitsRoom.toString())
-        _habits.value = habitsRoom.toMutableList()
     }
-
-}
-
-@SuppressLint("NewApi")
-fun habitWithNotTodayDate(habit: List<DailyHabit>): Boolean{
-    return habit.find { LocalDate.parse(it.date) == LocalDate.now() } == null
 }

@@ -271,7 +271,7 @@ fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel(), navig
 
                     habit.let{
                         it.name = nameHabit.text.toString()
-                        it.description = descriptionHabit.text.toString()
+                        it.description = descriptionHabit.text.toString().ifEmpty { null }
                         it.color = color.value.toArgb()
                         it.icon = icon.value.name.split(".")[1]
                         it.times = timesHabit.text.toString().toInt()

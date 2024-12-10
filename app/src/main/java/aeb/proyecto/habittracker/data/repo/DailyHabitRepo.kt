@@ -13,4 +13,7 @@ class DailyHabitRepo @Inject constructor(
         return dailyHabitDao.insertDailyHabit(dailyHabit)
     }
 
+    fun updateDailyHabit(dailyHabit: DailyHabit) {
+        dailyHabitDao.updateDailyHabit(dailyHabit)
+    }
 }

@@ -8,6 +8,6 @@ data class DailyHabit(
     @PrimaryKey(autoGenerate = true)
     var id:Long = 0,
     val idHabit:Long = 0,
-    val timesDone:Int = 0,
+    var timesDone:Int = 0,
     val date:String = "",
 )
