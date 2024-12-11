@@ -32,7 +32,7 @@ object Constans {
 
     val dayOfWeek = DayOfWeek.MONDAY.value
 
-    const val requiredDays = 363
+    const val requiredDays = 364
 
     val ListColors = listOf(
         pickColor1,

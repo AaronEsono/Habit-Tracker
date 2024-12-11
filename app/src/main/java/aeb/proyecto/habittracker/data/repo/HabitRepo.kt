@@ -16,8 +16,12 @@ class HabitRepo @Inject constructor(
         habitDao.insertHabit(habit)
     }
 
-    fun getHabits(): LiveData<List<HabitWithDailyHabit>> {
+    fun getHabits(): Flow<List<HabitWithDailyHabit>> {
         return habitDao.getHabits()
+    }
+
+    suspend fun deleteHabit(habitId: Long) {
+        habitDao.deleteHabitById(habitId)
     }
 
 }

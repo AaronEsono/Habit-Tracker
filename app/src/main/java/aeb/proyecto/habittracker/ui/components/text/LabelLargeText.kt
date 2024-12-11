@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import kotlin.math.max
 
 @Composable
 fun LabelLargeText(
@@ -19,7 +20,9 @@ fun LabelLargeText(
         modifier = modifier,
         style = MaterialTheme.typography.labelLarge,
         textAlign = textAlign,
-        color = color
+        color = color,
+        maxLines = 1,
+        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
     )
 
 }

@@ -15,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -28,22 +29,32 @@ class HabitsViewModel @Inject constructor(
     private val dailyHabitRepo: DailyHabitRepo
 ): ViewModel(){
 
-    val habits: LiveData<List<HabitWithDailyHabit>> = habitRepo.getHabits()
+    val habits: StateFlow<List<HabitWithDailyHabit>> = habitRepo.getHabits().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000), // Mantener activo mientras hay suscriptores
+        initialValue = emptyList() // Valor inicial vacío
+    )
 
     fun plusOneHabit(id:Long) = viewModelScope.launch(Dispatchers.IO) {
-        var daily = habits.value?.find { it.habit.id == id }?.dailyHabits?.find { LocalDate.parse(it.date) == LocalDate.now() }
+        var daily = habits.value.find { it.habit.id == id }?.dailyHabits?.find { LocalDate.parse(it.date) == LocalDate.now() }
 
         if(daily == null){
             val dailyHabit = DailyHabit(idHabit = id, date = LocalDate.now().toString(), timesDone =  1)
             dailyHabitRepo.insertDailyHabit(dailyHabit)
         }else{
-            daily = daily.copy(timesDone = daily.timesDone + 1)
 
-            if(daily.timesDone > habits.value?.find { it.habit.id == id }!!.habit.times){
-                daily = daily.copy(timesDone = 0)
+            daily = if(daily.timesDone >= habits.value.find { it.habit.id == id }!!.habit.times){
+                daily.copy(timesDone = 0)
+            }else{
+                daily.copy(timesDone = daily.timesDone + 1)
             }
 
             dailyHabitRepo.updateDailyHabit(daily)
         }
     }
+
+    fun deleteHabit(id: Long) = viewModelScope.launch(Dispatchers.IO) {
+        habitRepo.deleteHabit(id)
+    }
+
 }

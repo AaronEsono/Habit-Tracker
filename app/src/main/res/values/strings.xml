@@ -80,4 +80,6 @@
     <string name="general_dx_attention_subtitile_time_picker">La hora ya está seleccionada</string>
     <string name="general_dx_attention_fill_data">Tienes que marcar un nombre y un número de repeticiones</string>
 
+    <string name="general_dx_subtitle_delete">¿Desea borrar el hábito?</string>
+
 </resources>

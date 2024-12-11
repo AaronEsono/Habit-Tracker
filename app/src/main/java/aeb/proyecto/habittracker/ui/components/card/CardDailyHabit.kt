@@ -1,11 +1,16 @@
 package aeb.proyecto.habittracker.ui.components.card
 
+import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
+import aeb.proyecto.habittracker.ui.theme.DarKThemeText
+import aeb.proyecto.habittracker.ui.theme.borderTextField
 import aeb.proyecto.habittracker.ui.theme.colorBackgroundCard
+import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Constans.dayOfWeek
 import aeb.proyecto.habittracker.utils.Constans.requiredDays
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
@@ -13,17 +18,17 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing3
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,8 +38,9 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -43,53 +49,76 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import java.time.DayOfWeek
 import java.time.LocalDate
 
 @SuppressLint("NewApi", "UnrememberedMutableInteractionSource")
 @Composable
-fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> Unit = {}) {
+fun CardDailyHabit(
+    habitWithDailyHabit: HabitWithDailyHabit,
+    onClick: (Long) -> Unit = {},
+    onClickCard: (Long) -> Unit = {},
+    isInDialog: Boolean = false,
+    onCancelClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {}
+) {
 
-    val dimens = remember { mutableStateOf(45.dp) }
-    val dimensIcon = remember { mutableStateOf(30.dp) }
-    val dimensDay = remember { mutableStateOf(9.dp) }
+    val dimens = remember { if (isInDialog) 55.dp else 45.dp }
+    val dimensIcon = remember { if (isInDialog) 35.dp else 30.dp }
+    val dimensDay = remember { if (isInDialog) 10.dp else 9.dp }
+
+    val habit = rememberUpdatedState(habitWithDailyHabit.habit).value
+    val dailyHabits = rememberUpdatedState(habitWithDailyHabit.dailyHabits).value
 
     val items = rememberUpdatedState(requiredDays + getPrintDays())
-    val listOfDays = rememberUpdatedState(LocalDate.now().minusDays(items.value.toLong()).datesUntil(LocalDate.now().plusDays(1)).toList())
 
-    val colorIcons = remember { mutableStateOf(Color(habitWithDailyHabit.habit.color).copy(alpha = 0.1f)) }
+    val colorIcons = remember { Color(habit.color).copy(alpha = 0.1f) }
 
     val lazyGridState = rememberLazyGridState(
-        initialFirstVisibleItemIndex = listOfDays.value.size
+        initialFirstVisibleItemIndex = items.value
     )
 
-    val icon = rememberUpdatedState(getIcon(habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit))
+    val icon =
+        rememberUpdatedState(getIcon(habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit))
 
-    val animatedProgress by
-    animateFloatAsState(
-        targetValue = rememberUpdatedState(getProgress(habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit)).value,
-        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec, label = ""
+    val unit =
+        remember { mutableStateOf(Constans.Units.entries.find { it.id == habit.unit }?.pluralTitle) }
+
+    val times = rememberUpdatedState(
+        dailyHabits.find { LocalDate.parse(it.date) == LocalDate.now() }?.timesDone
+            ?: 0
+    )
+
+    val targetProgress = getProgress(
+        dailyHabits,
+        habit
     )
 
     val animatedIconSize by animateDpAsState(
-        targetValue = if (animatedProgress == 1f) dimensIcon.value - 5.dp else dimensIcon.value - 10.dp,  // Cambiar tamaño cuando el progreso es 100%
+        targetValue = if (targetProgress == 1f) dimensIcon - 5.dp else dimensIcon - 10.dp,  // Cambiar tamaño cuando el progreso es 100%
         animationSpec = tween(durationMillis = 500), label = ""  // Duración de la animación
     )
+
+    val precomputedItems = remember(dailyHabits, habit) {
+        List(items.value) { index ->
+            val dateDay = LocalDate.now().minusDays((items.value - index - 1).toLong())
+            getColorDay(dateDay, dailyHabits, habit)
+        }
+    }
 
     Card(
         colors = CardDefaults.cardColors(
@@ -99,6 +128,13 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(top = spacing8)
+            .border(0.3.dp, borderTextField, RoundedCornerShape(spacing8))
+            .clickable(
+                indication = null,
+                interactionSource = MutableInteractionSource()
+            ) {
+                onClickCard(habit.id)
+            }
     ) {
         Column(modifier = Modifier.wrapContentSize()) {
             Row(
@@ -109,10 +145,10 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
             ) {
                 Card(
                     colors = CardDefaults.cardColors(
-                        containerColor = colorIcons.value,
+                        containerColor = colorIcons,
                     ),
                     modifier = Modifier
-                        .size(dimens.value)
+                        .size(dimens)
                 ) {
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -120,10 +156,10 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
                         verticalArrangement = Arrangement.Center
                     ) {
                         Icon(
-                            imageVector = iconByName(habitWithDailyHabit.habit.icon),
+                            imageVector = iconByName(habit.icon),
                             contentDescription = "Add",
                             tint = Color.White,
-                            modifier = Modifier.size(dimensIcon.value)
+                            modifier = Modifier.size(dimensIcon)
                         )
                     }
                 }
@@ -131,23 +167,46 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .height(dimens.value)
-                        .padding(start = spacing8),
+                        .height(dimens)
+                        .padding(horizontal = spacing8),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    LabelLargeText(habitWithDailyHabit.habit.name)
+                    LabelLargeText(habit.name)
 
-                    habitWithDailyHabit.habit.description?.let {
-                        LabelSmallText(habitWithDailyHabit.habit.description!!)
+                    habit.description?.let {
+                        LabelSmallText(
+                            habit.description!!,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
                     }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .height(dimens)
+                        .padding(horizontal = spacing8), verticalArrangement = Arrangement.Center
+                ) {
+                    LabelSmallText(
+                        text = "${times.value}/${habit.times}",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color(habit.color)
+                    )
+                    LabelSmallText(
+                        text = stringResource(unit.value ?: R.string.add_habit_unit_pl_1),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color(habit.color)
+                    )
                 }
 
                 Card(
                     colors = CardDefaults.cardColors(
-                        containerColor = colorIcons.value,
+                        containerColor = colorIcons,
                     ),
                     modifier = Modifier
-                        .size(dimens.value)
+                        .size(dimens)
                 ) {
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -157,20 +216,20 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
                         Box(
                             contentAlignment = Alignment.Center, // Asegura que el icono esté centrado
                             modifier = Modifier
-                                .size(dimens.value)
+                                .size(dimens)
                                 .padding(spacing4)
                                 .clickable(
                                     indication = null,
                                     interactionSource = MutableInteractionSource()
-                                ) { onClick(habitWithDailyHabit.habit.id) }
+                                ) { onClick(habit.id) }
                         ) {
                             // Progreso circular
                             CircularProgressIndicator(
-                                progress = { animatedProgress },
+                                progress = { targetProgress },
                                 modifier = Modifier.fillMaxSize(),
-                                color = (Color(habitWithDailyHabit.habit.color)),
+                                color = (Color(habit.color)),
                                 strokeWidth = spacing3,
-                                trackColor = (Color(habitWithDailyHabit.habit.color).copy(alpha = 0.3f)),
+                                trackColor = (Color(habit.color).copy(alpha = 0.3f)),
                                 gapSize = spacing2
                             )
 
@@ -191,7 +250,7 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(
-                            (dimensDay.value * 7) + // Altura de las celdas
+                            (dimensDay * 7) + // Altura de las celdas
                                     (spacing2 * 6) + // Espaciado entre filas (7 filas - 1 = 6 espaciados)
                                     (spacing8 * 2)
                         )
@@ -200,15 +259,47 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
                     horizontalArrangement = Arrangement.spacedBy(spacing2), // Espaciado entre columnas
                     verticalArrangement = Arrangement.spacedBy(spacing2) // Espaciado entre filas
                 ) {
-                    items(listOfDays.value.size) { index ->
-                        Card(
+                    itemsIndexed(items = precomputedItems,
+                        key = { index, _ -> index }) { index, color ->
+                        Box(
                             modifier = Modifier
-                                .size(dimensDay.value), // Tamaño fijo de cada celda
-                            colors = CardDefaults.cardColors(
-                                containerColor = getColorDay(listOfDays.value[index], habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit)
-                            ),
-                            shape = RoundedCornerShape(spacing3)
+                                .size(dimensDay)
+                                .background(color, RoundedCornerShape(spacing3))
                         ) {}
+                    }
+                }
+
+                if (isInDialog) {
+                    val size = remember { mutableStateOf(24.dp) }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = spacing8, bottom = spacing8, end = spacing8)
+                            .wrapContentHeight()
+                    ) {
+
+                        iconDialog(size.value, R.drawable.ic_calendar_2) {
+
+                        }
+
+                        Spacer(modifier = Modifier.padding(end = spacing8))
+
+                        iconDialog(size.value, R.drawable.ic_edit) {
+
+                        }
+
+                        Spacer(modifier = Modifier.padding(end = spacing8))
+
+                        iconDialog(size.value, R.drawable.ic_delete) {
+                            onDeleteClick()
+                        }
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        iconDialog(size.value, R.drawable.ic_cancel_2) {
+                            onCancelClick()
+                        }
                     }
                 }
             }
@@ -216,12 +307,34 @@ fun CardDailyHabit(habitWithDailyHabit: HabitWithDailyHabit, onClick: (Long) -> 
     }
 }
 
-fun getIcon(dates: List<DailyHabit>,habit: Habit):ImageVector{
+@SuppressLint("NewApi", "UnrememberedMutableInteractionSource")
+@Composable
+fun iconDialog(size: Dp, icon: Int, oncClick: () -> Unit = {}) {
+    Box(
+        modifier = Modifier
+            .wrapContentSize()// Tamaño total del fondo redondeado
+            .background(color = secondaryColorApp, shape = CircleShape) // Fondo redondo
+            .padding(8.dp) // Espaciado interno opcional
+            .clickable(
+                indication = null,
+                interactionSource = MutableInteractionSource()
+            ) { oncClick() }
+    ) {
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = null,
+            tint = DarKThemeText,
+            modifier = Modifier.size(size) // Asegura que el ícono se ajuste al fondo
+        )
+    }
+}
+
+fun getIcon(dates: List<DailyHabit>, habit: Habit): ImageVector {
     val daily = dates.find { (LocalDate.parse(it.date)) == LocalDate.now() }
 
     return if (daily != null && daily.timesDone == habit.times) {
-         Icons.Filled.Check
-    }else
+        Icons.Filled.Check
+    } else
         Icons.Filled.Add
 
 }
