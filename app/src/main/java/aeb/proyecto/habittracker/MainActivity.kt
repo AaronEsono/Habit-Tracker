@@ -211,11 +211,11 @@ fun BottomNavigationHabit(navController: NavHostController) {
 fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostController): TopbarSetUp {
     var title = TopbarSetUp(R.string.topbar_habit, listOf())
 
-    when (navDestination?.route) {
+    when (navDestination?.route?.substringBefore("/")) {
         Habits::class.qualifiedName -> {
             title = TopbarSetUp(R.string.topbar_habit, listOf(
                 ActionIcon(R.drawable.ic_add) {
-                    navController.navigate(AddHabit)
+                    navController.navigate(AddHabit(edit = false, id = null))
                 }
             ))
         }
@@ -233,7 +233,10 @@ fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostContro
         }
 
         AddHabit::class.qualifiedName -> {
-            title = TopbarSetUp(R.string.topbar_add_habit, listOf())
+            val edit = navController.currentBackStackEntry?.arguments?.getBoolean("edit") ?: true
+            val titleText = if (edit) R.string.tobbar_add_habit_true else R.string.topbar_add_habit
+
+            title = TopbarSetUp(titleText, listOf())
         }
     }
 

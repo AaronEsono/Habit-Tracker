@@ -15,7 +15,8 @@ fun DialogHabit(
     habitWithDailyHabit: HabitWithDailyHabit,
     onDismissRequest: () -> Unit,
     onUnitClick: (Long) -> Unit = {},
-    onDeleteClick: () -> Unit = {}
+    onDeleteClick: () -> Unit = {},
+    onEditClick: () -> Unit = {}
 ) {
     Dialog(onDismissRequest = { onDismissRequest() }, content = {
         CardDailyHabit(
@@ -23,6 +24,7 @@ fun DialogHabit(
             isInDialog = true,
             onCancelClick = { onDismissRequest() },
             onClick = { onUnitClick(it) },
-            onDeleteClick = {onDeleteClick()})
+            onDeleteClick = {onDeleteClick()},
+            onEditClick = { onEditClick() })
     })
 }

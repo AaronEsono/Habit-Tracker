@@ -18,7 +18,8 @@ object Achievements
 object Settings
 
 @Serializable
-object AddHabit
+data class AddHabit(val edit:Boolean, val id:Long?)
+
 
 @Serializable
 sealed class BottomBarScreens<T>(@StringRes val label:Int, @DrawableRes val icon:Int, val route:T){

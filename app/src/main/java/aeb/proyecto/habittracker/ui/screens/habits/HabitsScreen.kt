@@ -3,6 +3,9 @@ package aeb.proyecto.habittracker.ui.screens.habits
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
+import aeb.proyecto.habittracker.ui.components.calendar.CalendarContent
+import aeb.proyecto.habittracker.ui.components.calendar.CalendarHeader
+import aeb.proyecto.habittracker.ui.components.calendar.CalendarViewModel
 import aeb.proyecto.habittracker.ui.components.card.CardDailyHabit
 import aeb.proyecto.habittracker.ui.components.dialog.DialogHabit
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
@@ -28,11 +31,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import java.time.YearMonth
 
 @Composable
-fun HabitsScreen(habitsViewModel: HabitsViewModel = hiltViewModel()) {
+fun HabitsScreen(
+    habitsViewModel: HabitsViewModel = hiltViewModel(),
+    calendarViewModel: CalendarViewModel = hiltViewModel(),
+    onEditClick: (Long) -> Unit = {}
+) {
 
     val habits = habitsViewModel.habits.collectAsState().value
+    val stateCalendar = calendarViewModel.uiState.collectAsState().value
     // TODO - Comprobar cuando cambie el dia, añadir un nuevo dia
 
     val showDialog = remember { mutableStateOf(false) }
@@ -49,7 +58,7 @@ fun HabitsScreen(habitsViewModel: HabitsViewModel = hiltViewModel()) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LabelMediumText(
-                text = stringResource(R.string.habits_screen_no_habit)
+                 text = stringResource(R.string.habits_screen_no_habit)
             )
         }
     } else {
@@ -81,12 +90,20 @@ fun HabitsScreen(habitsViewModel: HabitsViewModel = hiltViewModel()) {
                 onUnitClick = {
                     habitsViewModel.plusOneHabit(it)
                 },
-                onDeleteClick = { showGeneralDx.value = true })
+                onDeleteClick = { showGeneralDx.value = true },
+                onEditClick = {
+                    showDialog.value = false
+                    onEditClick(habitSelected.longValue)
+                })
         }
 
         if (showGeneralDx.value) {
             val color = remember {
-                mutableStateOf(Color(habits.find { it.habit.id == habitSelected.longValue }?.habit?.color ?: 0))
+                mutableStateOf(
+                    Color(
+                        habits.find { it.habit.id == habitSelected.longValue }?.habit?.color ?: 0
+                    )
+                )
             }
 
             BottomSheetGeneral(
@@ -99,7 +116,8 @@ fun HabitsScreen(habitsViewModel: HabitsViewModel = hiltViewModel()) {
                 onAccept = {
                     habitsViewModel.deleteHabit(habitSelected.longValue)
                     showGeneralDx.value = false
-                    showDialog.value = false }
+                    showDialog.value = false
+                }
             )
         }
 

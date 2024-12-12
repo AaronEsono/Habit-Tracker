@@ -24,7 +24,9 @@ fun NavigationWrapper(navController: NavHostController,mainViewModel: MainViewMo
 
     NavHost(navController = navController, startDestination = Habits){
         composable<Habits>{
-            HabitsScreen()
+            HabitsScreen(){ id ->
+                navController.navigate(AddHabit(true,id))
+            }
         }
         composable<Statistics>{
             StatisticsScreen()
@@ -35,10 +37,14 @@ fun NavigationWrapper(navController: NavHostController,mainViewModel: MainViewMo
         composable<Settings>{
             SettingsScreen()
         }
-        composable<AddHabit>{
-            AddHabitScreen(){
-                navController.navigate(Habits)
-            }
+        composable<AddHabit>{backStackEntry ->
+            val edit = backStackEntry.arguments?.getBoolean("edit") ?: false
+            val id = backStackEntry.arguments?.getLong("id")
+
+            AddHabitScreen(
+                edit = edit,
+                id = id,
+                navigateToHabit = { navController.navigate(Habits) })
         }
     }
 

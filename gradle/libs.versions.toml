@@ -22,6 +22,7 @@ room = "2.0.21-1.0.27"
 hilt-version = "2.52"
 roomRuntime = "2.6.1"
 runtimeLivedata = "1.7.5"
+playServicesTfliteSupport = "16.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -56,6 +57,7 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-version" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+play-services-tflite-support = { group = "com.google.android.gms", name = "play-services-tflite-support", version.ref = "playServicesTfliteSupport" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

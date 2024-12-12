@@ -20,6 +20,7 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -56,6 +57,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -74,12 +76,13 @@ fun CardDailyHabit(
     onClickCard: (Long) -> Unit = {},
     isInDialog: Boolean = false,
     onCancelClick: () -> Unit = {},
-    onDeleteClick: () -> Unit = {}
+    onDeleteClick: () -> Unit = {},
+    onEditClick: () -> Unit = {}
 ) {
 
     val dimens = remember { if (isInDialog) 55.dp else 45.dp }
     val dimensIcon = remember { if (isInDialog) 35.dp else 30.dp }
-    val dimensDay = remember { if (isInDialog) 10.dp else 9.dp }
+    val dimensDay = remember { 12.dp }
 
     val habit = rememberUpdatedState(habitWithDailyHabit.habit).value
     val dailyHabits = rememberUpdatedState(habitWithDailyHabit.dailyHabits).value
@@ -113,10 +116,12 @@ fun CardDailyHabit(
         animationSpec = tween(durationMillis = 500), label = ""  // Duración de la animación
     )
 
-    val precomputedItems = remember(dailyHabits, habit) {
+    val precomputedItems = remember(dailyHabits, habit, items.value) {
+        val dateMap = dailyHabits.associateBy { LocalDate.parse(it.date) }
+
         List(items.value) { index ->
             val dateDay = LocalDate.now().minusDays((items.value - index - 1).toLong())
-            getColorDay(dateDay, dailyHabits, habit)
+            getColorDay(dateDay, dateMap, habit)
         }
     }
 
@@ -251,21 +256,22 @@ fun CardDailyHabit(
                         .fillMaxWidth()
                         .height(
                             (dimensDay * 7) + // Altura de las celdas
-                                    (spacing2 * 6) + // Espaciado entre filas (7 filas - 1 = 6 espaciados)
+                                    (spacing4 * 6) + // Espaciado entre filas (7 filas - 1 = 6 espaciados)
                                     (spacing8 * 2)
                         )
                         .padding(spacing8),
                     state = lazyGridState,
-                    horizontalArrangement = Arrangement.spacedBy(spacing2), // Espaciado entre columnas
-                    verticalArrangement = Arrangement.spacedBy(spacing2) // Espaciado entre filas
+                    horizontalArrangement = Arrangement.spacedBy(spacing3), // Espaciado entre columnas
+                    verticalArrangement = Arrangement.spacedBy(spacing4) // Espaciado entre filas
                 ) {
-                    itemsIndexed(items = precomputedItems,
-                        key = { index, _ -> index }) { index, color ->
-                        Box(
-                            modifier = Modifier
-                                .size(dimensDay)
-                                .background(color, RoundedCornerShape(spacing3))
-                        ) {}
+                    itemsIndexed(items = precomputedItems, key = { int, _ -> int }) { _, color ->
+                        Canvas(modifier = Modifier.size(dimensDay)) {
+                            drawRoundRect(
+                                color = color,
+                                size = size,
+                                cornerRadius = CornerRadius(spacing3.toPx(), spacing3.toPx())
+                            )
+                        }
                     }
                 }
 
@@ -286,7 +292,7 @@ fun CardDailyHabit(
                         Spacer(modifier = Modifier.padding(end = spacing8))
 
                         iconDialog(size.value, R.drawable.ic_edit) {
-
+                            onEditClick()
                         }
 
                         Spacer(modifier = Modifier.padding(end = spacing8))
@@ -349,15 +355,14 @@ fun getProgress(dates: List<DailyHabit>, habit: Habit): Float {
     }
 }
 
-fun getColorDay(dateDay: LocalDate, dates: List<DailyHabit>, habit: Habit): Color {
-    val dailyHabit = dates.find { (LocalDate.parse(it.date)) == dateDay }
+fun getColorDay(dateDay: LocalDate, dateMap: Map<LocalDate, DailyHabit>, habit: Habit): Color {
+    val dailyHabit = dateMap[dateDay] // O(1) en lugar de O(n) con 'find'
 
     return if (dailyHabit != null) {
-        Color(habit.color).copy(alpha = 0.1f + (1f - 0.1f) * ((dailyHabit.timesDone.toFloat() / habit.times.toFloat())))
+        Color(habit.color).copy(alpha = 0.1f + (1f - 0.1f) * (dailyHabit.timesDone.toFloat() / habit.times.toFloat()))
     } else {
         Color(habit.color).copy(alpha = 0.1f)
     }
-
 }
 
 fun getPrintDays(): Int {

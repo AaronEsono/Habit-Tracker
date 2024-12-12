@@ -9,9 +9,11 @@ import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPickUnit
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.card.CardInfoAddHabit
 import aeb.proyecto.habittracker.ui.components.card.CardPickColorAddHabit
+import aeb.proyecto.habittracker.ui.components.card.iconByName
 import aeb.proyecto.habittracker.ui.components.items.ColorItem
 import aeb.proyecto.habittracker.ui.components.items.IconItem
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
+import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
 import aeb.proyecto.habittracker.ui.components.timePicker.TimePickerHabit
 import aeb.proyecto.habittracker.utils.Constans
@@ -46,6 +48,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.compose.foundation.text.input.setTextAndSelectAll
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -59,6 +63,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -75,8 +80,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel(), navigateToHabit: () -> Unit) {
-    val nameHabit = rememberTextFieldState("")
+fun AddHabitScreen(
+    addHabitViewModel: AddHabitViewModel = hiltViewModel(),
+    navigateToHabit: () -> Unit,
+    edit: Boolean = false,
+    id: Long? = null
+) {
+    val habit = addHabitViewModel.habit.collectAsState().value
+
+    val nameHabit = rememberTextFieldState()
     val descriptionHabit = rememberTextFieldState("")
     val timesHabit = rememberTextFieldState("")
 
@@ -108,6 +120,31 @@ fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel(), navig
         }
     }
 
+    LaunchedEffect (Unit){
+        if(edit && id != null){
+            addHabitViewModel.getHabit(id)
+        }
+    }
+
+    LaunchedEffect(habit){
+        if(habit.habit.name.isNotEmpty()){
+            nameHabit.edit {
+                replace(0,length,habit.habit.name)
+            }
+            descriptionHabit.edit {
+                replace(0,length,habit.habit.description ?: "")
+            }
+            timesHabit.edit {
+                replace(0,length,habit.habit.times.toString())
+            }
+            color.value = Color(habit.habit.color)
+            icon.value = iconByName(habit.habit.icon)
+            unitPicked.value = Constans.Units.entries.find { it.id == habit.habit.unit }!!
+
+            notifications.value = habit.notifications.toList()
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -115,7 +152,6 @@ fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel(), navig
                 .padding(top = spacing16, start = spacing16, end = spacing16, bottom = spacing72)
                 .verticalScroll(rememberScrollState())
         ) {
-
             CustomOutlinedTextField(
                 rememberTextFieldState = nameHabit,
                 label = R.string.add_habit_screen_name,
@@ -254,7 +290,7 @@ fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel(), navig
         }
 
         CustomFilledButton(
-            title = R.string.buttons_save,
+            title = if(edit) R.string.buttons_edit else R.string.buttons_save,
             icon = R.drawable.ic_check,
             color = color.value,
             modifier = Modifier
@@ -266,10 +302,10 @@ fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel(), navig
                 if (nameHabit.text.isEmpty() || timesHabit.text.isEmpty()) {
                     attentionText.value = R.string.general_dx_attention_fill_data
                     showGeneralDx.value = true
-                }else{
+                } else {
                     val habit = Habit()
 
-                    habit.let{
+                    habit.let {
                         it.name = nameHabit.text.toString()
                         it.description = descriptionHabit.text.toString().ifEmpty { null }
                         it.color = color.value.toArgb()
@@ -278,7 +314,7 @@ fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel(), navig
                         it.unit = unitPicked.value.id
                     }
 
-                    addHabitViewModel.createHabit(habit, notifications.value){
+                    addHabitViewModel.procesateHabit(habit, notifications.value,edit = edit) {
                         navigateToHabit()
                     }
 
@@ -314,7 +350,7 @@ fun AddHabitScreen(addHabitViewModel: AddHabitViewModel = hiltViewModel(), navig
                 Log.d("TIME", it.toString())
                 if (notificationSelected.value == null) {
 
-                    if (notifications.value.find { item -> item == it } == null) {
+                    if (notifications.value.find { item -> item.hour == it.hour && item.minute == it.minute } == null) {
                         notifications.value = notifications.value.plus(it)
                     } else {
                         attentionText.value = R.string.general_dx_attention_subtitile_time_picker
