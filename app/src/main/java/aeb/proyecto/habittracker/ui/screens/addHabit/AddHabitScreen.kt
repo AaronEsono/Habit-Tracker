@@ -328,8 +328,7 @@ fun AddHabitScreen(
 
     if (showGeneralDx.value) {
         BottomSheetGeneral(
-            showGeneralDx,
-            color = color,
+            color = color.value,
             titleAccept = R.string.buttons_accept,
             iconAccept = R.drawable.ic_check,
             title = R.string.general_dx_attention,

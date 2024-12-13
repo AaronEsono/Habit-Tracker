@@ -45,20 +45,9 @@ fun HabitsScreen(
 ) {
 
     val habits = habitsViewModel.habits.collectAsState().value
-    // TODO - Comprobar cuando cambie el dia, añadir un nuevo dia
+    val uiState = habitsViewModel.uiState.collectAsState().value
 
-    val showDialog = remember { mutableStateOf(false) }
-    val habitSelected = remember { mutableLongStateOf(0) }
-
-    val showGeneralDx = remember { mutableStateOf(false) }
-    val showCalendar = remember { mutableStateOf(false) }
-    val showPickUnit = remember { mutableStateOf(false) }
-
-    val color = remember {
-        mutableStateOf(
-            Color.Red
-        )
-    }
+    val shouldBlur = remember(uiState.showDialog) { uiState.showDialog }
 
     if (habits.isEmpty()) {
         Column(
@@ -76,78 +65,23 @@ fun HabitsScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .blur(if (showDialog.value) 10.dp else 0.dp)
+                .blur(if (shouldBlur) 10.dp else 0.dp)
                 .padding(horizontal = spacing8),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(habits.size, key = { habits[it].habit.id }) { index ->
-                key(habits[index].habit.id) {
-                    CardDailyHabit(
-                        habitWithDailyHabit = habits[index],
-                        onClick = { id ->
-                            val unit = Constans.Units.entries.find { item ->
-                                item.id == (habits.find { it.habit.id == id }?.habit?.unit ?: 1)
-                            } ?: Constans.Units.TIMES
-
-                            if (unit.action == PICK) {
-                                habitsViewModel.plusOneHabit(id)
-                            } else {
-                                showPickUnit.value = true
-                            }
-                        },
-                        onClickCard = { habit ->
-
-                            habitSelected.longValue = habit
-                            color.value = Color(habits.find { it.habit.id == habit }?.habit?.color ?: 1)
-                            showDialog.value = true
-                        }
-                    )
-                }
+            items(habits.size, key = { habits[it].habit.id }) { habit ->
+                CardDailyHabit(
+                    habitWithDailyHabit = habits[habit],
+                    onClick = { id -> habitsViewModel.choseStep(id) },
+                    onClickCard = { id -> habitsViewModel.showDialog(id) }
+                )
             }
         }
 
-        if (showDialog.value) {
-            DialogHabit(
-                habits.find { it.habit.id == habitSelected.longValue } ?: HabitWithDailyHabit(),
-                onDismissRequest = { showDialog.value = false },
-                onUnitClick = {
-                    habitsViewModel.plusOneHabit(it)
-                },
-                onDeleteClick = { showGeneralDx.value = true },
-                onEditClick = {
-                    showDialog.value = false
-                    onEditClick(habitSelected.longValue)
-                },
-                onCalendarClick = { showCalendar.value = true })
-        }
-
-        if (showGeneralDx.value) {
-
-            BottomSheetGeneral(
-                showBottomSheet = showGeneralDx,
-                color = color,
-                title = R.string.general_dx_attention,
-                subtitle = R.string.general_dx_subtitle_delete,
-                showCancel = true,
-                onCancel = { showGeneralDx.value = false },
-                onAccept = {
-                    habitsViewModel.deleteHabit(habitSelected.longValue)
-                    showGeneralDx.value = false
-                    showDialog.value = false
-                }
-            )
-        }
-
-        if (showCalendar.value) {
-            BottomSheetCalendar(
-                showBottomSheet = showCalendar,
-                color = color,
-                habit = habits.find { it.habit.id == habitSelected.longValue } ?: HabitWithDailyHabit()){ date, year ->
-                    val date = LocalDate.of(year.year, year.month, date.dayOfMonth.toInt())
-
-                    habitsViewModel.plusOneHabit(habitSelected.longValue, date)
-            }
-        }
-
+        HabitScreenStates(
+            uiState = uiState,
+            habitsViewModel = habitsViewModel,
+            onEditClick = onEditClick
+        )
     }
 }

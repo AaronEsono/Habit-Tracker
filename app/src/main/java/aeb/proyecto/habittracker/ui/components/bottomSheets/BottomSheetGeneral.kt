@@ -32,11 +32,11 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetGeneral(
-    showBottomSheet: MutableState<Boolean>,
-    color: MutableState<Color>,
+    color: Color,
     onCancel: () -> Unit = {},
     onAccept: () -> Unit = {},
     showCancel: Boolean = false,
+    onDismiss: () -> Unit = {},
     @StringRes titleAccept: Int = R.string.buttons_accept,
     @DrawableRes iconAccept: Int = R.drawable.ic_check,
     @StringRes titleCancel: Int = R.string.buttons_cancel,
@@ -50,7 +50,7 @@ fun BottomSheetGeneral(
 
     ModalBottomSheet(
         onDismissRequest = {
-            showBottomSheet.value = false
+            onDismiss()
         },
         sheetState = sheetState,
         containerColor = secondaryColorApp
@@ -90,7 +90,7 @@ fun BottomSheetGeneral(
 
                             scope.launch { sheetState.hide() }.invokeOnCompletion {
                                 if (!sheetState.isVisible) {
-                                    showBottomSheet.value = false
+                                    onDismiss()
                                 }
                             }
                         }
@@ -102,14 +102,14 @@ fun BottomSheetGeneral(
                 CustomFilledButton(
                     title = titleAccept,
                     icon = iconAccept,
-                    color = color.value,
+                    color = color,
                     modifier = Modifier.weight(1f),
                     onClick = {
                         onAccept()
 
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
-                                showBottomSheet.value = false
+                                onDismiss()
                             }
                         }
                     }
