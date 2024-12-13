@@ -8,24 +8,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 
 @Composable
-fun BodyMediumText(
+fun CalendarText(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Center,
     color: Color = Color.White,
-    fontStyle: FontStyle? = null,
-    fontWeight: FontWeight? = null
 ){
     Text(
         text = text,
         modifier = modifier,
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.bodySmall,
         textAlign = textAlign,
         color = color,
-        fontStyle = fontStyle,
-        fontWeight = fontWeight
+        fontSize = 10.sp
     )
-
 }

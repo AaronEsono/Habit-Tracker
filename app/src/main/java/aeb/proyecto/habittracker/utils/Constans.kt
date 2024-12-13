@@ -57,8 +57,8 @@ object Constans {
         IconsPr.SmartToy
     )
 
-    private const val MARCAR = 1
-    private const val SELECCIONAR = 2
+    const val PICK = 1
+    const val CHOOSE = 2
 
     enum class Units(
         val id: Int,
@@ -73,7 +73,7 @@ object Constans {
             1,
             R.drawable.ic_time,
             R.string.add_habit_unit_1,
-            MARCAR,
+            PICK,
             R.string.add_habit_question_1,
             R.string.add_habit_unit_pl_1,
             false
@@ -82,7 +82,7 @@ object Constans {
             2,
             R.drawable.ic_step,
             R.string.add_habit_unit_2,
-            MARCAR,
+            CHOOSE,
             R.string.add_habit_question_2,
             R.string.add_habit_unit_pl_2,
             false
@@ -91,7 +91,7 @@ object Constans {
             3,
             R.drawable.ic_book,
             R.string.add_habit_unit_3,
-            MARCAR,
+            CHOOSE,
             R.string.add_habit_question_3,
             R.string.add_habit_unit_pl_3,
             false
@@ -100,7 +100,7 @@ object Constans {
             4,
             R.drawable.ic_km,
             R.string.add_habit_unit_4,
-            MARCAR,
+            CHOOSE,
             R.string.add_habit_question_4,
             R.string.add_habit_unit_pl_4,
             false
@@ -109,7 +109,7 @@ object Constans {
             5,
             R.drawable.ic_minutes,
             R.string.add_habit_unit_5,
-            MARCAR,
+            CHOOSE,
             R.string.add_habit_question_5,
             R.string.add_habit_unit_pl_5,
             true
@@ -118,7 +118,7 @@ object Constans {
             6,
             R.drawable.ic_calorie,
             R.string.add_habit_unit_6,
-            MARCAR,
+            CHOOSE,
             R.string.add_habit_question_6,
             R.string.add_habit_unit_pl_6,
             true
@@ -127,7 +127,7 @@ object Constans {
             7,
             R.drawable.ic_glass,
             R.string.add_habit_unit_7,
-            MARCAR,
+            PICK,
             R.string.add_habit_question_7,
             R.string.add_habit_unit_pl_7,
             false
@@ -136,7 +136,7 @@ object Constans {
             8,
             R.drawable.ic_exercise,
             R.string.add_habit_unit_8,
-            SELECCIONAR,
+            CHOOSE,
             R.string.add_habit_question_8,
             R.string.add_habit_unit_pl_8,
             false

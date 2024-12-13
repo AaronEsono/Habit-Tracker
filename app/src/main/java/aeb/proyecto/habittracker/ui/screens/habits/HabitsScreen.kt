@@ -2,6 +2,7 @@ package aeb.proyecto.habittracker.ui.screens.habits
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
+import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetCalendar
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarContent
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarHeader
@@ -9,6 +10,8 @@ import aeb.proyecto.habittracker.ui.components.calendar.CalendarViewModel
 import aeb.proyecto.habittracker.ui.components.card.CardDailyHabit
 import aeb.proyecto.habittracker.ui.components.dialog.DialogHabit
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
+import aeb.proyecto.habittracker.utils.Constans
+import aeb.proyecto.habittracker.utils.Constans.PICK
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,23 +34,31 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
 fun HabitsScreen(
     habitsViewModel: HabitsViewModel = hiltViewModel(),
-    calendarViewModel: CalendarViewModel = hiltViewModel(),
     onEditClick: (Long) -> Unit = {}
 ) {
 
     val habits = habitsViewModel.habits.collectAsState().value
-    val stateCalendar = calendarViewModel.uiState.collectAsState().value
     // TODO - Comprobar cuando cambie el dia, añadir un nuevo dia
 
     val showDialog = remember { mutableStateOf(false) }
     val habitSelected = remember { mutableLongStateOf(0) }
 
     val showGeneralDx = remember { mutableStateOf(false) }
+    val showCalendar = remember { mutableStateOf(false) }
+    val showPickUnit = remember { mutableStateOf(false) }
+
+    val color = remember {
+        mutableStateOf(
+            Color.Red
+        )
+    }
 
     if (habits.isEmpty()) {
         Column(
@@ -58,7 +69,7 @@ fun HabitsScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LabelMediumText(
-                 text = stringResource(R.string.habits_screen_no_habit)
+                text = stringResource(R.string.habits_screen_no_habit)
             )
         }
     } else {
@@ -73,9 +84,21 @@ fun HabitsScreen(
                 key(habits[index].habit.id) {
                     CardDailyHabit(
                         habitWithDailyHabit = habits[index],
-                        onClick = { id -> habitsViewModel.plusOneHabit(id) },
+                        onClick = { id ->
+                            val unit = Constans.Units.entries.find { item ->
+                                item.id == (habits.find { it.habit.id == id }?.habit?.unit ?: 1)
+                            } ?: Constans.Units.TIMES
+
+                            if (unit.action == PICK) {
+                                habitsViewModel.plusOneHabit(id)
+                            } else {
+                                showPickUnit.value = true
+                            }
+                        },
                         onClickCard = { habit ->
+
                             habitSelected.longValue = habit
+                            color.value = Color(habits.find { it.habit.id == habit }?.habit?.color ?: 1)
                             showDialog.value = true
                         }
                     )
@@ -94,17 +117,11 @@ fun HabitsScreen(
                 onEditClick = {
                     showDialog.value = false
                     onEditClick(habitSelected.longValue)
-                })
+                },
+                onCalendarClick = { showCalendar.value = true })
         }
 
         if (showGeneralDx.value) {
-            val color = remember {
-                mutableStateOf(
-                    Color(
-                        habits.find { it.habit.id == habitSelected.longValue }?.habit?.color ?: 0
-                    )
-                )
-            }
 
             BottomSheetGeneral(
                 showBottomSheet = showGeneralDx,
@@ -119,6 +136,17 @@ fun HabitsScreen(
                     showDialog.value = false
                 }
             )
+        }
+
+        if (showCalendar.value) {
+            BottomSheetCalendar(
+                showBottomSheet = showCalendar,
+                color = color,
+                habit = habits.find { it.habit.id == habitSelected.longValue } ?: HabitWithDailyHabit()){ date, year ->
+                    val date = LocalDate.of(year.year, year.month, date.dayOfMonth.toInt())
+
+                    habitsViewModel.plusOneHabit(habitSelected.longValue, date)
+            }
         }
 
     }

@@ -77,7 +77,8 @@ fun CardDailyHabit(
     isInDialog: Boolean = false,
     onCancelClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {},
-    onEditClick: () -> Unit = {}
+    onEditClick: () -> Unit = {},
+    onCalendarClick: () -> Unit = {}
 ) {
 
     val dimens = remember { if (isInDialog) 55.dp else 45.dp }
@@ -286,7 +287,7 @@ fun CardDailyHabit(
                     ) {
 
                         iconDialog(size.value, R.drawable.ic_calendar_2) {
-
+                            onCalendarClick()
                         }
 
                         Spacer(modifier = Modifier.padding(end = spacing8))

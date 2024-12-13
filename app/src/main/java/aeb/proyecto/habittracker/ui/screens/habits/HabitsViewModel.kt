@@ -35,11 +35,11 @@ class HabitsViewModel @Inject constructor(
         initialValue = emptyList() // Valor inicial vacío
     )
 
-    fun plusOneHabit(id:Long) = viewModelScope.launch(Dispatchers.IO) {
-        var daily = habits.value.find { it.habit.id == id }?.dailyHabits?.find { LocalDate.parse(it.date) == LocalDate.now() }
+    fun plusOneHabit(id:Long, date:LocalDate? = null) = viewModelScope.launch(Dispatchers.IO) {
+        var daily = habits.value.find { it.habit.id == id }?.dailyHabits?.find { LocalDate.parse(it.date) == (date ?: LocalDate.now()) }
 
         if(daily == null){
-            val dailyHabit = DailyHabit(idHabit = id, date = LocalDate.now().toString(), timesDone =  1)
+            val dailyHabit = DailyHabit(idHabit = id, date = date?.toString() ?: LocalDate.now().toString(), timesDone =  1)
             dailyHabitRepo.insertDailyHabit(dailyHabit)
         }else{
 

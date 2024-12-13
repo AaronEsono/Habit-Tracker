@@ -84,4 +84,7 @@
 
     <string name="general_dx_subtitle_delete">¿Desea borrar el hábito?</string>
 
+    <!-- calendar dx-->
+    <string name="calendar_dx_title">Selecciona en alguna fecha para marcar el hábito de ese día.</string>
+
 </resources>

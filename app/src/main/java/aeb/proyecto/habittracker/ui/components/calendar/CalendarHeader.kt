@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.components.calendar
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.ui.components.text.BodyLargeText
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -31,10 +32,9 @@ fun CalendarHeader(
                 contentDescription = stringResource(id = R.string.add_habit_unit_1)
             )
         }
-        Text(
-            text = yearMonth.toString(),
+        BodyLargeText(
+            text = "${yearMonth.month.value} / ${yearMonth.year}",
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier
                 .weight(1f)
                 .align(Alignment.CenterVertically)
