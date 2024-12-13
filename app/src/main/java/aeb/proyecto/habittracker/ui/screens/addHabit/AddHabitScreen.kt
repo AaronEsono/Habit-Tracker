@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker.ui.screens.addHabit
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.data.entities.Notification
+import aeb.proyecto.habittracker.data.model.state.AddHabitScreenState
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPickUnit
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
@@ -79,28 +80,18 @@ fun AddHabitScreen(
     id: Long? = null
 ) {
     val habit = addHabitViewModel.habit.collectAsState().value
+    val uiState = addHabitViewModel.uiState.collectAsState().value
 
     val nameHabit = rememberTextFieldState()
     val descriptionHabit = rememberTextFieldState("")
     val timesHabit = rememberTextFieldState("")
 
-    val color = remember { mutableStateOf(ListColors[0]) }
-    val icon = remember { mutableStateOf(ListIcons[0]) }
 
-    val colorSelected = remember { mutableStateOf(false) }
-    val iconSelected = remember { mutableStateOf(false) }
-
-    val showBottomSheet = remember { mutableStateOf(false) }
-    val showTimePicker = remember { mutableStateOf(false) }
-    val showGeneralDx = remember { mutableStateOf(false) }
-
-    val notifications: MutableState<List<Notification>> = remember { mutableStateOf(listOf()) }
-
-    val unitPicked = remember { mutableStateOf(Constans.Units.TIMES) }
-
-    val notificationSelected: MutableState<Notification?> = remember { mutableStateOf(null) }
-
-    val attentionText = remember { mutableStateOf(R.string.general_dx_attention_subtitile_time_picker) }
+    LaunchedEffect(Unit) {
+        if (edit && id != null) {
+            addHabitViewModel.getHabit(id)
+        }
+    }
 
     LaunchedEffect(timesHabit.text) {
         if (!timesHabit.text.toString().matches(onlyDigits) && timesHabit.text.toString()
@@ -112,28 +103,18 @@ fun AddHabitScreen(
         }
     }
 
-    LaunchedEffect (Unit){
-        if(edit && id != null){
-            addHabitViewModel.getHabit(id)
-        }
-    }
-
-    LaunchedEffect(habit){
-        if(habit.habit.name.isNotEmpty()){
+    LaunchedEffect(habit) {
+        if (habit.habit.name.isNotEmpty()) {
             nameHabit.edit {
-                replace(0,length,habit.habit.name)
+                replace(0, length, habit.habit.name)
             }
             descriptionHabit.edit {
-                replace(0,length,habit.habit.description ?: "")
+                replace(0, length, habit.habit.description ?: "")
             }
             timesHabit.edit {
-                replace(0,length,habit.habit.times.toString())
+                replace(0, length, habit.habit.times.toString())
             }
-            color.value = Color(habit.habit.color)
-            icon.value = iconByName(habit.habit.icon)
-            unitPicked.value = Constans.Units.entries.find { it.id == habit.habit.unit }!!
-
-            notifications.value = habit.notifications.toList()
+            addHabitViewModel.setData(habit.habit.color,habit.habit.icon,habit.habit.unit)
         }
     }
 
@@ -167,43 +148,41 @@ fun AddHabitScreen(
             ) {
                 CardPickColorAddHabit(
                     text = R.string.add_habit_screen_color,
-                    color = color.value,
+                    color = uiState.color,
                     icon = Icons.Filled.ColorLens,
                     modifier = Modifier.weight(1f)
                 ) {
-                    colorSelected.value = !colorSelected.value
-                    iconSelected.value = false
+                    addHabitViewModel.openColor()
                 }
 
 
                 CardPickColorAddHabit(
                     text = R.string.add_habit_screen_icon,
-                    color = color.value,
-                    icon = icon.value,
+                    color = uiState.color,
+                    icon = uiState.icon,
                     modifier = Modifier.weight(1f)
                 ) {
-                    iconSelected.value = !iconSelected.value
-                    colorSelected.value = false
+                    addHabitViewModel.openIcon()
                 }
             }
 
             Spacer(modifier = Modifier.padding(vertical = spacing12))
 
             AnimatedVisibility(
-                visible = colorSelected.value,
+                visible = uiState.colorSelected,
             ) {
-                GridOptions(color, colorSelected, true, icon, iconSelected)
+                GridOptions(uiState.color, true, addHabitViewModel, uiState.icon)
             }
 
             AnimatedVisibility(
-                visible = iconSelected.value,
+                visible = uiState.iconSelected,
             ) {
-                GridOptions(color, colorSelected, false, icon, iconSelected)
+                GridOptions(uiState.color, false, addHabitViewModel, uiState.icon)
             }
 
             Spacer(modifier = Modifier.padding(vertical = spacing2))
 
-            BodySmallText(stringResource(unitPicked.value.question))
+            BodySmallText(stringResource(uiState.unitPicked.question))
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
@@ -223,15 +202,15 @@ fun AddHabitScreen(
 
                 CardInfoAddHabit(
                     title = if (InPlural.contains(timesHabit.text.toString())) stringResource(
-                        unitPicked.value.title
-                    ) else stringResource(unitPicked.value.pluralTitle),
+                        uiState.unitPicked.title
+                    ) else stringResource(uiState.unitPicked.pluralTitle),
                     finalIcon = Icons.Filled.KeyboardArrowDown,
-                    color = color,
+                    color = uiState.color,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = spacing8),
-                    onClick = { showBottomSheet.value = true },
-                    onDelete = { showBottomSheet.value = true }
+                    onClick = { addHabitViewModel.openBottomSheet() },
+                    onDelete = { addHabitViewModel.openBottomSheet() }
                 )
             }
 
@@ -243,38 +222,35 @@ fun AddHabitScreen(
                 title = stringResource(R.string.add_habit_add_hour),
                 icon = Icons.Filled.Add,
                 finalIcon = Icons.Filled.KeyboardArrowRight,
-                color = color,
+                color = uiState.color,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = spacing8),
                 onClick = {
-                    notificationSelected.value = null
-                    showTimePicker.value = true
+                    addHabitViewModel.openShowTimePicker(null)
                 },
                 onDelete = {
-                    notificationSelected.value = null
-                    showTimePicker.value = true
+                    addHabitViewModel.openShowTimePicker(null)
                 }
             )
 
-            notifications.value.forEach { it ->
+            habit.notifications.forEach { notification ->
                 CardInfoAddHabit(
                     title = stringResource(
                         R.string.add_habit_pick_time,
-                        it.hour,
-                        if (it.minute < 10) "0${it.minute}" else it.minute
+                        notification.hour,
+                        if (notification.minute < 10) "0${notification.minute}" else notification.minute
                     ),
                     icon = Icons.Filled.AddAlert,
                     finalIcon = Icons.Filled.Delete,
-                    color = color,
+                    color = uiState.color,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = spacing8),
                     onClick = {
-                        notificationSelected.value = it
-                        showTimePicker.value = true
+                        addHabitViewModel.openShowTimePicker(notification)
                     },
-                    onDelete = { notifications.value = notifications.value.minus(it) },
+                    onDelete = { addHabitViewModel.deleteNotificacion(notification) },
                     colorInFinalIcon = true
                 )
             }
@@ -282,9 +258,9 @@ fun AddHabitScreen(
         }
 
         CustomFilledButton(
-            title = if(edit) R.string.buttons_edit else R.string.buttons_save,
+            title = if (edit) R.string.buttons_edit else R.string.buttons_save,
             icon = R.drawable.ic_check,
-            color = color.value,
+            color = uiState.color,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(spacing16)
@@ -292,24 +268,16 @@ fun AddHabitScreen(
                 .height(48.dp),
             onClick = {
                 if (nameHabit.text.isEmpty() || timesHabit.text.isEmpty()) {
-                    attentionText.value = R.string.general_dx_attention_fill_data
-                    showGeneralDx.value = true
+                    addHabitViewModel.setText()
                 } else {
-                    val habit = Habit()
-
-                    habit.let {
-                        it.name = nameHabit.text.toString()
-                        it.description = descriptionHabit.text.toString().ifEmpty { null }
-                        it.color = color.value.toArgb()
-                        it.icon = icon.value.name.split(".")[1]
-                        it.times = timesHabit.text.toString().toInt()
-                        it.unit = unitPicked.value.id
-                    }
-
-                    addHabitViewModel.procesateHabit(habit, notifications.value,edit = edit) {
+                    addHabitViewModel.procesateHabit(
+                        nameHabit.text.toString(),
+                        descriptionHabit.text.toString(),
+                        timesHabit.text.toString(),
+                        edit
+                    ) {
                         navigateToHabit()
                     }
-
                 }
             }
 
@@ -318,48 +286,35 @@ fun AddHabitScreen(
     }
 
 
-    if (showGeneralDx.value) {
+    if (uiState.showGeneralDx) {
         BottomSheetGeneral(
-            color = color.value,
+            color = uiState.color,
             titleAccept = R.string.buttons_accept,
             iconAccept = R.drawable.ic_check,
             title = R.string.general_dx_attention,
-            subtitle = attentionText.value
+            subtitle = uiState.attentionText,
+            onDismiss = { addHabitViewModel.closeGeneralDx() }
         )
     }
 
-    if (showBottomSheet.value) {
-        BottomSheetPickUnit(showBottomSheet, color = color, unitPicked)
+    if (uiState.showBottomSheet) {
+        BottomSheetPickUnit(
+            color = uiState.color,
+            units = uiState.unitPicked,
+            onDismiss = { addHabitViewModel.closeBottomSheet() },
+            onConfirm = { seletectedUnit ->
+                addHabitViewModel.setUnit(seletectedUnit)
+            })
     }
 
-    if (showTimePicker.value) {
+    if (uiState.showTimePicker) {
         TimePickerHabit(
-            color = color,
-            onDismiss = { showTimePicker.value = false },
-            onConfirm = { it ->
-                //Pasar al viewModel cuando se implemente room
-                Log.d("TIME", it.toString())
-                if (notificationSelected.value == null) {
-
-                    if (notifications.value.find { item -> item.hour == it.hour && item.minute == it.minute } == null) {
-                        notifications.value = notifications.value.plus(it)
-                    } else {
-                        attentionText.value = R.string.general_dx_attention_subtitile_time_picker
-                        showGeneralDx.value = true
-                    }
-
-                } else {
-                    val temporalList = notifications.value.toMutableList()
-
-                    temporalList.find { item -> item == notificationSelected.value }?.let { item2 ->
-                        item2.minute = it.minute
-                        item2.hour = it.hour
-                    }
-
-                    notifications.value = temporalList
-                }
+            color = uiState.color,
+            onDismiss = { addHabitViewModel.closeShowTimePicker() },
+            onConfirm = { notification ->
+                addHabitViewModel.insertNotification(notification)
             },
-            notification = notificationSelected.value
+            notification = addHabitViewModel.getNotification()
         )
     }
 
@@ -368,12 +323,12 @@ fun AddHabitScreen(
 
 @Composable
 fun GridOptions(
-    color: MutableState<Color>,
-    colorSelected: MutableState<Boolean>,
-    isColors: Boolean,
-    imageVector: MutableState<ImageVector>,
-    iconSelected: MutableState<Boolean>
+    color: Color,
+    showColors: Boolean,
+    addHabitViewModel: AddHabitViewModel,
+    imageVector: ImageVector,
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -395,25 +350,23 @@ fun GridOptions(
                 horizontalArrangement = Arrangement.spacedBy(8.dp), // Espaciado horizontal entre ítems
                 verticalArrangement = Arrangement.spacedBy(8.dp) // Espaciado vertical entre filas
             ) {
-                if (isColors) {
+                if (showColors) {
                     items(ListColors.size) { item ->
                         ColorItem(
                             color = ListColors[item],
-                            selected = color.value == ListColors[item]
+                            selected = color == ListColors[item]
                         ) {
-                            color.value = it
-                            colorSelected.value = false
+                            addHabitViewModel.closeColor(it)
                         }
                     }
                 } else {
                     items(ListIcons.size) { item ->
                         IconItem(
                             imageVector = ListIcons[item],
-                            selected = imageVector.value == ListIcons[item],
-                            color = color.value
+                            selected = imageVector == ListIcons[item],
+                            color = color
                         ) {
-                            imageVector.value = it
-                            iconSelected.value = false
+                            addHabitViewModel.closeIcon(it)
                         }
                     }
                 }

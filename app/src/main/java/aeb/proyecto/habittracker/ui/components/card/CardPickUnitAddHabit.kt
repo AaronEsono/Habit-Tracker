@@ -42,7 +42,7 @@ fun CardPickUnitAddHabit(
     onClick: () -> Unit = {},
     selected: Boolean,
     unit: Constans.Units,
-    color: MutableState<Color>
+    color: Color
 ) {
 
     Card(
@@ -50,7 +50,7 @@ fun CardPickUnitAddHabit(
         modifier = modifier
             .wrapContentWidth()
             .clickable { onClick() }
-            .border(if (selected) 2.dp else 0.dp, if (selected) color.value else DarKThemeText, RoundedCornerShape(spacing8))
+            .border(if (selected) 2.dp else 0.dp, if (selected) color else DarKThemeText, RoundedCornerShape(spacing8))
     ) {
         Row(
             modifier = Modifier
@@ -80,6 +80,6 @@ fun CardPickUnitAddHabitPreview() {
     CardPickUnitAddHabit(
         selected = false,
         unit = Constans.Units.PAGES,
-        color =  remember { mutableStateOf(Color.Red) }
+        color =  Color.Red
     )
 }

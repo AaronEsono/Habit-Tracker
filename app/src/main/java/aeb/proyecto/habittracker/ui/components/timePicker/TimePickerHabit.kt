@@ -38,7 +38,7 @@ import java.util.Calendar
 fun TimePickerHabit(
     onConfirm: (Notification) -> Unit = {},
     onDismiss: () -> Unit = {},
-    color: MutableState<Color>,
+    color: Color,
     notification: Notification?
 ) {
     val currentTime = Calendar.getInstance()
@@ -61,10 +61,10 @@ fun TimePickerHabit(
                 TimePicker(
                     state = timePickerState,
                     colors = TimePickerDefaults.colors(
-                        selectorColor = color.value.copy(alpha = 0.8f),
-                        timeSelectorSelectedContainerColor = color.value,
+                        selectorColor = color.copy(alpha = 0.8f),
+                        timeSelectorSelectedContainerColor = color,
                         clockDialSelectedContentColor = DarKThemeText,
-                        periodSelectorSelectedContainerColor = color.value.copy(alpha = 0.5f)
+                        periodSelectorSelectedContainerColor = color.copy(alpha = 0.5f)
                     )
                 )
 
@@ -83,7 +83,7 @@ fun TimePickerHabit(
                     CustomFilledButton(
                         title = R.string.buttons_accept,
                         icon = R.drawable.ic_check,
-                        color = color.value,
+                        color = color,
                         modifier = Modifier.weight(1f),
                         onClick = {
                             onConfirm(Notification( hour = timePickerState.hour,minute =  timePickerState.minute))

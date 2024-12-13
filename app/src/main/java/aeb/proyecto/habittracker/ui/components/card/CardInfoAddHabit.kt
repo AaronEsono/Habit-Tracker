@@ -39,7 +39,7 @@ fun CardInfoAddHabit(
     icon: ImageVector? = null,
     title: String,
     finalIcon: ImageVector? = null,
-    color: MutableState<Color>,
+    color: Color,
     modifier: Modifier = Modifier,
     colorInFinalIcon: Boolean = false,
     onDelete: () -> Unit = {}
@@ -62,14 +62,14 @@ fun CardInfoAddHabit(
             horizontalArrangement = Arrangement.Center
         ) {
             icon?.let {
-                Icon(icon, "", tint = color.value)
+                Icon(icon, "", tint = color)
             }
 
             Spacer(modifier = Modifier.padding(horizontal = spacing8))
             TitleSmallText(title, Modifier.weight(1f), TextAlign.Left)
 
             finalIcon?.let {
-                Icon(finalIcon, "", tint = if (colorInFinalIcon) color.value else DarKThemeText,
+                Icon(finalIcon, "", tint = if (colorInFinalIcon) color else DarKThemeText,
                     modifier = Modifier.clickable(
                         indication = null,
                         interactionSource = MutableInteractionSource()

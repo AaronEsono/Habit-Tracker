@@ -61,18 +61,19 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun BottomSheetPickUnit(
-    showBottomSheet: MutableState<Boolean>,
-    color: MutableState<Color>,
-    units: MutableState<Constans.Units>
+    color: Color,
+    units: Constans.Units,
+    onDismiss: () -> Unit,
+    onConfirm: (Constans.Units) -> Unit
 ) {
 
     val sheetState = rememberModalBottomSheetState()
-    val selected = remember { mutableStateOf(units.value) }
+    val selected = remember { mutableStateOf(units) }
     val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
         onDismissRequest = {
-            showBottomSheet.value = false
+            onDismiss()
         },
         sheetState = sheetState,
         containerColor = secondaryColorApp
@@ -118,7 +119,7 @@ fun BottomSheetPickUnit(
                     onClick = {
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
-                                showBottomSheet.value = false
+                                onDismiss()
                             }
                         }
                     }
@@ -129,14 +130,14 @@ fun BottomSheetPickUnit(
                 CustomFilledButton(
                     title = R.string.buttons_accept,
                     icon = R.drawable.ic_check,
-                    color = color.value,
+                    color = color,
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        units.value = selected.value
+                        onConfirm(selected.value)
 
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
-                                showBottomSheet.value = false
+                                onDismiss()
                             }
                         }
                     }
