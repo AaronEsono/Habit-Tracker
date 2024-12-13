@@ -21,6 +21,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,12 +42,13 @@ fun BottomSheetGeneral(
     @DrawableRes iconAccept: Int = R.drawable.ic_check,
     @StringRes titleCancel: Int = R.string.buttons_cancel,
     @DrawableRes iconCancel: Int = R.drawable.ic_cancel,
-    @StringRes title:Int,
-    @StringRes subtitle:Int
+    @StringRes title: Int,
+    @StringRes subtitle: Int
 ) {
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    val cancelRemember = remember { showCancel }
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -81,7 +83,7 @@ fun BottomSheetGeneral(
 
             Row(modifier = Modifier.fillMaxWidth()) {
 
-                if (showCancel) {
+                if (cancelRemember) {
                     CustomOutlinedButtonButton(
                         title = titleCancel, icon = iconCancel,
                         modifier = Modifier.weight(1f),

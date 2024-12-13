@@ -46,8 +46,7 @@ fun HabitScreenStates(
             onDismiss = { habitsViewModel.closeCalendar() },
             color = habitsViewModel.getColor(),
             habit = habitsViewModel.getHabit()
-        ) { date, year ->
-            val date = LocalDate.of(year.year, year.month, date.dayOfMonth.toInt())
+        ) { date ->
             habitsViewModel.choseStep(habitsViewModel.getId(), date)
         }
     }

@@ -19,6 +19,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.YearMonth
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,16 +35,16 @@ import java.time.YearMonth
 fun BottomSheetCalendar(
     calendarViewModel: CalendarViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
-    color:Color,
+    color: Color,
     habit: HabitWithDailyHabit,
-    onClickDate : (CalendarUiState.Date, YearMonth) -> Unit
+    onClickDate: (LocalDate) -> Unit
 ) {
 
     val scope = rememberCoroutineScope()
 
     val state = calendarViewModel.uiState.collectAsState().value
-    val bottomSheetState =
-        rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    calendarViewModel.setHabit(habit)
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -50,23 +52,35 @@ fun BottomSheetCalendar(
         },
         sheetState = bottomSheetState
     ) {
-        Column (modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(horizontal = spacing8, vertical = spacing16)){
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(horizontal = spacing8, vertical = spacing16)
+        ) {
 
-            LabelMediumText(stringResource(R.string.calendar_dx_title))
-
-            Spacer(modifier = Modifier.padding(vertical = spacing8))
+            LabelMediumText(
+                stringResource(R.string.calendar_dx_title),
+                modifier = Modifier.padding(bottom = spacing8)
+            )
 
             CalendarHeader(state.yearMonth, { calendarViewModel.toPreviousMonth(it) }) {
                 calendarViewModel.toNextMonth(it)
             }
-            CalendarContent(state.dates, color = color, habit = habit,state.yearMonth) {
-                onClickDate(it,state.yearMonth)
+
+            CalendarContent(state.dates, color = color, calendarViewModel = calendarViewModel) { date ->
+                calendarViewModel.createDate(date)?.let {
+                    onClickDate(it)
+                }
             }
 
-            Spacer(modifier = Modifier.padding(vertical = spacing8))
-
-            CustomFilledButton(title = R.string.buttons_accept, icon = R.drawable.ic_check, color = color,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = spacing8), onClick = {
+            CustomFilledButton(title = R.string.buttons_accept,
+                icon = R.drawable.ic_check,
+                color = color,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = spacing8, end = spacing8, top = spacing8),
+                onClick = {
                     scope.launch {
                         bottomSheetState.hide()
                         onDismiss()

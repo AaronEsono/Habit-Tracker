@@ -4,6 +4,8 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.BodyLargeText
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
@@ -28,7 +30,7 @@ fun CalendarHeader(
             onPreviousMonthButtonClicked.invoke(yearMonth.minusMonths(1))
         }) {
             Icon(
-                imageVector = Icons.Filled.KeyboardArrowLeft,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 contentDescription = stringResource(id = R.string.add_habit_unit_1)
             )
         }
@@ -43,7 +45,7 @@ fun CalendarHeader(
             onNextMonthButtonClicked.invoke(yearMonth.plusMonths(1))
         }) {
             Icon(
-                imageVector = Icons.Filled.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = stringResource(id = R.string.buttons_edit)
             )
         }
