@@ -1,21 +1,17 @@
 package aeb.proyecto.habittracker.ui.screens.addHabit
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.Notification
-import aeb.proyecto.habittracker.data.model.state.AddHabitScreenState
+import aeb.proyecto.habittracker.data.model.notification.AlarmItem
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPickUnit
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.card.CardInfoAddHabit
 import aeb.proyecto.habittracker.ui.components.card.CardPickColorAddHabit
-import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.ui.components.items.ColorItem
 import aeb.proyecto.habittracker.ui.components.items.IconItem
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
 import aeb.proyecto.habittracker.ui.components.timePicker.TimePickerHabit
-import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Constans.InPlural
 import aeb.proyecto.habittracker.utils.Constans.ListColors
 import aeb.proyecto.habittracker.utils.Constans.ListIcons
@@ -26,8 +22,8 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing72
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import aeb.proyecto.habittracker.utils.setUpAlarm
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,20 +54,19 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import java.time.LocalDate
+import java.time.ZoneId
 
-@SuppressLint("UnrememberedMutableState")
+@SuppressLint("UnrememberedMutableState", "NewApi")
 @Composable
 fun AddHabitScreen(
     addHabitViewModel: AddHabitViewModel = hiltViewModel(),
@@ -86,6 +81,7 @@ fun AddHabitScreen(
     val descriptionHabit = rememberTextFieldState("")
     val timesHabit = rememberTextFieldState("")
 
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         if (edit && id != null) {
@@ -267,6 +263,8 @@ fun AddHabitScreen(
                 .align(Alignment.BottomCenter) // Fija el botón en la parte inferior
                 .height(48.dp),
             onClick = {
+                setUpAlarm(context, AlarmItem("",LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().epochSecond + 1000))
+
                 if (nameHabit.text.isEmpty() || timesHabit.text.isEmpty()) {
                     addHabitViewModel.setText()
                 } else {
