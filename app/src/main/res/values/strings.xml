@@ -83,8 +83,13 @@
     <string name="general_dx_attention_fill_data">Tienes que marcar un nombre y un número de repeticiones</string>
 
     <string name="general_dx_subtitle_delete">¿Desea borrar el hábito?</string>
+    <string name="general_dx_subtitle_restart">¿Desea reiniciar el dia?</string>
 
     <!-- calendar dx-->
     <string name="calendar_dx_title">Selecciona en alguna fecha para marcar el hábito de ese día.</string>
+
+    <!-- Chose step bottomSheet -->
+    <string name="chose_step_bottom_sheet_title">Selecciona el número de %1$s para este día</string>
+    <string name="chose_step_bottom_sheet_toast">El número no puede sobrepasar el número diario total.</string>
 
 </resources>

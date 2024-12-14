@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 
 @Composable
@@ -23,6 +24,8 @@ fun CalendarText(
         style = MaterialTheme.typography.bodySmall,
         textAlign = textAlign,
         color = color,
-        fontSize = 10.sp
+        fontSize = 8.sp,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
     )
 }

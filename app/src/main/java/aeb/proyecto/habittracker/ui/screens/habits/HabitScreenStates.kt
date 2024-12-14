@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker.ui.screens.habits
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.state.HabitsScreenState
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetCalendar
+import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetChoseSteps
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.dialog.DialogHabit
 import androidx.compose.runtime.Composable
@@ -34,10 +35,10 @@ fun HabitScreenStates(
             onDismiss = { habitsViewModel.closeGeneralDx() },
             color = habitsViewModel.getColor(),
             title = R.string.general_dx_attention,
-            subtitle = R.string.general_dx_subtitle_delete,
+            subtitle = uiState.textAttention,
             showCancel = true,
             onCancel = { habitsViewModel.closeGeneralDx() },
-            onAccept = { habitsViewModel.deleteUnit(habitsViewModel.getId()) }
+            onAccept = { habitsViewModel.generalDxLogic() }
         )
     }
 
@@ -49,5 +50,15 @@ fun HabitScreenStates(
         ) { date ->
             habitsViewModel.choseStep(habitsViewModel.getId(), date)
         }
+    }
+
+    if(uiState.showSteps){
+        BottomSheetChoseSteps(
+            onDismiss = { habitsViewModel.closeSteps() },
+            color = habitsViewModel.getColor(),
+            titleUnit = habitsViewModel.getTitle(),
+            restDays = habitsViewModel.getRestSteps(habitsViewModel.getId(), uiState.date),
+            onAccept = {text ->  habitsViewModel.plusOneHabit(habitsViewModel.getId(), uiState.date, text.toInt())}
+        )
     }
 }

@@ -1,5 +1,6 @@
 package aeb.proyecto.habittracker.ui.screens.habits
 
+import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
@@ -33,7 +34,7 @@ import javax.inject.Inject
 class HabitsViewModel @Inject constructor(
     private val habitRepo: HabitRepo,
     private val dailyHabitRepo: DailyHabitRepo
-): ViewModel(){
+) : ViewModel() {
 
     val habits: StateFlow<List<HabitWithDailyHabit>> = habitRepo.getHabits().stateIn(
         scope = viewModelScope,
@@ -44,37 +45,66 @@ class HabitsViewModel @Inject constructor(
     private val _habitSelected: MutableStateFlow<HabitWithDailyHabit?> = MutableStateFlow(null)
     val habitSelected: StateFlow<HabitWithDailyHabit?> = _habitSelected.asStateFlow()
 
-    private val _uiState: MutableStateFlow<HabitsScreenState> = MutableStateFlow(HabitsScreenState())
+    private val _uiState: MutableStateFlow<HabitsScreenState> =
+        MutableStateFlow(HabitsScreenState())
     val uiState: StateFlow<HabitsScreenState> = _uiState.asStateFlow()
 
-    fun choseStep(id:Long,date:LocalDate? = null) = viewModelScope.launch{
+    fun choseStep(id: Long, date: LocalDate? = null) = viewModelScope.launch {
         setHabit(id)
 
-        val  unit = getUnit(_habitSelected.value?.habit)
+        val unit = getUnit(_habitSelected.value?.habit)
 
-        if(unit.action == Constans.PICK){
-            plusOneHabit(id,date)
-        }else{
-            //Futuro
+        if (unit.action == Constans.PICK) {
+            plusOneHabit(id, date)
+        } else {
+            val time = getRestSteps(id, date)
+            if (time > 0) {
+                _uiState.update { currentState ->
+                    currentState.copy(showSteps = true, date = date)
+                }
+            }else{
+                _uiState.update { currentState ->
+                    currentState.copy(showGeneralDx = true, textAttention = R.string.general_dx_subtitle_restart, date = date)
+                }
+            }
         }
 
     }
 
-    private fun plusOneHabit(id:Long, date:LocalDate? = null) = viewModelScope.launch(Dispatchers.IO) {
-        var daily = _habitSelected.value?.dailyHabits?.find { LocalDate.parse(it.date) == (date ?: LocalDate.now()) }
-
-        if(daily == null){
-            val dailyHabit = DailyHabit(idHabit = id, date = date?.toString() ?: LocalDate.now().toString(), timesDone =  1)
-            dailyHabitRepo.insertDailyHabit(dailyHabit)
-        }else{
-
-            daily = if (daily.timesDone >= (_habitSelected.value?.habit?.times ?: 0)) {
-                daily.copy(timesDone = 0)
-            } else {
-                daily.copy(timesDone = daily.timesDone + 1)
+    fun plusOneHabit(id: Long, date: LocalDate? = null, times: Int = 1, restart:Boolean = false) =
+        viewModelScope.launch(Dispatchers.IO) {
+            var daily = _habitSelected.value?.dailyHabits?.find {
+                LocalDate.parse(it.date) == (date ?: LocalDate.now())
             }
+            val timesHabit = _habitSelected.value?.habit?.times ?: 0
 
-            dailyHabitRepo.updateDailyHabit(daily)
+            if (daily == null) {
+                val dailyHabit = DailyHabit(
+                    idHabit = id,
+                    date = date?.toString() ?: LocalDate.now().toString(),
+                    timesDone = times
+                )
+
+                if (dailyHabit.timesDone > (timesHabit))
+                    dailyHabit.timesDone = timesHabit
+
+                dailyHabitRepo.insertDailyHabit(dailyHabit)
+            } else {
+                daily = daily.copy(timesDone = daily.timesDone + times)
+                if ((daily.timesDone > timesHabit && times == 1) || restart) {
+                    daily = daily.copy(timesDone = 0)
+                }
+
+                dailyHabitRepo.updateDailyHabit(daily)
+            }
+        }
+
+    fun generalDxLogic(){
+        if(uiState.value.textAttention == R.string.general_dx_subtitle_delete){
+            deleteUnit(getId())
+        }else{
+            plusOneHabit(getId(),uiState.value.date,0,true)
+            closeGeneralDx()
         }
     }
 
@@ -82,11 +112,17 @@ class HabitsViewModel @Inject constructor(
         habitRepo.deleteHabit(habitSelected.value?.habit?.id ?: 1)
     }
 
-    fun getHabit():HabitWithDailyHabit {
-        return habits.value.find { it.habit.id == habitSelected.value?.habit?.id } ?: HabitWithDailyHabit()
+    fun getRestSteps(id:Long,date: LocalDate? = null):Int{
+        val daily = _habitSelected.value?.dailyHabits?.find { LocalDate.parse(it.date) == (date ?: LocalDate.now()) }
+        return _habitSelected.value?.habit?.times!! - (daily?.timesDone ?: 0)
     }
 
-    fun getId():Long{
+    fun getHabit(): HabitWithDailyHabit {
+        return habits.value.find { it.habit.id == habitSelected.value?.habit?.id }
+            ?: HabitWithDailyHabit()
+    }
+
+    fun getId(): Long {
         return habitSelected.value?.habit?.id ?: 1
     }
 
@@ -94,16 +130,16 @@ class HabitsViewModel @Inject constructor(
         return Color(habitSelected.value?.habit?.color ?: 111111)
     }
 
-    fun deleteUnit(id:Long) = viewModelScope.launch{
+    fun deleteUnit(id: Long) = viewModelScope.launch {
         setHabit(id)
         deleteHabit()
 
-        _uiState.update {
-            currentState -> currentState.copy(showGeneralDx = false, showDialog = false)
+        _uiState.update { currentState ->
+            currentState.copy(showGeneralDx = false, showDialog = false)
         }
     }
 
-    fun showDialog(id:Long) = viewModelScope.launch{
+    fun showDialog(id: Long) = viewModelScope.launch {
         setHabit(id)
 
         _uiState.update { currentState ->
@@ -111,9 +147,9 @@ class HabitsViewModel @Inject constructor(
         }
     }
 
-    fun showGeneralDx(){
+    fun showGeneralDx() {
         _uiState.update { currentState ->
-            currentState.copy(showGeneralDx = true)
+            currentState.copy(showGeneralDx = true, textAttention = R.string.general_dx_subtitle_delete)
         }
     }
 
@@ -123,29 +159,40 @@ class HabitsViewModel @Inject constructor(
         }
     }
 
-    fun closeGeneralDx(){
+    fun closeGeneralDx() {
         _uiState.update { currentState ->
             currentState.copy(showGeneralDx = false)
         }
     }
 
-    fun openCalendar(){
+    fun closeSteps() {
+        _uiState.update { currentState ->
+            currentState.copy(showSteps = false)
+        }
+    }
+
+    fun openCalendar() {
         _uiState.update { currentState ->
             currentState.copy(showCalendar = true)
         }
     }
 
-    fun closeCalendar(){
+    fun closeCalendar() {
         _uiState.update { currentState ->
             currentState.copy(showCalendar = false)
         }
     }
 
-    suspend fun setHabit(id:Long) {
+    suspend fun setHabit(id: Long) {
         _habitSelected.emit(habits.value.find { it.habit.id == id })
     }
 
-    fun getUnit(habit:Habit?):Constans.Units{
+    fun getUnit(habit: Habit?): Constans.Units {
         return Constans.Units.entries.find { it.id == habit?.unit } ?: Constans.Units.TIMES
     }
+
+    fun getTitle():Int{
+        return (Constans.Units.entries.find { it.id == _habitSelected.value?.habit?.unit } ?: Constans.Units.TIMES).pluralTitle
+    }
+
 }

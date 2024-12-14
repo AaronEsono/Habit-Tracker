@@ -22,4 +22,13 @@ interface HabitDao {
 
     @Query("DELETE FROM Habit WHERE id = :habitId")
     suspend fun deleteHabitById(habitId: Long)
+
+    @Query("DELETE FROM dailyhabit where idHabit = :habitId")
+    suspend fun deleteDailyHabitById(habitId: Long)
+
+    @Transaction
+    suspend fun deleteHabit(habitId: Long) {
+        deleteDailyHabitById(habitId)
+        deleteHabitById(habitId)
+    }
 }

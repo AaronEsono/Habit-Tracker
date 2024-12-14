@@ -22,6 +22,6 @@ class HabitRepo @Inject constructor(
     }
 
     suspend fun deleteHabit(habitId: Long) {
-        habitDao.deleteHabitById(habitId)
+        habitDao.deleteHabit(habitId)
     }
 }
