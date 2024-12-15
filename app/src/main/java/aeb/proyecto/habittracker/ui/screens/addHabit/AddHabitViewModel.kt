@@ -61,7 +61,7 @@ class AddHabitViewModel @Inject constructor(
         // Actualizar los campos del hábito
         habitUpt.habit = habitUpt.habit.copy(
             name = name,
-            description = description,
+            description = if(description.isNullOrEmpty()) null else description,
             times = times.toInt(),
             unit = uiState.value.unitPicked.id,
             color = uiState.value.color.toArgb(),
@@ -124,6 +124,12 @@ class AddHabitViewModel @Inject constructor(
     fun setColor(color: Color) {
         _uiState.update { currentState ->
             currentState.copy(color = color)
+        }
+    }
+
+    fun setNamesNotification(){
+        habit.value.notifications.map {
+            it.name = habit.value.habit.name
         }
     }
 

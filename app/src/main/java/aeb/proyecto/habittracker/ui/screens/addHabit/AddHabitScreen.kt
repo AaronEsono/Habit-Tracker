@@ -263,7 +263,11 @@ fun AddHabitScreen(
                 .align(Alignment.BottomCenter) // Fija el botón en la parte inferior
                 .height(48.dp),
             onClick = {
-                setUpAlarm(context, AlarmItem("",LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().epochSecond + 1000))
+                addHabitViewModel.setNamesNotification()
+
+                habit.notifications.forEach{
+                    setUpAlarm(context,it)
+                }
 
                 if (nameHabit.text.isEmpty() || timesHabit.text.isEmpty()) {
                     addHabitViewModel.setText()
