@@ -11,4 +11,5 @@ data class Notification(
     var hour:Int = 0,
     var minute:Int = 0,
     var name:String = "",
+    var timeInMillis:Long = 0L
 )

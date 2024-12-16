@@ -24,6 +24,7 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing72
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import aeb.proyecto.habittracker.utils.setUpAlarm
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -64,7 +65,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.Calendar
 
 @SuppressLint("UnrememberedMutableState", "NewApi")
 @Composable
@@ -264,19 +267,21 @@ fun AddHabitScreen(
                 .height(48.dp),
             onClick = {
                 addHabitViewModel.setNamesNotification()
-
                 habit.notifications.forEach{
+                    var calendar = Calendar.getInstance().apply {
+                        set(Calendar.HOUR_OF_DAY, LocalDateTime.now().hour)
+                        set(Calendar.MINUTE, LocalDateTime.now().minute + 1)
+                    }.timeInMillis
+                    it.timeInMillis = calendar
+
+                    Log.d("TIME",it.timeInMillis.toString())
                     setUpAlarm(context,it)
                 }
 
                 if (nameHabit.text.isEmpty() || timesHabit.text.isEmpty()) {
                     addHabitViewModel.setText()
                 } else {
-                    addHabitViewModel.procesateHabit(
-                        nameHabit.text.toString(),
-                        descriptionHabit.text.toString(),
-                        timesHabit.text.toString(),
-                        edit
+                    addHabitViewModel.procesateHabit(nameHabit.text.toString(), descriptionHabit.text.toString(), timesHabit.text.toString(), edit
                     ) {
                         navigateToHabit()
                     }

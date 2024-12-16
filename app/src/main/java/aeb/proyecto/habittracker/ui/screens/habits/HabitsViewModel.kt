@@ -71,8 +71,7 @@ class HabitsViewModel @Inject constructor(
 
     }
 
-    fun plusOneHabit(id: Long, date: LocalDate? = null, times: Int = 1, restart:Boolean = false) =
-        viewModelScope.launch(Dispatchers.IO) {
+    fun plusOneHabit(id: Long, date: LocalDate? = null, times: Int = 1, restart:Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
             var daily = _habitSelected.value?.dailyHabits?.find {
                 LocalDate.parse(it.date) == (date ?: LocalDate.now())
             }
