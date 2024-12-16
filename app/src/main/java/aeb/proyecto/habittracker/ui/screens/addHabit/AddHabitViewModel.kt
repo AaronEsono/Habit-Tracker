@@ -127,12 +127,6 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
-    fun setNamesNotification(){
-        habit.value.notifications.map {
-            it.name = habit.value.habit.name
-        }
-    }
-
     fun setUnit(id: Int) {
         _uiState.update { currentState ->
             currentState.copy(unitPicked = Constans.Units.entries.find { it.id == id }!!)

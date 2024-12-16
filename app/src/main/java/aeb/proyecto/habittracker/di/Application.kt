@@ -8,7 +8,7 @@ import android.os.Build
 import dagger.hilt.android.HiltAndroidApp
 
 
-const val CHANNEL = "CHANNEL"
+const val CHANNEL = "CHANNEL2"
 const val NAME = "NAME"
 
 @HiltAndroidApp
@@ -22,6 +22,9 @@ class MyApplication : Application(){
     private fun createNotificationChannel() {
         val channel = NotificationChannel(CHANNEL, NAME, NotificationManager.IMPORTANCE_DEFAULT)
         val notificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
+
+        if (notificationManager.getNotificationChannel(CHANNEL) == null){
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 }

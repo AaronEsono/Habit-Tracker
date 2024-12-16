@@ -266,16 +266,8 @@ fun AddHabitScreen(
                 .align(Alignment.BottomCenter) // Fija el botón en la parte inferior
                 .height(48.dp),
             onClick = {
-                addHabitViewModel.setNamesNotification()
                 habit.notifications.forEach{
-                    var calendar = Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, LocalDateTime.now().hour)
-                        set(Calendar.MINUTE, LocalDateTime.now().minute + 1)
-                    }.timeInMillis
-                    it.timeInMillis = calendar
-
-                    Log.d("TIME",it.timeInMillis.toString())
-                    setUpAlarm(context,it)
+                    setUpAlarm(context.applicationContext,it,nameHabit.text.toString())
                 }
 
                 if (nameHabit.text.isEmpty() || timesHabit.text.isEmpty()) {
