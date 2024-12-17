@@ -2,6 +2,7 @@ package aeb.proyecto.habittracker.ui.screens.addHabit
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.notification.AlarmItem
+import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPickUnit
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
@@ -22,6 +23,7 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing72
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import aeb.proyecto.habittracker.utils.cancelAlarm
 import aeb.proyecto.habittracker.utils.setUpAlarm
 import android.annotation.SuppressLint
 import android.util.Log
@@ -79,6 +81,7 @@ fun AddHabitScreen(
 ) {
     val habit = addHabitViewModel.habit.collectAsState().value
     val uiState = addHabitViewModel.uiState.collectAsState().value
+    val notifications = addHabitViewModel.notifications.collectAsState().value
 
     val nameHabit = rememberTextFieldState()
     val descriptionHabit = rememberTextFieldState("")
@@ -113,7 +116,7 @@ fun AddHabitScreen(
             timesHabit.edit {
                 replace(0, length, habit.habit.times.toString())
             }
-            addHabitViewModel.setData(habit.habit.color,habit.habit.icon,habit.habit.unit)
+            addHabitViewModel.setData(habit.habit.color, habit.habit.icon, habit.habit.unit)
         }
     }
 
@@ -233,7 +236,7 @@ fun AddHabitScreen(
                 }
             )
 
-            habit.notifications.forEach { notification ->
+            notifications.forEach { notification ->
                 CardInfoAddHabit(
                     title = stringResource(
                         R.string.add_habit_pick_time,
@@ -266,15 +269,24 @@ fun AddHabitScreen(
                 .align(Alignment.BottomCenter) // Fija el botón en la parte inferior
                 .height(48.dp),
             onClick = {
-                habit.notifications.forEach{
-                    setUpAlarm(context.applicationContext,it,nameHabit.text.toString())
-                }
-
                 if (nameHabit.text.isEmpty() || timesHabit.text.isEmpty()) {
                     addHabitViewModel.setText()
                 } else {
-                    addHabitViewModel.procesateHabit(nameHabit.text.toString(), descriptionHabit.text.toString(), timesHabit.text.toString(), edit
-                    ) {
+                    addHabitViewModel.procesateHabit(
+                        nameHabit.text.toString(),
+                        descriptionHabit.text.toString(),
+                        timesHabit.text.toString(),
+                        edit
+                    ) { notifications, cancel ->
+                        if(edit){
+                            cancel.forEach {
+                                cancelAlarm(context,it)
+                            }
+                        }
+
+                        notifications.forEach {
+                            setUpAlarm(context, NotificationWithName(it,nameHabit.text.toString(),uiState.color))
+                        }
                         navigateToHabit()
                     }
                 }
@@ -282,94 +294,6 @@ fun AddHabitScreen(
 
         )
 
-    }
-
-
-    if (uiState.showGeneralDx) {
-        BottomSheetGeneral(
-            color = uiState.color,
-            titleAccept = R.string.buttons_accept,
-            iconAccept = R.drawable.ic_check,
-            title = R.string.general_dx_attention,
-            subtitle = uiState.attentionText,
-            onDismiss = { addHabitViewModel.closeGeneralDx() }
-        )
-    }
-
-    if (uiState.showBottomSheet) {
-        BottomSheetPickUnit(
-            color = uiState.color,
-            units = uiState.unitPicked,
-            onDismiss = { addHabitViewModel.closeBottomSheet() },
-            onConfirm = { seletectedUnit ->
-                addHabitViewModel.setUnit(seletectedUnit)
-            })
-    }
-
-    if (uiState.showTimePicker) {
-        TimePickerHabit(
-            color = uiState.color,
-            onDismiss = { addHabitViewModel.closeShowTimePicker() },
-            onConfirm = { notification ->
-                addHabitViewModel.insertNotification(notification)
-            },
-            notification = addHabitViewModel.getNotification()
-        )
-    }
-
-
-}
-
-@Composable
-fun GridOptions(
-    color: Color,
-    showColors: Boolean,
-    addHabitViewModel: AddHabitViewModel,
-    imageVector: ImageVector,
-) {
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(max = 120.dp)
-    ) {
-        Card(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(bottom = spacing12), elevation = CardDefaults.cardElevation(
-                defaultElevation = spacing8
-            )
-        ) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(30.dp),
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(vertical = spacing4),
-                contentPadding = PaddingValues(8.dp), // Espaciado externo
-                horizontalArrangement = Arrangement.spacedBy(8.dp), // Espaciado horizontal entre ítems
-                verticalArrangement = Arrangement.spacedBy(8.dp) // Espaciado vertical entre filas
-            ) {
-                if (showColors) {
-                    items(ListColors.size) { item ->
-                        ColorItem(
-                            color = ListColors[item],
-                            selected = color == ListColors[item]
-                        ) {
-                            addHabitViewModel.closeColor(it)
-                        }
-                    }
-                } else {
-                    items(ListIcons.size) { item ->
-                        IconItem(
-                            imageVector = ListIcons[item],
-                            selected = imageVector == ListIcons[item],
-                            color = color
-                        ) {
-                            addHabitViewModel.closeIcon(it)
-                        }
-                    }
-                }
-            }
-        }
+        AddHabitScreenState(addHabitViewModel, uiState)
     }
 }

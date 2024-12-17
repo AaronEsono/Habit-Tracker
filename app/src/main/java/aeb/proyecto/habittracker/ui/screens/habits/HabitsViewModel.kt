@@ -4,20 +4,14 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
-import aeb.proyecto.habittracker.data.model.action.ActionIcon
 import aeb.proyecto.habittracker.data.model.state.HabitsScreenState
 import aeb.proyecto.habittracker.data.repo.DailyHabitRepo
 import aeb.proyecto.habittracker.data.repo.HabitRepo
+import aeb.proyecto.habittracker.data.repo.HabitWithNotificacionRepo
 import aeb.proyecto.habittracker.utils.Constans
-import android.annotation.SuppressLint
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HabitsViewModel @Inject constructor(
     private val habitRepo: HabitRepo,
-    private val dailyHabitRepo: DailyHabitRepo
+    private val dailyHabitRepo: DailyHabitRepo,
+    private val habitWithNotification: HabitWithNotificacionRepo
 ) : ViewModel() {
 
     val habits: StateFlow<List<HabitWithDailyHabit>> = habitRepo.getHabits().stateIn(
@@ -98,9 +93,15 @@ class HabitsViewModel @Inject constructor(
             }
         }
 
-    fun generalDxLogic(){
+    fun generalDxLogic(cancelNotificacions:(List<Long>) -> Unit){
         if(uiState.value.textAttention == R.string.general_dx_subtitle_delete){
             deleteUnit(getId())
+            val id = _habitSelected.value?.habit?.id ?: 1
+
+            viewModelScope.launch (Dispatchers.IO){
+                cancelNotificacions(habitWithNotification.getNotificationById(id).map { it.id })
+            }
+
         }else{
             plusOneHabit(getId(),uiState.value.date,0,true)
             closeGeneralDx()

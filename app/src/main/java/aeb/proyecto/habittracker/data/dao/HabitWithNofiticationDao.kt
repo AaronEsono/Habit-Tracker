@@ -22,7 +22,7 @@ interface HabitWithNofiticationDao {
     fun getHabitById(habitId: Long): HabitWithNotification
 
     @Transaction
-    fun insertHabitAndNotifications(habit: Habit, notifications: List<Notification>){
+    fun insertHabitAndNotifications(habit: Habit, notifications: List<Notification>):Long{
         val habitInserted = insertHabit(habit)
 
         notifications.forEach {
@@ -30,6 +30,7 @@ interface HabitWithNofiticationDao {
         }
 
         notification(notifications)
+        return habitInserted
     }
 
     @Update
@@ -47,4 +48,8 @@ interface HabitWithNofiticationDao {
         deleteNotifications(habit.id)
         notification(notifications)
     }
+
+    @Query("SELECT * FROM Notification where habitId = :id")
+    fun getNotificationById(id:Long):List<Notification>
+
 }

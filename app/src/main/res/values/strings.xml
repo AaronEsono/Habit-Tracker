@@ -92,4 +92,7 @@
     <string name="chose_step_bottom_sheet_title">Selecciona el número de %1$s para este día</string>
     <string name="chose_step_bottom_sheet_toast">El número no puede sobrepasar el número diario total.</string>
 
+    <!-- Notification -->
+    <string name="notification_subtitle">Es hora de hacer el hábito %1$s</string>
+
 </resources>

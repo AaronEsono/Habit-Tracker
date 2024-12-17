@@ -43,79 +43,87 @@ class AddHabitViewModel @Inject constructor(
         MutableStateFlow(HabitWithNotification())
     val habit: StateFlow<HabitWithNotification> = _habit.asStateFlow()
 
+    private val _notifications: MutableStateFlow<List<Notification>> =
+        MutableStateFlow(emptyList())
+    val notifications: StateFlow<List<Notification>> = _notifications.asStateFlow()
+
     private val _uiState: MutableStateFlow<AddHabitScreenState> =
         MutableStateFlow(AddHabitScreenState())
     val uiState: StateFlow<AddHabitScreenState> = _uiState.asStateFlow()
 
     private val _notificationSelected: MutableState<Notification?> = mutableStateOf(null)
+    private val _notificationsCancel:MutableStateFlow<List<Long>> = MutableStateFlow(emptyList())
 
     fun procesateHabit(
         name: String,
         description: String?,
         times: String,
         edit: Boolean,
-        done: () -> Unit
+        done: (List<Notification>,List<Long>) -> Unit
     ) = viewModelScope.launch(Dispatchers.IO) {
         val habitUpt = _habit.value
+        var id = _habit.value.habit.id
 
         // Actualizar los campos del hábito
         habitUpt.habit = habitUpt.habit.copy(
             name = name,
-            description = if(description.isNullOrEmpty()) null else description,
+            description = if (description.isNullOrEmpty()) null else description,
             times = times.toInt(),
             unit = uiState.value.unitPicked.id,
             color = uiState.value.color.toArgb(),
             icon = uiState.value.icon.name.split(".")[1]
         )
 
-        habitUpt.notifications = _habit.value.notifications.map {
-            it.copy(habitId = habitUpt.habit.id)
-        }.toMutableList()
-
-        if (!edit)
-            habitWithNotificacionRepo.insertaHabit(habitUpt.habit, habitUpt.notifications)
+        if (!edit){
+            id = habitWithNotificacionRepo.insertaHabit(habitUpt.habit, notifications.value)
+        }
         else {
-            habitWithNotificacionRepo.updateHabit(habitUpt.habit, habitUpt.notifications)
+            Log.d("habitdsdssddsds",notifications.value.toString())
+            habitWithNotificacionRepo.updateHabit(habitUpt.habit, notifications.value)
         }
 
+        val notificationsWithId = habitWithNotificacionRepo.getNotificationById(id)
+
         withContext(Dispatchers.Main) {
-            done()
+            done(notificationsWithId,_notificationsCancel.value)
         }
     }
 
     fun insertNotification(notification: Notification) {
         if (_notificationSelected.value == null) {
-
-            if (habit.value.notifications.find { item -> item.hour == notification.hour && item.minute == notification.minute } == null) {
-                val notifications = habit.value.notifications
-                notifications.add(notification)
-                _habit.value = habit.value.copy(notifications = notifications)
+            if (_notifications.value.find { it.hour == notification.hour && it.minute == notification.minute } == null) {
+                notification.habitId = _habit.value.habit.id
+                _notifications.update { currentState ->
+                    currentState + notification
+                }
             } else {
-                _uiState.update {
-                    it.copy(
-                        attentionText = R.string.general_dx_attention_subtitile_time_picker,
-                        showGeneralDx = true
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        showGeneralDx = true,
+                        attentionText = R.string.general_dx_attention_subtitile_time_picker
                     )
                 }
             }
         } else {
-            val notifications = habit.value.notifications
-            notifications.map {
-                if (it.hour == _notificationSelected.value!!.hour && it.minute == _notificationSelected.value!!.minute) {
-                    it.hour = notification.hour
-                    it.minute = notification.minute
+            _notifications.update { currentState ->
+                currentState.map {
+                    if (it == _notificationSelected.value) {
+                        it.copy(hour = notification.hour, minute = notification.minute)
+                    } else {
+                        it
+                    }
                 }
-                _habit.value = habit.value.copy(notifications = notifications)
             }
         }
     }
 
     fun deleteNotificacion(notification: Notification) {
-        val notifications = habit.value.notifications.filter { it != notification }
-        _habit.value = habit.value.copy(notifications = notifications.toMutableList())
+        _notifications.update { currentState ->
+            currentState.filter { it != notification }
+        }
     }
 
-    fun setData(color: Int,icon:String,unit:Int){
+    fun setData(color: Int, icon: String, unit: Int) {
         setColor(Color(color))
         setIcon(icon)
         setUnit(unit)
@@ -142,12 +150,18 @@ class AddHabitViewModel @Inject constructor(
     fun getHabit(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _habit.value = habitWithNotificacionRepo.getHabitById(id)
+            _notifications.value = _habit.value.notifications
+
+            _notificationsCancel.value = _notifications.value.map { it.id }
         }
     }
 
     fun openColor() {
         _uiState.update { currentState ->
-            currentState.copy(colorSelected = !currentState.colorSelected, iconSelected = false)
+            currentState.copy(
+                colorSelected = !currentState.colorSelected,
+                iconSelected = false
+            )
         }
     }
 
@@ -161,7 +175,10 @@ class AddHabitViewModel @Inject constructor(
 
     fun openIcon() {
         _uiState.update { currentState ->
-            currentState.copy(colorSelected = false, iconSelected = !currentState.iconSelected)
+            currentState.copy(
+                colorSelected = false,
+                iconSelected = !currentState.iconSelected
+            )
         }
     }
 
@@ -205,13 +222,6 @@ class AddHabitViewModel @Inject constructor(
 
     fun getNotification(): Notification? {
         return _notificationSelected.value
-    }
-
-    fun openShowGeneralDx() {
-        _uiState.update { currentState ->
-            currentState.copy(showGeneralDx = true)
-        }
-
     }
 
     fun setText() {
