@@ -78,7 +78,6 @@ class AddHabitViewModel @Inject constructor(
             id = habitWithNotificacionRepo.insertaHabit(habitUpt.habit, notifications.value)
         }
         else {
-            Log.d("habitdsdssddsds",notifications.value.toString())
             habitWithNotificacionRepo.updateHabit(habitUpt.habit, notifications.value)
         }
 
@@ -236,6 +235,16 @@ class AddHabitViewModel @Inject constructor(
     fun setIcon(icon: String) {
         _uiState.update { currentState ->
             currentState.copy(icon = iconByName(icon))
+        }
+    }
+
+    fun setUiState(addHabitScreenState: AddHabitScreenState){
+        _uiState.update { currentState ->
+            currentState.copy(
+                color = addHabitScreenState.color,
+                icon = addHabitScreenState.icon,
+                unitPicked = addHabitScreenState.unitPicked
+            )
         }
     }
 }

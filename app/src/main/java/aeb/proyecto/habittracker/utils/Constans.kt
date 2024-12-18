@@ -143,5 +143,8 @@ object Constans {
         )
     }
 
+    val permissions = android.Manifest.permission.POST_NOTIFICATIONS
+
+
 
 }

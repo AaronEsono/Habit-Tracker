@@ -15,6 +15,7 @@ import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitViewModel
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.ui.theme.primaryColorApp
 import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.Constans.permissions
 import aeb.proyecto.habittracker.utils.LocalNavController
 import aeb.proyecto.habittracker.utils.MainLocalViewModel
 import android.app.NotificationChannel
@@ -23,8 +24,10 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,6 +45,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -72,6 +76,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val mainViewModel: MainViewModel = hiltViewModel()
 
+                RequestPermissions()
                 CompositionLocalProvider(
                     MainLocalViewModel provides mainViewModel,
                     LocalNavController provides navController
@@ -246,4 +251,16 @@ fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostContro
     }
 
     return title
+}
+
+@Composable
+fun RequestPermissions(){
+    val request = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ){}
+
+    LaunchedEffect(Unit) {
+        request.launch(permissions)
+    }
+
 }

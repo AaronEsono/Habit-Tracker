@@ -36,6 +36,7 @@
     <string name="add_habit_add_hour">Añadir hora</string>
 
     <string name="add_habit_pick_time">%1$s : %2$s</string>
+    <string name="add_habit_permissions">Para poder activar las notificaciones, ve a la parte de notificaciones y habilita los permisos.</string>
 
     <!-- Add habit screen Bottom Sheet-->
     <string name="add_habit_bottom_sheet_add_habit_title">Categoría</string>
@@ -76,6 +77,7 @@
     <string name="buttons_save">Guardar</string>
     <string name="buttons_edit">Editar</string>
     <string name="buttons_cancel">Cancelar</string>
+    <string name="buttons_go_settings">Ir a ajustes</string>
 
     <!-- General dx -->
     <string name="general_dx_attention">Atención</string>

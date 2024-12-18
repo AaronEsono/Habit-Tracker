@@ -1,8 +1,10 @@
 package aeb.proyecto.habittracker.ui.screens.addHabit
 
+import aeb.proyecto.habittracker.MainActivity
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.notification.AlarmItem
 import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
+import aeb.proyecto.habittracker.data.model.state.AddHabitScreenState
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPickUnit
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
@@ -11,12 +13,14 @@ import aeb.proyecto.habittracker.ui.components.card.CardPickColorAddHabit
 import aeb.proyecto.habittracker.ui.components.items.ColorItem
 import aeb.proyecto.habittracker.ui.components.items.IconItem
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
+import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
 import aeb.proyecto.habittracker.ui.components.timePicker.TimePickerHabit
 import aeb.proyecto.habittracker.utils.Constans.InPlural
 import aeb.proyecto.habittracker.utils.Constans.ListColors
 import aeb.proyecto.habittracker.utils.Constans.ListIcons
 import aeb.proyecto.habittracker.utils.Constans.onlyDigits
+import aeb.proyecto.habittracker.utils.Constans.permissions
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
@@ -25,8 +29,15 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing72
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import aeb.proyecto.habittracker.utils.cancelAlarm
 import aeb.proyecto.habittracker.utils.setUpAlarm
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,19 +64,32 @@ import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -117,6 +141,34 @@ fun AddHabitScreen(
                 replace(0, length, habit.habit.times.toString())
             }
             addHabitViewModel.setData(habit.habit.color, habit.habit.icon, habit.habit.unit)
+        }
+    }
+
+    val isPermissionGranted = remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState = remember { mutableStateOf(Lifecycle.Event.ON_ANY) }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            lifecycleState.value = event
+            if (event == Lifecycle.Event.ON_RESUME) {
+                isPermissionGranted.value = ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 
@@ -218,45 +270,25 @@ fun AddHabitScreen(
 
             Spacer(modifier = Modifier.padding(vertical = spacing12))
 
-            BodySmallText(stringResource(R.string.add_habit_pick_date))
-
-            CardInfoAddHabit(
-                title = stringResource(R.string.add_habit_add_hour),
-                icon = Icons.Filled.Add,
-                finalIcon = Icons.Filled.KeyboardArrowRight,
-                color = uiState.color,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = spacing8),
-                onClick = {
-                    addHabitViewModel.openShowTimePicker(null)
-                },
-                onDelete = {
-                    addHabitViewModel.openShowTimePicker(null)
+            if (isPermissionGranted.value) {
+                AddHabitNotifications(addHabitViewModel, uiState, notifications)
+            } else {
+                Column (modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)){
+                    LabelMediumText(text = stringResource(R.string.add_habit_permissions), textAlign = TextAlign.Left)
+                    CustomFilledButton(
+                        modifier = Modifier.padding(top = spacing8).fillMaxWidth(),
+                        title = R.string.buttons_go_settings,
+                        icon = R.drawable.ic_settingsbtn,
+                        color = uiState.color,
+                        onClick = {
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.fromParts("package", context.packageName, null)
+                            }
+                            context.startActivity(intent)
+                        }
+                    )
                 }
-            )
-
-            notifications.forEach { notification ->
-                CardInfoAddHabit(
-                    title = stringResource(
-                        R.string.add_habit_pick_time,
-                        notification.hour,
-                        if (notification.minute < 10) "0${notification.minute}" else notification.minute
-                    ),
-                    icon = Icons.Filled.AddAlert,
-                    finalIcon = Icons.Filled.Delete,
-                    color = uiState.color,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = spacing8),
-                    onClick = {
-                        addHabitViewModel.openShowTimePicker(notification)
-                    },
-                    onDelete = { addHabitViewModel.deleteNotificacion(notification) },
-                    colorInFinalIcon = true
-                )
             }
-
         }
 
         CustomFilledButton(
@@ -278,14 +310,17 @@ fun AddHabitScreen(
                         timesHabit.text.toString(),
                         edit
                     ) { notifications, cancel ->
-                        if(edit){
+                        if (edit) {
                             cancel.forEach {
-                                cancelAlarm(context,it)
+                                cancelAlarm(context, it)
                             }
                         }
 
                         notifications.forEach {
-                            setUpAlarm(context, NotificationWithName(it,nameHabit.text.toString(),uiState.color))
+                            setUpAlarm(
+                                context,
+                                NotificationWithName(it, nameHabit.text.toString(), uiState.color)
+                            )
                         }
                         navigateToHabit()
                     }

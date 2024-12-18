@@ -99,4 +99,7 @@ dependencies {
 
     //Gson
     implementation(libs.gson)
+
+    //Permissions
+    implementation (libs.androidx.activity.compose.v172)
 }
