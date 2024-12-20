@@ -31,8 +31,7 @@ object Constans {
     )
 
     val dayOfWeek = DayOfWeek.MONDAY.value
-
-    const val requiredDays = 182
+    val numberOfDays = 90
 
     val ListColors = listOf(
         pickColor1,
@@ -59,6 +58,19 @@ object Constans {
 
     const val PICK = 1
     const val CHOOSE = 2
+
+    enum class DaysWeek(
+        val id: Int,
+        val day: Int,
+    ){
+        MONDAY(1, R.string.day_1),
+        TUESDAY(2, R.string.day_2),
+        WEDNESDAY(3, R.string.day_3),
+        THURSDAY(4, R.string.day_4),
+        FRIDAY(5, R.string.day_5),
+        SATURDAY(6, R.string.day_6),
+        SUNDAY(7, R.string.day_7)
+    }
 
     enum class Units(
         val id: Int,

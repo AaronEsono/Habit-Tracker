@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker.ui.components.dailyHabit
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.theme.DarKThemeText
 import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -38,7 +39,7 @@ fun CardDailyHabitDialog(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = spacing8, bottom = spacing8, end = spacing8)
+            .padding(bottom = spacing8)
             .wrapContentHeight()
     ) {
 

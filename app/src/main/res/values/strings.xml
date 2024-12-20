@@ -97,4 +97,14 @@
     <!-- Notification -->
     <string name="notification_subtitle">Es hora de hacer el hábito %1$s</string>
 
+    <!-- Days -->
+    <string name="day_1">Lun</string>
+    <string name="day_2">Mar</string>
+    <string name="day_3">Mié</string>
+    <string name="day_4">Jue</string>
+    <string name="day_5">Vie</string>
+    <string name="day_6">Sáb</string>
+    <string name="day_7">Dom</string>
+
+
 </resources>

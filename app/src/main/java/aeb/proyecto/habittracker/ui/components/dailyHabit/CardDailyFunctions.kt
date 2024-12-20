@@ -1,9 +1,12 @@
 package aeb.proyecto.habittracker.ui.components.dailyHabit
 
+import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.data.entities.Habit
+import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Constans.dayOfWeek
-import aeb.proyecto.habittracker.utils.Constans.requiredDays
+import aeb.proyecto.habittracker.utils.Constans.numberOfDays
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -31,40 +34,39 @@ fun getProgress(dates: List<DailyHabit>, habit: Habit): Float {
     }
 }
 
-fun getPrecomputedItems(items:Int, dailyHabits: List<DailyHabit>, habit: Habit):List<Color>{
-    val dateMap = dailyHabits.associateBy { LocalDate.parse(it.date) }
+fun getProgressDaily(daily: List<DailyHabit>, date:LocalDate, habit: Habit): Float {
+    val dailyHabit = daily.find { (LocalDate.parse(it.date)) == date }
+    var progress:Float
 
-    return List(items) { index ->
-        val dateDay = LocalDate.now().minusDays((items - index - 1).toLong())
-        getColorDay(dateDay, dateMap, habit)
+    if (dailyHabit != null) {
+        progress = dailyHabit.timesDone.toFloat() / habit.times.toFloat()
+    } else {
+        progress = 0f
     }
+
+    if (progress >= 1) {
+        progress = 1f
+    }
+
+    return progress
 }
 
-fun getColorDay(dateDay: LocalDate, dateMap: Map<LocalDate, DailyHabit>, habit: Habit): Color {
-    val dailyHabit = dateMap[dateDay] // O(1) en lugar de O(n) con 'find'
+fun getDaysOfWeek(): List<LocalDate> {
+    val daysOfWeek = mutableListOf<LocalDate>()
+    val firstDay = LocalDate.now().minusDays(numberOfDays.toLong() - 1)
 
-    return if (dailyHabit != null) {
-        Color(habit.color).copy(alpha = 0.1f + (1f - 0.1f) * (dailyHabit.timesDone.toFloat() / habit.times.toFloat()))
-    } else {
-        Color(habit.color).copy(alpha = 0.1f)
+    for (i in 0 until numberOfDays) {
+        daysOfWeek.add(firstDay.plusDays(i.toLong()))
     }
-}
-
-fun getPrintDays(): Int {
-    val todayDay = LocalDate.now().dayOfWeek.value
-    val daySelected = dayOfWeek
-
-    val difference = todayDay - daySelected
-
-    return if (difference < 0) {
-        8 + difference + requiredDays
-    } else {
-        difference + 1 + requiredDays
-    }
+    return daysOfWeek
 }
 
 fun iconByName(name: String): ImageVector {
     val cl = Class.forName("androidx.compose.material.icons.filled.${name}Kt")
     val method = cl.declaredMethods.first()
     return method.invoke(null, Icons.Filled) as ImageVector
+}
+
+fun getDay(date:LocalDate):Int{
+    return Constans.DaysWeek.entries.find { date.dayOfWeek.value == it.id }?.day ?: R.string.day_1
 }
