@@ -1,21 +1,13 @@
 package aeb.proyecto.habittracker.ui.screens.addHabit
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.data.entities.HabitWithNotification
 import aeb.proyecto.habittracker.data.entities.Notification
 import aeb.proyecto.habittracker.data.model.state.AddHabitScreenState
 import aeb.proyecto.habittracker.data.repo.HabitRepo
 import aeb.proyecto.habittracker.data.repo.HabitWithNotificacionRepo
-import aeb.proyecto.habittracker.data.repo.NotificationRepo
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.utils.Constans
-import aeb.proyecto.habittracker.utils.Constans.ListColors
-import android.util.Log
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ListItemColors
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
@@ -84,7 +76,8 @@ class AddHabitViewModel @Inject constructor(
         val notificationsWithId = habitWithNotificacionRepo.getNotificationById(id)
 
         withContext(Dispatchers.Main) {
-            done(notificationsWithId,_notificationsCancel.value)
+            done(notificationsWithId.filter { !_notificationsCancel.value.contains(it.id) },
+                _notificationsCancel.value.filter { _notifications.value.find { notification -> notification.id == it } == null })
         }
     }
 

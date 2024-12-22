@@ -4,24 +4,18 @@ import aeb.proyecto.habittracker.data.model.action.ActionIcon
 import aeb.proyecto.habittracker.data.model.action.TopbarSetUp
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
-import aeb.proyecto.habittracker.ui.navigation.Achievements
 import aeb.proyecto.habittracker.ui.navigation.AddHabit
 import aeb.proyecto.habittracker.ui.navigation.Habits
 import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
 import aeb.proyecto.habittracker.ui.navigation.Settings
 import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.listBottomBarScreens
-import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitViewModel
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.ui.theme.primaryColorApp
 import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
 import aeb.proyecto.habittracker.utils.Constans.permissions
 import aeb.proyecto.habittracker.utils.LocalNavController
 import aeb.proyecto.habittracker.utils.MainLocalViewModel
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -55,7 +49,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -232,10 +225,6 @@ fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostContro
 
         Statistics::class.qualifiedName -> {
             title = TopbarSetUp(R.string.topbar_stadistics, listOf())
-        }
-
-        Achievements::class.qualifiedName -> {
-            title = TopbarSetUp(R.string.topbar_achievements, listOf())
         }
 
         Settings::class.qualifiedName -> {

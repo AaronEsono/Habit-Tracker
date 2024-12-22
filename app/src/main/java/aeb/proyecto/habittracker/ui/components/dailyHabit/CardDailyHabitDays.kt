@@ -7,12 +7,14 @@ import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.theme.DarKThemeText
 import aeb.proyecto.habittracker.ui.theme.textColors
+import aeb.proyecto.habittracker.utils.Constans.visibleItems
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing3
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing6
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -24,6 +26,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -51,14 +54,20 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -68,87 +77,100 @@ import java.time.LocalDate
 @Composable
 fun CardDailyHabitDays(
     color: Color,
-    habit: HabitWithDailyHabit
+    habit: HabitWithDailyHabit,
+    getDaysOfWeek: List<LocalDate>,
+    isInDialog:Boolean = false
 ) {
 
-    val daysBeforeToday = rememberUpdatedState(getDaysOfWeek())
-    val listState = rememberLazyListState()
-
-    LaunchedEffect(daysBeforeToday.value) {
-        listState.scrollToItem(daysBeforeToday.value.size - 1)
-    }
+    val listState = rememberLazyListState(initialFirstVisibleItemIndex = getDaysOfWeek.size - 1)
 
     Spacer(modifier = Modifier.padding(top = spacing12))
 
-    LazyRow(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(horizontal = spacing4),
-        state = listState,
-        horizontalArrangement = Arrangement.spacedBy(spacing4)
     ) {
-        items(
-            items = daysBeforeToday.value,
-            key = { it.toString() }
+        val totalHorizontalPadding = spacing4 * 2
+        val totalSpacing = spacing4 * (visibleItems - 1)
+        val itemWidth = (maxWidth - totalHorizontalPadding - totalSpacing) / visibleItems
+
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clipToBounds()
+                .padding(horizontal = spacing4),
+            state = listState,
+            horizontalArrangement = Arrangement.spacedBy(spacing4)
         ) {
-            val animatedProgress by animateFloatAsState(
-                targetValue = getProgressDaily(habit.dailyHabits, it, habit.habit),
-                animationSpec = tween(
-                    durationMillis = 800, // Duración de la animación
-                    easing = LinearOutSlowInEasing // Curva de animación
-                ), label = ""
-            )
-
-            val animatedColor by animateColorAsState(
-                targetValue = if (animatedProgress == 1f) color.copy(alpha = 0.5f) else color.copy(alpha = 0.2f),
-                animationSpec = tween(
-                    durationMillis = 500, // Duración de la animación
-                    easing = FastOutSlowInEasing // Curva de animación
-                ), label = ""
-            )
-
-            Column(
-                modifier = Modifier
-                    .wrapContentSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            items(
+                items = getDaysOfWeek,
+                key = { it.toString() }
             ) {
-                LabelSmallText(text = stringResource(getDay(it)))
+                val animatedProgress by animateFloatAsState(
+                    targetValue = getProgressDaily(habit.dailyHabits, it, habit.habit),
+                    animationSpec = tween(
+                        durationMillis = 800,
+                        easing = LinearOutSlowInEasing
+                    ), label = ""
+                )
 
-                Spacer(modifier = Modifier.padding(vertical = spacing2))
+                val animatedColor by animateColorAsState(
+                    targetValue = if (animatedProgress == 1f) color.copy(alpha = 0.6f) else color.copy(
+                        alpha = 0.2f
+                    ),
+                    animationSpec = tween(
+                        durationMillis = 500,
+                        easing = FastOutSlowInEasing
+                    ), label = ""
+                )
 
-                Box(
+                Column(
                     modifier = Modifier
-                        .size(40.dp) // Tamaño del círculo
-                        .background(
-                            animatedColor,
-                            shape = CircleShape
-                        ), // Fondo circular
-                    contentAlignment = Alignment.Center // Centrar el contenido
+                        .wrapContentSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CircularProgressIndicator(
-                        progress = { animatedProgress },
-                        modifier = Modifier.fillMaxSize(),
-                        color = color,
-                        strokeWidth = spacing3,
-                        trackColor = Color.Transparent,
-                    )
+                    LabelSmallText(text = stringResource(getDay(it)))
 
-                    LabelMediumText(
-                        text = "${it.dayOfMonth}",
-                        color = DarKThemeText,
-                    )
+                    Spacer(modifier = Modifier.padding(vertical = spacing2))
 
-                    if(animatedProgress == 1f){
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_check),
-                            contentDescription = "",
-                            Modifier.size(30.dp),
-                            tint = DarKThemeText.copy(alpha = 0.6f),
+                    Box(
+                        modifier = Modifier
+                            .size(itemWidth)
+                            .background(
+                                animatedColor,
+                                shape = CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            progress = { animatedProgress },
+                            modifier = Modifier.fillMaxSize(),
+                            color = color,
+                            strokeWidth = spacing3,
+                            trackColor = color.copy(alpha = 0.1f),
+                            gapSize = 0.dp
                         )
+
+                        if (animatedProgress != 1f) {
+                            LabelMediumText(
+                                text = "${it.dayOfMonth}",
+                                color = DarKThemeText,
+                            )
+                        }
+
+                        if (animatedProgress == 1f) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_check),
+                                contentDescription = "",
+                                Modifier.size(if (isInDialog) 20.dp else 30.dp),
+                                tint = DarKThemeText.copy(alpha = 0.8f),
+                            )
+                        }
                     }
                 }
             }
         }
     }
+
 }

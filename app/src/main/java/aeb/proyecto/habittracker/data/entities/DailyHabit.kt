@@ -10,4 +10,5 @@ data class DailyHabit(
     val idHabit:Long = 0,
     var timesDone:Int = 0,
     val date:String = "",
+    var hourFinishDate:String? = null
 )

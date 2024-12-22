@@ -1,10 +1,11 @@
-package aeb.proyecto.habittracker.ui.screens.addHabit
+package aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitComponents
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.state.AddHabitScreenState
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPickUnit
 import aeb.proyecto.habittracker.ui.components.timePicker.TimePickerHabit
+import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitViewModel
 import androidx.compose.runtime.Composable
 
 @Composable

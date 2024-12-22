@@ -64,7 +64,7 @@ fun BottomSheetCalendar(
                 modifier = Modifier.padding(bottom = spacing8)
             )
 
-            CalendarHeader(state.yearMonth, { calendarViewModel.toPreviousMonth(it) }) {
+            CalendarHeader(state.yearMonth,false, { calendarViewModel.toPreviousMonth(it) }) {
                 calendarViewModel.toNextMonth(it)
             }
 

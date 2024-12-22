@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker.ui.screens.habits
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.dailyHabit.CardDailyHabit
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
+import aeb.proyecto.habittracker.ui.screens.habits.habitsComponents.HabitScreenStates
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

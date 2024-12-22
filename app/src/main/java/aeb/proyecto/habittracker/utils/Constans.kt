@@ -1,19 +1,13 @@
 package aeb.proyecto.habittracker.utils
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.ui.theme.pickColor1
-import aeb.proyecto.habittracker.ui.theme.pickColor2
-import aeb.proyecto.habittracker.ui.theme.pickColor3
-import aeb.proyecto.habittracker.ui.theme.pickColor4
-import aeb.proyecto.habittracker.ui.theme.pickColor5
-import aeb.proyecto.habittracker.ui.theme.pickColor6
-import aeb.proyecto.habittracker.ui.theme.pickColor7
-import aeb.proyecto.habittracker.ui.theme.pickColor8
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessAlarm
 import androidx.compose.material.icons.filled.AccessTimeFilled
+import androidx.compose.material.icons.filled.AirlineSeatIndividualSuite
+import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Headset
@@ -32,17 +26,7 @@ object Constans {
 
     val dayOfWeek = DayOfWeek.MONDAY.value
     val numberOfDays = 90
-
-    val ListColors = listOf(
-        pickColor1,
-        pickColor2,
-        pickColor3,
-        pickColor4,
-        pickColor5,
-        pickColor6,
-        pickColor7,
-        pickColor8
-    )
+    val visibleItems = 8
 
     private val IconsPr = Icons.Filled
     val ListIcons = listOf(
@@ -53,7 +37,9 @@ object Constans {
         IconsPr.Headset,
         IconsPr.DirectionsCar,
         IconsPr.Call,
-        IconsPr.SmartToy
+        IconsPr.SmartToy,
+        IconsPr.AirlineSeatIndividualSuite,
+        IconsPr.Brush
     )
 
     const val PICK = 1
@@ -70,6 +56,24 @@ object Constans {
         FRIDAY(5, R.string.day_5),
         SATURDAY(6, R.string.day_6),
         SUNDAY(7, R.string.day_7)
+    }
+
+    enum class Months(
+        val id: Int,
+        val month: Int,
+    ){
+        JANUARY(1, R.string.month_1),
+        FEBRUARY(2, R.string.month_2),
+        MARCH(3, R.string.month_3),
+        APRIL(4, R.string.month_4),
+        MAY(5, R.string.month_5),
+        JUNE(6, R.string.month_6),
+        JULY(7, R.string.month_7),
+        AUGUST(8, R.string.month_8),
+        SEPTEMBER(9, R.string.month_9),
+        OCTOBER(10, R.string.month_10),
+        NOVEMBER(11, R.string.month_11),
+        DECEMBER(12, R.string.month_12)
     }
 
     enum class Units(

@@ -1,4 +1,4 @@
-package aeb.proyecto.habittracker.ui.screens.habits
+package aeb.proyecto.habittracker.ui.screens.habits.habitsComponents
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.state.HabitsScreenState
@@ -6,6 +6,7 @@ import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetCalendar
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetChoseSteps
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.dialog.DialogHabit
+import aeb.proyecto.habittracker.ui.screens.habits.HabitsViewModel
 import aeb.proyecto.habittracker.utils.cancelAlarm
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext

@@ -46,6 +46,7 @@ fun CardDailyHabit(
     val dailyHabits = rememberUpdatedState(habitWithDailyHabit.dailyHabits).value
 
     val icon = rememberUpdatedState(getIcon(habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit))
+    val getDays = rememberUpdatedState(getDaysOfWeek())
 
     val unit = remember { mutableStateOf(Constans.Units.entries.find { it.id == habit.unit }?.pluralTitle) }
 
@@ -85,7 +86,9 @@ fun CardDailyHabit(
 
             CardDailyHabitDays(
                 color = Color(habit.color),
-                habit = habitWithDailyHabit
+                habit = habitWithDailyHabit,
+                getDaysOfWeek = getDays.value,
+                isInDialog = isInDialog
             )
 
             Spacer(modifier = Modifier.padding(spacing4))

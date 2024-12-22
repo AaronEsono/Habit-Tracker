@@ -16,4 +16,9 @@ class DailyHabitRepo @Inject constructor(
     fun updateDailyHabit(dailyHabit: DailyHabit) {
         dailyHabitDao.updateDailyHabit(dailyHabit)
     }
+
+    fun getDailyHabits(id:Long):List<DailyHabit> {
+        return dailyHabitDao.getDailyHabits(id)
+    }
+
 }

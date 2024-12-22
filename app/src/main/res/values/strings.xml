@@ -38,6 +38,10 @@
     <string name="add_habit_pick_time">%1$s : %2$s</string>
     <string name="add_habit_permissions">Para poder activar las notificaciones, ve a la parte de notificaciones y habilita los permisos.</string>
 
+
+    <!-- Statistics screen -->
+    <string name="statistics_screen_no_habit">No tienes  ningún hábito registrado. Para ver la estadísticas, crea una en la pantalla de hábitos</string>
+
     <!-- Add habit screen Bottom Sheet-->
     <string name="add_habit_bottom_sheet_add_habit_title">Categoría</string>
     <string name="add_habit_bottom_sheet_add_habit_subtitle">Elija la unidad de medida para el hábito</string>
@@ -106,5 +110,18 @@
     <string name="day_6">Sáb</string>
     <string name="day_7">Dom</string>
 
+    <!-- Months -->
+    <string name="month_1">Enero</string>
+    <string name="month_2">Febrero</string>
+    <string name="month_3">Marzo</string>
+    <string name="month_4">Abril</string>
+    <string name="month_5">Mayo</string>
+    <string name="month_6">Junio</string>
+    <string name="month_7">Julio</string>
+    <string name="month_8">Agosto</string>
+    <string name="month_9">Septiembre</string>
+    <string name="month_10">Octubre</string>
+    <string name="month_11">Noviembre</string>
+    <string name="month_12">Diciembre</string>
 
 </resources>

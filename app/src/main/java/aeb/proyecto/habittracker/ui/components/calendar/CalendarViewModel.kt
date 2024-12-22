@@ -4,6 +4,7 @@ import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.data.model.calendar.CalendarDataSource
 import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

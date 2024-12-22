@@ -2,6 +2,7 @@ package aeb.proyecto.habittracker.ui.components.calendar
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.BodyLargeText
+import aeb.proyecto.habittracker.utils.Constans
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
@@ -22,9 +23,12 @@ import java.time.YearMonth
 @Composable
 fun CalendarHeader(
     yearMonth: YearMonth,
+    isInStatistics:Boolean = false,
     onPreviousMonthButtonClicked: (YearMonth) -> Unit,
     onNextMonthButtonClicked: (YearMonth) -> Unit,
 ) {
+    val month = Constans.Months.entries.find { it.id == yearMonth.month.value }
+
     Row {
         IconButton(onClick = {
             onPreviousMonthButtonClicked.invoke(yearMonth.minusMonths(1))
@@ -35,7 +39,7 @@ fun CalendarHeader(
             )
         }
         BodyLargeText(
-            text = "${yearMonth.month.value} / ${yearMonth.year}",
+            text = if(isInStatistics) stringResource(month?.month ?: R.string.month_1) else "${yearMonth.month.value} / ${yearMonth.year}",
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .weight(1f)

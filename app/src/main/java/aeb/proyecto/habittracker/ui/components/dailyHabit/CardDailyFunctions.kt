@@ -4,13 +4,10 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.utils.Constans
-import aeb.proyecto.habittracker.utils.Constans.dayOfWeek
 import aeb.proyecto.habittracker.utils.Constans.numberOfDays
-import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import java.time.LocalDate
 

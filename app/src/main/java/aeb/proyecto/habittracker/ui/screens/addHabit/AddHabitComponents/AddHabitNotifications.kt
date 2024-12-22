@@ -1,14 +1,12 @@
-package aeb.proyecto.habittracker.ui.screens.addHabit
+package aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitComponents
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.Notification
-import aeb.proyecto.habittracker.data.model.notification.AlarmItem
 import aeb.proyecto.habittracker.data.model.state.AddHabitScreenState
 import aeb.proyecto.habittracker.ui.components.card.CardInfoAddHabit
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
-import aeb.proyecto.habittracker.utils.Dimmens.spacing12
+import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitViewModel
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons

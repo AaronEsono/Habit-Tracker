@@ -9,6 +9,7 @@ import aeb.proyecto.habittracker.data.repo.DailyHabitRepo
 import aeb.proyecto.habittracker.data.repo.HabitRepo
 import aeb.proyecto.habittracker.data.repo.HabitWithNotificacionRepo
 import aeb.proyecto.habittracker.utils.Constans
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -82,12 +84,20 @@ class HabitsViewModel @Inject constructor(
                 if (dailyHabit.timesDone > (timesHabit))
                     dailyHabit.timesDone = timesHabit
 
+                else if(dailyHabit.timesDone == timesHabit)
+                    dailyHabit.hourFinishDate = LocalDateTime.now().toString()
+
                 dailyHabitRepo.insertDailyHabit(dailyHabit)
             } else {
                 daily = daily.copy(timesDone = daily.timesDone + times)
                 if ((daily.timesDone > timesHabit && times == 1) || restart) {
                     daily = daily.copy(timesDone = 0)
                 }
+
+                if(daily.timesDone == timesHabit)
+                    daily.hourFinishDate = LocalDateTime.now().toString()
+                else
+                    daily.hourFinishDate = null
 
                 dailyHabitRepo.updateDailyHabit(daily)
             }

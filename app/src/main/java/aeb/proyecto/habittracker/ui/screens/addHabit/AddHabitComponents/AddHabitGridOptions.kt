@@ -1,8 +1,9 @@
-package aeb.proyecto.habittracker.ui.screens.addHabit
+package aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitComponents
 
 import aeb.proyecto.habittracker.ui.components.items.ColorItem
 import aeb.proyecto.habittracker.ui.components.items.IconItem
-import aeb.proyecto.habittracker.utils.Constans.ListColors
+import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitViewModel
+import aeb.proyecto.habittracker.ui.theme.pickColors
 import aeb.proyecto.habittracker.utils.Constans.ListIcons
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
@@ -54,10 +55,10 @@ fun GridOptions(
                 verticalArrangement = Arrangement.spacedBy(8.dp) // Espaciado vertical entre filas
             ) {
                 if (showColors) {
-                    items(ListColors.size) { item ->
+                    items(pickColors.size) { item ->
                         ColorItem(
-                            color = ListColors[item],
-                            selected = color == ListColors[item]
+                            color = pickColors[item],
+                            selected = color == pickColors[item]
                         ) {
                             addHabitViewModel.closeColor(it)
                         }
