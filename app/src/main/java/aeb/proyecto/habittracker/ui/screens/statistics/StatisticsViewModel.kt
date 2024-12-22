@@ -7,11 +7,13 @@ import aeb.proyecto.habittracker.data.repo.HabitRepo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,11 +32,8 @@ class StatisticsViewModel @Inject constructor(
     private val _dailyHabits:MutableStateFlow<List<DailyHabit>> = MutableStateFlow(listOf())
     val dailyHabits:StateFlow<List<DailyHabit>> = _dailyHabits.asStateFlow()
 
-    private val idSelected:MutableStateFlow<Long> = MutableStateFlow(0)
-
-
-    fun getIdSelected():Long{
-        return idSelected.value
+    fun getDailyHabits(id:Long) = viewModelScope.launch(Dispatchers.IO) {
+        _dailyHabits.value = dailyHabitRepo.getDailyHabits(id)
     }
 
     //Calendario dias completados

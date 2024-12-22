@@ -6,6 +6,7 @@ import aeb.proyecto.habittracker.ui.screens.habits.HabitsScreen
 import aeb.proyecto.habittracker.ui.screens.settings.SettingsScreen
 import aeb.proyecto.habittracker.ui.screens.statistics.StatisticsScreen
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -32,7 +33,11 @@ fun NavigationWrapper(navController: NavHostController,mainViewModel: MainViewMo
             AddHabitScreen(
                 edit = edit,
                 id = id,
-                navigateToHabit = { navController.navigate(Habits) })
+                navigateToHabit = { navController.navigate(Habits){
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        inclusive = true
+                    }
+                } })
         }
     }
 

@@ -36,6 +36,4 @@ fun StatisticsScreen(statisticsViewModel: StatisticsViewModel = hiltViewModel())
     }else{
         StatisticsContent(habits, statisticsViewModel)
     }
-
-
 }

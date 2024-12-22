@@ -183,7 +183,7 @@ fun BottomNavigationHabit(navController: NavHostController) {
                     onClick = {
                         navController.navigate(it.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                                inclusive = true
                             }
                             launchSingleTop = true
                             restoreState = true

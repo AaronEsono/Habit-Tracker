@@ -81,11 +81,10 @@ class HabitsViewModel @Inject constructor(
                     timesDone = times
                 )
 
-                if (dailyHabit.timesDone > (timesHabit))
+                if (dailyHabit.timesDone > (timesHabit)){
                     dailyHabit.timesDone = timesHabit
-
-                else if(dailyHabit.timesDone == timesHabit)
                     dailyHabit.hourFinishDate = LocalDateTime.now().toString()
+                }
 
                 dailyHabitRepo.insertDailyHabit(dailyHabit)
             } else {

@@ -89,9 +89,7 @@ fun AddHabitScreen(
     }
 
     LaunchedEffect(timesHabit.text) {
-        if (!timesHabit.text.toString().matches(onlyDigits) && timesHabit.text.toString()
-                .isNotEmpty()
-        ) {
+        if (!timesHabit.text.toString().matches(onlyDigits) && timesHabit.text.toString().isNotEmpty()) {
             timesHabit.edit {
                 delete(timesHabit.text.length - 1, timesHabit.text.length)
             }
@@ -100,15 +98,10 @@ fun AddHabitScreen(
 
     LaunchedEffect(habit) {
         if (habit.habit.name.isNotEmpty()) {
-            nameHabit.edit {
-                replace(0, length, habit.habit.name)
-            }
-            descriptionHabit.edit {
-                replace(0, length, habit.habit.description ?: "")
-            }
-            timesHabit.edit {
-                replace(0, length, habit.habit.times.toString())
-            }
+            nameHabit.edit { replace(0, length, habit.habit.name) }
+            descriptionHabit.edit { replace(0, length, habit.habit.description ?: "") }
+            timesHabit.edit { replace(0, length, habit.habit.times.toString()) }
+
             addHabitViewModel.setData(habit.habit.color, habit.habit.icon, habit.habit.unit)
         }
     }
@@ -267,7 +260,7 @@ fun AddHabitScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(spacing16)
-                .align(Alignment.BottomCenter) // Fija el botón en la parte inferior
+                .align(Alignment.BottomCenter)
                 .height(48.dp),
             onClick = {
                 if (nameHabit.text.isEmpty() || timesHabit.text.isEmpty()) {
@@ -280,18 +273,11 @@ fun AddHabitScreen(
                         edit
                     ) { notificationsInsert, cancel ->
                         if (edit) {
-                            cancel.forEach {
-                                Log.d("TAG", "AddHabitScreen2: $it")
-                                cancelAlarm(context, it)
-                            }
+                            cancel.forEach { cancelAlarm(context, it) }
                         }
 
                         notificationsInsert.forEach {
-                            Log.d("TAG", "AddHabitScreen: $it")
-                            setUpAlarm(
-                                context,
-                                NotificationWithName(it, nameHabit.text.toString(), uiState.color)
-                            )
+                            setUpAlarm(context, NotificationWithName(it, nameHabit.text.toString(), uiState.color))
                         }
                         navigateToHabit()
                     }

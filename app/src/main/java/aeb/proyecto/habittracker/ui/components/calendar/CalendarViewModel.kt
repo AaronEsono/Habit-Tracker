@@ -94,4 +94,14 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
+    fun setBackground(dailyHabit: DailyHabit?):Int{
+        var colorBackground = 0
+
+        if(dailyHabit != null && dailyHabit.timesDone != 0){
+           colorBackground = if(dailyHabit.timesDone == habit.value.habit.times) 1 else 2
+        }
+
+        return colorBackground
+    }
+
 }
