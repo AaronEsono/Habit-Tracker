@@ -42,6 +42,11 @@
     <!-- Statistics screen -->
     <string name="statistics_screen_no_habit">No tienes  ningún hábito registrado. Para ver la estadísticas, crea una en la pantalla de hábitos</string>
 
+    <string name="statistics_screen_times_completed">Dias completados</string>
+    <string name="statistics_screen_streak">Racha actual</string>
+    <string name="statistics_screen_best_streak">Mejor racha</string>
+    <string name="statistics_screen_days"> %1$s días</string>
+
     <!-- Add habit screen Bottom Sheet-->
     <string name="add_habit_bottom_sheet_add_habit_title">Categoría</string>
     <string name="add_habit_bottom_sheet_add_habit_subtitle">Elija la unidad de medida para el hábito</string>
