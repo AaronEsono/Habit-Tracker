@@ -40,6 +40,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -85,9 +86,7 @@ class MainActivity : ComponentActivity() {
 fun AppContent(navController: NavHostController, mainViewModel: MainViewModel) {
     Scaffold(
         topBar = { TopBarHabit(navController) },
-        bottomBar = {
-            BottomNavigationHabit(navController)
-        }
+        bottomBar = { BottomNavigationHabit(navController) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -116,9 +115,7 @@ fun TopBarHabit(navController: NavHostController) {
         }
     }
 
-    val title = remember { mutableStateOf(TopbarSetUp(R.string.topbar_habit, listOf())) }
-
-    title.value = setTopBarTitle(currentDestination, navController)
+    val title = setTopBarTitle(currentDestination, navController)
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -127,12 +124,12 @@ fun TopBarHabit(navController: NavHostController) {
         ),
         title = {
             TitleLargeText(
-                text = stringResource(title.value.title),
+                text = stringResource(title.title),
                 textAlign = TextAlign.Center
             )
         },
         actions = {
-            title.value.listAction.forEach {
+            title.listAction.forEach {
                 IconButton(onClick = { it.onClick() }) {
                     Icon(
                         painter = painterResource(it.icon),

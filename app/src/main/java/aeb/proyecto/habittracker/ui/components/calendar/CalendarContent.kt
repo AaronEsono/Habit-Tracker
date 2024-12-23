@@ -67,13 +67,16 @@ fun CalendarContent(
             Row {
                 repeat(7) {
                     val item = if (index < dates.size) dates[index] else CalendarUiState.Date("", false)
+                    val habit = calendarViewModel.findHabit(item)
+                    val getColor = calendarViewModel.setBackground(habit)
+
                     ContentItem(
                         date = item,
                         onClickListener = onDateClickListener,
                         modifier = Modifier.weight(1f),
                         color = color,
-                        dailyHabit = calendarViewModel.findHabit(item),
-                        calendarViewModel,
+                        dailyHabit = habit,
+                        getColor,
                         isStatistics
                     )
                     index++
@@ -90,33 +93,22 @@ fun ContentItem(
     modifier: Modifier = Modifier,
     color: Color,
     dailyHabit: DailyHabit?,
-    calendarViewModel: CalendarViewModel,
+    backgroundColor:Color,
     isStatistics: Boolean = false
 ) {
 
-    val showCanvas = dailyHabit != null && dailyHabit.timesDone != 0 && date.dayOfMonth.isNotEmpty() && !isStatistics
-    var modifierBox = modifier
+    val showCanvas = dailyHabit?.let { it.timesDone != 0 && date.dayOfMonth.isNotEmpty() && !isStatistics } == true
 
-    modifierBox = if(!isStatistics){
-        val colorBox = if (date.isSelected) color.copy(alpha = 0.5f) else Color.Transparent
-
-        modifierBox
-            .background(color = colorBox, shape = CircleShape)
+    val modifierBox = if(!isStatistics){
+        modifier
+            .background(color = if (date.isSelected) color.copy(alpha = 0.5f) else Color.Transparent, shape = CircleShape)
             .padding(spacing10)
             .clickable { onClickListener(date) }
     }else{
-        val colorBackgroundInt = calendarViewModel.setBackground(dailyHabit)
-
-        val colorBackground = when(colorBackgroundInt){
-            0 -> Color.Transparent
-            1 -> color.copy(alpha = 0.75f)
-            else -> color.copy(alpha = 0.2f)
-        }
-
-        modifierBox
+        modifier
             .padding(horizontal = spacing8, vertical = spacing4)
-            .border(2.dp,colorBackground, RoundedCornerShape(spacing12))
-            .background(color = colorBackground, RoundedCornerShape(spacing12))
+            .border(2.dp,backgroundColor, RoundedCornerShape(spacing12))
+            .background(color = backgroundColor, RoundedCornerShape(spacing12))
             .aspectRatio(1f)
     }
 

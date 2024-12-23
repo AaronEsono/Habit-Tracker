@@ -45,7 +45,7 @@ fun StatisticsContent(
 
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(habits[0]) }
 
-    LaunchedEffect(selectedOption) {
+    LaunchedEffect(true) {
         statisticsViewModel.getDailyHabits(selectedOption.id)
     }
 
@@ -64,6 +64,7 @@ fun StatisticsContent(
                 items(habits) {
                     RadioButtonStatistics(it, selectedOption) { habit ->
                         onOptionSelected(habit)
+                        statisticsViewModel.getDailyHabits(habit.id)
                     }
                 }
             }

@@ -55,64 +55,55 @@ class HabitsViewModel @Inject constructor(
             plusOneHabit(id, date)
         } else {
             val time = getRestSteps(id, date)
-            if (time > 0) {
-                _uiState.update { currentState ->
-                    currentState.copy(showSteps = true, date = date)
-                }
-            }else{
-                _uiState.update { currentState ->
-                    currentState.copy(showGeneralDx = true, textAttention = R.string.general_dx_subtitle_restart, date = date)
-                }
+            val newState = if (time > 0) {
+                _uiState.value.copy(showSteps = true, date = date)
+            } else {
+                _uiState.value.copy(
+                    showGeneralDx = true,
+                    textAttention = R.string.general_dx_subtitle_restart,
+                    date = date
+                )
             }
-        }
 
+            _uiState.update { newState }
+        }
     }
 
-    fun plusOneHabit(id: Long, date: LocalDate? = null, times: Int = 1, restart:Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
-            var daily = _habitSelected.value?.dailyHabits?.find {
-                LocalDate.parse(it.date) == (date ?: LocalDate.now())
+    fun plusOneHabit(id: Long, date: LocalDate? = null, times: Int = 1, restart: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
+            val currentDate = date ?: LocalDate.now()
+            val daily = _habitSelected.value?.dailyHabits?.find { LocalDate.parse(it.date) == currentDate }
+            val maxTimes = _habitSelected.value?.habit?.times ?: 0
+
+            val updatedDaily = daily?.let {
+
+                val updatedTimesDone = if (restart || it.timesDone + times > maxTimes) 0 else it.timesDone + times
+                val finishDate = if (updatedTimesDone == maxTimes) LocalDateTime.now().toString() else null
+                it.copy(timesDone = updatedTimesDone, hourFinishDate = finishDate)
+
+            } ?: DailyHabit(
+                idHabit = id,
+                date = currentDate.toString(),
+                timesDone = times.coerceAtMost(maxTimes),
+                hourFinishDate = null
+            ).apply {
+                if (timesDone == maxTimes) hourFinishDate = LocalDateTime.now().toString()
             }
-            val timesHabit = _habitSelected.value?.habit?.times ?: 0
 
-            if (daily == null) {
-                val dailyHabit = DailyHabit(
-                    idHabit = id,
-                    date = date?.toString() ?: LocalDate.now().toString(),
-                    timesDone = times
-                )
-
-                if (dailyHabit.timesDone > (timesHabit)){
-                    dailyHabit.timesDone = timesHabit
-                    dailyHabit.hourFinishDate = LocalDateTime.now().toString()
-                }
-
-                dailyHabitRepo.insertDailyHabit(dailyHabit)
-            } else {
-                daily = daily.copy(timesDone = daily.timesDone + times)
-                if ((daily.timesDone > timesHabit && times == 1) || restart) {
-                    daily = daily.copy(timesDone = 0)
-                }
-
-                if(daily.timesDone == timesHabit)
-                    daily.hourFinishDate = LocalDateTime.now().toString()
-                else
-                    daily.hourFinishDate = null
-
-                dailyHabitRepo.updateDailyHabit(daily)
-            }
+            if (daily == null) dailyHabitRepo.insertDailyHabit(updatedDaily)
+            else dailyHabitRepo.updateDailyHabit(updatedDaily)
         }
 
-    fun generalDxLogic(cancelNotificacions:(List<Long>) -> Unit){
-        if(uiState.value.textAttention == R.string.general_dx_subtitle_delete){
+    fun generalDxLogic(cancelNotificacions: (List<Long>) -> Unit) {
+        if (uiState.value.textAttention == R.string.general_dx_subtitle_delete) {
             deleteUnit(getId())
             val id = _habitSelected.value?.habit?.id ?: 1
 
-            viewModelScope.launch (Dispatchers.IO){
+            viewModelScope.launch(Dispatchers.IO) {
                 cancelNotificacions(habitWithNotification.getNotificationById(id).map { it.id })
             }
 
-        }else{
-            plusOneHabit(getId(),uiState.value.date,0,true)
+        } else {
+            plusOneHabit(getId(), uiState.value.date, 0, true)
             closeGeneralDx()
         }
     }
@@ -121,8 +112,10 @@ class HabitsViewModel @Inject constructor(
         habitRepo.deleteHabit(habitSelected.value?.habit?.id ?: 1)
     }
 
-    fun getRestSteps(id:Long,date: LocalDate? = null):Int{
-        val daily = _habitSelected.value?.dailyHabits?.find { LocalDate.parse(it.date) == (date ?: LocalDate.now()) }
+    fun getRestSteps(id: Long, date: LocalDate? = null): Int {
+        val daily = _habitSelected.value?.dailyHabits?.find {
+            LocalDate.parse(it.date) == (date ?: LocalDate.now())
+        }
         return _habitSelected.value?.habit?.times!! - (daily?.timesDone ?: 0)
     }
 
@@ -158,7 +151,10 @@ class HabitsViewModel @Inject constructor(
 
     fun showGeneralDx() {
         _uiState.update { currentState ->
-            currentState.copy(showGeneralDx = true, textAttention = R.string.general_dx_subtitle_delete)
+            currentState.copy(
+                showGeneralDx = true,
+                textAttention = R.string.general_dx_subtitle_delete
+            )
         }
     }
 
@@ -200,8 +196,9 @@ class HabitsViewModel @Inject constructor(
         return Constans.Units.entries.find { it.id == habit?.unit } ?: Constans.Units.TIMES
     }
 
-    fun getTitle():Int{
-        return (Constans.Units.entries.find { it.id == _habitSelected.value?.habit?.unit } ?: Constans.Units.TIMES).pluralTitle
+    fun getTitle(): Int {
+        return (Constans.Units.entries.find { it.id == _habitSelected.value?.habit?.unit }
+            ?: Constans.Units.TIMES).pluralTitle
     }
 
 }

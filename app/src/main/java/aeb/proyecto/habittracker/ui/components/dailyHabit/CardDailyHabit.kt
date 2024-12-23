@@ -49,11 +49,7 @@ fun CardDailyHabit(
     val getDays = rememberUpdatedState(getDaysOfWeek())
 
     val unit = remember { mutableStateOf(Constans.Units.entries.find { it.id == habit.unit }?.pluralTitle) }
-
-    val times = rememberUpdatedState(
-        dailyHabits.find { LocalDate.parse(it.date) == LocalDate.now() }?.timesDone
-            ?: 0
-    )
+    val times = rememberUpdatedState(dailyHabits.find { LocalDate.parse(it.date) == LocalDate.now() }?.timesDone ?: 0)
 
     val targetProgress = getProgress(dailyHabits, habit)
 

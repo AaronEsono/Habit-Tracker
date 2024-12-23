@@ -5,6 +5,7 @@ import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.data.model.calendar.CalendarDataSource
 import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -94,11 +95,12 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    fun setBackground(dailyHabit: DailyHabit?):Int{
-        var colorBackground = 0
+    fun setBackground(dailyHabit: DailyHabit?): Color {
+        var colorBackground = Color.Transparent
 
         if(dailyHabit != null && dailyHabit.timesDone != 0){
-           colorBackground = if(dailyHabit.timesDone == habit.value.habit.times) 1 else 2
+           colorBackground = if(dailyHabit.timesDone == habit.value.habit.times) Color(habit.value.habit.color).copy(alpha = 0.75f)
+           else  Color(habit.value.habit.color).copy(alpha = 0.2f)
         }
 
         return colorBackground
