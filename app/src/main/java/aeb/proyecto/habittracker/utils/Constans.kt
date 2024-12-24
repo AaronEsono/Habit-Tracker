@@ -28,6 +28,10 @@ object Constans {
     val numberOfDays = 90
     val visibleItems = 8
 
+    const val NOBORDER = 0
+    const val STARTBUTTON = 1
+    const val ENDBUTTON = 2
+
     private val IconsPr = Icons.Filled
     val ListIcons = listOf(
         IconsPr.AccessTimeFilled,

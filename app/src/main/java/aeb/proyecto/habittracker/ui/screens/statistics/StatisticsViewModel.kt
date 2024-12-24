@@ -145,8 +145,9 @@ class StatisticsViewModel @Inject constructor(
     }
 
     private fun getDaysCompleted(): DaysCompleted {
-        if (_dailyHabits.value.isNotEmpty()) {
-            val sortedList = _dailyHabits.value.filter { it.timesDone != 0 }.sortedByDescending { it.date }
+        val sortedList = _dailyHabits.value.filter { it.timesDone != 0 }.sortedByDescending { it.date }
+
+        if (sortedList.isNotEmpty()) {
             val totalDays = ChronoUnit.DAYS.between(LocalDate.parse(sortedList.last().date), LocalDate.now()) + 1
             val daysTried = sortedList.size
 

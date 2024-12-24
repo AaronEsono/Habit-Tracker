@@ -4,6 +4,7 @@ import aeb.proyecto.habittracker.ui.components.text.BodySmallText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
 import aeb.proyecto.habittracker.ui.theme.DarKThemeText
+import aeb.proyecto.habittracker.ui.theme.colorButtons
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -51,6 +52,9 @@ fun CardInfoAddHabit(
             .clickable { onClick() },
         elevation = CardDefaults.cardElevation(
             defaultElevation = spacing8
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = colorButtons
         )
     ) {
         Row(

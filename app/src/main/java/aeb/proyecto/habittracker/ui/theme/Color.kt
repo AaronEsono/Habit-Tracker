@@ -19,6 +19,8 @@ val secondaryColorApp = Color(0xFF2e2d2b)
 val primaryColorApp = Color(0xFF201f1e)
 
 
+
+val colorButtons = Color(0xFF323336)
 val borderTextField = Color(0xFF848484)
 val containerTextFieldColor = Color(0xFF1A1818)
 

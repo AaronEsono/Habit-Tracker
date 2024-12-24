@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Habit Tracker</string>
+
+    <!-- TopBar-->
+    <string name="topbar_habit">Habits</string>
+    <string name="topbar_stadistics">Statistics</string>
+    <string name="topbar_achievements">Achievements</string>
+    <string name="topbar_settings">Settings</string>
+    <string name="topbar_add_habit">Add Habit</string>
+    <string name="topbar_description">Icon Description</string>
+    <string name="tobbar_add_habit_true">Edit Habit</string>
+
+    <!-- BottomBar -->
+    <string name="bottombar_habit">Habits</string>
+    <string name="bottombar_stadistics">Statistics</string>
+    <string name="bottombar_achievements">Achievements</string>
+    <string name="bottombar_settins">Settings</string>
+
+    <!-- Habits screen -->
+    <string name="habits_screen_no_habit">You currently have no habits registered. Tap the button above to create one.</string>
+
+    <!-- Add habit screen-->
+    <string name="add_habit_screen_name">Name</string>
+    <string name="add_habit_screen_description">Description</string>
+
+    <string name="add_habit_screen_no_name">You need to add a name.</string>
+    <string name="add_habit_screen_no_units">You need to select a number of units.</string>
+
+    <string name="add_habit_screen_placeholder">Name</string>
+
+    <string name="add_habit_screen_color">Color</string>
+    <string name="add_habit_screen_icon">Icon</string>
+
+    <string name="add_habit_pick_unit">Select the number of repetitions</string>
+    <string name="add_habit_pick_date">Remind me at</string>
+    <string name="add_habit_add_hour">Add Time</string>
+
+    <string name="add_habit_pick_time">%1$s : %2$s</string>
+    <string name="add_habit_permissions">To enable notifications, go to the notifications section and grant permissions.</string>
+
+    <!-- Statistics screen -->
+    <string name="statistics_screen_no_habit">You have no habits registered. To view statistics, create one on the habits screen.</string>
+
+    <string name="statistics_screen_times_completed">Days Completed</string>
+    <string name="statistics_screen_streak">Current Streak</string>
+    <string name="statistics_screen_best_streak">Best Streak</string>
+    <string name="statistics_screen_days">%1$s days</string>
+
+    <!-- Add habit screen Bottom Sheet-->
+    <string name="add_habit_bottom_sheet_add_habit_title">Category</string>
+    <string name="add_habit_bottom_sheet_add_habit_subtitle">Choose the unit of measure for the habit</string>
+
+    <!-- Add habit screen questions -->
+    <string name="add_habit_question_1">Set the number of repetitions</string>
+    <string name="add_habit_question_2">How many steps will you take daily?</string>
+    <string name="add_habit_question_3">How many pages will you read daily?</string>
+    <string name="add_habit_question_4">How many km will you walk daily?</string>
+    <string name="add_habit_question_5">How many minutes per day?</string>
+    <string name="add_habit_question_6">How many calories per day?</string>
+    <string name="add_habit_question_7">How many glasses per day?</string>
+    <string name="add_habit_question_8">How many exercises per day?</string>
+
+    <!-- Add habit unit singular-->
+    <string name="add_habit_unit_1">Time</string>
+    <string name="add_habit_unit_2">Step</string>
+    <string name="add_habit_unit_3">Page</string>
+    <string name="add_habit_unit_4">Km</string>
+    <string name="add_habit_unit_5">Minute</string>
+    <string name="add_habit_unit_6">Calorie</string>
+    <string name="add_habit_unit_7">Glass</string>
+    <string name="add_habit_unit_8">Exercise</string>
+
+    <!-- Add habit unit plural-->
+    <string name="add_habit_unit_pl_1">Times</string>
+    <string name="add_habit_unit_pl_2">Steps</string>
+    <string name="add_habit_unit_pl_3">Pages</string>
+    <string name="add_habit_unit_pl_4">Km</string>
+    <string name="add_habit_unit_pl_5">Minutes</string>
+    <string name="add_habit_unit_pl_6">Calories</string>
+    <string name="add_habit_unit_pl_7">Glasses</string>
+    <string name="add_habit_unit_pl_8">Exercises</string>
+
+    <!-- Buttons-->
+    <string name="buttons_accept">Accept</string>
+    <string name="buttons_save">Save</string>
+    <string name="buttons_edit">Edit</string>
+    <string name="buttons_cancel">Cancel</string>
+    <string name="buttons_go_settings">Go to Settings</string>
+
+    <!-- General dx -->
+    <string name="general_dx_attention">Attention</string>
+    <string name="general_dx_attention_subtitile_time_picker">Time is already selected</string>
+    <string name="general_dx_attention_fill_data">You need to specify a name and a number of repetitions</string>
+
+    <string name="general_dx_subtitle_delete">Do you want to delete the habit?</string>
+    <string name="general_dx_subtitle_restart">Do you want to restart the day?</string>
+
+    <!-- Calendar dx -->
+    <string name="calendar_dx_title">Select a date to mark the habit for that day.</string>
+
+    <!-- Choose step bottomSheet -->
+    <string name="chose_step_bottom_sheet_title">Select the number of %1$s for this day</string>
+    <string name="chose_step_bottom_sheet_toast">The number cannot exceed the daily total.</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_screen_theme">Theme</string>
+    <string name="settings_screen_save">Import/Save Habits</string>
+    <string name="settings_screen_contact">Contact Us</string>
+    <string name="settings_screen_code">App Code</string>
+    <string name="settings_screen_linkedn">Follow me on social media</string>
+
+    <string name="settings_screen_app">Settings</string>
+    <string name="settings_screen_about">About</string>
+
+    <!-- Notification -->
+    <string name="notification_subtitle">It’s time to do the habit %1$s</string>
+
+    <!-- Days -->
+    <string name="day_1">Mon</string>
+    <string name="day_2">Tue</string>
+    <string name="day_3">Wed</string>
+    <string name="day_4">Thu</string>
+    <string name="day_5">Fri</string>
+    <string name="day_6">Sat</string>
+    <string name="day_7">Sun</string>
+
+    <!-- Months -->
+    <string name="month_1">January</string>
+    <string name="month_2">February</string>
+    <string name="month_3">March</string>
+    <string name="month_4">April</string>
+    <string name="month_5">May</string>
+    <string name="month_6">June</string>
+    <string name="month_7">July</string>
+    <string name="month_8">August</string>
+    <string name="month_9">September</string>
+    <string name="month_10">October</string>
+    <string name="month_11">November</string>
+    <string name="month_12">December</string>
+
+</resources>

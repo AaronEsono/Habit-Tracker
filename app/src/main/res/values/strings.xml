@@ -103,6 +103,16 @@
     <string name="chose_step_bottom_sheet_title">Selecciona el número de %1$s para este día</string>
     <string name="chose_step_bottom_sheet_toast">El número no puede sobrepasar el número diario total.</string>
 
+    <!-- Settings Screen -->
+    <string name="settings_screen_theme">Tema</string>
+    <string name="settings_screen_save">Importar/Guardar hábitos</string>
+    <string name="settings_screen_contact">Contacta con nosotros</string>
+    <string name="settings_screen_code">Código de la aplicación</string>
+    <string name="settings_screen_linkedn">Sígueme en mis redes sociales</string>
+
+    <string name="settings_screen_app">Configuración</string>
+    <string name="settings_screen_about">Acerca de</string>
+
     <!-- Notification -->
     <string name="notification_subtitle">Es hora de hacer el hábito %1$s</string>
 
