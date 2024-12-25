@@ -55,6 +55,9 @@ fun CardPickColorAddHabit(
             shape = RoundedCornerShape(spacing8), modifier = Modifier.wrapContentSize().clickable { onClick() },
             elevation = CardDefaults.cardElevation(
                 defaultElevation = spacing8
+            ),
+            colors = CardDefaults.cardColors(
+                containerColor = secondaryColorApp
             )
         ) {
             Icon(

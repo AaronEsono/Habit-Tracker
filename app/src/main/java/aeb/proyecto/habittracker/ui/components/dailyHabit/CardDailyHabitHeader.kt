@@ -4,6 +4,7 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
+import aeb.proyecto.habittracker.ui.theme.DarKThemeText
 import aeb.proyecto.habittracker.ui.theme.textColors
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
@@ -147,7 +148,8 @@ fun CardDailyHabitHeader(
                 Icon(
                     imageVector = icon.value,
                     contentDescription = "",
-                    modifier = Modifier.size(dimensIcon)
+                    modifier = Modifier.size(dimensIcon),
+                    tint = DarKThemeText
                 )
             }
         }

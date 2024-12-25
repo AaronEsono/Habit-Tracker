@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker.ui.screens.settings.settingsComponents
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.card.CardOptionButton
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
+import aeb.proyecto.habittracker.ui.theme.borderTextField
 import aeb.proyecto.habittracker.utils.Constans.ENDBUTTON
 import aeb.proyecto.habittracker.utils.Constans.NOBORDER
 import aeb.proyecto.habittracker.utils.Constans.STARTBUTTON
@@ -17,14 +18,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun SettingsAbout(){
+fun SettingsAbout(
+    onContact: () -> Unit,
+    onCode: () -> Unit,
+    onLinkedn: () -> Unit
+){
 
     TitleSmallText(text = stringResource(R.string.settings_screen_about),
         modifier = Modifier.fillMaxWidth().padding(vertical = spacing8), textAlign = TextAlign.Start)
 
-    CardOptionButton(title = R.string.settings_screen_contact, icon = R.drawable.ic_email, border =  STARTBUTTON){}
-    HorizontalDivider()
-    CardOptionButton(title = R.string.settings_screen_code, icon = R.drawable.ic_github, border =  NOBORDER){}
-    HorizontalDivider()
-    CardOptionButton(title = R.string.settings_screen_linkedn, icon = R.drawable.ic_link, border =  ENDBUTTON){}
+    CardOptionButton(title = R.string.settings_screen_contact, icon = R.drawable.ic_email, border =  STARTBUTTON){
+        onContact()
+    }
+
+    HorizontalDivider( color = borderTextField)
+    CardOptionButton(title = R.string.settings_screen_code, icon = R.drawable.ic_github, border =  NOBORDER){
+        onCode()
+    }
+
+    HorizontalDivider(color = borderTextField)
+    CardOptionButton(title = R.string.settings_screen_linkedn, icon = R.drawable.ic_link, border =  ENDBUTTON){
+        onLinkedn()
+    }
 }

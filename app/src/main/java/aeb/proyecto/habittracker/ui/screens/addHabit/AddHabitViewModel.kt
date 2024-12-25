@@ -8,6 +8,7 @@ import aeb.proyecto.habittracker.data.repo.HabitRepo
 import aeb.proyecto.habittracker.data.repo.HabitWithNotificacionRepo
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.utils.Constans
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
@@ -75,10 +76,10 @@ class AddHabitViewModel @Inject constructor(
 
         val notificationsWithId = habitWithNotificacionRepo.getNotificationById(id)
 
-        withContext(Dispatchers.Main) {
-            done(notificationsWithId.filter { !_notificationsCancel.value.contains(it.id) },
-                _notificationsCancel.value.filter { _notifications.value.find { notification -> notification.id == it } == null })
-        }
+        Log.d("notificationsWithId", notificationsWithId.toString())
+        Log.d("notificationsWithIdCancel", _notificationsCancel.value.toString())
+
+        withContext(Dispatchers.Main) { done(notificationsWithId, _notificationsCancel.value) }
     }
 
     fun insertNotification(notification: Notification) {

@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.components.bottomSheets
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.SetStatusColorBar
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
@@ -8,13 +9,17 @@ import aeb.proyecto.habittracker.ui.components.calendar.CalendarContent
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarHeader
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarViewModel
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
+import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -50,8 +55,10 @@ fun BottomSheetCalendar(
         onDismissRequest = {
             onDismiss()
         },
-        sheetState = bottomSheetState
+        sheetState = bottomSheetState,
+        containerColor = secondaryColorApp
     ) {
+        SetStatusColorBar()
         Column(
             modifier = Modifier
                 .fillMaxWidth()

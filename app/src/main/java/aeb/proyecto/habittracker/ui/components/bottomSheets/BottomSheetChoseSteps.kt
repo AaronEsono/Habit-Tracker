@@ -1,12 +1,14 @@
 package aeb.proyecto.habittracker.ui.components.bottomSheets
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.SetStatusColorBar
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
 import aeb.proyecto.habittracker.ui.theme.DarKThemeText
 import aeb.proyecto.habittracker.ui.theme.primaryColorApp
+import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
 import aeb.proyecto.habittracker.utils.Constans.onlyDigits
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
@@ -67,8 +69,10 @@ fun BottomSheetChoseSteps(
 
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
-        sheetState = sheetState
+        sheetState = sheetState,
+        containerColor = secondaryColorApp
     ) {
+        SetStatusColorBar()
         Column(
             modifier = Modifier
                 .fillMaxWidth()

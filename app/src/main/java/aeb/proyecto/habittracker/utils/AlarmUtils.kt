@@ -24,6 +24,8 @@ fun setUpAlarm(context: Context, alarmItem: NotificationWithName, repeated: Bool
             set(Calendar.MINUTE, alarmItem.notification.minute)
             set(Calendar.SECOND, 0)
         }.timeInMillis
+
+        if(calendar < System.currentTimeMillis()) calendar += interval
     }
 
     val intent = Intent(context, AlarmNotification::class.java).apply {

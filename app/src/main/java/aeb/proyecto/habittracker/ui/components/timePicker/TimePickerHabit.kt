@@ -2,31 +2,25 @@ package aeb.proyecto.habittracker.ui.components.timePicker
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.Notification
-import aeb.proyecto.habittracker.data.model.time.TimeNotification
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButtonButton
-import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.theme.DarKThemeText
+import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePicker
-import androidx.compose.material3.TimePickerColors
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,6 +49,9 @@ fun TimePickerHabit(
             shape = RoundedCornerShape(spacing8),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = spacing8
+            ),
+            colors = CardDefaults.cardColors(
+                containerColor = secondaryColorApp
             )
         ) {
             Column (horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(spacing16)){
@@ -64,7 +61,15 @@ fun TimePickerHabit(
                         selectorColor = color.copy(alpha = 0.8f),
                         timeSelectorSelectedContainerColor = color,
                         clockDialSelectedContentColor = DarKThemeText,
-                        periodSelectorSelectedContainerColor = color.copy(alpha = 0.5f)
+                        clockDialUnselectedContentColor = DarKThemeText,
+                        periodSelectorSelectedContainerColor = color.copy(alpha = 0.5f),
+                        clockDialColor = secondaryColorApp,
+                        periodSelectorUnselectedContentColor = secondaryColorApp,
+                        timeSelectorUnselectedContainerColor = secondaryColorApp,
+                        periodSelectorSelectedContentColor = DarKThemeText,
+                        periodSelectorUnselectedContainerColor = DarKThemeText,
+                        timeSelectorSelectedContentColor = DarKThemeText,
+                        timeSelectorUnselectedContentColor = DarKThemeText,
                     )
                 )
 

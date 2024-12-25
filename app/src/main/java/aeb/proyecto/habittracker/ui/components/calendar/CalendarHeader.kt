@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker.ui.components.calendar
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.BodyLargeText
 import aeb.proyecto.habittracker.ui.components.text.BodyMediumText
+import aeb.proyecto.habittracker.ui.theme.DarKThemeText
 import aeb.proyecto.habittracker.utils.Constans
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,7 +43,8 @@ fun CalendarHeader(
         }) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = stringResource(id = R.string.add_habit_unit_1)
+                contentDescription = stringResource(id = R.string.add_habit_unit_1),
+                tint = DarKThemeText
             )
         }
 
@@ -71,7 +73,8 @@ fun CalendarHeader(
         }) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = stringResource(id = R.string.buttons_edit)
+                contentDescription = stringResource(id = R.string.buttons_edit),
+                tint = DarKThemeText
             )
         }
     }

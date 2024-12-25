@@ -24,6 +24,12 @@ object Constans {
         "","0","1"
     )
 
+    const val URIGITHUB = "https://github.com/AaronEsono/Habit-Tracker"
+    const val LINKEDN = "https://www.linkedin.com/in/aarón-esono-borreguero-0b7453235/"
+    const val EMAIL = "aaron.esono576@gmail.com"
+    const val APPTITLE = "Mejoras de la aplicación"
+
+
     val dayOfWeek = DayOfWeek.MONDAY.value
     val numberOfDays = 90
     val visibleItems = 8

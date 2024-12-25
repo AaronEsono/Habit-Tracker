@@ -2,7 +2,9 @@ package aeb.proyecto.habittracker.ui.components.textField
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
+import aeb.proyecto.habittracker.ui.theme.DarKThemeText
 import aeb.proyecto.habittracker.ui.theme.borderTextField
+import aeb.proyecto.habittracker.ui.theme.colorError
 import aeb.proyecto.habittracker.ui.theme.containerTextFieldColor
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.annotation.StringRes
@@ -69,7 +71,11 @@ fun CustomOutlinedTextField(
             unfocusedContainerColor = containerTextFieldColor,
             errorContainerColor = containerTextFieldColor,
             focusedBorderColor = borderTextField,
-            unfocusedBorderColor = borderTextField
+            unfocusedBorderColor = borderTextField,
+            unfocusedTextColor = DarKThemeText,
+            focusedTextColor = DarKThemeText,
+            errorTextColor = colorError,
+            errorBorderColor = colorError
         ),
         shape = RoundedCornerShape(spacing8),
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = if (isNumeric) KeyboardType.Number else KeyboardType.Text)
@@ -84,7 +90,7 @@ fun CustomOutlinedTextField(
                 .fillMaxWidth()
                 .padding(horizontal = spacing8),
             textAlign = TextAlign.Left,
-            color = MaterialTheme.colorScheme.error
+            color = colorError
         )
     }
 }
