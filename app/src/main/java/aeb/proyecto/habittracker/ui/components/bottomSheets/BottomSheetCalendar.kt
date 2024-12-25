@@ -9,7 +9,7 @@ import aeb.proyecto.habittracker.ui.components.calendar.CalendarContent
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarHeader
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarViewModel
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
-import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.foundation.layout.Column
@@ -56,7 +56,7 @@ fun BottomSheetCalendar(
             onDismiss()
         },
         sheetState = bottomSheetState,
-        containerColor = secondaryColorApp
+        containerColor = ColorsTheme.secondaryColorApp
     ) {
         SetStatusColorBar()
         Column(

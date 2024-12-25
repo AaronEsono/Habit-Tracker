@@ -6,7 +6,7 @@ import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButtonButton
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
-import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.annotation.DrawableRes
@@ -56,7 +56,7 @@ fun BottomSheetGeneral(
             onDismiss()
         },
         sheetState = sheetState,
-        containerColor = secondaryColorApp
+        containerColor = ColorsTheme.secondaryColorApp
     ) {
         SetStatusColorBar()
         Column(

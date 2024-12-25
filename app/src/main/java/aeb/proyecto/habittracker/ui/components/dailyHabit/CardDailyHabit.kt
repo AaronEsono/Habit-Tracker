@@ -1,8 +1,7 @@
 package aeb.proyecto.habittracker.ui.components.dailyHabit
 
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
-import aeb.proyecto.habittracker.ui.theme.borderTextField
-import aeb.proyecto.habittracker.ui.theme.colorBackgroundCard
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
@@ -55,13 +54,13 @@ fun CardDailyHabit(
 
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = colorBackgroundCard,
+            containerColor = ColorsTheme.colorBackgroundCard,
         ),
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(top = spacing8)
-            .border(0.3.dp, borderTextField, RoundedCornerShape(spacing8))
+            .border(0.3.dp, ColorsTheme.borderTextField, RoundedCornerShape(spacing8))
             .clickable(
                 indication = null,
                 interactionSource = MutableInteractionSource()

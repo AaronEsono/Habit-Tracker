@@ -6,9 +6,7 @@ import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
-import aeb.proyecto.habittracker.ui.theme.DarKThemeText
-import aeb.proyecto.habittracker.ui.theme.primaryColorApp
-import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans.onlyDigits
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
@@ -70,7 +68,7 @@ fun BottomSheetChoseSteps(
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
         sheetState = sheetState,
-        containerColor = secondaryColorApp
+        containerColor = ColorsTheme.secondaryColorApp
     ) {
         SetStatusColorBar()
         Column(
@@ -139,8 +137,8 @@ fun ChoseTimes(
 ){
     Column(
         modifier = Modifier
-            .background(primaryColorApp)
-            .border(1.dp, color = DarKThemeText, RoundedCornerShape(spacing8))
+            .background(ColorsTheme.primaryColorApp)
+            .border(1.dp, color = ColorsTheme.themeText, RoundedCornerShape(spacing8))
             .clickable {
                 onAccept(restDays.toString())
             }

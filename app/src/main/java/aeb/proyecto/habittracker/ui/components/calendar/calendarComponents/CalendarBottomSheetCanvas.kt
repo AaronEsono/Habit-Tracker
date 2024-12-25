@@ -2,8 +2,7 @@ package aeb.proyecto.habittracker.ui.components.calendar.calendarComponents
 
 import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.ui.components.text.CalendarText
-import aeb.proyecto.habittracker.ui.theme.primaryColorApp
-import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing3
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
@@ -33,8 +32,8 @@ fun CalendarBottomSheetCanvas(
         modifier = Modifier
             .wrapContentSize(),
         colors = CardDefaults.cardColors(
-            contentColor = primaryColorApp,
-            containerColor = primaryColorApp
+            contentColor = ColorsTheme.primaryColorApp,
+            containerColor = ColorsTheme.primaryColorApp
         )
     ) {
         Row(

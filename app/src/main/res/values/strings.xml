@@ -112,6 +112,7 @@
 
     <string name="settings_screen_app">Configuración</string>
     <string name="settings_screen_about">Acerca de</string>
+    <string name="settings_screen_version">Versión %1$s</string>
 
     <!-- Notification -->
     <string name="notification_subtitle">Es hora de hacer el hábito %1$s</string>

@@ -4,8 +4,7 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.TextNumberStatistics
 import aeb.proyecto.habittracker.ui.components.text.TitleMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
-import aeb.proyecto.habittracker.ui.theme.borderTextField
-import aeb.proyecto.habittracker.ui.theme.containerTextFieldColor
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
@@ -35,9 +34,9 @@ fun StatisticsCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = spacing8, vertical = spacing4)
-            .border(0.1.dp, borderTextField, RoundedCornerShape(spacing12)),
+            .border(0.1.dp, ColorsTheme.borderTextField, RoundedCornerShape(spacing12)),
         colors = CardDefaults.cardColors(
-            containerColor = containerTextFieldColor
+            containerColor = ColorsTheme.containerTextFieldColor
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp

@@ -4,8 +4,7 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
-import aeb.proyecto.habittracker.ui.theme.DarKThemeText
-import aeb.proyecto.habittracker.ui.theme.textColors
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import android.annotation.SuppressLint
@@ -85,7 +84,7 @@ fun CardDailyHabitHeader(
                 Icon(
                     imageVector = iconByName(habit.icon),
                     contentDescription = "Add",
-                    tint = textColors,
+                    tint = ColorsTheme.textColors,
                     modifier = Modifier.size(dimensIcon)
                 )
             }
@@ -98,14 +97,14 @@ fun CardDailyHabitHeader(
                 .padding(horizontal = spacing8),
             verticalArrangement = Arrangement.Center
         ) {
-            LabelLargeText(habit.name, color = textColors)
+            LabelLargeText(habit.name, color = ColorsTheme.textColors)
 
             habit.description?.let {
                 LabelSmallText(
                     habit.description!!,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = textColors
+                    color = ColorsTheme.textColors
                 )
             }
         }
@@ -149,7 +148,7 @@ fun CardDailyHabitHeader(
                     imageVector = icon.value,
                     contentDescription = "",
                     modifier = Modifier.size(dimensIcon),
-                    tint = DarKThemeText
+                    tint = ColorsTheme.themeText
                 )
             }
         }

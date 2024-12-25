@@ -3,7 +3,7 @@ package aeb.proyecto.habittracker.ui.components.buttons
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.BodyMediumText
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
-import aeb.proyecto.habittracker.ui.theme.DarKThemeText
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import androidx.annotation.DrawableRes
@@ -37,7 +37,7 @@ fun CustomOutlinedButtonButton(
         icon?.let {
             Icon(
                 painter = painterResource(icon), "",
-                tint = DarKThemeText,
+                tint = ColorsTheme.themeText,
                 modifier = Modifier.size(20.dp)
             )
         }

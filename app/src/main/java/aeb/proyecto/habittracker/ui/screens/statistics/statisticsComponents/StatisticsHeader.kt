@@ -4,9 +4,7 @@ import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
-import aeb.proyecto.habittracker.ui.theme.borderTextField
-import aeb.proyecto.habittracker.ui.theme.containerTextFieldColor
-import aeb.proyecto.habittracker.ui.theme.textColors
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.foundation.background
@@ -37,9 +35,9 @@ fun StatisticsHeader(habit: Habit) {
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(spacing8)
-            .border(0.1.dp, borderTextField, RoundedCornerShape(spacing12)),
+            .border(0.1.dp, ColorsTheme.borderTextField, RoundedCornerShape(spacing12)),
         colors = CardDefaults.cardColors(
-            containerColor = containerTextFieldColor
+            containerColor = ColorsTheme.containerTextFieldColor
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -64,7 +62,7 @@ fun StatisticsHeader(habit: Habit) {
                 Icon(
                     imageVector = iconByName(habit.icon),
                     contentDescription = "Add",
-                    tint = textColors,
+                    tint = ColorsTheme.textColors,
                     modifier = Modifier
                         .padding(spacing8)
                         .size(30.dp)

@@ -1,5 +1,6 @@
 package aeb.proyecto.habittracker.ui.theme
 
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -12,15 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = primaryColorApp,
-    secondary = secondaryColorApp,
-    tertiary = terciaryColorApp
+    primary = ColorsTheme.primaryColorApp,
+    secondary = ColorsTheme.secondaryColorApp,
+    tertiary = ColorsTheme.terciaryColorApp
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = primaryColorApp,
-    secondary = secondaryColorApp,
-    tertiary = terciaryColorApp
+    primary = ColorsTheme.primaryColorApp,
+    secondary = ColorsTheme.secondaryColorApp,
+    tertiary = ColorsTheme.terciaryColorApp
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

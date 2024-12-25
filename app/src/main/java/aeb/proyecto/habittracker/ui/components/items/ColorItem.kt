@@ -1,6 +1,6 @@
 package aeb.proyecto.habittracker.ui.components.items
 
-import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,7 +39,7 @@ fun ColorItem(
             .clickable { onClick(color) },
         shape = RoundedCornerShape(spacing16),
         colors = CardDefaults.cardColors(
-            containerColor = secondaryColorApp
+            containerColor = ColorsTheme.secondaryColorApp
         )
     ) {
         Row(modifier = border

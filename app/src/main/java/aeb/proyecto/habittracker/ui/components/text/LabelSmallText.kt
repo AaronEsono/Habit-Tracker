@@ -1,5 +1,6 @@
 package aeb.proyecto.habittracker.ui.components.text
 
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,7 +14,7 @@ fun LabelSmallText(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Center,
-    color: Color = Color.White,
+    color: Color = ColorsTheme.themeText,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip
 ){

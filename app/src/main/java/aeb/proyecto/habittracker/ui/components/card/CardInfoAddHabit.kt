@@ -3,8 +3,7 @@ package aeb.proyecto.habittracker.ui.components.card
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
-import aeb.proyecto.habittracker.ui.theme.DarKThemeText
-import aeb.proyecto.habittracker.ui.theme.colorButtons
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -54,7 +53,7 @@ fun CardInfoAddHabit(
             defaultElevation = spacing8
         ),
         colors = CardDefaults.cardColors(
-            containerColor = colorButtons
+            containerColor = ColorsTheme.colorButtons
         )
     ) {
         Row(
@@ -73,7 +72,7 @@ fun CardInfoAddHabit(
             TitleSmallText(title, Modifier.weight(1f), TextAlign.Left)
 
             finalIcon?.let {
-                Icon(finalIcon, "", tint = if (colorInFinalIcon) color else DarKThemeText,
+                Icon(finalIcon, "", tint = if (colorInFinalIcon) color else ColorsTheme.themeText,
                     modifier = Modifier.clickable(
                         indication = null,
                         interactionSource = MutableInteractionSource()

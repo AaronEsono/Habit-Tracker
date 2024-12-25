@@ -2,8 +2,7 @@ package aeb.proyecto.habittracker.ui.components.card
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.BodyMediumText
-import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
-import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing6
@@ -57,14 +56,14 @@ fun CardPickColorAddHabit(
                 defaultElevation = spacing8
             ),
             colors = CardDefaults.cardColors(
-                containerColor = secondaryColorApp
+                containerColor = ColorsTheme.secondaryColorApp
             )
         ) {
             Icon(
                 icon, contentDescription = "", tint = color,
                 modifier = Modifier
                     .background(
-                        secondaryColorApp
+                        ColorsTheme.secondaryColorApp
                     )
                     .padding(vertical = spacing4, horizontal = spacing6)
                     .size(35.dp)

@@ -3,8 +3,7 @@ package aeb.proyecto.habittracker.ui.components.card
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
-import aeb.proyecto.habittracker.ui.theme.DarKThemeText
-import aeb.proyecto.habittracker.ui.theme.primaryColorApp
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
@@ -50,13 +49,13 @@ fun CardPickUnitAddHabit(
         modifier = modifier
             .wrapContentWidth()
             .clickable { onClick() }
-            .border(if (selected) 2.dp else 0.dp, if (selected) color else DarKThemeText, RoundedCornerShape(spacing8))
+            .border(if (selected) 2.dp else 0.dp, if (selected) color else ColorsTheme.themeText, RoundedCornerShape(spacing8))
     ) {
         Row(
             modifier = Modifier
                 .height(40.dp)
                 .wrapContentWidth()
-                .background(primaryColorApp)
+                .background(ColorsTheme.primaryColorApp)
                 .padding(horizontal = spacing8),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -64,7 +63,7 @@ fun CardPickUnitAddHabit(
                 painter = painterResource(unit.icon),
                 "",
                 modifier = Modifier.size(25.dp),
-                tint = DarKThemeText
+                tint = ColorsTheme.themeText
             )
 
             Spacer(modifier = Modifier.padding(horizontal = spacing4))

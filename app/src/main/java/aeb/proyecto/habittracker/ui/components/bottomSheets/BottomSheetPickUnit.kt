@@ -7,7 +7,7 @@ import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButtonButto
 import aeb.proyecto.habittracker.ui.components.card.CardPickUnitAddHabit
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
-import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
@@ -53,7 +53,7 @@ fun BottomSheetPickUnit(
             onDismiss()
         },
         sheetState = sheetState,
-        containerColor = secondaryColorApp
+        containerColor = ColorsTheme.secondaryColorApp
     ) {
         SetStatusColorBar()
         Column(modifier = Modifier

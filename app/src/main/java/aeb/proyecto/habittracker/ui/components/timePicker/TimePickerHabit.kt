@@ -4,8 +4,7 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.Notification
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButtonButton
-import aeb.proyecto.habittracker.ui.theme.DarKThemeText
-import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.foundation.layout.Column
@@ -51,7 +50,7 @@ fun TimePickerHabit(
                 defaultElevation = spacing8
             ),
             colors = CardDefaults.cardColors(
-                containerColor = secondaryColorApp
+                containerColor = ColorsTheme.secondaryColorApp
             )
         ) {
             Column (horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(spacing16)){
@@ -60,16 +59,16 @@ fun TimePickerHabit(
                     colors = TimePickerDefaults.colors(
                         selectorColor = color.copy(alpha = 0.8f),
                         timeSelectorSelectedContainerColor = color,
-                        clockDialSelectedContentColor = DarKThemeText,
-                        clockDialUnselectedContentColor = DarKThemeText,
+                        clockDialSelectedContentColor = ColorsTheme.themeText,
+                        clockDialUnselectedContentColor = ColorsTheme.themeText,
                         periodSelectorSelectedContainerColor = color.copy(alpha = 0.5f),
-                        clockDialColor = secondaryColorApp,
-                        periodSelectorUnselectedContentColor = secondaryColorApp,
-                        timeSelectorUnselectedContainerColor = secondaryColorApp,
-                        periodSelectorSelectedContentColor = DarKThemeText,
-                        periodSelectorUnselectedContainerColor = DarKThemeText,
-                        timeSelectorSelectedContentColor = DarKThemeText,
-                        timeSelectorUnselectedContentColor = DarKThemeText,
+                        clockDialColor = ColorsTheme.secondaryColorApp,
+                        periodSelectorUnselectedContentColor = ColorsTheme.secondaryColorApp,
+                        timeSelectorUnselectedContainerColor = ColorsTheme.secondaryColorApp,
+                        periodSelectorSelectedContentColor = ColorsTheme.themeText,
+                        periodSelectorUnselectedContainerColor = ColorsTheme.themeText,
+                        timeSelectorSelectedContentColor = ColorsTheme.themeText,
+                        timeSelectorUnselectedContentColor = ColorsTheme.themeText,
                     )
                 )
 

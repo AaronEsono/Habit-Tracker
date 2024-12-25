@@ -1,5 +1,7 @@
 package aeb.proyecto.habittracker.ui.screens.settings
 
+import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.ui.components.text.BodySmallText
 import aeb.proyecto.habittracker.ui.screens.settings.settingsComponents.SettingsAbout
 import aeb.proyecto.habittracker.ui.screens.settings.settingsComponents.SettingsApp
 import aeb.proyecto.habittracker.utils.Constans.LINKEDN
@@ -7,16 +9,18 @@ import aeb.proyecto.habittracker.utils.Constans.URIGITHUB
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing24
+import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import aeb.proyecto.habittracker.utils.sendEmail
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import android.net.Uri
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
@@ -26,7 +30,10 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()){
 
     Column (modifier = Modifier.fillMaxSize().padding(horizontal = spacing16, vertical = spacing24)){
 
-        SettingsApp()
+        SettingsApp(onSave = {
+
+        }, onTheme = {
+        })
 
         Spacer(modifier = Modifier.padding(vertical = spacing12))
 
@@ -39,5 +46,8 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()){
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(LINKEDN))
             context.startActivity(intent)
         })
+
+        BodySmallText(text = stringResource(R.string.settings_screen_version, "1.0"),
+           modifier = Modifier.padding(top = spacing8))
     }
 }

@@ -3,21 +3,16 @@ package aeb.proyecto.habittracker.ui.components.calendar
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.BodyLargeText
 import aeb.proyecto.habittracker.ui.components.text.BodyMediumText
-import aeb.proyecto.habittracker.ui.theme.DarKThemeText
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,7 +39,7 @@ fun CalendarHeader(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 contentDescription = stringResource(id = R.string.add_habit_unit_1),
-                tint = DarKThemeText
+                tint = ColorsTheme.themeText
             )
         }
 
@@ -74,7 +69,7 @@ fun CalendarHeader(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = stringResource(id = R.string.buttons_edit),
-                tint = DarKThemeText
+                tint = ColorsTheme.themeText
             )
         }
     }

@@ -2,8 +2,7 @@ package aeb.proyecto.habittracker.ui.components.radioButton
 
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
-import aeb.proyecto.habittracker.ui.theme.DarKThemeText
-import aeb.proyecto.habittracker.ui.theme.containerTextFieldColor
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing10
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import androidx.compose.animation.animateColorAsState
@@ -33,7 +32,7 @@ fun RadioButtonStatistics(
 ) {
 
     val animatedColor by animateColorAsState(
-        if (habit == selectedOption) Color(habit.color) else containerTextFieldColor,
+        if (habit == selectedOption) Color(habit.color) else ColorsTheme.containerTextFieldColor,
         label = "color"
     )
 
@@ -42,7 +41,7 @@ fun RadioButtonStatistics(
             .padding(horizontal = spacing4)
             .wrapContentSize()
             .clip(CircleShape)
-            .border(0.5.dp, DarKThemeText, CircleShape)
+            .border(0.5.dp, ColorsTheme.themeText, CircleShape)
             .background(animatedColor, CircleShape)
             .selectable(
                 selected = (habit == selectedOption),
@@ -57,7 +56,7 @@ fun RadioButtonStatistics(
                 .padding(spacing10)
                 .size(25.dp)
                 .align(Alignment.Center),
-            tint = DarKThemeText
+            tint = ColorsTheme.themeText
         )
     }
 }

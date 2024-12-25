@@ -11,25 +11,20 @@ import aeb.proyecto.habittracker.ui.navigation.Settings
 import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.listBottomBarScreens
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
-import aeb.proyecto.habittracker.ui.theme.colorStatusBar
-import aeb.proyecto.habittracker.ui.theme.primaryColorApp
-import aeb.proyecto.habittracker.ui.theme.secondaryColorApp
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans.permissions
 import aeb.proyecto.habittracker.utils.LocalNavController
 import aeb.proyecto.habittracker.utils.MainLocalViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,9 +43,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -100,7 +92,7 @@ fun AppContent(navController: NavHostController, mainViewModel: MainViewModel) {
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .background(primaryColorApp)
+                .background(ColorsTheme.primaryColorApp)
         ) {
             NavigationWrapper(navController = navController, mainViewModel)
         }
@@ -127,7 +119,7 @@ fun TopBarHabit(navController: NavHostController) {
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = secondaryColorApp,
+            containerColor = ColorsTheme.secondaryColorApp,
             titleContentColor = MaterialTheme.colorScheme.primary,
         ),
         title = {
@@ -179,8 +171,8 @@ fun BottomNavigationHabit(navController: NavHostController) {
 
     if (showBottomBar == true) {
         NavigationBar(
-            contentColor = secondaryColorApp,
-            containerColor = secondaryColorApp
+            contentColor = ColorsTheme.secondaryColorApp,
+            containerColor = ColorsTheme.secondaryColorApp
         ) {
             menuItems.forEach {
                 NavigationBarItem(
@@ -264,7 +256,7 @@ fun SetStatusColorBar(){
     val systemUiController = rememberSystemUiController()
 
     systemUiController.setNavigationBarColor(
-        color = colorStatusBar,
+        color = ColorsTheme.colorStatusBar,
         darkIcons = false
     )
 }

@@ -5,8 +5,7 @@ import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
-import aeb.proyecto.habittracker.ui.theme.DarKThemeText
-import aeb.proyecto.habittracker.ui.theme.textColors
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans.visibleItems
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
@@ -155,7 +154,7 @@ fun CardDailyHabitDays(
                         if (animatedProgress != 1f) {
                             LabelMediumText(
                                 text = "${it.dayOfMonth}",
-                                color = DarKThemeText,
+                                color = ColorsTheme.themeText,
                             )
                         }
 
@@ -164,7 +163,7 @@ fun CardDailyHabitDays(
                                 painter = painterResource(id = R.drawable.ic_check),
                                 contentDescription = "",
                                 Modifier.size(if (isInDialog) 20.dp else 30.dp),
-                                tint = DarKThemeText.copy(alpha = 0.8f),
+                                tint = ColorsTheme.themeText.copy(alpha = 0.8f),
                             )
                         }
                     }

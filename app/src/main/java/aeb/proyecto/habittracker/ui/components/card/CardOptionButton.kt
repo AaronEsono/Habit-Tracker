@@ -3,8 +3,7 @@ package aeb.proyecto.habittracker.ui.components.card
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
-import aeb.proyecto.habittracker.ui.theme.DarKThemeText
-import aeb.proyecto.habittracker.ui.theme.colorButtons
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans.ENDBUTTON
 import aeb.proyecto.habittracker.utils.Constans.STARTBUTTON
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
@@ -63,18 +62,18 @@ fun CardOptionButton(
             defaultElevation = spacing8
         ),
         colors = CardDefaults.cardColors(
-            containerColor = colorButtons
+            containerColor = ColorsTheme.colorButtons
         )
     ) {
         Row (modifier = Modifier.fillMaxWidth().padding(spacing12),
             verticalAlignment = Alignment.CenterVertically){
 
-            Icon(painter = painterResource(id = icon), contentDescription = "", modifier = Modifier.size(25.dp), tint = DarKThemeText)
+            Icon(painter = painterResource(id = icon), contentDescription = "", modifier = Modifier.size(25.dp), tint = ColorsTheme.themeText)
 
             LabelMediumText(text = stringResource(title), modifier = Modifier.padding(start = spacing12).weight(1f)
                 ,textAlign = TextAlign.Start)
 
-            Icon(Icons.AutoMirrored.Filled.ArrowRight,"", tint = DarKThemeText)
+            Icon(Icons.AutoMirrored.Filled.ArrowRight,"", tint = ColorsTheme.themeText)
 
         }
     }

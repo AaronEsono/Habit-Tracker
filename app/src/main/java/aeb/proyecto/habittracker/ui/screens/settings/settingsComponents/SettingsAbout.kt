@@ -3,7 +3,7 @@ package aeb.proyecto.habittracker.ui.screens.settings.settingsComponents
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.card.CardOptionButton
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
-import aeb.proyecto.habittracker.ui.theme.borderTextField
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans.ENDBUTTON
 import aeb.proyecto.habittracker.utils.Constans.NOBORDER
 import aeb.proyecto.habittracker.utils.Constans.STARTBUTTON
@@ -31,12 +31,12 @@ fun SettingsAbout(
         onContact()
     }
 
-    HorizontalDivider( color = borderTextField)
+    HorizontalDivider( color = ColorsTheme.borderTextField)
     CardOptionButton(title = R.string.settings_screen_code, icon = R.drawable.ic_github, border =  NOBORDER){
         onCode()
     }
 
-    HorizontalDivider(color = borderTextField)
+    HorizontalDivider(color = ColorsTheme.borderTextField)
     CardOptionButton(title = R.string.settings_screen_linkedn, icon = R.drawable.ic_link, border =  ENDBUTTON){
         onLinkedn()
     }

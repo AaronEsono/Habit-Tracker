@@ -5,8 +5,7 @@ import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarContent
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarHeader
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarViewModel
-import aeb.proyecto.habittracker.ui.theme.borderTextField
-import aeb.proyecto.habittracker.ui.theme.containerTextFieldColor
+import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
@@ -41,9 +40,9 @@ fun StatisticsCalendar(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = spacing8, vertical = spacing4)
-            .border(0.1.dp, borderTextField, RoundedCornerShape(spacing12)),
+            .border(0.1.dp, ColorsTheme.borderTextField, RoundedCornerShape(spacing12)),
         colors = CardDefaults.cardColors(
-            containerColor = containerTextFieldColor
+            containerColor = ColorsTheme.containerTextFieldColor
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
