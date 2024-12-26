@@ -105,4 +105,7 @@ dependencies {
 
     //Status Bar
     implementation (libs.accompanist.systemuicontroller.v0270)
+
+    //DataStore
+    implementation(libs.androidx.datastore.preferences)
 }

@@ -59,6 +59,8 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()){
     if (showDialog.value){
         SettingsCard(onDismiss = {
             showDialog.value = false
+        }, onSaveDataStore = {mode ->
+            settingsViewModel.saveMode(mode)
         })
     }
 

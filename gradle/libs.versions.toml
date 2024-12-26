@@ -3,6 +3,7 @@ accompanistSystemuicontroller = "0.36.0"
 accompanistSystemuicontrollerVersion = "0.27.0"
 activityComposeVersion = "1.7.2"
 agp = "8.7.2"
+datastorePreferences = "1.1.1"
 fragmentKtx = "1.4.0"
 gson = "2.10.1"
 hiltAndroidCompiler = "2.48"
@@ -33,6 +34,7 @@ accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-
 accompanist-systemuicontroller-v0270 = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontrollerVersion" }
 androidx-activity-compose-v172 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }

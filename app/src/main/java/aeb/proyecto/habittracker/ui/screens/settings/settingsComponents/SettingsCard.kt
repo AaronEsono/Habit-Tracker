@@ -31,6 +31,7 @@ import androidx.compose.ui.window.Dialog
 @Composable
 fun SettingsCard(
     onDismiss: () -> Unit,
+    onSaveDataStore: (Int) -> Unit
 ) {
 
     Dialog(onDismissRequest = { onDismiss() }) {
@@ -61,6 +62,7 @@ fun SettingsCard(
                 themeList.forEach {
                     CardTheme(onClick = {
                         setMode(it.mode)
+                        onSaveDataStore(it.mode)
                         onDismiss()
                     }, stringResource = it.title)
                 }
