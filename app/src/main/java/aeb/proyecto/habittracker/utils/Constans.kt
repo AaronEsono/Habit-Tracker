@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.utils
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.model.theme.ThemeMode
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -29,6 +30,8 @@ object Constans {
     const val EMAIL = "aaron.esono576@gmail.com"
     const val APPTITLE = "Mejoras de la aplicación"
 
+    const val DARKMODE = 0
+    const val LIGHTMODE = 1
 
     val dayOfWeek = DayOfWeek.MONDAY.value
     val numberOfDays = 90
@@ -37,6 +40,11 @@ object Constans {
     const val NOBORDER = 0
     const val STARTBUTTON = 1
     const val ENDBUTTON = 2
+
+   val themeList = listOf(
+       ThemeMode(DARKMODE,R.string.settings_screen_card_dark),
+       ThemeMode(LIGHTMODE,R.string.settings_screen_card_light)
+   )
 
     private val IconsPr = Icons.Filled
     val ListIcons = listOf(

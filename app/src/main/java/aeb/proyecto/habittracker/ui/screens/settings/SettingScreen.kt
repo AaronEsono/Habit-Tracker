@@ -4,6 +4,7 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
 import aeb.proyecto.habittracker.ui.screens.settings.settingsComponents.SettingsAbout
 import aeb.proyecto.habittracker.ui.screens.settings.settingsComponents.SettingsApp
+import aeb.proyecto.habittracker.ui.screens.settings.settingsComponents.SettingsCard
 import aeb.proyecto.habittracker.utils.Constans.LINKEDN
 import aeb.proyecto.habittracker.utils.Constans.URIGITHUB
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
@@ -18,6 +19,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -27,12 +30,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()){
 
     val context = LocalContext.current
+    val showDialog = remember { mutableStateOf(false) }
 
     Column (modifier = Modifier.fillMaxSize().padding(horizontal = spacing16, vertical = spacing24)){
 
         SettingsApp(onSave = {
 
         }, onTheme = {
+            showDialog.value = true
         })
 
         Spacer(modifier = Modifier.padding(vertical = spacing12))
@@ -50,4 +55,11 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()){
         BodySmallText(text = stringResource(R.string.settings_screen_version, "1.0"),
            modifier = Modifier.padding(top = spacing8))
     }
+
+    if (showDialog.value){
+        SettingsCard(onDismiss = {
+            showDialog.value = false
+        })
+    }
+
 }

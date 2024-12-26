@@ -114,6 +114,11 @@
     <string name="settings_screen_about">About</string>
     <string name="settings_screen_version">Version %1$s</string>
 
+    <!-- Settings Card -->
+    <string name="settings_screen_card_title">Chose the theme</string>
+    <string name="settings_screen_card_dark">Dark</string>
+    <string name="settings_screen_card_light">Light</string>
+
     <!-- Notification -->
     <string name="notification_subtitle">It’s time to do the habit %1$s</string>
 

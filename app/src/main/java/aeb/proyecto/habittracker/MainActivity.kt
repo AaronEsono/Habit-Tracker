@@ -120,7 +120,7 @@ fun TopBarHabit(navController: NavHostController) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = ColorsTheme.secondaryColorApp,
-            titleContentColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = ColorsTheme.colorIcon,
         ),
         title = {
             TitleLargeText(
@@ -134,7 +134,7 @@ fun TopBarHabit(navController: NavHostController) {
                     Icon(
                         painter = painterResource(it.icon),
                         contentDescription = stringResource(R.string.topbar_description),
-                        tint = Color.White
+                        tint = ColorsTheme.themeText
                     )
                 }
             }
@@ -147,7 +147,7 @@ fun TopBarHabit(navController: NavHostController) {
                     Icon(
                         painter = painterResource(R.drawable.ic_arrow_back),
                         contentDescription = stringResource(R.string.topbar_description),
-                        tint = Color.White
+                        tint = ColorsTheme.themeText
                     )
                 }
             }
@@ -197,9 +197,9 @@ fun BottomNavigationHabit(navController: NavHostController) {
                         LabelSmallText(stringResource(it.label))
                     },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.Black,
-                        indicatorColor = Color.White,
-                        unselectedIconColor = Color.White
+                        selectedIconColor = ColorsTheme.colorIcon,
+                        indicatorColor = ColorsTheme.themeText,
+                        unselectedIconColor = ColorsTheme.themeText
                     )
                 )
             }

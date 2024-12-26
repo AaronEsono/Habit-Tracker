@@ -16,8 +16,21 @@ var ThemeTextDark = Color.White
 val textColorsDark = Color(0xFFEFE7E7)
 val colorBackgroundCardDark = Color(0xFF131212)
 val colorStatusBarDark = Color(0xFF1b1917)
+val iconColorDark = Color.Black
 
 //Colores tema claro
+val primaryColorAppLight = Color(0xFFF2F1F0)
+val secondaryColorAppLight = Color(0xFFE7E6E5)
+val terciaryColorAppLight = Color(0xFFD6D9DA)
+val colorButtonsLight = Color(0xFFCFCFCF)
+val borderTextFieldLight = Color(0xFF6F6F6F)
+val containerTextFieldColorLight = Color(0xFFFFFFFF)
+var ThemeTextLight = Color.Black
+val textColorsLight = Color(0xFF1F1F1F)
+val colorBackgroundCardLight = Color(0xFFF7F7F7)
+val colorStatusBarLight = Color(0xFFEBEAE9)
+val iconColorLight = Color.White
+
 
 val pickColors = listOf(
     Color(0xFF6248C1),
