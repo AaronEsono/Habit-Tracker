@@ -32,6 +32,7 @@ class AuthenticationManager(val context: Context) {
                             (task.exception as FirebaseAuthException).errorCode
                         else ""
 
+
                         trySend(AuthResponse.Error(error))
                     }
                 }
