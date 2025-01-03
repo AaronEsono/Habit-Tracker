@@ -59,6 +59,7 @@ fun BottomSheetGeneral(
         containerColor = ColorsTheme.secondaryColorApp
     ) {
         SetStatusColorBar()
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()

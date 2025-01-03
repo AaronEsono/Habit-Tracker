@@ -17,6 +17,8 @@ object Settings
 @Serializable
 data class AddHabit(val edit:Boolean, val id:Long?)
 
+@Serializable
+object ImportHabit
 
 @Serializable
 sealed class BottomBarScreens<T>(@StringRes val label:Int, @DrawableRes val icon:Int, val route:T){

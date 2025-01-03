@@ -7,6 +7,7 @@
     <string name="topbar_stadistics">Statistics</string>
     <string name="topbar_achievements">Achievements</string>
     <string name="topbar_settings">Settings</string>
+    <string name="topbar_import_habit">Import habits</string>
     <string name="topbar_add_habit">Add Habit</string>
     <string name="topbar_description">Icon Description</string>
     <string name="tobbar_add_habit_true">Edit Habit</string>
@@ -105,14 +106,37 @@
 
     <!-- Settings Screen -->
     <string name="settings_screen_theme">Theme</string>
-    <string name="settings_screen_save">Import/Save Habits</string>
-    <string name="settings_screen_contact">Contact Us</string>
+    <string name="settings_screen_save">Import/Export Habits</string>
+    <string name="settings_screen_contact">Contact with me</string>
     <string name="settings_screen_code">App Code</string>
     <string name="settings_screen_linkedn">Follow me on social media</string>
 
     <string name="settings_screen_app">Settings</string>
     <string name="settings_screen_about">About</string>
     <string name="settings_screen_version">Version %1$s</string>
+
+    <!-- import habits -->
+    <string name="import_habit_screen_google">Continue with Google</string>
+    <string name="import_habit_screen_email">Email</string>
+    <string name="import_habit_screen_password">Password</string>
+    <string name="import_habit_screen_remember_password">Repeat password</string>
+    <string name="import_habit_screen_email_error">Email field is required</string>
+    <string name="import_habit_screen_password_error">Password field is required</string>
+
+    <string name="import_habit_screen_login">Login</string>
+    <string name="import_habit_screen_register">Register</string>
+    <string name="import_habit_screen_subtitle_login">Log in to save your progress</string>
+    <string name="import_habit_screen_subtitle_register">Register to save your progress</string>
+
+    <string name="import_habit_screen_remember">Remember credentials</string>
+
+    <string name="import_habit_screen_continue">---- Or continue with ----</string>
+
+    <string name="import_habit_screen_no_account">Don\'t have an account?</string>
+    <string name="import_habit_screen_sign_up">Sign up</string>
+
+    <string name="import_habit_screen_yes_account">Already have an account?</string>
+    <string name="import_habit_screen_sign_in">Sign in</string>
 
     <!-- Settings Card -->
     <string name="settings_screen_card_title">Chose the theme</string>

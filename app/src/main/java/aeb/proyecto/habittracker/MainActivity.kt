@@ -2,21 +2,26 @@ package aeb.proyecto.habittracker
 
 import aeb.proyecto.habittracker.data.model.action.ActionIcon
 import aeb.proyecto.habittracker.data.model.action.TopbarSetUp
+import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
+import aeb.proyecto.habittracker.ui.components.loading.LoadingScreen
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
 import aeb.proyecto.habittracker.ui.navigation.AddHabit
 import aeb.proyecto.habittracker.ui.navigation.Habits
+import aeb.proyecto.habittracker.ui.navigation.ImportHabit
 import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
 import aeb.proyecto.habittracker.ui.navigation.Settings
 import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.listBottomBarScreens
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
+import aeb.proyecto.habittracker.utils.AppState
 import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans.permissions
 import aeb.proyecto.habittracker.utils.LocalNavController
 import aeb.proyecto.habittracker.utils.MainLocalViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -30,7 +35,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -39,10 +43,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -68,22 +74,19 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val mainViewModel: MainViewModel = hiltViewModel()
 
-                SetStatusColorBar()
                 RequestPermissions()
-                CompositionLocalProvider(
-                    MainLocalViewModel provides mainViewModel,
-                    LocalNavController provides navController
-                ) {
-                    AppContent(navController, mainViewModel)
-                }
+                SetStatusColorBar()
+                SetStates(mainViewModel)
+
+                //Contenido principal
+                AppContent(navController)
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppContent(navController: NavHostController, mainViewModel: MainViewModel) {
+fun AppContent(navController: NavHostController) {
     Scaffold(
         topBar = { TopBarHabit(navController) },
         bottomBar = { BottomNavigationHabit(navController) }
@@ -94,7 +97,7 @@ fun AppContent(navController: NavHostController, mainViewModel: MainViewModel) {
                 .fillMaxSize()
                 .background(ColorsTheme.primaryColorApp)
         ) {
-            NavigationWrapper(navController = navController, mainViewModel)
+            NavigationWrapper(navController = navController)
         }
     }
 }
@@ -228,6 +231,10 @@ fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostContro
             title = TopbarSetUp(R.string.topbar_settings, listOf())
         }
 
+        ImportHabit::class.qualifiedName -> {
+            title = TopbarSetUp(R.string.topbar_import_habit, listOf())
+        }
+
         AddHabit::class.qualifiedName -> {
             val edit = navController.currentBackStackEntry?.arguments?.getBoolean("edit") ?: true
             val titleText = if (edit) R.string.tobbar_add_habit_true else R.string.topbar_add_habit
@@ -244,9 +251,29 @@ fun RequestPermissions(){
     val request = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ){}
-
     LaunchedEffect(Unit) {
         request.launch(permissions)
+    }
+}
+
+@Composable
+fun SetStates(mainViewModel: MainViewModel){
+    val appState = mainViewModel.getState().appState.collectAsState().value
+
+    when(appState){
+        is AppState.Error -> {
+            BottomSheetGeneral(
+                title = R.string.general_dx_attention,
+                subtitle = appState.messageInt,
+                color = ColorsTheme.terciaryColorApp,
+                onCancel = { mainViewModel.setNeutral()},
+                onDismiss = { mainViewModel.setNeutral()}
+            )
+        }
+        AppState.Loading -> {
+            LoadingScreen()
+        }
+        AppState.Neutral -> {}
     }
 
 }
@@ -256,7 +283,6 @@ fun SetStatusColorBar(){
     val systemUiController = rememberSystemUiController()
 
     systemUiController.setNavigationBarColor(
-        color = ColorsTheme.colorStatusBar,
-        darkIcons = false
+        color = ColorsTheme.colorStatusBar
     )
 }

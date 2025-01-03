@@ -56,6 +56,7 @@ fun BottomSheetPickUnit(
         containerColor = ColorsTheme.secondaryColorApp
     ) {
         SetStatusColorBar()
+
         Column(modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()

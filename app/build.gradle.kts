@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.hilt)
     kotlin("kapt")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -78,7 +79,6 @@ dependencies {
     implementation (libs.kotlinx.serialization.json)
 
     implementation(libs.material3)
-    implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
     implementation(libs.androidx.material3.adaptive.navigation.suite)
 
     //Mas iconos
@@ -108,4 +108,15 @@ dependencies {
 
     //DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    //Firebase
+    implementation(libs.firebase.analytics)
+    implementation(platform(libs.firebase.bom))
+
+    //Auth
+    implementation(libs.firebase.auth.ktx)
+
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation (libs.googleid)
 }

@@ -12,6 +12,7 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing24
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import aeb.proyecto.habittracker.utils.sendEmail
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
@@ -19,15 +20,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()){
+fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel(), onImportScreen: () -> Unit){
 
     val context = LocalContext.current
     val showDialog = remember { mutableStateOf(false) }
@@ -35,7 +38,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()){
     Column (modifier = Modifier.fillMaxSize().padding(horizontal = spacing16, vertical = spacing24)){
 
         SettingsApp(onSave = {
-
+            onImportScreen()
         }, onTheme = {
             showDialog.value = true
         })
@@ -63,5 +66,4 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()){
             settingsViewModel.saveMode(mode)
         })
     }
-
 }

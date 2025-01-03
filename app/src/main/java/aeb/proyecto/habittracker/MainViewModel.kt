@@ -1,12 +1,8 @@
 package aeb.proyecto.habittracker
 
-import aeb.proyecto.habittracker.data.model.action.ActionIcon
-import aeb.proyecto.habittracker.data.repo.NotificationRepo
 import aeb.proyecto.habittracker.di.DataStoreManager
+import aeb.proyecto.habittracker.utils.SharedState
 import aeb.proyecto.habittracker.utils.setMode
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
+    private val sharedState: SharedState
 ) : ViewModel(){
 
     init {
@@ -30,4 +27,13 @@ class MainViewModel @Inject constructor(
         val mode = dataStoreManager.themeMode.first() ?: 0
         setMode(mode)
     }
+
+    fun getState():SharedState{
+        return sharedState
+    }
+
+    fun setNeutral(){
+        sharedState.setNeutral()
+    }
+
 }

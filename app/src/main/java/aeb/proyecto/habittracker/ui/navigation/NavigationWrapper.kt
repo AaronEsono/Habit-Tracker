@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker.ui.navigation
 import aeb.proyecto.habittracker.MainViewModel
 import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitScreen
 import aeb.proyecto.habittracker.ui.screens.habits.HabitsScreen
+import aeb.proyecto.habittracker.ui.screens.importHabit.ImportHabitScreen
 import aeb.proyecto.habittracker.ui.screens.settings.SettingsScreen
 import aeb.proyecto.habittracker.ui.screens.statistics.StatisticsScreen
 import androidx.compose.runtime.Composable
@@ -12,7 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 @Composable
-fun NavigationWrapper(navController: NavHostController,mainViewModel: MainViewModel){
+fun NavigationWrapper(navController: NavHostController){
 
     NavHost(navController = navController, startDestination = Habits){
         composable<Habits>{
@@ -24,7 +25,9 @@ fun NavigationWrapper(navController: NavHostController,mainViewModel: MainViewMo
             StatisticsScreen()
         }
         composable<Settings>{
-            SettingsScreen()
+            SettingsScreen(){
+                navController.navigate(ImportHabit)
+            }
         }
         composable<AddHabit>{backStackEntry ->
             val edit = backStackEntry.arguments?.getBoolean("edit") ?: false
@@ -39,6 +42,8 @@ fun NavigationWrapper(navController: NavHostController,mainViewModel: MainViewMo
                     }
                 } })
         }
+        composable<ImportHabit>{
+            ImportHabitScreen()
+        }
     }
-
 }

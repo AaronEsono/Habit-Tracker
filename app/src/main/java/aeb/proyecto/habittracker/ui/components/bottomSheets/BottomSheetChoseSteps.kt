@@ -71,6 +71,7 @@ fun BottomSheetChoseSteps(
         containerColor = ColorsTheme.secondaryColorApp
     ) {
         SetStatusColorBar()
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()

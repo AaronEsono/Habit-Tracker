@@ -41,7 +41,7 @@ object ColorsTheme {
     var colorError by mutableStateOf(colorErrorGeneral)
 
     var colorBackgroundCard by mutableStateOf(colorBackgroundCardDark)
-    var colorStatusBar by mutableStateOf(colorStatusBarDark)
+    var colorStatusBar  by mutableStateOf(colorStatusBarDark)
 
     var colorIcon by mutableStateOf(iconColorDark)
 }

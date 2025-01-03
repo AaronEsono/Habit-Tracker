@@ -22,12 +22,10 @@ class DataStoreManager @Inject constructor(
         private val THEMEMODE = intPreferencesKey("themeMode")
     }
 
-    // Obtener el flujo del valor almacenado
     val themeMode: Flow<Int?> = context.dataStore.data.map { preferences ->
         preferences[THEMEMODE]
     }
 
-    // Guardar un nuevo valor
     suspend fun setModeTheme(themeMode: Int) {
         context.dataStore.edit { preferences ->
             preferences[THEMEMODE] = themeMode

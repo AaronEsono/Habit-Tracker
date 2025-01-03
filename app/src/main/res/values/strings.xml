@@ -7,6 +7,7 @@
     <string name="topbar_achievements">Logros</string>
     <string name="topbar_settings">Opciones</string>
     <string name="topbar_add_habit">Añadir hábito</string>
+    <string name="topbar_import_habit">Importar hábitos</string>
     <string name="topbar_description">Descripcion icono</string>
     <string name="tobbar_add_habit_true">Editar hábito</string>
 
@@ -105,14 +106,36 @@
 
     <!-- Settings Screen -->
     <string name="settings_screen_theme">Tema</string>
-    <string name="settings_screen_save">Importar/Guardar hábitos</string>
-    <string name="settings_screen_contact">Contacta con nosotros</string>
+    <string name="settings_screen_save">Importar/Exportar hábitos</string>
+    <string name="settings_screen_contact">Contacta conmigo</string>
     <string name="settings_screen_code">Código de la aplicación</string>
     <string name="settings_screen_linkedn">Sígueme en mis redes sociales</string>
 
     <string name="settings_screen_app">Configuración</string>
     <string name="settings_screen_about">Acerca de</string>
     <string name="settings_screen_version">Versión %1$s</string>
+
+    <!-- import habits -->
+    <string name="import_habit_screen_google">Continuar con Google</string>
+    <string name="import_habit_screen_email">Email</string>
+    <string name="import_habit_screen_password">Contraseña</string>
+    <string name="import_habit_screen_remember_password">Repetir contraseña</string>
+    <string name="import_habit_screen_email_error">El campo del email es obligatorio</string>
+    <string name="import_habit_screen_password_error">El campo de la contraseña es obligatorio</string>
+
+    <string name="import_habit_screen_login">Iniciar sesión</string>
+    <string name="import_habit_screen_register">Registrarse</string>
+    <string name="import_habit_screen_subtitle_login">Inicia sesión para poder guardar tu progeso</string>
+    <string name="import_habit_screen_subtitle_register">Regístrate para poder guardar tu progeso</string>
+
+    <string name="import_habit_screen_remember">Recordar credenciales</string>
+
+    <string name="import_habit_screen_continue">---- O continúa con ----</string>
+    <string name="import_habit_screen_no_account">¿No tienes cuenta?</string>
+    <string name="import_habit_screen_sign_up">Regístrate</string>
+
+    <string name="import_habit_screen_yes_account">¿Ya tienes cuenta?</string>
+    <string name="import_habit_screen_sign_in">Inicia sesión</string>
 
     <!-- Settings Card -->
     <string name="settings_screen_card_title">Selecciona el tema</string>

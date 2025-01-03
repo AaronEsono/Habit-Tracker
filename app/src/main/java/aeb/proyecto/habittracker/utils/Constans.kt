@@ -41,6 +41,8 @@ object Constans {
     const val STARTBUTTON = 1
     const val ENDBUTTON = 2
 
+    const val CLIENTID = "294221999821-m801lam8t8i6n1qf02t2afa2te1ofutn.apps.googleusercontent.com"
+
    val themeList = listOf(
        ThemeMode(DARKMODE,R.string.settings_screen_card_dark),
        ThemeMode(LIGHTMODE,R.string.settings_screen_card_light)

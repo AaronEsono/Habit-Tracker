@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,13 +31,19 @@ fun CustomFilledButton(
     onClick: () -> Unit = {},
     @StringRes title: Int,
     @DrawableRes icon: Int?,
-    color:Color
+    color:Color,
+    enabled: Boolean = true,
+    elevation: ButtonElevation = ButtonDefaults.buttonElevation()
 ) {
     Button(
-        onClick = { onClick() }, modifier = modifier,
+        onClick = { onClick() },
+        modifier = modifier,
+        enabled = enabled,
+        elevation = elevation,
         shape = RoundedCornerShape(spacing12),
         colors = ButtonDefaults.buttonColors(
-            containerColor = color
+            containerColor = color,
+            disabledContainerColor = ColorsTheme.secondaryColorApp
         )
     ) {
         icon?.let {
