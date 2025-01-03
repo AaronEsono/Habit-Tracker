@@ -42,6 +42,7 @@ object Constans {
     const val STARTBUTTON = 1
     const val ENDBUTTON = 2
 
+
    val themeList = listOf(
        ThemeMode(DARKMODE,R.string.settings_screen_card_dark),
        ThemeMode(LIGHTMODE,R.string.settings_screen_card_light)
