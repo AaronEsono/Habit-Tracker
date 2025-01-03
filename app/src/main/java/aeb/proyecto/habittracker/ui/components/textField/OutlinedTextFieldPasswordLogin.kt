@@ -3,7 +3,6 @@ package aeb.proyecto.habittracker.ui.components.textField
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.utils.ColorsTheme
-import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -85,7 +83,7 @@ fun OutlinedTextFieldPasswordLogin(
             cursorColor = ColorsTheme.themeText
         ),
         shape = RoundedCornerShape(spacing8),
-        keyboardOptions = KeyboardOptions(imeAction = imeAction)
+        keyboardOptions = KeyboardOptions(imeAction = imeAction),
     )
 
     // Espacio para el supportingText
