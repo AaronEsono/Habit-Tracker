@@ -1,4 +1,6 @@
 package aeb.proyecto.habittracker.data.model.errors
 
-class ErrorsFirebase {
-}
+data class ErrorsFirebase(
+    val id:String,
+    val text:Int
+)

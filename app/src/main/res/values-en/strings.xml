@@ -169,4 +169,10 @@
     <string name="month_11">November</string>
     <string name="month_12">December</string>
 
+    <!-- Errors Firebase -->
+    <string name="error_invalid_email">The provided value for the email user property is invalid. It must be a string email address.</string>
+    <string name="error_invalid_credential">The credentials doesn\'t exist</string>
+
+    <string name="error_invalid_default">Something went wrong, please try again.</string>
+
 </resources>

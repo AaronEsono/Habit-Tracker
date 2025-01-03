@@ -1,6 +1,6 @@
 package aeb.proyecto.habittracker.utils
 
-import aeb.proyecto.habittracker.utils.Constans.CLIENTID
+import aeb.proyecto.habittracker.R
 import android.content.Context
 import android.util.Log
 import androidx.credentials.CredentialManager
@@ -10,6 +10,7 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.channels.awaitClose
@@ -27,8 +28,11 @@ class AuthenticationManager(val context: Context) {
                     if (task.isSuccessful) {
                         trySend(AuthResponse.Success)
                     } else {
-                        Log.d("Error", task.exception?.message.toString())
-                        trySend(AuthResponse.Error(task.exception?.message.toString()))
+                        val error = if(task.exception is FirebaseAuthException)
+                            (task.exception as FirebaseAuthException).errorCode
+                        else ""
+
+                        trySend(AuthResponse.Error(error))
                     }
                 }
             awaitClose()
@@ -40,7 +44,11 @@ class AuthenticationManager(val context: Context) {
                 if (task.isSuccessful) {
                     trySend(AuthResponse.Success)
                 } else {
-                    trySend(AuthResponse.Error(task.exception?.message.toString()))
+                    val error = if(task.exception is FirebaseAuthException)
+                            (task.exception as FirebaseAuthException).errorCode
+                    else ""
+
+                    trySend(AuthResponse.Error(error))
                 }
             }
         awaitClose()
@@ -49,7 +57,7 @@ class AuthenticationManager(val context: Context) {
     fun signInWithGoogle(): Flow<AuthResponse> = callbackFlow {
         val googleValidation = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(CLIENTID)
+            .setServerClientId(context.getString(R.string.web_client_id))
             .setNonce(createNonce())
             .setAutoSelectEnabled(true)
             .build()

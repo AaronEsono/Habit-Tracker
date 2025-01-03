@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -61,10 +62,11 @@ fun OutLinedTextFieldLogin(
             errorTextColor = ColorsTheme.colorError,
             errorBorderColor = ColorsTheme.colorError,
             unfocusedLabelColor = Color.Transparent,
-            focusedLabelColor = Color.Transparent
+            focusedLabelColor = Color.Transparent,
+            cursorColor = ColorsTheme.themeText
         ),
         shape = RoundedCornerShape(spacing8),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email)
     )
 
     // Espacio para el supportingText

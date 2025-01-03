@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.screens.importHabit
 
 import aeb.proyecto.habittracker.ui.screens.importHabit.importComponents.LoginScreenImportHabit
+import aeb.proyecto.habittracker.utils.AuthResponse
 import aeb.proyecto.habittracker.utils.AuthenticationManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -20,16 +21,25 @@ fun ImportHabitScreen(importHabitViewModel: ImportHabitViewModel = hiltViewModel
     LoginScreenImportHabit(
         importHabitViewModel = importHabitViewModel,
         signInGoogle = {
-            authentication.signInWithGoogle().onEach {}.launchIn(coroutine)
+            importHabitViewModel.setLoading()
+
+            authentication.signInWithGoogle().onEach {
+                importHabitViewModel.handleSignInGoogle(it)
+            }.launchIn(coroutine)
         },
         signIn = { email, password ->
             importHabitViewModel.setLoading()
-            authentication.signInWithEmail(email, password).onEach {
-                importHabitViewModel.setNeutral()
+
+            authentication.signInWithEmail(email, password).onEach { response ->
+                importHabitViewModel.handleSignIn(response)
             }.launchIn(coroutine)
         },
         signUp = { email, password ->
-            authentication.createAccountWithEmail(email, password).launchIn(coroutine)
+            importHabitViewModel.setLoading()
+
+            authentication.createAccountWithEmail(email, password).onEach { response ->
+                importHabitViewModel.handleSignUp(response)
+            }.launchIn(coroutine)
         }
     )
 }

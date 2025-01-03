@@ -3,6 +3,8 @@ package aeb.proyecto.habittracker.ui.screens.importHabit
 import aeb.proyecto.habittracker.MainViewModel
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.state.ImportState
+import aeb.proyecto.habittracker.utils.AuthResponse
+import aeb.proyecto.habittracker.utils.Constans.FIREBASE_ERRORS
 import aeb.proyecto.habittracker.utils.SharedState
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -60,6 +62,43 @@ class ImportHabitViewModel @Inject constructor(
 
     fun setNeutral(){
         sharedState.setNeutral()
+    }
+
+    fun setError(message:Int){
+        sharedState.setError(message)
+    }
+
+    fun handleSignInGoogle(response: AuthResponse){
+        if(response is AuthResponse.Success){
+            //Cosas
+        }else{
+            setNeutral()
+        }
+    }
+
+    fun handleSignUp(response: AuthResponse){
+        if(response is AuthResponse.Success){
+            //Cosas
+        }else{
+            handleError(response as AuthResponse.Error)
+        }
+    }
+
+    fun handleSignIn(response: AuthResponse){
+        if(response is AuthResponse.Success){
+            //Cosas
+        }else{
+            handleError(response as AuthResponse.Error)
+        }
+    }
+
+    private fun handleError(response: AuthResponse.Error){
+        val message = response.message
+
+        Log.d("ErrorPillarMensaje", message)
+        val errorInt = FIREBASE_ERRORS.find { it.id == message }?.text ?: R.string.error_invalid_default
+
+        setError(errorInt)
     }
 
 }

@@ -168,4 +168,10 @@
     <string name="month_11">Noviembre</string>
     <string name="month_12">Diciembre</string>
 
+    <!-- Errors Firebase -->
+    <string name="error_invalid_email">El email introducido no es válido</string>
+    <string name="error_invalid_credential">Las credenciales no existen</string>
+
+    <string name="error_invalid_default">Algo ha fallado, vuelva a intentarlo</string>
+
 </resources>

@@ -72,7 +72,8 @@ fun CustomOutlinedTextField(
             unfocusedTextColor = ColorsTheme.themeText,
             focusedTextColor = ColorsTheme.themeText,
             errorTextColor = ColorsTheme.colorError,
-            errorBorderColor = ColorsTheme.colorError
+            errorBorderColor = ColorsTheme.colorError,
+            cursorColor = ColorsTheme.themeText
         ),
         shape = RoundedCornerShape(spacing8),
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = if (isNumeric) KeyboardType.Number else KeyboardType.Text)

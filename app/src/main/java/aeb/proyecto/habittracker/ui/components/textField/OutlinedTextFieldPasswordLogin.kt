@@ -81,7 +81,8 @@ fun OutlinedTextFieldPasswordLogin(
             focusedLabelColor = Color.Transparent,
             focusedBorderColor = ColorsTheme.borderTextField,
             unfocusedBorderColor = ColorsTheme.borderTextField,
-            errorBorderColor = ColorsTheme.colorError
+            errorBorderColor = ColorsTheme.colorError,
+            cursorColor = ColorsTheme.themeText
         ),
         shape = RoundedCornerShape(spacing8),
         keyboardOptions = KeyboardOptions(imeAction = imeAction)

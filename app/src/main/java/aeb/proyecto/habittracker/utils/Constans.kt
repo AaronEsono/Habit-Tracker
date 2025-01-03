@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.utils
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.model.errors.ErrorsFirebase
 import aeb.proyecto.habittracker.data.model.theme.ThemeMode
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -40,8 +41,6 @@ object Constans {
     const val NOBORDER = 0
     const val STARTBUTTON = 1
     const val ENDBUTTON = 2
-
-    const val CLIENTID = "294221999821-m801lam8t8i6n1qf02t2afa2te1ofutn.apps.googleusercontent.com"
 
    val themeList = listOf(
        ThemeMode(DARKMODE,R.string.settings_screen_card_dark),
@@ -181,6 +180,11 @@ object Constans {
 
     val permissions = android.Manifest.permission.POST_NOTIFICATIONS
 
+    //Errores Firebase Auth
+    val FIREBASE_ERRORS:List<ErrorsFirebase> = listOf(
+        ErrorsFirebase("ERROR_INVALID_EMAIL",R.string.error_invalid_email),
+        ErrorsFirebase("ERROR_INVALID_CREDENTIAL",R.string.error_invalid_credential),
 
+    )
 
 }
