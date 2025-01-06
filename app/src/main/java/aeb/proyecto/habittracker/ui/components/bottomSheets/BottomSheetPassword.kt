@@ -1,7 +1,6 @@
 package aeb.proyecto.habittracker.ui.components.bottomSheets
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.SetStatusColorBar
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
@@ -47,7 +46,6 @@ fun BottomSheetPassword(
         sheetState = sheetState,
         containerColor = ColorsTheme.secondaryColorApp
     ) {
-        SetStatusColorBar()
 
         Column(
             modifier = Modifier

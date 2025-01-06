@@ -16,7 +16,7 @@ fun AddHabitScreenState(
 
     if (uiState.showGeneralDx) {
         BottomSheetGeneral(
-            color = uiState.color,
+            colorButton = uiState.color,
             titleAccept = R.string.buttons_accept,
             iconAccept = R.drawable.ic_check,
             title = R.string.general_dx_attention,

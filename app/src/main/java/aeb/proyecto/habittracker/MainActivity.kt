@@ -16,9 +16,7 @@ import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.listBottomBarScreens
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.utils.AppState
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans.permissions
-import aeb.proyecto.habittracker.utils.LocalNavController
 import aeb.proyecto.habittracker.utils.MainLocalViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -27,7 +25,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -36,6 +33,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -61,26 +59,27 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge(navigationBarStyle = SystemBarStyle.dark(Color.Transparent.toArgb()))
 
         setContent {
-            HabitTrackerTheme {
+            val mainViewModel: MainViewModel = hiltViewModel()
+            val themeMode = mainViewModel.themeMode.collectAsState().value
+
+            HabitTrackerTheme (themeMode){
                 val navController = rememberNavController()
-                val mainViewModel: MainViewModel = hiltViewModel()
 
                 RequestPermissions()
-                SetStatusColorBar()
                 SetStates(mainViewModel)
 
-                //Contenido principal
-                AppContent(navController)
+                CompositionLocalProvider(MainLocalViewModel provides mainViewModel) {
+                    AppContent(navController)
+                }
             }
         }
     }
@@ -96,7 +95,6 @@ fun AppContent(navController: NavHostController) {
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .background(ColorsTheme.primaryColorApp)
         ) {
             NavigationWrapper(navController = navController)
         }
@@ -123,8 +121,7 @@ fun TopBarHabit(navController: NavHostController) {
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = ColorsTheme.secondaryColorApp,
-            titleContentColor = ColorsTheme.colorIcon,
+            containerColor = MaterialTheme.colorScheme.primary
         ),
         title = {
             TitleLargeText(
@@ -138,7 +135,7 @@ fun TopBarHabit(navController: NavHostController) {
                     Icon(
                         painter = painterResource(it.icon),
                         contentDescription = stringResource(R.string.topbar_description),
-                        tint = ColorsTheme.themeText
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -159,7 +156,7 @@ fun TopBarHabit(navController: NavHostController) {
                     Icon(
                         painter = painterResource(R.drawable.ic_arrow_back),
                         contentDescription = stringResource(R.string.topbar_description),
-                        tint = ColorsTheme.themeText
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -183,8 +180,7 @@ fun BottomNavigationHabit(navController: NavHostController) {
 
     if (showBottomBar == true) {
         NavigationBar(
-            contentColor = ColorsTheme.secondaryColorApp,
-            containerColor = ColorsTheme.secondaryColorApp
+            containerColor = MaterialTheme.colorScheme.primary
         ) {
             menuItems.forEach {
                 NavigationBarItem(
@@ -211,9 +207,9 @@ fun BottomNavigationHabit(navController: NavHostController) {
                         LabelSmallText(stringResource(it.label))
                     },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = ColorsTheme.colorIcon,
-                        indicatorColor = ColorsTheme.themeText,
-                        unselectedIconColor = ColorsTheme.themeText
+                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                        indicatorColor = MaterialTheme.colorScheme.onSurface,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurface
                     )
                 )
             }
@@ -273,14 +269,12 @@ fun RequestPermissions(){
 
 @Composable
 fun SetStates(mainViewModel: MainViewModel){
-    val appState = mainViewModel.getState().appState.collectAsState().value
 
-    when(appState){
+    when(val appState = mainViewModel.getState().appState.collectAsState().value){
         is AppState.Error -> {
             BottomSheetGeneral(
                 title = R.string.general_dx_attention,
                 subtitle = appState.messageInt,
-                color = ColorsTheme.terciaryColorApp,
                 onCancel = { mainViewModel.setNeutral()},
                 onDismiss = { mainViewModel.setNeutral()}
             )
@@ -290,14 +284,4 @@ fun SetStates(mainViewModel: MainViewModel){
         }
         AppState.Neutral -> {}
     }
-
-}
-
-@Composable
-fun SetStatusColorBar(){
-    val systemUiController = rememberSystemUiController()
-
-    systemUiController.setNavigationBarColor(
-        color = ColorsTheme.colorStatusBar
-    )
 }

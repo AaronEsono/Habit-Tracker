@@ -1,6 +1,5 @@
 package aeb.proyecto.habittracker.ui.components.text
 
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +14,7 @@ fun BodyMediumText(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Center,
-    color: Color = ColorsTheme.themeText,
+    color: Color = MaterialTheme.colorScheme.onSurface,
     fontStyle: FontStyle? = null,
     fontWeight: FontWeight? = null
 ){

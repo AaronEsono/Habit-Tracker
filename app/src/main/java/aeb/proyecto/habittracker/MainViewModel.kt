@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker
 
 import aeb.proyecto.habittracker.di.DataStoreManager
+import aeb.proyecto.habittracker.ui.theme.AppTheme
 import aeb.proyecto.habittracker.utils.SharedState
 import aeb.proyecto.habittracker.utils.setMode
 import androidx.lifecycle.ViewModel
@@ -19,13 +20,15 @@ class MainViewModel @Inject constructor(
     private val sharedState: SharedState
 ) : ViewModel(){
 
+    private val _themeMode: MutableStateFlow<Int> = MutableStateFlow(AppTheme.DARK.theme)
+    val themeMode: StateFlow<Int> = _themeMode.asStateFlow()
+
     init {
         setModeTheme()
     }
 
     private fun setModeTheme() = viewModelScope.launch{
-        val mode = dataStoreManager.themeMode.first() ?: 0
-        setMode(mode)
+        _themeMode.value = dataStoreManager.themeMode.first() ?: 0
     }
 
     fun getState():SharedState{
@@ -34,6 +37,11 @@ class MainViewModel @Inject constructor(
 
     fun setNeutral(){
         sharedState.setNeutral()
+    }
+
+    fun saveMode(mode:Int) = viewModelScope.launch{
+        _themeMode.value = mode
+        dataStoreManager.setModeTheme(mode)
     }
 
 }

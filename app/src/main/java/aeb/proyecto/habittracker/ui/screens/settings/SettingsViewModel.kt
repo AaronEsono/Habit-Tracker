@@ -10,11 +10,5 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val dataStoreManager: DataStoreManager,
 ) : ViewModel() {
-
-    fun saveMode(mode:Int) = viewModelScope.launch{
-        dataStoreManager.setModeTheme(mode)
-    }
-
 }

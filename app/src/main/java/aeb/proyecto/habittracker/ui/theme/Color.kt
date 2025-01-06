@@ -6,8 +6,11 @@ import androidx.compose.ui.graphics.Color
 val colorErrorGeneral = Color(0xFFD9362D)
 
 //Colores tema oscuro
-val primaryColorAppDark = Color(0xFF201f1e)
-val secondaryColorAppDark = Color(0xFF2e2d2b)
+val backgroundDark = Color(0xFF201f1e)
+val primaryDark = Color(0xFF2e2d2b)
+val primaryContainerDark = Color(0xFF32312F)
+val onPrimaryContainerDark = Color(0xFFE7E6E5)
+
 val terciaryColorAppDark = Color(0xFF45484a)
 val colorButtonsDark = Color(0xFF323336)
 val borderTextFieldDark = Color(0xFF848484)
@@ -20,8 +23,11 @@ val disableColorDark = Color.Black.copy(alpha = 0.2f)
 val iconColorDark = Color.Black
 
 //Colores tema claro
-val primaryColorAppLight = Color(0xFFF2F1F0)
-val secondaryColorAppLight = Color(0xFFE7E6E5)
+val backgroundLight = Color(0xFFF2F1F0)
+val primaryLight = Color(0xFFE7E6E5)
+val primaryContainerLight = Color(0xFFD6D9DA)
+val onPrimaryContainerLight = Color(0xFFE7E6E5)
+
 val terciaryColorAppLight = Color(0xFFD6D9DA)
 val colorButtonsLight = Color(0xFFCFCFCF)
 val borderTextFieldLight = Color(0xFF6F6F6F)

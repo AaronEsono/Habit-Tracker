@@ -20,7 +20,7 @@ fun ImportHabitComponents(
         BottomSheetGeneral(
             title = uiState.titleDx,
             subtitle = uiState.subtitleDx,
-            color = ColorsTheme.terciaryColorApp,
+            colorButton = ColorsTheme.terciaryColorApp,
             textAlign = TextAlign.Center,
             titleAccept = uiState.titleButton,
             onDismiss = { onDismiss() },

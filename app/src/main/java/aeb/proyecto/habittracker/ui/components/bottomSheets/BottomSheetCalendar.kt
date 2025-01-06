@@ -1,9 +1,7 @@
 package aeb.proyecto.habittracker.ui.components.bottomSheets
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.SetStatusColorBar
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
-import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarContent
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarHeader
@@ -13,22 +11,13 @@ import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -37,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.YearMonth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +50,6 @@ fun BottomSheetCalendar(
         sheetState = bottomSheetState,
         containerColor = ColorsTheme.secondaryColorApp
     ) {
-        SetStatusColorBar()
 
         Column(
             modifier = Modifier

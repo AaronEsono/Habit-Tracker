@@ -2,6 +2,7 @@ package aeb.proyecto.habittracker.utils
 
 import aeb.proyecto.habittracker.ui.theme.ThemeTextDark
 import aeb.proyecto.habittracker.ui.theme.ThemeTextLight
+import aeb.proyecto.habittracker.ui.theme.backgroundDark
 import aeb.proyecto.habittracker.ui.theme.borderTextFieldDark
 import aeb.proyecto.habittracker.ui.theme.borderTextFieldLight
 import aeb.proyecto.habittracker.ui.theme.colorBackgroundCardDark
@@ -17,10 +18,6 @@ import aeb.proyecto.habittracker.ui.theme.disableColorDark
 import aeb.proyecto.habittracker.ui.theme.disableColorLight
 import aeb.proyecto.habittracker.ui.theme.iconColorDark
 import aeb.proyecto.habittracker.ui.theme.iconColorLight
-import aeb.proyecto.habittracker.ui.theme.primaryColorAppDark
-import aeb.proyecto.habittracker.ui.theme.primaryColorAppLight
-import aeb.proyecto.habittracker.ui.theme.secondaryColorAppDark
-import aeb.proyecto.habittracker.ui.theme.secondaryColorAppLight
 import aeb.proyecto.habittracker.ui.theme.terciaryColorAppDark
 import aeb.proyecto.habittracker.ui.theme.terciaryColorAppLight
 import aeb.proyecto.habittracker.ui.theme.textColorsDark
@@ -30,8 +27,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 object ColorsTheme {
-    var primaryColorApp by mutableStateOf(primaryColorAppDark)
-    var secondaryColorApp by mutableStateOf(secondaryColorAppDark)
+    var primaryColorApp by mutableStateOf(backgroundDark)
+    var secondaryColorApp by mutableStateOf(backgroundDark)
     var terciaryColorApp by mutableStateOf(terciaryColorAppDark)
 
     var colorButtons by mutableStateOf(colorButtonsDark)
@@ -50,8 +47,8 @@ object ColorsTheme {
 }
 
 fun setDarkTheme(){
-    ColorsTheme.primaryColorApp = primaryColorAppDark
-    ColorsTheme.secondaryColorApp = secondaryColorAppDark
+    ColorsTheme.primaryColorApp = backgroundDark
+    ColorsTheme.secondaryColorApp = backgroundDark
     ColorsTheme.terciaryColorApp = terciaryColorAppDark
     ColorsTheme.colorButtons = colorButtonsDark
     ColorsTheme.borderTextField = borderTextFieldDark
@@ -66,8 +63,8 @@ fun setDarkTheme(){
 }
 
 fun setLightTheme(){
-    ColorsTheme.primaryColorApp = primaryColorAppLight
-    ColorsTheme.secondaryColorApp = secondaryColorAppLight
+    ColorsTheme.primaryColorApp = backgroundDark
+    ColorsTheme.secondaryColorApp = backgroundDark
     ColorsTheme.terciaryColorApp = terciaryColorAppLight
     ColorsTheme.colorButtons = colorButtonsLight
     ColorsTheme.borderTextField = borderTextFieldLight

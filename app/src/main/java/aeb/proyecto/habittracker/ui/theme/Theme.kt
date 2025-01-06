@@ -1,40 +1,45 @@
 package aeb.proyecto.habittracker.ui.theme
 
-import aeb.proyecto.habittracker.utils.ColorsTheme
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorScheme = darkColorScheme(
-    primary = ColorsTheme.primaryColorApp,
-    secondary = ColorsTheme.secondaryColorApp,
-    tertiary = ColorsTheme.terciaryColorApp
+private val Dark = darkColorScheme(
+    background = backgroundDark,
+    primary = primaryDark,
+    onSurface = Color.White,
+    primaryContainer = primaryContainerDark,
+    onPrimaryContainer = onPrimaryContainerDark
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = ColorsTheme.primaryColorApp,
-    secondary = ColorsTheme.secondaryColorApp,
-    tertiary = ColorsTheme.terciaryColorApp
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+private val Light = lightColorScheme(
+    background = backgroundLight,
+    primary = primaryLight,
+    onSurface = Color.Black,
+    primaryContainer = primaryContainerLight,
+    onPrimaryContainer = onPrimaryContainerLight
 )
+
+enum class AppTheme(val theme: Int) {
+    DARK(0), LIGHT(1)
+}
 
 @Composable
 fun HabitTrackerTheme(
+    theme:Int,
     content: @Composable () -> Unit
 ) {
+
+    val themeScheme = when (theme) {
+        AppTheme.DARK.theme -> Dark
+        AppTheme.LIGHT.theme -> Light
+        else -> Dark
+    }
+
     MaterialTheme(
-        colorScheme = DarkColorScheme,
+        colorScheme = themeScheme,
         typography = Typography,
         content = content
     )

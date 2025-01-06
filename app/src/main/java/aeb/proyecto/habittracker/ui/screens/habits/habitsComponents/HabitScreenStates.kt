@@ -36,7 +36,7 @@ fun HabitScreenStates(
     if (uiState.showGeneralDx) {
         BottomSheetGeneral(
             onDismiss = { habitsViewModel.closeGeneralDx() },
-            color = habitsViewModel.getColor(),
+            colorButton = habitsViewModel.getColor(),
             title = R.string.general_dx_attention,
             subtitle = uiState.textAttention,
             showCancel = true,
