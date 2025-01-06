@@ -51,7 +51,13 @@ fun NavigationWrapper(navController: NavHostController){
             }
         }
         composable<SaveHabit>{
-            SaveHabit()
+            SaveHabit(){
+                navController.navigate(Settings){
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        inclusive = true
+                    }
+                }
+            }
         }
     }
 }

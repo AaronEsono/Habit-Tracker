@@ -138,6 +138,15 @@ class ImportHabitViewModel @Inject constructor(
         }
     }
 
+    fun handleForgotPassword(response: AuthResponse,showToast: () -> Unit) {
+        if (response is AuthResponse.Success) {
+            setNeutral()
+            showToast()
+        } else {
+            handleError(response as AuthResponse.Error)
+        }
+    }
+
     fun openGeneralDxCreateAccount() {
         _uiState.update { currentState ->
             currentState.copy(
@@ -163,6 +172,18 @@ class ImportHabitViewModel @Inject constructor(
     fun closeGeneralDx(){
         _uiState.update { currentState ->
             currentState.copy(showGeneralDx = false)
+        }
+    }
+
+    fun openPasswordDx(){
+        _uiState.update { currentState ->
+            currentState.copy(dxPassword = true)
+        }
+    }
+
+    fun closePasswordDx(){
+        _uiState.update { currentState ->
+            currentState.copy(dxPassword = false)
         }
     }
 

@@ -2,22 +2,37 @@ package aeb.proyecto.habittracker.ui.screens.importHabit.importComponents
 
 import aeb.proyecto.habittracker.data.model.state.ImportState
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
+import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetPassword
 import aeb.proyecto.habittracker.utils.ColorsTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun ImportHabitComponents(uiState: ImportState, onDismiss: () -> Unit, onAccept: () -> Unit = {}) {
+fun ImportHabitComponents(
+    uiState: ImportState,
+    onDismiss: () -> Unit,
+    onDismissPassword: () -> Unit = {},
+    onAcceptGeneral: () -> Unit = {},
+    onAcceptPassword: (String) -> Unit
+) {
 
-    if(uiState.showGeneralDx){
+    if (uiState.showGeneralDx) {
         BottomSheetGeneral(
             title = uiState.titleDx,
             subtitle = uiState.subtitleDx,
             color = ColorsTheme.terciaryColorApp,
             textAlign = TextAlign.Center,
             titleAccept = uiState.titleButton,
-            onDismiss = {onDismiss()},
-            onAccept = { onAccept() }
+            onDismiss = { onDismiss() },
+            onAccept = { onAcceptGeneral() }
         )
     }
+
+    if (uiState.dxPassword) {
+        BottomSheetPassword(
+            onDismiss = { onDismissPassword() },
+            onAccept = { onAcceptPassword(it) }
+        )
+    }
+
 }

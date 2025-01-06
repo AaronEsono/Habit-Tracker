@@ -58,7 +58,8 @@ fun LoginScreenImportHabit(
     importHabitViewModel: ImportHabitViewModel,
     signInGoogle: () -> Unit = {},
     signIn: (String,String,Boolean) -> Unit,
-    signUp: (String,String) -> Unit
+    signUp: (String,String) -> Unit,
+    resetPassword: () -> Unit
 ) {
 
     val email = rememberTextFieldState()
@@ -170,10 +171,20 @@ fun LoginScreenImportHabit(
             AnimatedVisibility(
                 visible = uiState.isInLogin,
             ) {
+                Column {
                     CheckBoxButton(
-                        checkedState = checkedState,
-                        onStateChange = onStateChange
+                        checkedState = checkedState, onStateChange = onStateChange
                     )
+
+                    LabelMediumText(
+                        stringResource(R.string.import_habit_forgot_password),
+                        modifier = Modifier.clickable { resetPassword()},
+                        textAlign = TextAlign.Start,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.padding(bottom = spacing16))
+                }
             }
 
             CustomFilledButton(

@@ -146,6 +146,10 @@
     <string name="import_habit_toast">Email enviado.</string>
     <string name="import_habit_verify_email">Email no verificado</string>
 
+    <string name="import_habit_forgot_password">¿Olvidaste la contraseña?</string>
+    <string name="import_habit_forgot_title_dx">Cambio de contraseña</string>
+    <string name="import_habit_forgot_subtitle_dx">Introduce el email donde se enviará la contraseña</string>
+
     <!-- Settings Card -->
     <string name="settings_screen_card_title">Selecciona el tema</string>
     <string name="settings_screen_card_dark">Oscuro</string>

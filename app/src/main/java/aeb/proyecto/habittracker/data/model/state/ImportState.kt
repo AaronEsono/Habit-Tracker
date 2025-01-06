@@ -12,4 +12,5 @@ data class ImportState(
     val subtitleDx:Int = R.string.import_habit_create_account,
     val titleButton:Int = R.string.buttons_accept,
     val titleDx:Int  = R.string.general_dx_create_account,
+    val dxPassword:Boolean = false
 )

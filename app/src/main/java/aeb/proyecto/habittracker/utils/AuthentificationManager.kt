@@ -6,6 +6,7 @@ import aeb.proyecto.habittracker.utils.Constans.ERROR_EMAIL_SEND
 import aeb.proyecto.habittracker.utils.Constans.ERROR_UNVERIFIED_EMAIL
 import aeb.proyecto.habittracker.utils.Constans.ERROR_UPDATE_PROFILE
 import android.content.Context
+import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -162,6 +163,22 @@ class AuthenticationManager(val context: Context) {
                 }
 
         }
+        awaitClose()
+    }
+
+    fun forgotPassword(email: String): Flow<AuthResponse> = callbackFlow {
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    trySend(AuthResponse.Success)
+                } else {
+                    val error = if (task.exception is FirebaseAuthException)
+                        (task.exception as FirebaseAuthException).errorCode
+                    else ""
+
+                    trySend(AuthResponse.Error(error))
+                }
+            }
         awaitClose()
     }
 
