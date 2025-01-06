@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.screens.settings
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.model.user.UserData
 import aeb.proyecto.habittracker.ui.components.text.BodySmallText
 import aeb.proyecto.habittracker.ui.screens.settings.settingsComponents.SettingsAbout
 import aeb.proyecto.habittracker.ui.screens.settings.settingsComponents.SettingsApp
@@ -30,7 +31,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel(), onImportScreen: () -> Unit){
+fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel(), onImportScreen: () -> Unit, onSaveScreen:() -> Unit){
 
     val context = LocalContext.current
     val showDialog = remember { mutableStateOf(false) }
@@ -38,7 +39,11 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel(), onImp
     Column (modifier = Modifier.fillMaxSize().padding(horizontal = spacing16, vertical = spacing24)){
 
         SettingsApp(onSave = {
-            onImportScreen()
+            if(UserData.uid != null){
+                onSaveScreen()
+            }else{
+                onImportScreen()
+            }
         }, onTheme = {
             showDialog.value = true
         })

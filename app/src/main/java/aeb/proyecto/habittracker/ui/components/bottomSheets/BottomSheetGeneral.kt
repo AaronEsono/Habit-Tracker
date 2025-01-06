@@ -39,6 +39,7 @@ fun BottomSheetGeneral(
     onAccept: () -> Unit = {},
     showCancel: Boolean = false,
     onDismiss: () -> Unit = {},
+    textAlign: TextAlign = TextAlign.Center,
     @StringRes titleAccept: Int = R.string.buttons_accept,
     @DrawableRes iconAccept: Int = R.drawable.ic_check,
     @StringRes titleCancel: Int = R.string.buttons_cancel,
@@ -79,7 +80,7 @@ fun BottomSheetGeneral(
             LabelMediumText(
                 text = stringResource(subtitle),
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = textAlign
             )
 
             Spacer(modifier = Modifier.padding(vertical = spacing8))

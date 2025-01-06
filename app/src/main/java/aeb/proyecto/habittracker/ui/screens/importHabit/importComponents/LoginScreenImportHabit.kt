@@ -39,6 +39,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,7 +57,7 @@ import androidx.compose.ui.unit.dp
 fun LoginScreenImportHabit(
     importHabitViewModel: ImportHabitViewModel,
     signInGoogle: () -> Unit = {},
-    signIn: (String,String) -> Unit,
+    signIn: (String,String,Boolean) -> Unit,
     signUp: (String,String) -> Unit
 ) {
 
@@ -65,7 +66,29 @@ fun LoginScreenImportHabit(
     val rememberPassword = rememberTextFieldState()
     val (checkedState, onStateChange) = remember { mutableStateOf(true) }
 
+    val wasFilledEmail = remember { mutableStateOf(false) }
+    val wasFilledPassword = remember { mutableStateOf(false) }
+    val wasFilledRememberPassword = remember { mutableStateOf(false) }
+    val emailPassword = importHabitViewModel.emailPassword.collectAsState().value
+
     val uiState = importHabitViewModel.uiState.collectAsState().value
+
+    LaunchedEffect (uiState.isInLogin){
+        email.edit { replace(0,length,"") }
+        password.edit { replace(0,length,"") }
+        rememberPassword.edit { replace(0,length,"") }
+
+        wasFilledEmail.value = false
+        wasFilledPassword.value = false
+        wasFilledRememberPassword.value = false
+    }
+
+    LaunchedEffect(emailPassword){
+        emailPassword?.let {
+            email.edit { replace(0,length,it.email) }
+            password.edit { replace(0,length,it.password) }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -107,6 +130,7 @@ fun LoginScreenImportHabit(
                 modifier = Modifier
                     .height(60.dp)
                     .fillMaxWidth(),
+                wasFilled = wasFilledEmail
             )
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
@@ -118,7 +142,8 @@ fun LoginScreenImportHabit(
                     .height(60.dp)
                     .fillMaxWidth(),
                 rememberTextFieldState = password,
-                imeAction = if(uiState.isInLogin) ImeAction.Done else ImeAction.Next
+                imeAction = if(uiState.isInLogin) ImeAction.Done else ImeAction.Next,
+                wasFilled = wasFilledPassword
             )
 
             AnimatedVisibility(
@@ -134,7 +159,8 @@ fun LoginScreenImportHabit(
                             .height(60.dp)
                             .fillMaxWidth(),
                         rememberTextFieldState = rememberPassword,
-                        imeAction = ImeAction.Done
+                        imeAction = ImeAction.Done,
+                        wasFilled = wasFilledRememberPassword
                     )
 
                     Spacer(modifier = Modifier.padding(vertical = spacing8))
@@ -165,7 +191,7 @@ fun LoginScreenImportHabit(
                     else email.text.isNotEmpty() && password.text.isNotEmpty() && rememberPassword.text == password.text,
                 onClick = {
                     if(uiState.isInLogin){
-                        signIn(email.text.toString(), password.text.toString())
+                        signIn(email.text.toString(), password.text.toString(), checkedState)
                     }else{
                         signUp(email.text.toString(), password.text.toString())
                     }

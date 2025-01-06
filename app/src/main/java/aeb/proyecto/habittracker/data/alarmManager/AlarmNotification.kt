@@ -1,7 +1,8 @@
-package aeb.proyecto.habittracker.data.model.notification
+package aeb.proyecto.habittracker.data.alarmManager
 
 import aeb.proyecto.habittracker.MainActivity
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
 import aeb.proyecto.habittracker.di.CHANNEL
 import aeb.proyecto.habittracker.utils.REMINDER
 import aeb.proyecto.habittracker.utils.setUpAlarm

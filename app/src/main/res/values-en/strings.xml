@@ -8,6 +8,7 @@
     <string name="topbar_achievements">Achievements</string>
     <string name="topbar_settings">Settings</string>
     <string name="topbar_import_habit">Import habits</string>
+    <string name="topbar_save_habit">Save habits</string>
     <string name="topbar_add_habit">Add Habit</string>
     <string name="topbar_description">Icon Description</string>
     <string name="tobbar_add_habit_true">Edit Habit</string>
@@ -97,6 +98,7 @@
     <string name="general_dx_subtitle_delete">Do you want to delete the habit?</string>
     <string name="general_dx_subtitle_restart">Do you want to restart the day?</string>
 
+    <string name="general_dx_create_account">Account created</string>
     <!-- Calendar dx -->
     <string name="calendar_dx_title">Select a date to mark the habit for that day.</string>
 
@@ -138,6 +140,11 @@
     <string name="import_habit_screen_yes_account">Already have an account?</string>
     <string name="import_habit_screen_sign_in">Sign in</string>
 
+    <string name="import_habit_create_account">The account has been created, to be able to enter, please verify your account in your email.</string>
+    <string name="import_habit_resend_email">Resend the email</string>
+    <string name="import_habit_toast">Email sent.</string>
+    <string name="import_habit_verify_email">Email unverified</string>
+
     <!-- Settings Card -->
     <string name="settings_screen_card_title">Chose the theme</string>
     <string name="settings_screen_card_dark">Dark</string>
@@ -172,6 +179,11 @@
     <!-- Errors Firebase -->
     <string name="error_invalid_email">The provided value for the email user property is invalid. It must be a string email address.</string>
     <string name="error_invalid_credential">The credentials doesn\'t exist</string>
+    <string name="error_weak_passoword">The password must be at least 6 characters long</string>
+    <string name="error_update_profile">Something went wrong while updating your profile, please try again.</string>
+    <string name="error_email_already_in_use">The email entered is already in use</string>
+    <string name="error_email_send">Error to send the email</string>
+    <string name="error_unverified_email">The email you entered is not verified. Please verify it using the link we have sent to your email.</string>
 
     <string name="error_invalid_default">Something went wrong, please try again.</string>
 

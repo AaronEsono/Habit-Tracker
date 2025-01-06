@@ -20,10 +20,19 @@ class DataStoreManager @Inject constructor(
 
     private companion object {
         private val THEMEMODE = intPreferencesKey("themeMode")
+        private val EMAIL = stringPreferencesKey("email")
+        private val PASSWORD = stringPreferencesKey("password")
     }
 
     val themeMode: Flow<Int?> = context.dataStore.data.map { preferences ->
         preferences[THEMEMODE]
+    }
+
+    val emailPassword:Flow<EmailPassword?> = context.dataStore.data.map { preferences ->
+        EmailPassword(
+            email = preferences[EMAIL] ?: "",
+            password = preferences[PASSWORD] ?: ""
+        )
     }
 
     suspend fun setModeTheme(themeMode: Int) {
@@ -31,4 +40,29 @@ class DataStoreManager @Inject constructor(
             preferences[THEMEMODE] = themeMode
         }
     }
+
+    suspend fun setEmail(email:String){
+        context.dataStore.edit { preferences ->
+            preferences[EMAIL] = email
+        }
+    }
+
+    suspend fun setPassword(password:String){
+        context.dataStore.edit { preferences ->
+            preferences[PASSWORD] = password
+        }
+    }
+
+    suspend fun clearDataUser(){
+        context.dataStore.edit { preferences ->
+            preferences[EMAIL] = ""
+            preferences[PASSWORD] = ""
+        }
+    }
+
 }
+
+data class EmailPassword(
+    val email: String,
+    val password: String
+)

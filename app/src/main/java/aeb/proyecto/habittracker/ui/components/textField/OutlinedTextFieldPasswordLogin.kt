@@ -23,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedSecureTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,10 +42,10 @@ fun OutlinedTextFieldPasswordLogin(
     @StringRes labelError:Int,
     modifier: Modifier = Modifier,
     rememberTextFieldState: TextFieldState = rememberTextFieldState(),
-    imeAction: ImeAction
+    imeAction: ImeAction,
+    wasFilled: MutableState<Boolean>
 ){
 
-    val wasFilled = remember { mutableStateOf(false) }
     if (rememberTextFieldState.text.toString().isNotEmpty()) wasFilled.value = true
 
     var passwordHidden by rememberSaveable { mutableStateOf(true) }

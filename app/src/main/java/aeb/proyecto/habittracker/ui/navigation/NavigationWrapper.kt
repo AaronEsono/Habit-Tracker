@@ -4,6 +4,7 @@ import aeb.proyecto.habittracker.MainViewModel
 import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitScreen
 import aeb.proyecto.habittracker.ui.screens.habits.HabitsScreen
 import aeb.proyecto.habittracker.ui.screens.importHabit.ImportHabitScreen
+import aeb.proyecto.habittracker.ui.screens.saveHabit.SaveHabit
 import aeb.proyecto.habittracker.ui.screens.settings.SettingsScreen
 import aeb.proyecto.habittracker.ui.screens.statistics.StatisticsScreen
 import androidx.compose.runtime.Composable
@@ -25,9 +26,11 @@ fun NavigationWrapper(navController: NavHostController){
             StatisticsScreen()
         }
         composable<Settings>{
-            SettingsScreen(){
+            SettingsScreen(onImportScreen = {
                 navController.navigate(ImportHabit)
-            }
+            }, onSaveScreen = {
+                navController.navigate(SaveHabit)
+            })
         }
         composable<AddHabit>{backStackEntry ->
             val edit = backStackEntry.arguments?.getBoolean("edit") ?: false
@@ -43,7 +46,12 @@ fun NavigationWrapper(navController: NavHostController){
                 } })
         }
         composable<ImportHabit>{
-            ImportHabitScreen()
+            ImportHabitScreen(){
+                navController.navigate(SaveHabit)
+            }
+        }
+        composable<SaveHabit>{
+            SaveHabit()
         }
     }
 }

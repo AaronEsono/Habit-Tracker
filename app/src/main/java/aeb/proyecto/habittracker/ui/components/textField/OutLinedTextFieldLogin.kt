@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -34,12 +35,12 @@ fun OutLinedTextFieldLogin(
     rememberTextFieldState: TextFieldState = rememberTextFieldState(),
     @StringRes label: Int,
     @StringRes labelError: Int = R.string.add_habit_screen_no_name,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    wasFilled: MutableState<Boolean>
 ){
 
-    val wasFilled = remember { mutableStateOf(false) }
-
     if (rememberTextFieldState.text.toString().isNotEmpty()) wasFilled.value = true
+
     val isError = rememberTextFieldState.text.toString().isEmpty() && wasFilled.value
 
     OutlinedTextField(

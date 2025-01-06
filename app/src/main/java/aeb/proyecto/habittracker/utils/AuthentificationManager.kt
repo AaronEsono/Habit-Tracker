@@ -1,8 +1,11 @@
 package aeb.proyecto.habittracker.utils
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.model.user.UserData
+import aeb.proyecto.habittracker.utils.Constans.ERROR_EMAIL_SEND
+import aeb.proyecto.habittracker.utils.Constans.ERROR_UNVERIFIED_EMAIL
+import aeb.proyecto.habittracker.utils.Constans.ERROR_UPDATE_PROFILE
 import android.content.Context
-import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -13,6 +16,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -26,12 +30,35 @@ class AuthenticationManager(val context: Context) {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        trySend(AuthResponse.Success)
+                        val user = auth.currentUser
+
+                        //Cambiamos el perfil para mostrar el nombre en el correo
+                        user?.let {
+                            val profileUpdates = userProfileChangeRequest {
+                                displayName = user.email
+                            }
+
+                            it.updateProfile(profileUpdates)
+                                .addOnCompleteListener { task ->
+                                    if(task.isSuccessful){
+
+                                        it.sendEmailVerification()
+                                            .addOnCompleteListener { taskEmail ->
+                                                if(taskEmail.isSuccessful)
+                                                    trySend(AuthResponse.Success)
+                                                else
+                                                    trySend(AuthResponse.Error(ERROR_EMAIL_SEND))
+                                            }
+
+                                    }else{
+                                        trySend(AuthResponse.Error(ERROR_UPDATE_PROFILE))
+                                    }
+                                }
+                        }
                     } else {
                         val error = if(task.exception is FirebaseAuthException)
                             (task.exception as FirebaseAuthException).errorCode
                         else ""
-
 
                         trySend(AuthResponse.Error(error))
                     }
@@ -43,7 +70,16 @@ class AuthenticationManager(val context: Context) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    trySend(AuthResponse.Success)
+                    val user = auth.currentUser
+
+                    user?.let {
+                        if(it.isEmailVerified){
+                            setDataUser()
+                            trySend(AuthResponse.Success)
+                        }
+                        else
+                            trySend(AuthResponse.Error(ERROR_UNVERIFIED_EMAIL))
+                    }
                 } else {
                     val error = if(task.exception is FirebaseAuthException)
                             (task.exception as FirebaseAuthException).errorCode
@@ -89,6 +125,7 @@ class AuthenticationManager(val context: Context) {
                         auth.signInWithCredential(firebaseCredential)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
+                                    setDataUser()
                                     trySend(AuthResponse.Success)
                                 } else {
                                     trySend(AuthResponse.Error(task.exception?.message.toString()))
@@ -109,12 +146,39 @@ class AuthenticationManager(val context: Context) {
         awaitClose()
     }
 
+    fun resendEmail(): Flow<AuthResponse> = callbackFlow {
+        auth.currentUser?.let {
+            it.sendEmailVerification()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful)
+                        trySend(AuthResponse.Success)
+                    else {
+                        val error = if(task.exception is FirebaseAuthException)
+                            (task.exception as FirebaseAuthException).errorCode
+                        else ""
+
+                        trySend(AuthResponse.Error(error))
+                    }
+                }
+
+        }
+        awaitClose()
+    }
+
     private fun createNonce(): String {
         val rawNonce = UUID.randomUUID().toString()
         val bytes = rawNonce.toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
         return digest.fold("") { str, it -> str + "%02x".format(it) }
+    }
+
+    private fun setDataUser(){
+        val user = auth.currentUser
+        user?.let {
+            UserData.email = it.email
+            UserData.uid = it.uid
+        }
     }
 
 }

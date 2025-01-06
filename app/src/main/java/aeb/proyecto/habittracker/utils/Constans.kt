@@ -181,11 +181,21 @@ object Constans {
 
     val permissions = android.Manifest.permission.POST_NOTIFICATIONS
 
+    const val ERROR_UPDATE_PROFILE = "ERROR_UPDATE_PROFILE"
+    const val ERROR_EMAIL_SEND = "ERROR_EMAIL_SEND"
+    const val ERROR_UNVERIFIED_EMAIL = "ERROR_UNVERIFIED_EMAIL"
+
     //Errores Firebase Auth
     val FIREBASE_ERRORS:List<ErrorsFirebase> = listOf(
         ErrorsFirebase("ERROR_INVALID_EMAIL",R.string.error_invalid_email),
         ErrorsFirebase("ERROR_INVALID_CREDENTIAL",R.string.error_invalid_credential),
-
+        ErrorsFirebase("ERROR_WEAK_PASSWORD",R.string.error_weak_passoword),
+        ErrorsFirebase(ERROR_UPDATE_PROFILE,R.string.error_update_profile),
+        ErrorsFirebase(ERROR_EMAIL_SEND,R.string.error_email_send),
+        ErrorsFirebase("ERROR_EMAIL_ALREADY_IN_USE",R.string.error_email_already_in_use),
+        ErrorsFirebase(ERROR_UNVERIFIED_EMAIL,R.string.error_unverified_email)
     )
+
+    val DEFAULT_ERROR_FIREBASE = ErrorsFirebase("",R.string.error_invalid_default)
 
 }

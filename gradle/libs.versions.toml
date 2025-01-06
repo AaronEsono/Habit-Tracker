@@ -28,6 +28,7 @@ hilt-version = "2.52"
 roomRuntime = "2.6.1"
 runtimeLivedata = "1.7.6"
 playServicesTfliteSupport = "16.4.0"
+workRuntimeVersion = "2.10.0"
 
 [libraries]
 accompanist-systemuicontroller-v0270 = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontrollerVersion" }
@@ -42,6 +43,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntimeVersion" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }

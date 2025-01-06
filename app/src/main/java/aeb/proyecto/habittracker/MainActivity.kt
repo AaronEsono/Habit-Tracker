@@ -10,6 +10,7 @@ import aeb.proyecto.habittracker.ui.navigation.AddHabit
 import aeb.proyecto.habittracker.ui.navigation.Habits
 import aeb.proyecto.habittracker.ui.navigation.ImportHabit
 import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
+import aeb.proyecto.habittracker.ui.navigation.SaveHabit
 import aeb.proyecto.habittracker.ui.navigation.Settings
 import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.listBottomBarScreens
@@ -233,6 +234,10 @@ fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostContro
 
         ImportHabit::class.qualifiedName -> {
             title = TopbarSetUp(R.string.topbar_import_habit, listOf())
+        }
+
+        SaveHabit::class.qualifiedName -> {
+            title = TopbarSetUp(R.string.topbar_save_habit, listOf())
         }
 
         AddHabit::class.qualifiedName -> {

@@ -8,6 +8,7 @@
     <string name="topbar_settings">Opciones</string>
     <string name="topbar_add_habit">Añadir hábito</string>
     <string name="topbar_import_habit">Importar hábitos</string>
+    <string name="topbar_save_habit">Guardar hábitos</string>
     <string name="topbar_description">Descripcion icono</string>
     <string name="tobbar_add_habit_true">Editar hábito</string>
 
@@ -97,6 +98,8 @@
     <string name="general_dx_subtitle_delete">¿Desea borrar el hábito?</string>
     <string name="general_dx_subtitle_restart">¿Desea reiniciar el dia?</string>
 
+    <string name="general_dx_create_account">Cuenta creada</string>
+
     <!-- calendar dx-->
     <string name="calendar_dx_title">Selecciona en alguna fecha para marcar el hábito de ese día.</string>
 
@@ -137,6 +140,12 @@
     <string name="import_habit_screen_yes_account">¿Ya tienes cuenta?</string>
     <string name="import_habit_screen_sign_in">Inicia sesión</string>
 
+    <string name="import_habit_create_account">Se ha creado la cuenta, para poder entrar verifique su cuenta en su correo electrónico.</string>
+
+    <string name="import_habit_resend_email">Volver a enviar el email</string>
+    <string name="import_habit_toast">Email enviado.</string>
+    <string name="import_habit_verify_email">Email no verificado</string>
+
     <!-- Settings Card -->
     <string name="settings_screen_card_title">Selecciona el tema</string>
     <string name="settings_screen_card_dark">Oscuro</string>
@@ -171,6 +180,11 @@
     <!-- Errors Firebase -->
     <string name="error_invalid_email">El email introducido no es válido</string>
     <string name="error_invalid_credential">Las credenciales no existen</string>
+    <string name="error_weak_passoword">La contraseña tiene que tener al menos 6 caracteres</string>
+    <string name="error_update_profile">Algo ha fallado al actualizar el perfil, inténtelo de nuevo.</string>
+    <string name="error_email_already_in_use">El email introducido ya está en uso</string>
+    <string name="error_email_send">Error al mandar el email</string>
+    <string name="error_unverified_email">El email introducido no está verificado. Verificalo a través del enlace que te hemos enviado a tu correo.</string>
 
     <string name="error_invalid_default">Algo ha fallado, vuelva a intentarlo</string>
 
