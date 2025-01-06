@@ -2,7 +2,7 @@ package aeb.proyecto.habittracker.ui.components.bottomSheets
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
-import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButtonButton
+import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButton
 import aeb.proyecto.habittracker.ui.components.card.CardPickUnitAddHabit
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
@@ -90,7 +90,7 @@ fun BottomSheetPickUnit(
 
             Row(modifier = Modifier.fillMaxWidth()) {
 
-                CustomOutlinedButtonButton(
+                CustomOutlinedButton(
                     title = R.string.buttons_cancel, icon = R.drawable.ic_cancel,
                     modifier = Modifier.weight(1f),
                     onClick = {

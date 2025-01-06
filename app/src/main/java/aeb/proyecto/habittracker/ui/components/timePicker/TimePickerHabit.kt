@@ -3,7 +3,7 @@ package aeb.proyecto.habittracker.ui.components.timePicker
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.Notification
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
-import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButtonButton
+import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButton
 import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
@@ -74,7 +74,7 @@ fun TimePickerHabit(
 
                 Row(modifier = Modifier.fillMaxWidth()) {
 
-                    CustomOutlinedButtonButton(
+                    CustomOutlinedButton(
                         title = R.string.buttons_cancel, icon = R.drawable.ic_cancel,
                         modifier = Modifier.weight(1f),
                         onClick = {

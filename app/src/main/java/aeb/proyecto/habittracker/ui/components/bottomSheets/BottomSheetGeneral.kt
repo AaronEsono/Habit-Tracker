@@ -2,7 +2,7 @@ package aeb.proyecto.habittracker.ui.components.bottomSheets
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
-import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButtonButton
+import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButton
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
@@ -34,6 +34,12 @@ import kotlinx.coroutines.launch
 fun BottomSheetGeneral(
     colorButton: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     colorBottomSheet: Color = MaterialTheme.colorScheme.primaryContainer,
+    colorIconCancel: Color = MaterialTheme.colorScheme.onSurface,
+    colorTextCancel: Color = MaterialTheme.colorScheme.onSurface,
+    colorIconAccept: Color = MaterialTheme.colorScheme.onSurface,
+    colorTextAccept: Color = MaterialTheme.colorScheme.onSurface,
+    borderColorCancel: Color = MaterialTheme.colorScheme.onSurface,
+    colorDisabled: Color = MaterialTheme.colorScheme.surfaceVariant,
     @StringRes title: Int,
     @StringRes subtitle: Int,
     onCancel: () -> Unit = {},
@@ -91,10 +97,13 @@ fun BottomSheetGeneral(
             Row(modifier = Modifier.fillMaxWidth()) {
 
                 if (showCancel) {
-                    CustomOutlinedButtonButton(
+                    CustomOutlinedButton(
                         title = titleCancel,
                         icon = iconCancel,
+                        colorIcon = colorIconCancel,
+                        colorText = colorTextCancel,
                         modifier = modifierCancel.weight(1f),
+                        borderColor = borderColorCancel,
                         onClick = {
                             onCancel()
 
@@ -112,6 +121,9 @@ fun BottomSheetGeneral(
                     title = titleAccept,
                     icon = iconAccept,
                     color = colorButton,
+                    colorIcon = colorIconAccept,
+                    colorText = colorTextAccept,
+                    enabledColor = colorDisabled,
                     modifier = modifierAccept.weight(1f),
 
                     onClick = {

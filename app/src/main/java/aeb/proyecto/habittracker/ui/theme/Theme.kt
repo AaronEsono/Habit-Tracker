@@ -1,5 +1,6 @@
 package aeb.proyecto.habittracker.ui.theme
 
+import aeb.proyecto.habittracker.R
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -9,21 +10,26 @@ import androidx.compose.ui.graphics.Color
 private val Dark = darkColorScheme(
     background = backgroundDark,
     primary = primaryDark,
-    onSurface = Color.White,
+    onSurface = onSurfaceDark,
+    inverseSurface = inverseSurfaceDark,
     primaryContainer = primaryContainerDark,
-    onPrimaryContainer = onPrimaryContainerDark
+    onPrimaryContainer = onPrimaryContainerDark,
+    surfaceVariant = surfaceVariantDark
 )
 
 private val Light = lightColorScheme(
     background = backgroundLight,
     primary = primaryLight,
-    onSurface = Color.Black,
+    onSurface = onSurfaceLight,
+    inverseSurface = inverseSurfaceLight,
     primaryContainer = primaryContainerLight,
-    onPrimaryContainer = onPrimaryContainerLight
+    onPrimaryContainer = onPrimaryContainerLight,
+    surfaceVariant = surfaceVariantLight
 )
 
-enum class AppTheme(val theme: Int) {
-    DARK(0), LIGHT(1)
+enum class AppTheme(val theme: Int, val text: Int) {
+    DARK(0, R.string.settings_screen_card_dark),
+    LIGHT(1, R.string.settings_screen_card_light)
 }
 
 @Composable

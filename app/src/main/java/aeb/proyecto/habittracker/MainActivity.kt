@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
             val mainViewModel: MainViewModel = hiltViewModel()
             val themeMode = mainViewModel.themeMode.collectAsState().value
 
-            HabitTrackerTheme (themeMode){
+            HabitTrackerTheme(themeMode){
                 val navController = rememberNavController()
 
                 RequestPermissions()
@@ -274,6 +274,8 @@ fun SetStates(mainViewModel: MainViewModel){
         is AppState.Error -> {
             BottomSheetGeneral(
                 title = R.string.general_dx_attention,
+                colorIconAccept = MaterialTheme.colorScheme.inverseSurface,
+                colorTextAccept = MaterialTheme.colorScheme.inverseSurface,
                 subtitle = appState.messageInt,
                 onCancel = { mainViewModel.setNeutral()},
                 onDismiss = { mainViewModel.setNeutral()}

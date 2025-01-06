@@ -10,6 +10,9 @@ val backgroundDark = Color(0xFF201f1e)
 val primaryDark = Color(0xFF2e2d2b)
 val primaryContainerDark = Color(0xFF32312F)
 val onPrimaryContainerDark = Color(0xFFE7E6E5)
+val surfaceVariantDark = Color(0xFF4D5250)
+val onSurfaceDark = Color.White
+val inverseSurfaceDark = Color.Black
 
 val terciaryColorAppDark = Color(0xFF45484a)
 val colorButtonsDark = Color(0xFF323336)
@@ -23,10 +26,13 @@ val disableColorDark = Color.Black.copy(alpha = 0.2f)
 val iconColorDark = Color.Black
 
 //Colores tema claro
-val backgroundLight = Color(0xFFF2F1F0)
-val primaryLight = Color(0xFFE7E6E5)
-val primaryContainerLight = Color(0xFFD6D9DA)
-val onPrimaryContainerLight = Color(0xFFE7E6E5)
+val backgroundLight = Color(0xFFF9F9F9)
+val primaryLight = Color(0xFFB0BEC5)
+val primaryContainerLight = Color(0xFFE0E0E0)
+val onPrimaryContainerLight = Color(0xFF37474F)
+val surfaceVariantLight = Color(0xFFCFD8DC)
+val onSurfaceLight = Color(0xFF2A353D)
+val inverseSurfaceLight = Color.White
 
 val terciaryColorAppLight = Color(0xFFD6D9DA)
 val colorButtonsLight = Color(0xFFCFCFCF)

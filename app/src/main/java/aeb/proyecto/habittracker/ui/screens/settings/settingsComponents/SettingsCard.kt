@@ -3,8 +3,8 @@ package aeb.proyecto.habittracker.ui.screens.settings.settingsComponents
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
+import aeb.proyecto.habittracker.ui.theme.AppTheme
 import aeb.proyecto.habittracker.utils.ColorsTheme
-import aeb.proyecto.habittracker.utils.Constans.themeList
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing24
 import aeb.proyecto.habittracker.utils.Dimmens.spacing6
@@ -59,12 +59,12 @@ fun SettingsCard(
 
                 Spacer(modifier = Modifier.padding(vertical = spacing8))
 
-                themeList.forEach {
+                AppTheme.entries.forEach {
                     CardTheme(onClick = {
-                        setMode(it.mode)
-                        onSaveDataStore(it.mode)
+                        setMode(it.theme)
+                        onSaveDataStore(it.theme)
                         onDismiss()
-                    }, stringResource = it.title)
+                    }, stringResource = it.text)
                 }
             }
         }
