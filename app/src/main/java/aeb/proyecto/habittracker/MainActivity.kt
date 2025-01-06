@@ -147,13 +147,11 @@ fun TopBarHabit(navController: NavHostController) {
             if (showBottomBar == false) {
                 IconButton(onClick = {
                     if(navController.currentBackStackEntry?.destination?.route == SaveHabit::class.qualifiedName){
-
                         navController.navigate(Settings){
-                            popUpTo(navController.graph.findStartDestination().id) {
+                            popUpTo(0) {
                                 inclusive = true
                             }
                         }
-
                     }else{
                         navController.popBackStack()
                     }
@@ -192,12 +190,14 @@ fun BottomNavigationHabit(navController: NavHostController) {
                 NavigationBarItem(
                     selected = currentDestination.hierarchy.any { item -> item.route == it.route::class.qualifiedName },
                     onClick = {
-                        navController.navigate(it.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                inclusive = true
+                        if(currentDestination.route != it.route::class.qualifiedName){
+                            navController.navigate(it.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
                     },
                     icon = {

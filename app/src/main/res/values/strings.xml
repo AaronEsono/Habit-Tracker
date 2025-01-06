@@ -150,6 +150,14 @@
     <string name="import_habit_forgot_title_dx">Cambio de contraseña</string>
     <string name="import_habit_forgot_subtitle_dx">Introduce el email donde se enviará la contraseña</string>
 
+    <!-- Save habit -->
+    <string name="save_habit_title">Hola, %1$s</string>
+    <string name="save_habit_log_out">Cerrar sesión</string>
+    <string name="save_habit_change_email">Cambiar email cuenta</string>
+    <string name="save_habit_add_habit">Subir hábitos</string>
+    <string name="save_habit_change_habit">Cambiar hábitos</string>
+    <string name="save_habit_subtitle">Sube aquí tus hábitos para recuperarlos o para poder pasarlos a otro teléfono</string>
+
     <!-- Settings Card -->
     <string name="settings_screen_card_title">Selecciona el tema</string>
     <string name="settings_screen_card_dark">Oscuro</string>
@@ -183,7 +191,7 @@
 
     <!-- Errors Firebase -->
     <string name="error_invalid_email">El email introducido no es válido</string>
-    <string name="error_invalid_credential">Las credenciales no existen</string>
+    <string name="error_invalid_credential">El email es incorrecto o la contraseña es incorrecta. Inténtelo de nuevo</string>
     <string name="error_weak_passoword">La contraseña tiene que tener al menos 6 caracteres</string>
     <string name="error_update_profile">Algo ha fallado al actualizar el perfil, inténtelo de nuevo.</string>
     <string name="error_email_already_in_use">El email introducido ya está en uso</string>

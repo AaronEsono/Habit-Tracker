@@ -13,6 +13,8 @@ import aeb.proyecto.habittracker.ui.theme.colorStatusBarDark
 import aeb.proyecto.habittracker.ui.theme.colorStatusBarLight
 import aeb.proyecto.habittracker.ui.theme.containerTextFieldColorDark
 import aeb.proyecto.habittracker.ui.theme.containerTextFieldColorLight
+import aeb.proyecto.habittracker.ui.theme.disableColorDark
+import aeb.proyecto.habittracker.ui.theme.disableColorLight
 import aeb.proyecto.habittracker.ui.theme.iconColorDark
 import aeb.proyecto.habittracker.ui.theme.iconColorLight
 import aeb.proyecto.habittracker.ui.theme.primaryColorAppDark
@@ -43,6 +45,7 @@ object ColorsTheme {
     var colorBackgroundCard by mutableStateOf(colorBackgroundCardDark)
     var colorStatusBar  by mutableStateOf(colorStatusBarDark)
 
+    var colorDisabled by mutableStateOf(disableColorDark)
     var colorIcon by mutableStateOf(iconColorDark)
 }
 
@@ -59,6 +62,7 @@ fun setDarkTheme(){
     ColorsTheme.colorBackgroundCard = colorBackgroundCardDark
     ColorsTheme.colorStatusBar = colorStatusBarDark
     ColorsTheme.colorIcon = iconColorDark
+    ColorsTheme.colorDisabled = disableColorDark
 }
 
 fun setLightTheme(){
@@ -74,6 +78,7 @@ fun setLightTheme(){
     ColorsTheme.colorBackgroundCard = colorBackgroundCardLight
     ColorsTheme.colorStatusBar = colorStatusBarLight
     ColorsTheme.colorIcon = iconColorLight
+    ColorsTheme.colorDisabled = disableColorLight
 }
 
 fun setMode(mode: Int){

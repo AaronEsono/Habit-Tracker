@@ -149,6 +149,15 @@
     <string name="import_habit_forgot_title_dx">Password Change</string>
     <string name="import_habit_forgot_subtitle_dx">Enter the email where the password will be sent</string>
 
+    <!-- Save habit -->
+    <string name="save_habit_title">Hi, %1$s</string>
+    <string name="save_habit_log_out">Log out</string>
+    <string name="save_habit_change_email">Change account email</string>
+    <string name="save_habit_add_habit">Upload habits</string>
+    <string name="save_habit_change_habit">Change habits</string>
+    <string name="save_habit_subtitle">Upload your habits here to be able to recover them or transfer them to another phone</string>
+
+
     <!-- Settings Card -->
     <string name="settings_screen_card_title">Chose the theme</string>
     <string name="settings_screen_card_dark">Dark</string>
@@ -182,7 +191,7 @@
 
     <!-- Errors Firebase -->
     <string name="error_invalid_email">The provided value for the email user property is invalid. It must be a string email address.</string>
-    <string name="error_invalid_credential">The credentials doesn\'t exist</string>
+    <string name="error_invalid_credential">The email is incorrect or the password is incorrect. Please try again.</string>
     <string name="error_weak_passoword">The password must be at least 6 characters long</string>
     <string name="error_update_profile">Something went wrong while updating your profile, please try again.</string>
     <string name="error_email_already_in_use">The email entered is already in use</string>

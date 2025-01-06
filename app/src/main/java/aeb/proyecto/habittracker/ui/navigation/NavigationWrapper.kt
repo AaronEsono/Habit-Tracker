@@ -53,7 +53,7 @@ fun NavigationWrapper(navController: NavHostController){
         composable<SaveHabit>{
             SaveHabit(){
                 navController.navigate(Settings){
-                    popUpTo(navController.graph.findStartDestination().id) {
+                    popUpTo(0) {
                         inclusive = true
                     }
                 }

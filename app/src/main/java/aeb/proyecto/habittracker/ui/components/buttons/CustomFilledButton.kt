@@ -43,7 +43,7 @@ fun CustomFilledButton(
         shape = RoundedCornerShape(spacing12),
         colors = ButtonDefaults.buttonColors(
             containerColor = color,
-            disabledContainerColor = ColorsTheme.secondaryColorApp
+            disabledContainerColor = ColorsTheme.colorDisabled,
         )
     ) {
         icon?.let {

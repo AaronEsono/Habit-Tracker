@@ -6,7 +6,6 @@ import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
-import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextFieldPreview
 import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
@@ -15,14 +14,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -90,7 +87,8 @@ fun BottomSheetPassword(
                 title = R.string.buttons_accept,
                 icon = R.drawable.ic_check,
                 color = ColorsTheme.terciaryColorApp,
-                modifier = Modifier.fillMaxWidth(),
+                enabled = email.text.isNotEmpty(),
+                modifier = Modifier.fillMaxWidth().height(50.dp),
                 onClick = {
                     onAccept(email.text.toString())
 

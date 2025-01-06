@@ -16,6 +16,7 @@ var ThemeTextDark = Color.White
 val textColorsDark = Color(0xFFEFE7E7)
 val colorBackgroundCardDark = Color(0xFF131212)
 val colorStatusBarDark = Color(0xFF1b1917)
+val disableColorDark = Color.Black.copy(alpha = 0.2f)
 val iconColorDark = Color.Black
 
 //Colores tema claro
@@ -30,6 +31,7 @@ val textColorsLight = Color(0xFF1F1F1F)
 val colorBackgroundCardLight = Color(0xFFF7F7F7)
 val colorStatusBarLight = Color(0xFFEBEAE9)
 val iconColorLight = Color.White
+val disableColorLight = Color.White.copy(alpha = 0.2f)
 
 
 val pickColors = listOf(

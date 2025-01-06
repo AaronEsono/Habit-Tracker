@@ -118,7 +118,6 @@ class ImportHabitViewModel @Inject constructor(
     private fun handleError(response: AuthResponse.Error){
         val message = response.message
 
-        Log.d("ErrorPillarMensaje", message)
         val errorInt = FIREBASE_ERRORS.find { it.id == message } ?: DEFAULT_ERROR_FIREBASE
 
         if(errorInt.id == ERROR_UNVERIFIED_EMAIL ){
