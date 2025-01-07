@@ -14,6 +14,7 @@ val surfaceVariantDark = Color(0xFF4D5250)
 val onSurfaceDark = Color.White
 val inverseSurfaceDark = Color.Black
 val terciaryContainerDark = Color(0xFF111010)
+val secondaryDark = Color(0xFF323336)
 
 val terciaryColorAppDark = Color(0xFF45484a)
 val colorButtonsDark = Color(0xFF323336)
@@ -34,7 +35,10 @@ val onPrimaryContainerLight = Color(0xFF37474F)
 val surfaceVariantLight = Color(0xFFCFD8DC)
 val onSurfaceLight = Color(0xFF2A353D)
 val inverseSurfaceLight = Color.White
-val terciaryContainerLight = Color(0xFF45484a)
+val terciaryContainerLight = Color(0xFF607D8B)
+val secondaryLight = Color(0xFFC1DDE8)
+
+
 
 val terciaryColorAppLight = Color(0xFFD6D9DA)
 val colorButtonsLight = Color(0xFFCFCFCF)

@@ -29,6 +29,8 @@ import android.net.Uri
 import android.provider.Settings
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -81,6 +83,7 @@ fun AddHabitScreen(
     val timesHabit = rememberTextFieldState("")
 
     val context = LocalContext.current
+    val interactionSource = remember { MutableInteractionSource() }
 
     LaunchedEffect(Unit) {
         if (edit && id != null) {
@@ -221,12 +224,22 @@ fun AddHabitScreen(
                         uiState.unitPicked.title
                     ) else stringResource(uiState.unitPicked.pluralTitle),
                     finalIcon = Icons.Filled.KeyboardArrowDown,
-                    color = uiState.color,
-                    modifier = Modifier
+                    modifierCard = Modifier
                         .fillMaxWidth()
+                        .height(60.dp)
                         .padding(top = spacing8),
-                    onClick = { addHabitViewModel.openBottomSheet() },
-                    onDelete = { addHabitViewModel.openBottomSheet() }
+                    modifierRow = Modifier
+                        .clickable {
+                            addHabitViewModel.openBottomSheet()
+                        }
+                        .height(60.dp)
+                        .padding(horizontal = spacing8),
+                    modifierFinalIcon = Modifier.clickable(
+                        indication = null,
+                        interactionSource = interactionSource
+                    ) {
+                        addHabitViewModel.openBottomSheet()
+                    }
                 )
             }
 
@@ -235,10 +248,14 @@ fun AddHabitScreen(
             if (isPermissionGranted.value) {
                 AddHabitNotifications(addHabitViewModel, uiState, notifications)
             } else {
-                Column (modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)){
+                Column (modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.Center)){
                     LabelMediumText(text = stringResource(R.string.add_habit_permissions), textAlign = TextAlign.Left)
                     CustomFilledButton(
-                        modifier = Modifier.padding(top = spacing8).fillMaxWidth(),
+                        modifier = Modifier
+                            .padding(top = spacing8)
+                            .fillMaxWidth(),
                         title = R.string.buttons_go_settings,
                         icon = R.drawable.ic_settingsbtn,
                         color = uiState.color,
