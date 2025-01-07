@@ -31,15 +31,15 @@ val iconColorDark = Color.Black
 
 //Colores tema claro
 val backgroundLight = Color(0xFFF9F9F9)
-val primaryLight = Color(0xFFB0BEC5)
+val primaryLight = Color(0xFFD0E0E8)
 val primaryContainerLight = Color(0xFFE0E0E0)
 val onPrimaryContainerLight = Color(0xFF37474F)
 val surfaceVariantLight = Color(0xFFCFD8DC)
 val onSurfaceLight = Color(0xFF2A353D)
 val inverseSurfaceLight = Color.White
 val terciaryContainerLight = Color(0xFF607D8B)
-val secondaryContainerLight = Color(0xFFC1DDE8)
-val outLineLight = Color(0xFF6F6F6F)
+val secondaryContainerLight = Color(0xFFDAEFF6)
+val outLineLight = Color(0xFF979797)
 
 
 val terciaryColorAppLight = Color(0xFFD6D9DA)

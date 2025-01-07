@@ -173,7 +173,8 @@ fun LoginScreenImportHabit(
             ) {
                 Column {
                     CheckBoxButton(
-                        checkedState = checkedState, onStateChange = onStateChange
+                        checkedState = checkedState,
+                        onStateChange = onStateChange
                     )
 
                     LabelMediumText(
