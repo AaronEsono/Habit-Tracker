@@ -6,6 +6,7 @@ import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarContent
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarHeader
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarViewModel
+import aeb.proyecto.habittracker.ui.components.calendar.calendarComponents.ContentItemBottomSheet
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
@@ -63,14 +64,31 @@ fun BottomSheetCalendar(
                 modifier = Modifier.padding(bottom = spacing8)
             )
 
-            CalendarHeader(state.yearMonth,false, { calendarViewModel.toPreviousMonth(it) }) {
-                calendarViewModel.toNextMonth(it)
-            }
+            CalendarHeader(
+                yearMonth = state.yearMonth,
+                showYear = false,
+                titleText = "${state.yearMonth.month.value} / ${state.yearMonth.year}",
+                onPreviousMonthButtonClicked = { calendarViewModel.toPreviousMonth(it) },
+                onNextMonthButtonClicked = { calendarViewModel.toNextMonth(it) })
 
-            CalendarContent(state.dates, color = color, calendarViewModel = calendarViewModel) { date ->
-                calendarViewModel.createDate(date)?.let {
-                    onClickDate(it)
-                }
+            CalendarContent(
+                state.dates,
+                color = color,
+                calendarViewModel = calendarViewModel,
+            )
+            { date, habit, color,_, modifier, _ ->
+
+                ContentItemBottomSheet(
+                    date = date,
+                    dailyHabit = habit,
+                    color = color,
+                    modifier = modifier,
+                    onClickListener = { dateOfMonth ->
+                        calendarViewModel.createDate(dateOfMonth)?.let {
+                            onClickDate(it)
+                        }
+                    }
+                )
             }
 
             CustomFilledButton(title = R.string.buttons_accept,

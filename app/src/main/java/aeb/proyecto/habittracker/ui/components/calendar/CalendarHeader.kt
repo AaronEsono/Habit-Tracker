@@ -13,9 +13,12 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import java.time.YearMonth
@@ -23,23 +26,24 @@ import java.time.YearMonth
 @Composable
 fun CalendarHeader(
     yearMonth: YearMonth,
-    isInStatistics: Boolean = false,
     onPreviousMonthButtonClicked: (YearMonth) -> Unit,
     onNextMonthButtonClicked: (YearMonth) -> Unit,
-) {
-    val month = Constans.Months.entries.find { it.id == yearMonth.month.value }
-    val text = if (isInStatistics) stringResource(
-        month?.month ?: R.string.month_1
-    ) else "${yearMonth.month.value} / ${yearMonth.year}"
+    showYear: Boolean = true,
+    titleText:String,
+    tinIconLeft:Color = MaterialTheme.colorScheme.onSurface,
+    tinIconRight:Color = MaterialTheme.colorScheme.onSurface,
+    iconLeft:ImageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+    iconRight: ImageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+    ) {
 
     Row {
         IconButton(onClick = {
             onPreviousMonthButtonClicked.invoke(yearMonth.minusMonths(1))
         }) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                imageVector = iconLeft,
                 contentDescription = stringResource(id = R.string.add_habit_unit_1),
-                tint = ColorsTheme.themeText
+                tint = tinIconLeft
             )
         }
 
@@ -51,11 +55,11 @@ fun CalendarHeader(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             BodyLargeText(
-                text = text,
+                text = titleText,
                 textAlign = TextAlign.Center,
             )
 
-            if(isInStatistics){
+            if(showYear){
                 BodyMediumText(
                     text = yearMonth.year.toString(),
                     textAlign = TextAlign.Center,
@@ -67,9 +71,9 @@ fun CalendarHeader(
             onNextMonthButtonClicked.invoke(yearMonth.plusMonths(1))
         }) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                imageVector = iconRight,
                 contentDescription = stringResource(id = R.string.buttons_edit),
-                tint = ColorsTheme.themeText
+                tint = tinIconRight
             )
         }
     }
