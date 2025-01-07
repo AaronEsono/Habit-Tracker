@@ -3,15 +3,12 @@ package aeb.proyecto.habittracker.ui.screens.settings.settingsComponents
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.card.CardOptionButton
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
-import aeb.proyecto.habittracker.utils.ColorsTheme
-import aeb.proyecto.habittracker.utils.Constans.ENDBUTTON
-import aeb.proyecto.habittracker.utils.Constans.NOBORDER
-import aeb.proyecto.habittracker.utils.Constans.STARTBUTTON
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,22 +19,39 @@ fun SettingsAbout(
     onContact: () -> Unit,
     onCode: () -> Unit,
     onLinkedn: () -> Unit
-){
+) {
 
-    TitleSmallText(text = stringResource(R.string.settings_screen_about),
-        modifier = Modifier.fillMaxWidth().padding(vertical = spacing8), textAlign = TextAlign.Start)
+    TitleSmallText(
+        text = stringResource(R.string.settings_screen_about),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = spacing8), textAlign = TextAlign.Start
+    )
 
-    CardOptionButton(title = R.string.settings_screen_contact, icon = R.drawable.ic_email, border =  STARTBUTTON){
+    CardOptionButton(
+        title = R.string.settings_screen_contact,
+        startIcon = R.drawable.ic_email,
+        shape = RoundedCornerShape(topStart = spacing8, topEnd = spacing8)
+    ) {
         onContact()
     }
 
-    HorizontalDivider( color = ColorsTheme.borderTextField)
-    CardOptionButton(title = R.string.settings_screen_code, icon = R.drawable.ic_github, border =  NOBORDER){
+    HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+
+    CardOptionButton(
+        title = R.string.settings_screen_code,
+        startIcon = R.drawable.ic_github
+    ) {
         onCode()
     }
 
-    HorizontalDivider(color = ColorsTheme.borderTextField)
-    CardOptionButton(title = R.string.settings_screen_linkedn, icon = R.drawable.ic_link, border =  ENDBUTTON){
+    HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+
+    CardOptionButton(
+        title = R.string.settings_screen_linkedn,
+        startIcon = R.drawable.ic_link,
+        shape = RoundedCornerShape(bottomStart = spacing8, bottomEnd = spacing8)
+    ) {
         onLinkedn()
     }
 }

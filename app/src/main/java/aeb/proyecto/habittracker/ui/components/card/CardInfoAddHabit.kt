@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.Dp
 fun CardInfoAddHabit(
     shape: RoundedCornerShape = RoundedCornerShape(spacing8),
     defaultElevation: Dp = spacing8,
-    containerColor: Color = MaterialTheme.colorScheme.secondary,
+    containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     modifierCard: Modifier = Modifier,
     modifierRow: Modifier = Modifier,
     modifierFinalIcon: Modifier = Modifier,

@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -79,10 +81,15 @@ fun BottomSheetPickUnit(
                 .padding(vertical = spacing8),
                 verticalArrangement = Arrangement.spacedBy(spacing8, Alignment.CenterVertically),
                 horizontalArrangement = Arrangement.spacedBy(spacing8)){
+
                 Constans.Units.entries.forEach {
-                    CardPickUnitAddHabit(selected = it == selected.value, unit = it, color = color, onClick = {
-                        selected.value = it
-                    })
+                    CardPickUnitAddHabit(
+                        thick = if (selected.value == it) 2.dp else 0.dp,
+                        colorCardBorder = if (selected.value == it) color else MaterialTheme.colorScheme.onSurface,
+                        unit = it,
+                        onClick = {
+                            selected.value = it
+                        })
                 }
             }
 

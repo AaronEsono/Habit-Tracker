@@ -169,17 +169,16 @@ fun AddHabitScreen(
                     text = R.string.add_habit_screen_color,
                     color = uiState.color,
                     icon = Icons.Filled.ColorLens,
-                    modifier = Modifier.weight(1f)
+                    modifierRow = Modifier.weight(1f)
                 ) {
                     addHabitViewModel.openColor()
                 }
-
 
                 CardPickColorAddHabit(
                     text = R.string.add_habit_screen_icon,
                     color = uiState.color,
                     icon = uiState.icon,
-                    modifier = Modifier.weight(1f)
+                    modifierRow = Modifier.weight(1f)
                 ) {
                     addHabitViewModel.openIcon()
                 }

@@ -1,80 +1,82 @@
 package aeb.proyecto.habittracker.ui.components.card
 
-import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
-import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
-import aeb.proyecto.habittracker.utils.ColorsTheme
-import aeb.proyecto.habittracker.utils.Constans.ENDBUTTON
-import aeb.proyecto.habittracker.utils.Constans.STARTBUTTON
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import android.graphics.drawable.shapes.Shape
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun CardOptionButton(
-    modifier: Modifier = Modifier,
-    @StringRes title:Int,
-    @DrawableRes icon:Int,
-    border:Int,
+    modifierCard: Modifier = Modifier,
+    modifierRow: Modifier = Modifier.fillMaxWidth().padding(spacing12),
+    modifierIcon: Modifier = Modifier.size(25.dp),
+    modifierText: Modifier = Modifier.padding(start = spacing12),
+    elevation: Dp = spacing8,
+    shape: Shape = RectangleShape,
+    containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    tintStartIcon: Color = MaterialTheme.colorScheme.onSurface,
+    tintEndIcon: Color = MaterialTheme.colorScheme.onSurface,
+    @DrawableRes startIcon: Int,
+    endIcon: ImageVector = Icons.AutoMirrored.Filled.ArrowRight,
+    @StringRes title: Int,
     onClick: () -> Unit,
 ) {
 
-    var shape = RectangleShape
-
-    if (border == STARTBUTTON) {
-        shape = RoundedCornerShape(topStart = spacing8, topEnd = spacing8)
-    }else if ( border == ENDBUTTON){
-        shape = RoundedCornerShape(bottomStart = spacing8, bottomEnd = spacing8)
-    }
-
     Card(
         shape = shape,
-        modifier = modifier
+        modifier = modifierCard
             .clickable { onClick() },
         elevation = CardDefaults.cardElevation(
-            defaultElevation = spacing8
+            defaultElevation = elevation
         ),
         colors = CardDefaults.cardColors(
-            containerColor = ColorsTheme.colorButtons
+            containerColor = containerColor
         )
     ) {
-        Row (modifier = Modifier.fillMaxWidth().padding(spacing12),
-            verticalAlignment = Alignment.CenterVertically){
+        Row(
+            modifier = modifierRow,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
 
-            Icon(painter = painterResource(id = icon), contentDescription = "", modifier = Modifier.size(25.dp), tint = ColorsTheme.themeText)
+            Icon(
+                painter = painterResource(id = startIcon),
+                contentDescription = "startIcon",
+                modifier = modifierIcon,
+                tint = tintStartIcon
+            )
 
-            LabelMediumText(text = stringResource(title), modifier = Modifier.padding(start = spacing12).weight(1f)
-                ,textAlign = TextAlign.Start)
+            LabelMediumText(
+                text = stringResource(title),
+                modifier = modifierText
+                    .weight(1f),
+                textAlign = TextAlign.Start
+            )
 
-            Icon(Icons.AutoMirrored.Filled.ArrowRight,"", tint = ColorsTheme.themeText)
-
+            Icon(endIcon, "endIcon", tint = tintEndIcon)
         }
     }
 }

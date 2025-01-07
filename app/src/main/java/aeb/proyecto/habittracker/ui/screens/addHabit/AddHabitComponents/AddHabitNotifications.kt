@@ -45,11 +45,11 @@ fun AddHabitNotifications(
         modifierCard = Modifier
             .fillMaxWidth()
             .height(height)
-            .padding(top = spacing8),
-        modifierRow = Modifier
+            .padding(top = spacing8)
             .clickable {
                 addHabitViewModel.openShowTimePicker(null)
-            }
+            },
+        modifierRow = Modifier
             .height(height)
             .padding(horizontal = spacing8, vertical = spacing4),
         modifierFinalIcon = Modifier.clickable(
@@ -74,11 +74,11 @@ fun AddHabitNotifications(
             modifierCard = Modifier
                 .fillMaxWidth()
                 .height(height)
-                .padding(top = spacing8),
-            modifierRow = Modifier
+                .padding(top = spacing8)
                 .clickable {
                     addHabitViewModel.openShowTimePicker(notification)
-                }
+                },
+            modifierRow = Modifier
                 .height(height)
                 .padding(horizontal = spacing8, vertical = spacing4),
             modifierFinalIcon = Modifier.clickable(
