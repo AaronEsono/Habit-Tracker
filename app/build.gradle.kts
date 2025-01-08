@@ -111,7 +111,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.bom))
 
-    //Auth
+    //Auth y credential Manager
     implementation(libs.firebase.auth.ktx)
 
     implementation(libs.androidx.credentials)
@@ -120,5 +120,7 @@ dependencies {
 
     //Crashlytics
     implementation(libs.firebase.crashlytics)
+
+    //Analytics
     implementation(libs.google.firebase.analytics)
 }

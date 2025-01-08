@@ -1,31 +1,32 @@
 package aeb.proyecto.habittracker.utils
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.model.user.UserData
 import aeb.proyecto.habittracker.utils.Constans.ERROR_EMAIL_SEND
 import aeb.proyecto.habittracker.utils.Constans.ERROR_UNVERIFIED_EMAIL
 import aeb.proyecto.habittracker.utils.Constans.ERROR_UPDATE_PROFILE
 import android.content.Context
-import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.security.MessageDigest
 import java.util.UUID
+import javax.inject.Inject
 
-class AuthenticationManager(val context: Context) {
-    private val auth = Firebase.auth
+class AuthenticationManager @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val auth: FirebaseAuth
+) {
 
     fun createAccountWithEmail(email: String, password: String): Flow<AuthResponse> = callbackFlow {
             auth.createUserWithEmailAndPassword(email, password)
@@ -75,7 +76,6 @@ class AuthenticationManager(val context: Context) {
 
                     user?.let {
                         if(it.isEmailVerified){
-                            setDataUser()
                             trySend(AuthResponse.Success)
                         }
                         else
@@ -126,7 +126,6 @@ class AuthenticationManager(val context: Context) {
                         auth.signInWithCredential(firebaseCredential)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    setDataUser()
                                     trySend(AuthResponse.Success)
                                 } else {
                                     trySend(AuthResponse.Error(task.exception?.message.toString()))
@@ -182,6 +181,21 @@ class AuthenticationManager(val context: Context) {
         awaitClose()
     }
 
+    fun currentUser(): Flow<AuthResponse> = callbackFlow {
+
+        auth.currentUser?.let {
+            it.getIdToken(true)
+                .addOnSuccessListener { trySend(AuthResponse.Success) }
+                .addOnFailureListener { trySend(AuthResponse.Error("Expires")) }
+        } ?: trySend(AuthResponse.Error("No user found"))
+
+        awaitClose()
+    }
+
+    fun logOut() {
+        auth.signOut()
+    }
+
     private fun createNonce(): String {
         val rawNonce = UUID.randomUUID().toString()
         val bytes = rawNonce.toByteArray()
@@ -190,12 +204,8 @@ class AuthenticationManager(val context: Context) {
         return digest.fold("") { str, it -> str + "%02x".format(it) }
     }
 
-    private fun setDataUser(){
-        val user = auth.currentUser
-        user?.let {
-            UserData.email = it.email
-            UserData.uid = it.uid
-        }
+    fun getName(): String {
+        return auth.currentUser?.email?.substringBefore("@") ?: ""
     }
 
 }

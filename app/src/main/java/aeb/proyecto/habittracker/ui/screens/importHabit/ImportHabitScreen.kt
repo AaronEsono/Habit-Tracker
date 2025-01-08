@@ -3,56 +3,35 @@ package aeb.proyecto.habittracker.ui.screens.importHabit
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.screens.importHabit.importComponents.ImportHabitComponents
 import aeb.proyecto.habittracker.ui.screens.importHabit.importComponents.LoginScreenImportHabit
-import aeb.proyecto.habittracker.utils.AuthenticationManager
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun ImportHabitScreen(importHabitViewModel: ImportHabitViewModel = hiltViewModel(), navigateToSave:() -> Unit) {
 
     val context = LocalContext.current
-    val coroutine = rememberCoroutineScope()
     val uiState = importHabitViewModel.uiState.collectAsState().value
-    val authentication = remember { AuthenticationManager(context) }
 
     LoginScreenImportHabit(
         importHabitViewModel = importHabitViewModel,
 
         signInGoogle = {
-            importHabitViewModel.setLoading()
-
-            authentication.signInWithGoogle().onEach {
-                importHabitViewModel.handleSignInGoogle(it){
-                    navigateToSave()
-                }
-            }.launchIn(coroutine)
+            importHabitViewModel.signInGoogle {
+                navigateToSave()
+            }
         },
-
         signIn = { email, password, saveCredentials ->
-            importHabitViewModel.setLoading()
-
-            authentication.signInWithEmail(email, password).onEach { response ->
-                importHabitViewModel.handleSignIn(response,email,password,saveCredentials){
-                    navigateToSave()
-                }
-            }.launchIn(coroutine)
+            importHabitViewModel.signIn(email, password, saveCredentials) {
+                navigateToSave()
+            }
         },
-
         signUp = { email, password ->
-            importHabitViewModel.setLoading()
-
-            authentication.createAccountWithEmail(email, password).onEach { response ->
-                importHabitViewModel.handleSignUp(response)
-            }.launchIn(coroutine)
+            importHabitViewModel.signUp(email, password)
         },
-
         resetPassword = {
             importHabitViewModel.openPasswordDx()
         }
@@ -70,23 +49,15 @@ fun ImportHabitScreen(importHabitViewModel: ImportHabitViewModel = hiltViewModel
         if (uiState.subtitleDx == R.string.import_habit_create_account) {
             closeGeneralDx()
         } else {
-            importHabitViewModel.setLoading()
-
-            authentication.resendEmail().onEach {
-                importHabitViewModel.handleResendEmail(it) {
-                    Toast.makeText(context, R.string.import_habit_toast, Toast.LENGTH_SHORT).show()
-                }
-            }.launchIn(coroutine)
+            importHabitViewModel.resendEmail(){
+                Toast.makeText(context, R.string.import_habit_resend_email, Toast.LENGTH_SHORT).show()
+            }
         }
     },
         onAcceptPassword = { email ->
-            importHabitViewModel.setLoading()
-
-            authentication.forgotPassword(email).onEach {
-                importHabitViewModel.handleForgotPassword(it) {
-                    Toast.makeText(context, R.string.import_habit_toast, Toast.LENGTH_SHORT).show()
-                }
-            }.launchIn(coroutine)
+            importHabitViewModel.forgotPassword(email){
+                Toast.makeText(context, R.string.import_habit_forgot_password, Toast.LENGTH_SHORT).show()
+            }
         },
         onDismissPassword = {
             importHabitViewModel.closePasswordDx()

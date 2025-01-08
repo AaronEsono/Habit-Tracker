@@ -5,6 +5,7 @@ import aeb.proyecto.habittracker.data.model.state.ImportState
 import aeb.proyecto.habittracker.di.DataStoreManager
 import aeb.proyecto.habittracker.di.EmailPassword
 import aeb.proyecto.habittracker.utils.AuthResponse
+import aeb.proyecto.habittracker.utils.AuthenticationManager
 import aeb.proyecto.habittracker.utils.Constans.DEFAULT_ERROR_FIREBASE
 import aeb.proyecto.habittracker.utils.Constans.ERROR_UNVERIFIED_EMAIL
 import aeb.proyecto.habittracker.utils.Constans.FIREBASE_ERRORS
@@ -17,6 +18,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,7 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ImportHabitViewModel @Inject constructor(
     private val sharedState: SharedState,
-    private val dataStoreManager: DataStoreManager
+    private val dataStoreManager: DataStoreManager,
+    private val authenticationManager: AuthenticationManager
 ) : ViewModel() {
 
 
@@ -76,7 +80,50 @@ class ImportHabitViewModel @Inject constructor(
         sharedState.setError(message)
     }
 
-    fun handleSignInGoogle(response: AuthResponse,navigate:() -> Unit){
+    fun signInGoogle(navigate:() -> Unit){
+        setLoading()
+        authenticationManager.signInWithGoogle().onEach {
+            handleSignInGoogle(it){
+                navigate()
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun signIn(email: String, password: String, saveCredentials: Boolean, navigate: () -> Unit) {
+        setLoading()
+        authenticationManager.signInWithEmail(email, password).onEach {
+            handleSignIn(it, email, password, saveCredentials) {
+                navigate()
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun signUp(email: String, password: String) {
+        setLoading()
+        authenticationManager.createAccountWithEmail(email, password).onEach {
+            handleSignUp(it)
+        }.launchIn(viewModelScope)
+    }
+
+    fun resendEmail(showToast: () -> Unit){
+        setLoading()
+        authenticationManager.resendEmail().onEach {
+            handleResendEmail(it){
+                showToast()
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun forgotPassword(email: String,showToast: () -> Unit) {
+        setLoading()
+        authenticationManager.forgotPassword(email).onEach {
+            handleForgotPassword(it) {
+                showToast()
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun handleSignInGoogle(response: AuthResponse, navigate:() -> Unit){
         if(response is AuthResponse.Success){
             setNeutral()
             navigate()
@@ -85,7 +132,7 @@ class ImportHabitViewModel @Inject constructor(
         }
     }
 
-    fun handleSignUp(response: AuthResponse){
+    private fun handleSignUp(response: AuthResponse){
         if(response is AuthResponse.Success){
             setNeutral()
             openGeneralDxCreateAccount()
@@ -94,7 +141,7 @@ class ImportHabitViewModel @Inject constructor(
         }
     }
 
-    fun handleSignIn(response: AuthResponse,email:String, password:String,saveCredentials:Boolean, navigate:() -> Unit){
+    private fun handleSignIn(response: AuthResponse, email:String, password:String, saveCredentials:Boolean, navigate:() -> Unit){
         if(response is AuthResponse.Success){
             setNeutral()
 
@@ -128,7 +175,7 @@ class ImportHabitViewModel @Inject constructor(
         }
     }
 
-    fun handleResendEmail(response: AuthResponse, showToast: () -> Unit) {
+    private fun handleResendEmail(response: AuthResponse, showToast: () -> Unit) {
         if (response is AuthResponse.Success) {
             setNeutral()
             showToast()
@@ -137,7 +184,8 @@ class ImportHabitViewModel @Inject constructor(
         }
     }
 
-    fun handleForgotPassword(response: AuthResponse,showToast: () -> Unit) {
+
+    private fun handleForgotPassword(response: AuthResponse, showToast: () -> Unit) {
         if (response is AuthResponse.Success) {
             setNeutral()
             showToast()

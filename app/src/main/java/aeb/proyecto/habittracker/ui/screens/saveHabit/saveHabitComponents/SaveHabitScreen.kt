@@ -1,7 +1,6 @@
 package aeb.proyecto.habittracker.ui.screens.saveHabit.saveHabitComponents
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.model.user.UserData
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
@@ -16,23 +15,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun SaveHabitScreen(logOut: () -> Unit) {
-
-    val data = remember { UserData }
+fun SaveHabitScreen(name:String, logOut: () -> Unit) {
 
     Column(modifier = Modifier.fillMaxSize().padding(horizontal = spacing24, vertical = spacing16)) {
 
         TitleLargeText(
-            stringResource(
-                R.string.save_habit_title,
-                data.email?.substringBefore("@") ?: ""
-            ),
+            name,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
