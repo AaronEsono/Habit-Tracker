@@ -5,7 +5,6 @@ import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.TitleSmallText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans.onlyDigits
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
@@ -26,16 +25,25 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,6 +54,7 @@ fun BottomSheetChoseSteps(
     titleUnit: Int,
     restDays: Int,
     onDismiss: () -> Unit = {},
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer
 ) {
 
     val sheetState = rememberModalBottomSheetState()
@@ -53,6 +62,9 @@ fun BottomSheetChoseSteps(
 
     val timesHabit = rememberTextFieldState("")
     val context = LocalContext.current
+
+    val wasFilled = remember { mutableStateOf(false) }
+    if (timesHabit.text.isNotEmpty()) wasFilled.value = true
 
     LaunchedEffect(timesHabit.text) {
         if (!timesHabit.text.toString().matches(onlyDigits) && timesHabit.text.toString()
@@ -67,7 +79,7 @@ fun BottomSheetChoseSteps(
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
         sheetState = sheetState,
-        containerColor = ColorsTheme.secondaryColorApp
+        containerColor = containerColor
     ) {
 
         Column(
@@ -98,20 +110,27 @@ fun BottomSheetChoseSteps(
             CustomOutlinedTextField(
                 rememberTextFieldState = timesHabit,
                 label = R.string.add_habit_screen_name,
+                isError = timesHabit.text.isEmpty() && wasFilled.value,
+                labelPosition = TextFieldLabelPosition.Attached(),
                 labelError = R.string.add_habit_screen_no_units,
-                isNeeded = true,
                 showLabel = false,
-                isNumeric = true,
+                keyBoardType = KeyboardType.Number,
+                imeAction = ImeAction.Done,
                 modifier = Modifier
                     .padding(spacing8)
                     .fillMaxWidth()
-                    .height(60.dp)
+                    .height(60.dp),
+                modifierError = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing8),
             )
 
             CustomFilledButton(
                 title = R.string.buttons_accept,
                 icon = R.drawable.ic_check,
                 color = color,
+                colorIcon = MaterialTheme.colorScheme.onSurface,
+                colorText = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = spacing16),
@@ -132,18 +151,22 @@ fun BottomSheetChoseSteps(
 @Composable
 fun ChoseTimes(
     restDays: Int,
-    onAccept: (String) -> Unit = {},
+    containerColor: Color = MaterialTheme.colorScheme.surfaceTint,
+    borderColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    shape: Shape = RoundedCornerShape(spacing8),
+    thickness: Dp = 1.dp,
+    modifier: Modifier = Modifier,
+    onAccept: (String) -> Unit = {}
 ){
     Column(
-        modifier = Modifier
-            .background(ColorsTheme.primaryColorApp)
-            .border(1.dp, color = ColorsTheme.themeText, RoundedCornerShape(spacing8))
+        modifier = modifier
+            .clip(shape)
+            .background(containerColor)
+            .border(thickness, color = borderColor, shape)
             .clickable {
                 onAccept(restDays.toString())
             }
             .padding(horizontal = spacing16)
-
-
     ) {
         TitleSmallText(
             text = restDays.toString(),

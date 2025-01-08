@@ -17,7 +17,10 @@ private val Dark = darkColorScheme(
     surfaceVariant = surfaceVariantDark,
     secondaryContainer = secondaryContainerDark,
     tertiaryContainer = terciaryContainerDark,
-    outline = outLineDark
+    outline = outLineDark,
+    error = colorErrorGeneral,
+    surfaceContainer = surfaceContainerDark,
+    surfaceTint = surfaceTintDark
 )
 
 private val Light = lightColorScheme(
@@ -30,7 +33,10 @@ private val Light = lightColorScheme(
     surfaceVariant = surfaceVariantLight,
     secondaryContainer = secondaryContainerLight,
     tertiaryContainer = terciaryContainerLight,
-    outline = outLineLight
+    outline = outLineLight,
+    error = colorErrorGeneral,
+    surfaceContainer = surfaceContainerLight,
+    surfaceTint = surfaceTintLight
 )
 
 enum class AppTheme(val theme: Int, val text: Int) {

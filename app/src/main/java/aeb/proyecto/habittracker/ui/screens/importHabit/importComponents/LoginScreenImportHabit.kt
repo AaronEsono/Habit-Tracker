@@ -7,7 +7,7 @@ import aeb.proyecto.habittracker.ui.components.checkBox.CheckBoxButton
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
-import aeb.proyecto.habittracker.ui.components.textField.OutLinedTextFieldLogin
+import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
 import aeb.proyecto.habittracker.ui.components.textField.OutlinedTextFieldPasswordLogin
 import aeb.proyecto.habittracker.ui.screens.importHabit.ImportHabitViewModel
 import aeb.proyecto.habittracker.utils.ColorsTheme
@@ -18,7 +18,6 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing6
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -38,6 +37,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -73,6 +74,10 @@ fun LoginScreenImportHabit(
     val emailPassword = importHabitViewModel.emailPassword.collectAsState().value
 
     val uiState = importHabitViewModel.uiState.collectAsState().value
+
+    if(email.text.isNotEmpty()) wasFilledEmail.value = true
+    if(password.text.isNotEmpty()) wasFilledPassword.value = true
+    if(rememberPassword.text.isNotEmpty()) wasFilledRememberPassword.value = true
 
     LaunchedEffect (uiState.isInLogin){
         email.edit { replace(0,length,"") }
@@ -124,14 +129,17 @@ fun LoginScreenImportHabit(
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
-            OutLinedTextFieldLogin(
+            CustomOutlinedTextField(
                 rememberTextFieldState = email,
+                labelPosition = TextFieldLabelPosition.Attached(),
                 label = R.string.import_habit_screen_email,
                 labelError = R.string.import_habit_screen_email_error,
+                keyBoardType = KeyboardType.Email,
+                imeAction = ImeAction.Next,
                 modifier = Modifier
                     .height(60.dp)
                     .fillMaxWidth(),
-                wasFilled = wasFilledEmail
+                isError = email.text.isEmpty() && wasFilledEmail.value,
             )
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
@@ -142,9 +150,10 @@ fun LoginScreenImportHabit(
                 modifier = Modifier
                     .height(60.dp)
                     .fillMaxWidth(),
+                modifierError = Modifier.fillMaxWidth().padding(horizontal = spacing8),
                 rememberTextFieldState = password,
-                imeAction = if(uiState.isInLogin) ImeAction.Done else ImeAction.Next,
-                wasFilled = wasFilledPassword
+                imeActionPassword = if(uiState.isInLogin) ImeAction.Done else ImeAction.Next,
+                isError = password.text.isEmpty() && wasFilledPassword.value,
             )
 
             AnimatedVisibility(
@@ -159,9 +168,10 @@ fun LoginScreenImportHabit(
                         modifier = Modifier
                             .height(60.dp)
                             .fillMaxWidth(),
+                        modifierError = Modifier.fillMaxWidth().padding(horizontal = spacing8),
                         rememberTextFieldState = rememberPassword,
-                        imeAction = ImeAction.Done,
-                        wasFilled = wasFilledRememberPassword
+                        imeActionPassword = ImeAction.Done,
+                        isError = rememberPassword.text.isEmpty() && wasFilledRememberPassword.value,
                     )
 
                     Spacer(modifier = Modifier.padding(vertical = spacing8))

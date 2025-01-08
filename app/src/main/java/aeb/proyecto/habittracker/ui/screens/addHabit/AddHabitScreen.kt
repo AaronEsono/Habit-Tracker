@@ -48,6 +48,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -58,6 +59,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -84,6 +87,12 @@ fun AddHabitScreen(
 
     val context = LocalContext.current
     val interactionSource = remember { MutableInteractionSource() }
+
+    val wasFilledName = remember { mutableStateOf(false) }
+    val wasFilledTimes = remember { mutableStateOf(false) }
+
+    if (nameHabit.text.isNotEmpty()) wasFilledName.value = true
+    if (timesHabit.text.isNotEmpty()) wasFilledTimes.value = true
 
     LaunchedEffect(Unit) {
         if (edit && id != null) {
@@ -144,11 +153,13 @@ fun AddHabitScreen(
                 .padding(top = spacing16, start = spacing16, end = spacing16, bottom = spacing72)
                 .verticalScroll(rememberScrollState())
         ) {
+
             CustomOutlinedTextField(
                 rememberTextFieldState = nameHabit,
                 label = R.string.add_habit_screen_name,
-                isNeeded = true,
-                modifier = Modifier.fillMaxWidth()
+                isError = nameHabit.text.isEmpty() && wasFilledName.value,
+                modifier = Modifier.fillMaxWidth().height(60.dp),
+                modifierError = Modifier.fillMaxWidth().padding(horizontal = spacing8)
             )
 
             Spacer(modifier = Modifier.padding(vertical = spacing8))
@@ -156,7 +167,9 @@ fun AddHabitScreen(
             CustomOutlinedTextField(
                 rememberTextFieldState = descriptionHabit,
                 label = R.string.add_habit_screen_description,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().height(60.dp),
+                modifierError = Modifier.fillMaxWidth().padding(horizontal = spacing8),
+                imeAction = ImeAction.Done
             )
 
             Spacer(modifier = Modifier.padding(vertical = spacing12))
@@ -206,39 +219,37 @@ fun AddHabitScreen(
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.fillMaxWidth(0.5f)) {
+
                     CustomOutlinedTextField(
                         rememberTextFieldState = timesHabit,
+                        labelPosition = TextFieldLabelPosition.Attached(),
                         label = R.string.add_habit_screen_name,
                         labelError = R.string.add_habit_screen_no_units,
-                        isNeeded = true,
                         showLabel = false,
-                        isNumeric = true,
+                        isError = timesHabit.text.isEmpty() && wasFilledTimes.value,
+                        keyBoardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done,
+                        modifier = Modifier.height(60.dp),
+                        modifierError = Modifier.fillMaxWidth().padding(horizontal = spacing8)
                     )
                 }
 
                 Spacer(modifier = Modifier.padding(horizontal = spacing8))
 
                 CardInfoAddHabit(
-                    title = if (InPlural.contains(timesHabit.text.toString())) stringResource(
-                        uiState.unitPicked.title
-                    ) else stringResource(uiState.unitPicked.pluralTitle),
+                    title = if (InPlural.contains(timesHabit.text.toString())) stringResource(uiState.unitPicked.title)
+                    else stringResource(uiState.unitPicked.pluralTitle),
                     finalIcon = Icons.Filled.KeyboardArrowDown,
                     modifierCard = Modifier
                         .fillMaxWidth()
                         .height(60.dp)
-                        .padding(top = spacing8),
-                    modifierRow = Modifier
+                        .padding(top = spacing8)
                         .clickable {
                             addHabitViewModel.openBottomSheet()
-                        }
+                        },
+                    modifierRow = Modifier
                         .height(60.dp)
-                        .padding(horizontal = spacing8),
-                    modifierFinalIcon = Modifier.clickable(
-                        indication = null,
-                        interactionSource = interactionSource
-                    ) {
-                        addHabitViewModel.openBottomSheet()
-                    }
+                        .padding(horizontal = spacing8)
                 )
             }
 

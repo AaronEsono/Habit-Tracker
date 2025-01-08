@@ -16,6 +16,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -25,7 +26,7 @@ fun CustomOutlinedButton(
     modifier: Modifier = Modifier,
     modifierIcon: Modifier = Modifier,
     onClick: () -> Unit = {},
-    shape: RoundedCornerShape = RoundedCornerShape(spacing12),
+    shape: Shape = RoundedCornerShape(spacing12),
     colorIcon: Color = MaterialTheme.colorScheme.onSurface,
     colorText : Color = MaterialTheme.colorScheme.onSurface,
     borderColor: Color = MaterialTheme.colorScheme.onSurface,

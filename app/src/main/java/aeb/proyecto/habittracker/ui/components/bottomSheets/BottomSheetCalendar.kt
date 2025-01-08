@@ -8,7 +8,6 @@ import aeb.proyecto.habittracker.ui.components.calendar.CalendarHeader
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarViewModel
 import aeb.proyecto.habittracker.ui.components.calendar.calendarComponents.ContentItemBottomSheet
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.foundation.layout.Column
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -35,7 +35,8 @@ fun BottomSheetCalendar(
     onDismiss: () -> Unit,
     color: Color,
     habit: HabitWithDailyHabit,
-    onClickDate: (LocalDate) -> Unit
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    onClickDate: (LocalDate) -> Unit,
 ) {
 
     val scope = rememberCoroutineScope()
@@ -49,7 +50,7 @@ fun BottomSheetCalendar(
             onDismiss()
         },
         sheetState = bottomSheetState,
-        containerColor = ColorsTheme.secondaryColorApp
+        containerColor = containerColor
     ) {
 
         Column(
@@ -105,5 +106,4 @@ fun BottomSheetCalendar(
                 })
         }
     }
-
 }

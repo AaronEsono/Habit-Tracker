@@ -29,7 +29,7 @@ fun CalendarBottomSheetCanvas(
     modifierCanvas: Modifier = Modifier,
     modifierText: Modifier = Modifier,
     modifierRow: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.tertiaryContainer
+    containerColor: Color = MaterialTheme.colorScheme.surfaceTint
 ) {
     Spacer(modifier = Modifier.padding(vertical = spacing2))
 

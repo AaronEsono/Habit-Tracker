@@ -35,7 +35,7 @@ fun CardPickUnitAddHabit(
     iconTint: Color = MaterialTheme.colorScheme.onSurface,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     thick: Dp = 0.dp,
-    defaultElevation: Dp = spacing8,
+    defaultElevation: Dp = 0.dp,
     colorCardBorder: Color = MaterialTheme.colorScheme.onSurface,
     shape: RoundedCornerShape = RoundedCornerShape(spacing8),
     onClick: () -> Unit = {},

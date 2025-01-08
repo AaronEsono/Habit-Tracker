@@ -2,7 +2,6 @@ package aeb.proyecto.habittracker.ui.components.radioButton
 
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing10
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import androidx.compose.animation.animateColorAsState
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,7 +32,7 @@ fun RadioButtonStatistics(
 ) {
 
     val animatedColor by animateColorAsState(
-        if (habit == selectedOption) Color(habit.color) else ColorsTheme.containerTextFieldColor,
+        if (habit == selectedOption) Color(habit.color) else MaterialTheme.colorScheme.background,
         label = "color"
     )
 
@@ -41,7 +41,7 @@ fun RadioButtonStatistics(
             .padding(horizontal = spacing4)
             .wrapContentSize()
             .clip(CircleShape)
-            .border(0.5.dp, ColorsTheme.themeText, CircleShape)
+            .border(0.5.dp, MaterialTheme.colorScheme.onSurface, CircleShape)
             .background(animatedColor, CircleShape)
             .selectable(
                 selected = (habit == selectedOption),
@@ -56,7 +56,7 @@ fun RadioButtonStatistics(
                 .padding(spacing10)
                 .size(25.dp)
                 .align(Alignment.Center),
-            tint = ColorsTheme.themeText
+            tint = MaterialTheme.colorScheme.onSurface
         )
     }
 }

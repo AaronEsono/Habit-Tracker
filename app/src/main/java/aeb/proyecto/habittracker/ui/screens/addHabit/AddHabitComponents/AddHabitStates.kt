@@ -37,7 +37,7 @@ fun AddHabitScreenState(
 
     if (uiState.showTimePicker) {
         TimePickerHabit(
-            color = uiState.color,
+            principalColor = uiState.color,
             onDismiss = { addHabitViewModel.closeShowTimePicker() },
             onConfirm = { notification ->
                 addHabitViewModel.insertNotification(notification)

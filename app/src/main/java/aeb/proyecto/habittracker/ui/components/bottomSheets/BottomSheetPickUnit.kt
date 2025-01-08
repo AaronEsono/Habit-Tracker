@@ -6,7 +6,6 @@ import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButton
 import aeb.proyecto.habittracker.ui.components.card.CardPickUnitAddHabit
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
@@ -41,6 +40,8 @@ import kotlinx.coroutines.launch
 fun BottomSheetPickUnit(
     color: Color,
     units: Constans.Units,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
     onConfirm: (Constans.Units) -> Unit
 ) {
@@ -54,10 +55,10 @@ fun BottomSheetPickUnit(
             onDismiss()
         },
         sheetState = sheetState,
-        containerColor = ColorsTheme.secondaryColorApp
+        containerColor = containerColor
     ) {
 
-        Column(modifier = Modifier
+        Column(modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = spacing16, vertical = spacing8),
@@ -126,10 +127,7 @@ fun BottomSheetPickUnit(
                         }
                     }
                 )
-
             }
-
         }
-
     }
 }

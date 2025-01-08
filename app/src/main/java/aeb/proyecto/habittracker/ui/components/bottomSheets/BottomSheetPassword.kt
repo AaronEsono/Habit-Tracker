@@ -5,8 +5,8 @@ import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
+import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,13 +16,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -31,20 +37,23 @@ import kotlinx.coroutines.launch
 @Composable
 fun BottomSheetPassword(
     onDismiss: () -> Unit = {},
-    onAccept: (String) -> Unit = {}
+    onAccept: (String) -> Unit = {},
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer
 ){
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-
     val email = rememberTextFieldState()
+    val wasFilled = remember { mutableStateOf(false) }
+
+    if (email.text.isNotEmpty()) wasFilled.value = true
 
     ModalBottomSheet(
         onDismissRequest = {
             onDismiss()
         },
         sheetState = sheetState,
-        containerColor = ColorsTheme.secondaryColorApp
+        containerColor = containerColor
     ) {
 
         Column(
@@ -73,10 +82,13 @@ fun BottomSheetPassword(
 
             CustomOutlinedTextField(
                 rememberTextFieldState = email,
-                modifier = Modifier.fillMaxWidth(),
                 label = R.string.import_habit_screen_email,
+                isError = email.text.isEmpty() && wasFilled.value,
+                modifier = Modifier.fillMaxWidth().height(70.dp),
+                modifierError = Modifier.fillMaxWidth().padding(horizontal = spacing8),
                 labelError = R.string.import_habit_screen_email_error,
-                isNeeded = true
+                imeAction = ImeAction.Done,
+                keyBoardType = KeyboardType.Email
             )
 
             Spacer(modifier = Modifier.padding(vertical = spacing8))
@@ -84,7 +96,9 @@ fun BottomSheetPassword(
             CustomFilledButton(
                 title = R.string.buttons_accept,
                 icon = R.drawable.ic_check,
-                color = ColorsTheme.terciaryColorApp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                colorIcon = MaterialTheme.colorScheme.inverseSurface,
+                colorText = MaterialTheme.colorScheme.inverseSurface,
                 enabled = email.text.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 onClick = {
@@ -97,8 +111,8 @@ fun BottomSheetPassword(
                     }
                 }
             )
+
+            Spacer(modifier = Modifier.padding(vertical = spacing4))
         }
     }
-
-
 }

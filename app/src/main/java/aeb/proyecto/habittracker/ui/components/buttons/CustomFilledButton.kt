@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,7 +37,7 @@ fun CustomFilledButton(
     enabledColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     enabled: Boolean = true,
     elevation: ButtonElevation = ButtonDefaults.buttonElevation(),
-    shape: RoundedCornerShape = RoundedCornerShape(spacing12)
+    shape: Shape = RoundedCornerShape(spacing12)
 ) {
     Button(
         onClick = { onClick() },
