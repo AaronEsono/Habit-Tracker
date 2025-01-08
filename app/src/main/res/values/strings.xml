@@ -162,6 +162,8 @@
     <string name="settings_screen_card_title">Selecciona el tema</string>
     <string name="settings_screen_card_dark">Oscuro</string>
     <string name="settings_screen_card_light">Claro</string>
+    <string name="settings_screen_card_dark_alt">Azul oscuro</string>
+    <string name="settings_screen_card_light_alt">Crema claro</string>
 
     <!-- Notification -->
     <string name="notification_subtitle">Es hora de hacer el hábito %1$s</string>

@@ -162,6 +162,8 @@
     <string name="settings_screen_card_title">Chose the theme</string>
     <string name="settings_screen_card_dark">Dark</string>
     <string name="settings_screen_card_light">Light</string>
+    <string name="settings_screen_card_dark_alt">Dark Blue</string>
+    <string name="settings_screen_card_light_alt">Light Cream</string>
 
     <!-- Notification -->
     <string name="notification_subtitle">It’s time to do the habit %1$s</string>

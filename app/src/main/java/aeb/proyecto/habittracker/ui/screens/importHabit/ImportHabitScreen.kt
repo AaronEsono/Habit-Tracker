@@ -4,7 +4,6 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.screens.importHabit.importComponents.ImportHabitComponents
 import aeb.proyecto.habittracker.ui.screens.importHabit.importComponents.LoginScreenImportHabit
 import aeb.proyecto.habittracker.utils.AuthenticationManager
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

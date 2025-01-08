@@ -16,7 +16,7 @@ private val Dark = darkColorScheme(
     onPrimaryContainer = onPrimaryContainerDark,
     surfaceVariant = surfaceVariantDark,
     secondaryContainer = secondaryContainerDark,
-    tertiaryContainer = terciaryContainerDark,
+    tertiaryContainer = tertiaryContainerDark,
     outline = outLineDark,
     error = colorErrorGeneral,
     surfaceContainer = surfaceContainerDark,
@@ -33,7 +33,7 @@ private val Light = lightColorScheme(
     onPrimaryContainer = onPrimaryContainerLight,
     surfaceVariant = surfaceVariantLight,
     secondaryContainer = secondaryContainerLight,
-    tertiaryContainer = terciaryContainerLight,
+    tertiaryContainer = tertiaryContainerLight,
     outline = outLineLight,
     error = colorErrorGeneral,
     surfaceContainer = surfaceContainerLight,
@@ -41,9 +41,45 @@ private val Light = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLight
 )
 
+private val DarkAlt = darkColorScheme(
+    background = backgroundDarkAlt,
+    primary = primaryDarkAlt,
+    onSurface = onSurfaceDarkAlt,
+    inverseSurface = inverseSurfaceDarkAlt,
+    primaryContainer = primaryContainerDarkAlt,
+    onPrimaryContainer = onPrimaryContainerDarkAlt,
+    surfaceVariant = surfaceVariantDarkAlt,
+    secondaryContainer = secondaryContainerDarkAlt,
+    tertiaryContainer = tertiaryContainerDarkAlt,
+    outline = outLineDarkAlt,
+    error = colorErrorGeneral,
+    surfaceContainer = surfaceContainerDarkAlt,
+    surfaceTint = surfaceTintDarkAlt,
+    surfaceContainerHighest = surfaceContainerHighestDarkAlt
+)
+
+private val LightAlt = lightColorScheme(
+    background = backgroundLightAlt,
+    primary = primaryLightAlt,
+    onSurface = onSurfaceLightAlt,
+    inverseSurface = inverseSurfaceLightAlt,
+    primaryContainer = primaryContainerLightAlt,
+    onPrimaryContainer = onPrimaryContainerLightAlt,
+    surfaceVariant = surfaceVariantLightAlt,
+    secondaryContainer = secondaryContainerLightAlt,
+    tertiaryContainer = tertiaryContainerLightAlt,
+    outline = outLineLightAlt,
+    error = colorErrorGeneral,
+    surfaceContainer = surfaceContainerLightAlt,
+    surfaceTint = surfaceTintLightAlt,
+    surfaceContainerHighest = surfaceContainerHighestLightAlt
+)
+
 enum class AppTheme(val theme: Int, val text: Int) {
     DARK(0, R.string.settings_screen_card_dark),
-    LIGHT(1, R.string.settings_screen_card_light)
+    BLUE_DARK(1, R.string.settings_screen_card_dark_alt),
+    LIGHT(2, R.string.settings_screen_card_light),
+    CREME_LIGHT(3, R.string.settings_screen_card_light_alt)
 }
 
 @Composable
@@ -55,6 +91,8 @@ fun HabitTrackerTheme(
     val themeScheme = when (theme) {
         AppTheme.DARK.theme -> Dark
         AppTheme.LIGHT.theme -> Light
+        AppTheme.BLUE_DARK.theme -> DarkAlt
+        AppTheme.CREME_LIGHT.theme -> LightAlt
         else -> Dark
     }
 
