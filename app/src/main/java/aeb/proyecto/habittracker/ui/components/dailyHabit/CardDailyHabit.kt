@@ -1,7 +1,6 @@
 package aeb.proyecto.habittracker.ui.components.dailyHabit
 
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +32,8 @@ import java.time.LocalDate
 @Composable
 fun CardDailyHabit(
     habitWithDailyHabit: HabitWithDailyHabit,
+    borderColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
     onClick: (Long) -> Unit = {},
     onClickCard: (Long) -> Unit = {},
     isInDialog: Boolean = false,
@@ -53,14 +55,15 @@ fun CardDailyHabit(
     val targetProgress = getProgress(dailyHabits, habit)
 
     Card(
+        shape = RoundedCornerShape(spacing8),
         colors = CardDefaults.cardColors(
-            containerColor = ColorsTheme.colorBackgroundCard,
+            containerColor = containerColor,
         ),
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(top = spacing8)
-            .border(0.3.dp, ColorsTheme.borderTextField, RoundedCornerShape(spacing8))
+            .border(0.3.dp, borderColor, RoundedCornerShape(spacing8))
             .clickable(
                 indication = null,
                 interactionSource = MutableInteractionSource()

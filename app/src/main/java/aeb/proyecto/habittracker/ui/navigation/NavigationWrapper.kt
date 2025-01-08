@@ -47,13 +47,17 @@ fun NavigationWrapper(navController: NavHostController){
         }
         composable<ImportHabit>{
             ImportHabitScreen(){
-                navController.navigate(SaveHabit)
+                navController.navigate(SaveHabit){
+                    popUpTo(ImportHabit) {
+                        inclusive = true
+                    }
+                }
             }
         }
         composable<SaveHabit>{
             SaveHabit(){
-                navController.navigate(Settings){
-                    popUpTo(0) {
+                navController.navigate(ImportHabit){
+                    popUpTo(SaveHabit) {
                         inclusive = true
                     }
                 }

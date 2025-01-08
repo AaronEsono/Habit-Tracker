@@ -20,7 +20,8 @@ private val Dark = darkColorScheme(
     outline = outLineDark,
     error = colorErrorGeneral,
     surfaceContainer = surfaceContainerDark,
-    surfaceTint = surfaceTintDark
+    surfaceTint = surfaceTintDark,
+    surfaceContainerHighest = surfaceContainerHighestDark
 )
 
 private val Light = lightColorScheme(
@@ -36,7 +37,8 @@ private val Light = lightColorScheme(
     outline = outLineLight,
     error = colorErrorGeneral,
     surfaceContainer = surfaceContainerLight,
-    surfaceTint = surfaceTintLight
+    surfaceTint = surfaceTintLight,
+    surfaceContainerHighest = surfaceContainerHighestLight
 )
 
 enum class AppTheme(val theme: Int, val text: Int) {

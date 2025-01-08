@@ -4,7 +4,6 @@ import aeb.proyecto.habittracker.ui.components.items.ColorItem
 import aeb.proyecto.habittracker.ui.components.items.IconItem
 import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitViewModel
 import aeb.proyecto.habittracker.ui.theme.pickColors
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Constans.ListIcons
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4

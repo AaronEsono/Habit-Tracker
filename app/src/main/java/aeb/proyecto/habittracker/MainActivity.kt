@@ -143,15 +143,7 @@ fun TopBarHabit(navController: NavHostController) {
         navigationIcon = {
             if (showBottomBar == false) {
                 IconButton(onClick = {
-                    if(navController.currentBackStackEntry?.destination?.route == SaveHabit::class.qualifiedName){
-                        navController.navigate(Settings){
-                            popUpTo(0) {
-                                inclusive = true
-                            }
-                        }
-                    }else{
-                        navController.popBackStack()
-                    }
+                    navController.popBackStack()
                 }) {
                     Icon(
                         painter = painterResource(R.drawable.ic_arrow_back),

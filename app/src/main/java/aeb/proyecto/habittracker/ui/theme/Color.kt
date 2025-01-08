@@ -18,18 +18,7 @@ val secondaryContainerDark = Color(0xFF323336)
 val outLineDark = Color(0xFF848484)
 val surfaceContainerDark = Color(0xFF848484)
 val surfaceTintDark = Color(0xFF191718)
-
-val terciaryColorAppDark = Color(0xFF45484a)
-val colorButtonsDark = Color(0xFF323336)
-val borderTextFieldDark = Color(0xFF848484)
-val containerTextFieldColorDark = Color(0xFF1A1818)
-var ThemeTextDark = Color.White
-val textColorsDark = Color(0xFFEFE7E7)
-val colorBackgroundCardDark = Color(0xFF131212)
-val colorStatusBarDark = Color(0xFF1b1917)
-val disableColorDark = Color.Black.copy(alpha = 0.2f)
-val iconColorDark = Color.Black
-
+val surfaceContainerHighestDark = Color(0xFF131212)
 
 //Colores tema claro
 val backgroundLight = Color(0xFFF9F9F9)
@@ -44,19 +33,7 @@ val secondaryContainerLight = Color(0xFFDAEFF6)
 val outLineLight = Color(0xFF979797)
 val surfaceContainerLight = Color(0xFFB0BEC5)
 val surfaceTintLight = Color(0xFFC1D5E0)
-
-
-val terciaryColorAppLight = Color(0xFFD6D9DA)
-val colorButtonsLight = Color(0xFFCFCFCF)
-val borderTextFieldLight = Color(0xFF6F6F6F)
-val containerTextFieldColorLight = Color(0xFFFFFFFF)
-var ThemeTextLight = Color.Black
-val textColorsLight = Color(0xFF1F1F1F)
-val colorBackgroundCardLight = Color(0xFFF7F7F7)
-val colorStatusBarLight = Color(0xFFEBEAE9)
-val iconColorLight = Color.White
-val disableColorLight = Color.White.copy(alpha = 0.2f)
-
+val surfaceContainerHighestLight = Color(0xFFE0F7FA)
 
 val pickColors = listOf(
     Color(0xFF6248C1),

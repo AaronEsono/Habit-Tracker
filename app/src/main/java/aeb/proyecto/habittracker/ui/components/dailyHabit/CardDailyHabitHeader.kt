@@ -4,7 +4,6 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import android.annotation.SuppressLint
@@ -25,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -84,7 +84,7 @@ fun CardDailyHabitHeader(
                 Icon(
                     imageVector = iconByName(habit.icon),
                     contentDescription = "Add",
-                    tint = ColorsTheme.textColors,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.size(dimensIcon)
                 )
             }
@@ -97,14 +97,14 @@ fun CardDailyHabitHeader(
                 .padding(horizontal = spacing8),
             verticalArrangement = Arrangement.Center
         ) {
-            LabelLargeText(habit.name, color = ColorsTheme.textColors)
+            LabelLargeText(habit.name, color = MaterialTheme.colorScheme.onSurface)
 
             habit.description?.let {
                 LabelSmallText(
                     habit.description!!,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = ColorsTheme.textColors
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -148,7 +148,7 @@ fun CardDailyHabitHeader(
                     imageVector = icon.value,
                     contentDescription = "",
                     modifier = Modifier.size(dimensIcon),
-                    tint = ColorsTheme.themeText
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         }

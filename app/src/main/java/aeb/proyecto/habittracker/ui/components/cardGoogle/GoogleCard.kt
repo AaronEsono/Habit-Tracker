@@ -28,7 +28,7 @@ fun GoogleCard(
     modifierRow: Modifier = Modifier,
     shape: RoundedCornerShape = RoundedCornerShape(spacing8),
     defaultElevation: Dp = spacing8,
-    containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    containerColor: Color = MaterialTheme.colorScheme.onSurface,
     onClick: () -> Unit = {}
 ) {
 
@@ -55,7 +55,8 @@ fun GoogleCard(
 
             LabelMediumText(
                 stringResource(id = R.string.import_habit_screen_google),
-                modifier = Modifier.padding(start = spacing12)
+                modifier = Modifier.padding(start = spacing12),
+                color = MaterialTheme.colorScheme.inverseOnSurface
             )
         }
     }

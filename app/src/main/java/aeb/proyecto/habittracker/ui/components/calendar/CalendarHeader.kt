@@ -3,8 +3,6 @@ package aeb.proyecto.habittracker.ui.components.calendar
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.ui.components.text.BodyLargeText
 import aeb.proyecto.habittracker.ui.components.text.BodyMediumText
-import aeb.proyecto.habittracker.utils.ColorsTheme
-import aeb.proyecto.habittracker.utils.Constans
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.wrapContentHeight

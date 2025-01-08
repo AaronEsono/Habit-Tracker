@@ -93,7 +93,4 @@ fun ImportHabitScreen(importHabitViewModel: ImportHabitViewModel = hiltViewModel
             importHabitViewModel.closePasswordDx()
         }
     )
-
-
-
 }

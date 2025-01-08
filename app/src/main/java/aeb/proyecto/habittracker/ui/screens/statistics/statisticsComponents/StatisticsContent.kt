@@ -6,8 +6,23 @@ import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.radioButton.RadioButtonStatistics
 import aeb.proyecto.habittracker.ui.screens.statistics.StatisticsViewModel
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.with
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StatisticsContent(
@@ -42,7 +58,6 @@ fun StatisticsContent(
     }
 
     val dailyHabits = statisticsViewModel.dailyHabits.collectAsState().value
-    val showData = statisticsViewModel.showData.collectAsState().value
     val statisticsState = statisticsViewModel.statisticsState.collectAsState().value
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -74,23 +89,52 @@ fun StatisticsContent(
         }
 
         item {
-            StatisticsHeader(selectedOption)
+            AnimatedContent(targetState = selectedOption, label = "",
+                transitionSpec = {
+                    slideInVertically { height -> -height } togetherWith slideOutVertically { height -> height }
+                }) { selectedOption ->
+                StatisticsHeader(selectedOption)
+            }
         }
 
         item {
-            StatisticsCalendar(
-                habitWithDailyHabit = HabitWithDailyHabit(
-                    habit = selectedOption,
-                    dailyHabits = dailyHabits.toMutableList()
+            AnimatedContent(targetState = selectedOption, label = "",
+                transitionSpec = {
+                    scaleIn(tween(durationMillis = 300)) togetherWith scaleOut(tween(durationMillis = 300))
+                }) { selectedOption ->
+                StatisticsCalendar(
+                    habitWithDailyHabit = HabitWithDailyHabit(
+                        habit = selectedOption,
+                        dailyHabits = dailyHabits.toMutableList()
+                    )
                 )
-            )
+            }
         }
 
         item {
-            StatisticsCard(modifier = Modifier.fillMaxWidth(), statisticsState.timesCompleted, title = R.string.statistics_screen_times_completed)
-            Row {
-                StatisticsCard(modifier = Modifier.weight(1f), statisticsState.streak, title = R.string.statistics_screen_streak)
-                StatisticsCard(modifier = Modifier.weight(1f), statisticsState.bestStreak.times, title = R.string.statistics_screen_best_streak)
+            AnimatedContent(targetState = selectedOption, label = "",
+                transitionSpec = {
+                    scaleIn(tween(durationMillis = 300)) togetherWith scaleOut(tween(durationMillis = 300))
+                }) {
+                Column {
+                    StatisticsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        statisticsState.timesCompleted,
+                        title = R.string.statistics_screen_times_completed
+                    )
+                    Row {
+                        StatisticsCard(
+                            modifier = Modifier.weight(1f),
+                            statisticsState.streak,
+                            title = R.string.statistics_screen_streak
+                        )
+                        StatisticsCard(
+                            modifier = Modifier.weight(1f),
+                            statisticsState.bestStreak.times,
+                            title = R.string.statistics_screen_best_streak
+                        )
+                    }
+                }
             }
         }
     }

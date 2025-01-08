@@ -10,7 +10,6 @@ import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
 import aeb.proyecto.habittracker.ui.components.textField.CustomOutlinedTextField
 import aeb.proyecto.habittracker.ui.components.textField.OutlinedTextFieldPasswordLogin
 import aeb.proyecto.habittracker.ui.screens.importHabit.ImportHabitViewModel
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing24
@@ -37,6 +36,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -205,7 +205,9 @@ fun LoginScreenImportHabit(
                     .fillMaxWidth(),
                 title = R.string.buttons_accept,
                 icon = null,
-                color = ColorsTheme.colorButtons,
+                color = MaterialTheme.colorScheme.onSurface,
+                colorIcon = MaterialTheme.colorScheme.inverseOnSurface,
+                colorText = MaterialTheme.colorScheme.inverseOnSurface,
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = spacing8,
                 ),

@@ -5,7 +5,6 @@ import aeb.proyecto.habittracker.data.model.user.UserData
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing24
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun SaveHabitScreen() {
+fun SaveHabitScreen(logOut: () -> Unit) {
 
     val data = remember { UserData }
 
@@ -47,7 +47,9 @@ fun SaveHabitScreen() {
         CustomFilledButton(
             title = R.string.save_habit_add_habit,
             icon = null,
-            color = ColorsTheme.terciaryColorApp,
+            color = MaterialTheme.colorScheme.onSurface,
+            colorIcon = MaterialTheme.colorScheme.inverseOnSurface,
+            colorText = MaterialTheme.colorScheme.inverseOnSurface,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -56,7 +58,9 @@ fun SaveHabitScreen() {
         CustomFilledButton(
             title = R.string.save_habit_change_email,
             icon = null,
-            color = ColorsTheme.terciaryColorApp,
+            color = MaterialTheme.colorScheme.onSurface,
+            colorIcon = MaterialTheme.colorScheme.inverseOnSurface,
+            colorText = MaterialTheme.colorScheme.inverseOnSurface,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -65,8 +69,11 @@ fun SaveHabitScreen() {
         CustomFilledButton(
             title = R.string.save_habit_log_out,
             icon = null,
-            color = ColorsTheme.terciaryColorApp,
-            modifier = Modifier.fillMaxWidth()
+            color = MaterialTheme.colorScheme.onSurface,
+            colorIcon = MaterialTheme.colorScheme.inverseOnSurface,
+            colorText = MaterialTheme.colorScheme.inverseOnSurface,
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { logOut() }
         )
 
     }

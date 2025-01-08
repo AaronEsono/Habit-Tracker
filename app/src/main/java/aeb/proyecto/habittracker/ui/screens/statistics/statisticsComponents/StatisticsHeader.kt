@@ -4,7 +4,6 @@ import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
-import aeb.proyecto.habittracker.utils.ColorsTheme
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import androidx.compose.foundation.background
@@ -22,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,9 +35,9 @@ fun StatisticsHeader(habit: Habit) {
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(spacing8)
-            .border(0.1.dp, ColorsTheme.borderTextField, RoundedCornerShape(spacing12)),
+            .border(0.1.dp, MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(spacing12)),
         colors = CardDefaults.cardColors(
-            containerColor = ColorsTheme.containerTextFieldColor
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -62,7 +62,7 @@ fun StatisticsHeader(habit: Habit) {
                 Icon(
                     imageVector = iconByName(habit.icon),
                     contentDescription = "Add",
-                    tint = ColorsTheme.textColors,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .padding(spacing8)
                         .size(30.dp)

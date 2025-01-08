@@ -3,7 +3,6 @@ package aeb.proyecto.habittracker
 import aeb.proyecto.habittracker.di.DataStoreManager
 import aeb.proyecto.habittracker.ui.theme.AppTheme
 import aeb.proyecto.habittracker.utils.SharedState
-import aeb.proyecto.habittracker.utils.setMode
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

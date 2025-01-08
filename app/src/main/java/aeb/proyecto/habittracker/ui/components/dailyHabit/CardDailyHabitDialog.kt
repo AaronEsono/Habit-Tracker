@@ -1,8 +1,6 @@
 package aeb.proyecto.habittracker.ui.components.dailyHabit
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.utils.ColorsTheme
-import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -18,6 +16,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,7 +80,7 @@ fun iconDialog(size: Dp, icon: Int, oncClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .wrapContentSize()// Tamaño total del fondo redondeado
-            .background(color = ColorsTheme.secondaryColorApp, shape = CircleShape) // Fondo redondo
+            .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape) // Fondo redondo
             .padding(8.dp) // Espaciado interno opcional
             .clickable(
                 indication = null,
@@ -91,7 +90,7 @@ fun iconDialog(size: Dp, icon: Int, oncClick: () -> Unit = {}) {
         Icon(
             painter = painterResource(icon),
             contentDescription = null,
-            tint = ColorsTheme.themeText,
+            tint = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.size(size) // Asegura que el ícono se ajuste al fondo
         )
     }
