@@ -22,6 +22,7 @@ material3AdaptiveNavigationSuite = "1.4.0-alpha05"
 navigationCompose = "2.8.5"
 room = "2.0.21-1.0.28"
 firebase = "4.4.2"
+crashlytics = "2.9.9"
 
 #hilt y dagger
 hilt-version = "2.52"
@@ -47,6 +48,8 @@ androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -80,6 +83,7 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 jetbrainsKotlinSerialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 ksp = {id = "com.google.devtools.ksp", version.ref = "room"}
 google-services = {id = "com.google.gms.google-services", version.ref = "firebase"}
+firebase-crashlytics = {id = "com.google.firebase.crashlytics", version.ref = "crashlytics"}
 
 #hilt y dagger
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-version" }
