@@ -25,48 +25,60 @@ import javax.inject.Inject
 
 class AuthenticationManager @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val analyticsManager: AnalyticsManager,
     private val auth: FirebaseAuth
 ) {
 
     fun createAccountWithEmail(email: String, password: String): Flow<AuthResponse> = callbackFlow {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val user = auth.currentUser
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
 
-                        //Cambiamos el perfil para mostrar el nombre en el correo
-                        user?.let {
-                            val profileUpdates = userProfileChangeRequest {
-                                displayName = user.email
-                            }
-
-                            it.updateProfile(profileUpdates)
-                                .addOnCompleteListener { task ->
-                                    if(task.isSuccessful){
-
-                                        it.sendEmailVerification()
-                                            .addOnCompleteListener { taskEmail ->
-                                                if(taskEmail.isSuccessful)
-                                                    trySend(AuthResponse.Success)
-                                                else
-                                                    trySend(AuthResponse.Error(ERROR_EMAIL_SEND))
-                                            }
-
-                                    }else{
-                                        trySend(AuthResponse.Error(ERROR_UPDATE_PROFILE))
-                                    }
-                                }
+                    //Cambiamos el perfil para mostrar el nombre en el correo
+                    user?.let {
+                        val profileUpdates = userProfileChangeRequest {
+                            displayName = user.email
                         }
-                    } else {
-                        val error = if(task.exception is FirebaseAuthException)
-                            (task.exception as FirebaseAuthException).errorCode
-                        else ""
 
-                        trySend(AuthResponse.Error(error))
+                        it.updateProfile(profileUpdates)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+
+                                    it.sendEmailVerification()
+                                        .addOnCompleteListener { taskEmail ->
+                                            if (taskEmail.isSuccessful) {
+                                                trySend(AuthResponse.Success)
+                                                analyticsManager.logEvent(
+                                                    TypeEvent.createdAccount(
+                                                        it.uid
+                                                    )
+                                                )
+                                            } else {
+                                                trySend(AuthResponse.Error(ERROR_EMAIL_SEND))
+                                                analyticsManager.logEvent(
+                                                    TypeEvent.error(
+                                                        ERROR_EMAIL_SEND
+                                                    )
+                                                )
+                                            }
+                                        }
+                                } else {
+                                    trySend(AuthResponse.Error(ERROR_UPDATE_PROFILE))
+                                    analyticsManager.logEvent(TypeEvent.error(ERROR_UPDATE_PROFILE))
+                                }
+                            }
                     }
+                } else {
+                    val error = if (task.exception is FirebaseAuthException)
+                        (task.exception as FirebaseAuthException).errorCode
+                    else ""
+
+                    trySend(AuthResponse.Error(error))
                 }
-            awaitClose()
-        }
+            }
+        awaitClose()
+    }
 
     fun signInWithEmail(email: String, password: String): Flow<AuthResponse> = callbackFlow {
         auth.signInWithEmailAndPassword(email, password)
@@ -75,15 +87,17 @@ class AuthenticationManager @Inject constructor(
                     val user = auth.currentUser
 
                     user?.let {
-                        if(it.isEmailVerified){
+                        if (it.isEmailVerified) {
                             trySend(AuthResponse.Success)
-                        }
-                        else
+                            analyticsManager.logEvent(TypeEvent.logUserLogged(it.uid))
+                        } else {
                             trySend(AuthResponse.Error(ERROR_UNVERIFIED_EMAIL))
+                            analyticsManager.logEvent(TypeEvent.error(ERROR_UNVERIFIED_EMAIL))
+                        }
                     }
                 } else {
-                    val error = if(task.exception is FirebaseAuthException)
-                            (task.exception as FirebaseAuthException).errorCode
+                    val error = if (task.exception is FirebaseAuthException)
+                        (task.exception as FirebaseAuthException).errorCode
                     else ""
 
                     trySend(AuthResponse.Error(error))
@@ -141,6 +155,7 @@ class AuthenticationManager @Inject constructor(
 
         } catch (e: Exception) {
             trySend(AuthResponse.Error(e.message.toString()))
+            analyticsManager.logEvent(TypeEvent.error(e.message.toString()))
         }
 
         awaitClose()
@@ -150,14 +165,16 @@ class AuthenticationManager @Inject constructor(
         auth.currentUser?.let {
             it.sendEmailVerification()
                 .addOnCompleteListener { task ->
-                    if (task.isSuccessful)
+                    if (task.isSuccessful) {
                         trySend(AuthResponse.Success)
-                    else {
-                        val error = if(task.exception is FirebaseAuthException)
+                        analyticsManager.logEvent(TypeEvent.resendEmail(it.email!!))
+                    } else {
+                        val error = if (task.exception is FirebaseAuthException)
                             (task.exception as FirebaseAuthException).errorCode
                         else ""
 
                         trySend(AuthResponse.Error(error))
+                        analyticsManager.logEvent(TypeEvent.error(error))
                     }
                 }
 
@@ -170,12 +187,14 @@ class AuthenticationManager @Inject constructor(
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     trySend(AuthResponse.Success)
+                    analyticsManager.logEvent(TypeEvent.forgotPassword(email))
                 } else {
                     val error = if (task.exception is FirebaseAuthException)
                         (task.exception as FirebaseAuthException).errorCode
                     else ""
 
                     trySend(AuthResponse.Error(error))
+                    analyticsManager.logEvent(TypeEvent.error(error))
                 }
             }
         awaitClose()
@@ -183,16 +202,23 @@ class AuthenticationManager @Inject constructor(
 
     fun currentUser(): Flow<AuthResponse> = callbackFlow {
 
-        auth.currentUser?.let {
-            it.getIdToken(true)
-                .addOnSuccessListener { trySend(AuthResponse.Success) }
-                .addOnFailureListener { trySend(AuthResponse.Error("Expires")) }
+        auth.currentUser?.let { user ->
+            user.getIdToken(true)
+                .addOnSuccessListener {
+                    trySend(AuthResponse.Success)
+                    analyticsManager.logEvent(TypeEvent.reconnected(user.uid))
+                }
+                .addOnFailureListener {
+                    trySend(AuthResponse.Error("Expires"))
+                    analyticsManager.logEvent(TypeEvent.error(it.message.toString()))
+                }
         } ?: trySend(AuthResponse.Error("No user found"))
 
         awaitClose()
     }
 
     fun logOut() {
+        analyticsManager.logEvent(TypeEvent.logOut(auth.currentUser!!.uid))
         auth.signOut()
     }
 

@@ -25,7 +25,7 @@ fun SaveHabitScreen(name:String, logOut: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize().padding(horizontal = spacing24, vertical = spacing16)) {
 
         TitleLargeText(
-            name,
+            stringResource(R.string.save_habit_title, name),
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
