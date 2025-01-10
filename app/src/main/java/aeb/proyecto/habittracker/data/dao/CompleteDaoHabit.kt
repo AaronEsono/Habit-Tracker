@@ -4,6 +4,8 @@ import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.data.entities.Notification
 import aeb.proyecto.habittracker.data.model.firestoreHabit.CompleteHabit
+import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
+import androidx.compose.ui.graphics.Color
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -30,7 +32,7 @@ interface CompleteDaoHabit {
     fun insertDailyHabit(dailyHabit: DailyHabit)
 
     @Insert
-    fun insertNotification(notification: Notification)
+    fun insertNotification(notification: Notification):Long
 
     @Transaction
     fun deleteAll(){
@@ -40,7 +42,8 @@ interface CompleteDaoHabit {
     }
 
     @Transaction
-    fun setData(data:List<CompleteHabit>){
+    fun setData(data:List<CompleteHabit>):List<NotificationWithName>{
+        val notifications:MutableList<NotificationWithName> = mutableListOf()
         deleteAll()
 
         data.forEach { habitComplete ->
@@ -53,9 +56,13 @@ interface CompleteDaoHabit {
 
             habitComplete.notifications.forEach{ notification ->
                 notification.habitId = id
-                insertNotification(notification)
+                val id = insertNotification(notification)
+
+                notifications.add(NotificationWithName(notification.copy(id = id),habitComplete.habit.name, Color(habitComplete.habit.color)))
             }
         }
+
+        return notifications
     }
 
 }

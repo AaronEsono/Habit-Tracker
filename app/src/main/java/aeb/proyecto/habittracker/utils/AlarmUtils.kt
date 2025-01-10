@@ -11,7 +11,7 @@ import com.google.gson.Gson
 import java.util.Calendar
 
 const val REMINDER = "REMINDER"
-val interval = 24L * 60L * 60L * 1000L // 24 horas en milisegundos
+val interval = 1000L * 60L * 3L //24L * 60L * 60L * 1000L // 24 horas en milisegundos
 
 @SuppressLint("ScheduleExactAlarm", "MissingPermission")
 fun setUpAlarm(context: Context, alarmItem: NotificationWithName, repeated: Boolean = false) {

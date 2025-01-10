@@ -2,6 +2,7 @@ package aeb.proyecto.habittracker.data.repo
 
 import aeb.proyecto.habittracker.data.dao.CompleteDaoHabit
 import aeb.proyecto.habittracker.data.model.firestoreHabit.CompleteHabit
+import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
 import javax.inject.Inject
 
 class CompleteHabitRepo @Inject constructor(
@@ -12,8 +13,8 @@ class CompleteHabitRepo @Inject constructor(
         return completeDaoHabit.getAll()
     }
 
-    fun setData(data:List<CompleteHabit>){
-        completeDaoHabit.setData(data)
+    fun setData(data:List<CompleteHabit>):List<NotificationWithName>{
+        return completeDaoHabit.setData(data)
     }
 
 }

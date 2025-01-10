@@ -10,6 +10,7 @@ import aeb.proyecto.habittracker.data.model.firestoreHabit.CompleteHabitCompress
 import aeb.proyecto.habittracker.data.model.firestoreHabit.DailyHabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.HabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.NotificationCompressed
+import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
 import aeb.proyecto.habittracker.data.repo.CompleteHabitRepo
 import aeb.proyecto.habittracker.di.DataStoreManager
 import aeb.proyecto.habittracker.utils.AuthResponse
@@ -52,6 +53,9 @@ class SaveHabitViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(UiStateSaveHabits())
     val uiState: StateFlow<UiStateSaveHabits> = _uiState.asStateFlow()
+
+    private val _notificationsWithNames = MutableStateFlow<List<NotificationWithName>>(emptyList())
+    val notificationsWithNames: StateFlow<List<NotificationWithName>> = _notificationsWithNames.asStateFlow()
 
     init {
         searchData()
@@ -158,8 +162,9 @@ class SaveHabitViewModel @Inject constructor(
                         val dataRestored = decompressJsonFirestore(it.habit)
 
                         viewModelScope.launch (Dispatchers.IO){
-                            completeHabitRepo.setData(dataRestored)
+                            _notificationsWithNames.value = completeHabitRepo.setData(dataRestored)
                             setContextDx(DxInfoSaveHabit.RestoreDataSuccess)
+                            setNotifications(true)
                             setNeutral()
                         }
                     }
@@ -214,6 +219,12 @@ class SaveHabitViewModel @Inject constructor(
     fun decompressJson(compressed: String): String {
         val compressedBytes = Base64.getDecoder().decode(compressed)
         return GZIPInputStream(ByteArrayInputStream(compressedBytes)).bufferedReader(Charsets.UTF_8).use { it.readText() }
+    }
+
+    fun setNotifications(notifications:Boolean){
+        _uiState.update { currentState ->
+            currentState.copy(setNotifications = notifications)
+        }
     }
 
     fun setLoading(){
@@ -283,6 +294,7 @@ class SaveHabitViewModel @Inject constructor(
 data class UiStateSaveHabits(
     val showDx:Boolean = false,
     val dxInfo:DxInfoSaveHabit = DxInfoSaveHabit.CloseSession,
+    val setNotifications:Boolean = false
 )
 
 enum class DxInfoSaveHabit(val subtitle:Int,val showCancel:Boolean) {
