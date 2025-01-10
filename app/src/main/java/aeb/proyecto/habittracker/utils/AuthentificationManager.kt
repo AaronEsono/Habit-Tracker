@@ -234,6 +234,10 @@ class AuthenticationManager @Inject constructor(
         return auth.currentUser?.email?.substringBefore("@") ?: ""
     }
 
+    fun getCurrentId(): String {
+        return auth.currentUser?.uid ?: ""
+    }
+
 }
 
 interface AuthResponse {

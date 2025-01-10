@@ -158,6 +158,22 @@
     <string name="save_habit_change_habit">Cambiar hábitos</string>
     <string name="save_habit_subtitle">Sube aquí tus hábitos para recuperarlos o para poder pasarlos a otro teléfono</string>
 
+    <string name="save_habit_data_restore">Recuperar hábitos</string>
+    <string name="save_habit_data_delete">Borrar hábitos</string>
+
+    <string name="save_habit_no_data">No hay datos</string>
+    <string name="save_habit_data">Hábitos guardados</string>
+    <string name="save_habit_data_date">Fecha de guardado: %1$s</string>
+
+    <string name="save_habit_close_session">¿Desea cerrar la sesión?</string>
+    <string name="save_habit_delete_data">¿Desea borrar los datos en la nube?</string>
+    <string name="save_habit_restore_data">¿Desea recuperar los datos de la nube y borrar los actuales? Los datos actuales se borrarán</string>
+    <string name="save_habit_restore_upload_data">¿Desea subir sus hábitos actuales a la nube?</string>
+
+    <string name="save_habit_delete_data_success">Los hábitos se han borrado correctamente</string>
+    <string name="save_habit_restore_data_success">los hábitos se han recuperado correctamente</string>
+    <string name="save_habit_restore_upload_data_success">Los hábitos se han subido correctamente</string>
+
     <!-- Settings Card -->
     <string name="settings_screen_card_title">Selecciona el tema</string>
     <string name="settings_screen_card_dark">Oscuro</string>

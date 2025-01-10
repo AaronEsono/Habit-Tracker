@@ -15,13 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 
 @Composable
 fun CardInfoAddHabit(
-    shape: RoundedCornerShape = RoundedCornerShape(spacing8),
+    shape: Shape = RoundedCornerShape(spacing8),
     defaultElevation: Dp = spacing8,
     containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     modifierCard: Modifier = Modifier,

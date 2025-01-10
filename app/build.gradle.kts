@@ -123,4 +123,7 @@ dependencies {
 
     //Analytics
     implementation(libs.google.firebase.analytics)
+
+    //Firestore
+    implementation (libs.firebase.firestore.ktx)
 }

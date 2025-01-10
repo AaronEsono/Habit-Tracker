@@ -13,6 +13,7 @@ import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +23,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.zip.GZIPOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -200,5 +203,4 @@ class HabitsViewModel @Inject constructor(
         return (Constans.Units.entries.find { it.id == _habitSelected.value?.habit?.unit }
             ?: Constans.Units.TIMES).pluralTitle
     }
-
 }

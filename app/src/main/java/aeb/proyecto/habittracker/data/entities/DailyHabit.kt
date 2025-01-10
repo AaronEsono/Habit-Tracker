@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class DailyHabit(
     @PrimaryKey(autoGenerate = true)
     var id:Long = 0,
-    val idHabit:Long = 0,
+    var idHabit:Long = 0,
     var timesDone:Int = 0,
     val date:String = "",
     var hourFinishDate:String? = null

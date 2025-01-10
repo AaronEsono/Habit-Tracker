@@ -157,6 +157,21 @@
     <string name="save_habit_change_habit">Change habits</string>
     <string name="save_habit_subtitle">Upload your habits here to be able to recover them or transfer them to another phone</string>
 
+    <string name="save_habit_data_restore">Restore habits</string>
+    <string name="save_habit_data_delete">Delete habits</string>
+
+    <string name="save_habit_no_data">No data available</string>
+    <string name="save_habit_data">Saved habits</string>
+    <string name="save_habit_data_date">Saved date: %1$s</string>
+
+    <string name="save_habit_close_session">Do you want to log out?</string>
+    <string name="save_habit_delete_data">Do you want to delete the data in the cloud?</string>
+    <string name="save_habit_restore_data">Do you want to restore the data from the cloud and delete the current ones? The current data will be deleted.</string>
+    <string name="save_habit_restore_upload_data">Do you want to upload your current habits to the cloud?</string>
+
+    <string name="save_habit_delete_data_success">The habits have been deleted successfully</string>
+    <string name="save_habit_restore_data_success">The habits have been restored successfully</string>
+    <string name="save_habit_restore_upload_data_success">The habits have been uploaded successfully</string>
 
     <!-- Settings Card -->
     <string name="settings_screen_card_title">Chose the theme</string>

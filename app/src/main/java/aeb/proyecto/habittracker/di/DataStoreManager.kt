@@ -1,6 +1,8 @@
 package aeb.proyecto.habittracker.di
 
+import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -22,6 +24,9 @@ class DataStoreManager @Inject constructor(
         private val THEMEMODE = intPreferencesKey("themeMode")
         private val EMAIL = stringPreferencesKey("email")
         private val PASSWORD = stringPreferencesKey("password")
+        private val CURRENTID = stringPreferencesKey("currentId")
+        private val DATE  =stringPreferencesKey("date")
+        private val SEARCHED = booleanPreferencesKey("searched")
     }
 
     val themeMode: Flow<Int?> = context.dataStore.data.map { preferences ->
@@ -60,9 +65,32 @@ class DataStoreManager @Inject constructor(
         }
     }
 
+    suspend fun setLastSearched(uid:String, date:String){
+        context.dataStore.edit { preferences ->
+            preferences[CURRENTID] = uid
+            preferences[DATE] = date
+            preferences[SEARCHED] = true
+        }
+    }
+
+    fun getLastSearched(): Flow<LastSearched> {
+        return context.dataStore.data.map { preferences ->
+            LastSearched(
+                uid = preferences[CURRENTID] ?: "",
+                date = preferences[DATE] ?: "",
+                searched = preferences[SEARCHED] ?: false
+            )
+        }
+    }
 }
 
 data class EmailPassword(
     val email: String,
     val password: String
+)
+
+data class LastSearched(
+    val uid:String? = "",
+    val date:String? = "",
+    val searched:Boolean = false
 )

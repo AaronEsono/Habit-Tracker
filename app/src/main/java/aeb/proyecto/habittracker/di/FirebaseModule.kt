@@ -4,6 +4,7 @@ import aeb.proyecto.habittracker.utils.AnalyticsManager
 import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,5 +34,11 @@ object FirebaseModule {
         firebaseAnalytics: FirebaseAnalytics
     ): AnalyticsManager {
         return AnalyticsManager(firebaseAnalytics)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirestore():FirebaseFirestore{
+        return FirebaseFirestore.getInstance()
     }
 }
