@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.components.calendar
 
 import aeb.proyecto.habittracker.data.entities.DailyHabit
+import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.data.model.calendar.CalendarDataSource
 import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
@@ -8,7 +9,9 @@ import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,22 +29,23 @@ class CalendarViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CalendarUiState(YearMonth.now(), emptyList()))
     val uiState: StateFlow<CalendarUiState> = _uiState.asStateFlow()
 
-    private val _habit: MutableStateFlow<HabitWithDailyHabit> =
-        MutableStateFlow(HabitWithDailyHabit())
-    val habit: StateFlow<HabitWithDailyHabit> = _habit.asStateFlow()
+    private val _dailyHabits = MutableStateFlow(emptyList<DailyHabit>())
+    val dailyHabits: StateFlow<List<DailyHabit>> = _dailyHabits.asStateFlow()
+
+    private val _habit: MutableStateFlow<Habit> = MutableStateFlow(Habit())
+    val habitWithDailyHabit: StateFlow<Habit> = _habit.asStateFlow()
+
+    private val _showCalendar: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val showCalendar: StateFlow<Boolean> = _showCalendar.asStateFlow()
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _uiState.update { currentState ->
                 currentState.copy(
                     dates = dataSource.getDates(currentState.yearMonth)
                 )
             }
         }
-    }
-
-    fun setHabit(habit: HabitWithDailyHabit) {
-        _habit.value = habit
     }
 
     fun toNextMonth(nextMonth: YearMonth) {
@@ -85,25 +89,33 @@ class CalendarViewModel @Inject constructor(
         return dateR
     }
 
-    fun findHabit(date: CalendarUiState.Date): DailyHabit? {
-        return habit.value.dailyHabits.find {
-            date.dayOfMonth.isNotEmpty() && LocalDate.parse(it.date) == LocalDate.of(
-                uiState.value.yearMonth.year,
-                uiState.value.yearMonth.month.value,
-                date.dayOfMonth.toInt()
-            )
+    fun getColorFromDate(date: CalendarUiState.Date): Color {
+        var color:Color = Color.Transparent
+
+        val getDate = createDate(date)
+        getDate?.let {
+            val findDate = dailyHabits.value.find { LocalDate.parse(it.date) == getDate && it.timesDone != 0 }
+
+            findDate?.let {
+                color = if(it.timesDone == _habit.value.times)
+                    Color(_habit.value.color)
+                else
+                    Color(_habit.value.color).copy(alpha = 0.2f)
+            }
         }
+
+        return color
     }
 
-    fun setBackground(dailyHabit: DailyHabit?): Color {
-        var colorBackground = Color.Transparent
+    fun getDailyHabitFromDate(date: CalendarUiState.Date):DailyHabit?{
+        return dailyHabits.value.find { LocalDate.parse(it.date) == createDate(date) }
+    }
 
-        if(dailyHabit != null && dailyHabit.timesDone != 0){
-           colorBackground = if(dailyHabit.timesDone == habit.value.habit.times) Color(habit.value.habit.color).copy(alpha = 0.75f)
-           else  Color(habit.value.habit.color).copy(alpha = 0.2f)
-        }
-
-        return colorBackground
+    fun setHabitsAndColor(habits:HabitWithDailyHabit){
+        _showCalendar.value = false
+        _dailyHabits.update { habits.dailyHabits }
+        _habit.update { habits.habit }
+        _showCalendar.value = true
     }
 
 }

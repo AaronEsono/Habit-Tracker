@@ -1,5 +1,6 @@
 package aeb.proyecto.habittracker.data.model.calendar
 
+import aeb.proyecto.habittracker.data.entities.DailyHabit
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth

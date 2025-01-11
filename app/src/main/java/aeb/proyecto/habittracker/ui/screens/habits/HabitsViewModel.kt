@@ -38,8 +38,8 @@ class HabitsViewModel @Inject constructor(
 
     val habits: StateFlow<List<HabitWithDailyHabit>> = habitRepo.getHabits().stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000), // Mantener activo mientras hay suscriptores
-        initialValue = emptyList() // Valor inicial vacío
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
     )
 
     private val _habitSelected: MutableStateFlow<HabitWithDailyHabit?> = MutableStateFlow(null)

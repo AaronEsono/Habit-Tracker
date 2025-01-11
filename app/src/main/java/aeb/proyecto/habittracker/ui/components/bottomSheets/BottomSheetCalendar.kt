@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.components.bottomSheets
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarContent
@@ -20,6 +21,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,10 +42,10 @@ fun BottomSheetCalendar(
 ) {
 
     val scope = rememberCoroutineScope()
+    calendarViewModel.setHabitsAndColor(habit)
 
     val state = calendarViewModel.uiState.collectAsState().value
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    calendarViewModel.setHabit(habit)
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -73,15 +75,14 @@ fun BottomSheetCalendar(
                 onNextMonthButtonClicked = { calendarViewModel.toNextMonth(it) })
 
             CalendarContent(
-                state.dates,
-                color = color,
-                calendarViewModel = calendarViewModel,
+                state.dates
             )
-            { date, habit, color,_, modifier, _ ->
+            { date, modifier, _ ->
+                val dailyHabit = calendarViewModel.getDailyHabitFromDate(date)
 
                 ContentItemBottomSheet(
                     date = date,
-                    dailyHabit = habit,
+                    dailyHabit = dailyHabit,
                     color = color,
                     modifier = modifier,
                     onClickListener = { dateOfMonth ->

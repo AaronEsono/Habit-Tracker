@@ -53,12 +53,12 @@ fun StatisticsContent(
 
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(habits[0]) }
 
-    LaunchedEffect(true) {
+    LaunchedEffect (true){
         statisticsViewModel.getDailyHabits(selectedOption.id)
     }
 
     val dailyHabits = statisticsViewModel.dailyHabits.collectAsState().value
-    val statisticsState = statisticsViewModel.statisticsState.collectAsState().value
+    val staticticsState = statisticsViewModel.statisticsState.collectAsState().value
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
 
@@ -119,18 +119,18 @@ fun StatisticsContent(
                 Column {
                     StatisticsCard(
                         modifier = Modifier.fillMaxWidth(),
-                        statisticsState.timesCompleted,
+                        staticticsState.timesCompleted,
                         title = R.string.statistics_screen_times_completed
                     )
                     Row {
                         StatisticsCard(
                             modifier = Modifier.weight(1f),
-                            statisticsState.streak,
+                            staticticsState.streak,
                             title = R.string.statistics_screen_streak
                         )
                         StatisticsCard(
                             modifier = Modifier.weight(1f),
-                            statisticsState.bestStreak.times,
+                            staticticsState.bestStreak.times,
                             title = R.string.statistics_screen_best_streak
                         )
                     }

@@ -167,5 +167,4 @@ class StatisticsViewModel @Inject constructor(
     //Mejor racha y fecha X
     //Media de hora en la que el habito se hace
     //Chart circular con los completados, no completados y pendientes
-
 }

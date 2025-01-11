@@ -5,6 +5,7 @@ import aeb.proyecto.habittracker.ui.components.dailyHabit.CardDailyHabit
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.screens.habits.habitsComponents.HabitScreenStates
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +32,10 @@ fun HabitsScreen(
     val uiState = habitsViewModel.uiState.collectAsState().value
 
     val shouldBlur = remember(uiState.showDialog) { uiState.showDialog }
+
+    LaunchedEffect (true){
+        Log.d("HabitsScreen", "HabitsScreen: $habits")
+    }
 
     if (habits.isEmpty()) {
         Column(
