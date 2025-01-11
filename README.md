@@ -6,6 +6,7 @@
 
 - Herramientas utilizadas
 - Otros apartados
+- Cómo probar la app
 - Cómo usar
 - Uso de la app
 
@@ -29,6 +30,10 @@ _ Arquitectura MVVM
 
 - Varios temas (4 temas)
 - Traducción de la aplicación al inglés y al español con stringResources
+
+✨ Cómo probar la app
+- Dentro de app/app_apk teneis la apk de la aplicación.
+- También teneis un QR por si lo quereis descargar de esa forma.
 
 ✨ Cómo usar
 
