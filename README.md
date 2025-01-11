@@ -1,12 +1,12 @@
 
 💻 Habit tracker
-Habit tracker es una app para mantener controlados tus hábitos y poder hacer un seguimiendo de ellos día a día
+- Habit tracker es una app para mantener controlados tus hábitos y poder hacer un seguimiendo de ellos día a día
 
 📘 Apartados
-Herramientas utilizadas
-Otros apartados
-Como usar
-Uso de la app
+- Herramientas utilizadas
+- Otros apartados
+- Como usar
+- Uso de la app
 
 🛠️ Herramientas utilizadas
 - Jetpack compose
