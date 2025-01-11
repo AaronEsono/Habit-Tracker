@@ -1,20 +1,22 @@
+💻 Habit Tracker
 
-💻 Habit tracker
-- Habit tracker es una app para mantener controlados tus hábitos y poder hacer un seguimiendo de ellos día a día
+- Habit Tracker es una app para mantener controlados tus hábitos y poder hacer un seguimiento de ellos día a día.
 
 📘 Apartados
+
 - Herramientas utilizadas
 - Otros apartados
-- Como usar
+- Cómo usar
 - Uso de la app
 
 🛠️ Herramientas utilizadas
-- Jetpack compose
-- Navegacion de tipado seguro
-- Arquitectura VMMV
+
+- Jetpack Compose
+- Navegación de tipado seguro
+_ Arquitectura MVVM
 - Corrutinas
 - Room
-- Datastore
+- DataStore
 - Inyección de dependencias (Dagger-Hilt)
 - AlarmManager
 - Firebase Auth
@@ -28,17 +30,20 @@
 - Varios temas (4 temas)
 - Traducción de la aplicación al inglés y al español con stringResources
 
-✨Como usar
-- Clona el proyecto con https://github.com/AaronEsono/Habit-Tracker.git
-- Actualiza la version del gradle
-- Con esto el proyecto no irá porque faltaría implementar vuestro fichero de firebase, llamado google-services.json
-- Para crear vuestro fichero de Firebase, creais un nuevo proyecto aqui: "https://console.firebase.google.com/u/0/"
-- Dentro de este os pedirá el nombre del paquete, el cual es este: aeb.proyecto.habittracker
-- Pegar el fichero donde indica
+✨ Cómo usar
+
+- Clona el proyecto con: https://github.com/AaronEsono/Habit-Tracker.git
+- Actualiza la versión de Gradle
+- Con esto, el proyecto no funcionará, ya que faltaría implementar vuestro fichero de Firebase, llamado google-services.json.
+- Para crear vuestro fichero de Firebase, cread un nuevo proyecto aquí: https://console.firebase.google.com/u/0/
+- Dentro de este, os pedirá el nombre del paquete, el cual es este: aeb.proyecto.habittracker
+- Pegad el fichero donde se indica.
 
 🚀 Uso de la app
-- Dale al botón de arriba en la pantalla de hábitos para crear uno
-- Rellena el nombre del hábito y las veces que lo quieres hacer al día
-- Una vez creado, dando al más, sumas 1 al contador de veces hecho.
-- En el apartado de opciones, puedes cambiar el tema y registrarte en la app para guardar tu progreso en la nube y pasar los datos a otro telefono si lo necesitas
-- Si no has podido rellenar hábitos de días anteriores, pincha en el hábito, y en el botón del calendario podrás marcas los días anteriores
+
+- Pulsa el botón de arriba en la pantalla de hábitos para crear uno.
+- Rellena el nombre del hábito y las veces que lo quieres hacer al día.
+- Una vez creado, pulsando el botón +, sumas 1 al contador de veces hecho.
+- En el apartado de opciones, puedes cambiar el tema y registrarte en la app para guardar tu progreso en la nube y transferir los datos a otro teléfono si lo necesitas.
+- Todavía en la versión lanzada no se puede autenticar con Google porque me falta la clave. Sin embargo, si clonáis el proyecto, podéis autenticaros de esta manera.
+- Si no has podido rellenar hábitos de días anteriores, pulsa en el hábito y, en el botón del calendario, podrás marcar los días anteriores.
