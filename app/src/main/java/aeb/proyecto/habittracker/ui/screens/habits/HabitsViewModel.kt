@@ -9,6 +9,7 @@ import aeb.proyecto.habittracker.data.repo.DailyHabitRepo
 import aeb.proyecto.habittracker.data.repo.HabitRepo
 import aeb.proyecto.habittracker.data.repo.HabitWithNotificacionRepo
 import aeb.proyecto.habittracker.utils.Constans
+import aeb.proyecto.habittracker.utils.SharedState
 import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -16,10 +17,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -33,10 +37,18 @@ import javax.inject.Inject
 class HabitsViewModel @Inject constructor(
     private val habitRepo: HabitRepo,
     private val dailyHabitRepo: DailyHabitRepo,
-    private val habitWithNotification: HabitWithNotificacionRepo
+    private val habitWithNotification: HabitWithNotificacionRepo,
+    private val sharedState: SharedState
 ) : ViewModel() {
 
-    val habits: StateFlow<List<HabitWithDailyHabit>> = habitRepo.getHabits().stateIn(
+    init {
+        sharedState.setLoading()
+    }
+
+    val habits: StateFlow<List<HabitWithDailyHabit>> = habitRepo.getHabits()
+        .onEach { sharedState.setNeutral() }
+        .onStart { delay(150) }
+        .stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
@@ -109,6 +121,10 @@ class HabitsViewModel @Inject constructor(
             plusOneHabit(getId(), uiState.value.date, 0, true)
             closeGeneralDx()
         }
+    }
+
+    fun getSharedState(): SharedState {
+        return sharedState
     }
 
     fun deleteHabit() = viewModelScope.launch(Dispatchers.IO) {

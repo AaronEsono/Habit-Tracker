@@ -7,14 +7,18 @@ import aeb.proyecto.habittracker.data.model.state.DaysCompleted
 import aeb.proyecto.habittracker.data.model.state.StatisticsState
 import aeb.proyecto.habittracker.data.repo.DailyHabitRepo
 import aeb.proyecto.habittracker.data.repo.HabitRepo
+import aeb.proyecto.habittracker.utils.SharedState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,10 +29,17 @@ import javax.inject.Inject
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
     private val habitRepo: HabitRepo,
-    private val dailyHabitRepo: DailyHabitRepo
+    private val dailyHabitRepo: DailyHabitRepo,
+    private val sharedState: SharedState
 ) : ViewModel() {
 
+    init {
+        sharedState.setLoading()
+    }
+
     val habits: StateFlow<List<Habit>> = habitRepo.getAllHabits()
+        .onEach { sharedState.setNeutral() }
+        .onStart { delay(150) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000), // Mantener activo mientras hay suscriptores
@@ -67,6 +78,10 @@ class StatisticsViewModel @Inject constructor(
             return _dailyHabits.value.count { dailyHabit -> dailyHabit.timesDone == it.times }
         }
         return 0
+    }
+
+    fun getSharedState(): SharedState {
+        return sharedState
     }
 
     fun findHabit(): Habit? {
