@@ -10,25 +10,21 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val dataStoreManager: DataStoreManager,
+    dataStoreManager: DataStoreManager,
     private val sharedState: SharedState
 ) : ViewModel(){
 
-    private val _themeMode: MutableStateFlow<Int> = MutableStateFlow(AppTheme.DARK.theme)
-    val themeMode: StateFlow<Int> = _themeMode.asStateFlow()
-
-    init {
-        setModeTheme()
-    }
-
-    private fun setModeTheme() = viewModelScope.launch{
-        _themeMode.value = dataStoreManager.themeMode.first() ?: 0
-    }
+    val themeMode: StateFlow<Int> = dataStoreManager.themeMode.stateIn(
+        scope = viewModelScope,
+        initialValue = 0,
+        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000)
+    )
 
     fun getState():SharedState{
         return sharedState
@@ -36,11 +32,6 @@ class MainViewModel @Inject constructor(
 
     fun setNeutral(){
         sharedState.setNeutral()
-    }
-
-    fun saveMode(mode:Int) = viewModelScope.launch{
-        _themeMode.value = mode
-        dataStoreManager.setModeTheme(mode)
     }
 
 }

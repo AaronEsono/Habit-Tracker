@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RadioButtonStatistics(
     habit: Habit,
-    selectedOption: Habit,
+    selectedOption: Habit?,
     onClick: (Habit) -> Unit
 ) {
 

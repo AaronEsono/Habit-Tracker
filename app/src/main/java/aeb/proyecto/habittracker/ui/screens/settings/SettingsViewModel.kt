@@ -1,5 +1,6 @@
 package aeb.proyecto.habittracker.ui.screens.settings
 
+import aeb.proyecto.habittracker.di.DataStoreManager
 import aeb.proyecto.habittracker.utils.AuthResponse
 import aeb.proyecto.habittracker.utils.AuthenticationManager
 import aeb.proyecto.habittracker.utils.SharedState
@@ -8,12 +9,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val authenticationManager: AuthenticationManager,
-    private val sharedState: SharedState
+    private val sharedState: SharedState,
+    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
 
     fun checkUser(onSaveScreen: () -> Unit, onImportScreen: () -> Unit) {
@@ -36,4 +39,9 @@ class SettingsViewModel @Inject constructor(
         sharedState.setNeutral()
     }
 
+    fun setMode(mode:Int){
+        viewModelScope.launch {
+            dataStoreManager.setModeTheme(mode)
+        }
+    }
 }

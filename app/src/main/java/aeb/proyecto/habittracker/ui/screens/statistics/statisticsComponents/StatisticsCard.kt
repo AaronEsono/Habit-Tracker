@@ -15,6 +15,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,6 +27,7 @@ fun StatisticsCard(
     number:Int = 0,
     title:Int
 ){
+    val numberVar = remember { number.toString() }
 
     Card(
         modifier = modifier
@@ -44,7 +46,7 @@ fun StatisticsCard(
             modifier = Modifier.padding(spacing8),
             horizontalAlignment = Alignment.Start,
         ){
-            TextNumberStatistics(number.toString())
+            TextNumberStatistics(numberVar)
             TitleSmallText(stringResource(title))
         }
     }

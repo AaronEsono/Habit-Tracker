@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker.ui.navigation
 import aeb.proyecto.habittracker.R
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.runtime.remember
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -35,8 +36,10 @@ sealed class BottomBarScreens<T>(@StringRes val label:Int, @DrawableRes val icon
     data object SettingsBottom:BottomBarScreens<Settings>(R.string.bottombar_settins, R.drawable.ic_settings, Settings)
 }
 
-val listBottomBarScreens = listOf(
-    BottomBarScreens.HabitsBottom,
-    BottomBarScreens.StatisticsBottom,
-    BottomBarScreens.SettingsBottom
-).map { it as BottomBarScreens<Any> }
+val menuItems = {
+    listOf(
+        BottomBarScreens.HabitsBottom,
+        BottomBarScreens.StatisticsBottom,
+        BottomBarScreens.SettingsBottom,
+    )
+}

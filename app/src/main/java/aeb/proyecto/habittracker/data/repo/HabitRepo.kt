@@ -13,7 +13,7 @@ class HabitRepo @Inject constructor(
     private val habitDao: HabitDao
 ){
 
-    fun getAllHabits():Flow<List<Habit>>{
+    fun getAllHabits():List<Habit>{
         return habitDao.getAllHabits()
     }
 

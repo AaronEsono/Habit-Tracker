@@ -29,8 +29,8 @@ class DataStoreManager @Inject constructor(
         private val SEARCHED = booleanPreferencesKey("searched")
     }
 
-    val themeMode: Flow<Int?> = context.dataStore.data.map { preferences ->
-        preferences[THEMEMODE]
+    val themeMode: Flow<Int> = context.dataStore.data.map { preferences ->
+        preferences[THEMEMODE] ?: 0
     }
 
     val emailPassword:Flow<EmailPassword?> = context.dataStore.data.map { preferences ->

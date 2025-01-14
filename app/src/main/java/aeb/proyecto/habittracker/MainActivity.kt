@@ -7,17 +7,17 @@ import aeb.proyecto.habittracker.ui.components.loading.LoadingScreen
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
 import aeb.proyecto.habittracker.ui.navigation.AddHabit
+import aeb.proyecto.habittracker.ui.navigation.BottomBarScreens
 import aeb.proyecto.habittracker.ui.navigation.Habits
 import aeb.proyecto.habittracker.ui.navigation.ImportHabit
 import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
 import aeb.proyecto.habittracker.ui.navigation.SaveHabit
 import aeb.proyecto.habittracker.ui.navigation.Settings
 import aeb.proyecto.habittracker.ui.navigation.Statistics
-import aeb.proyecto.habittracker.ui.navigation.listBottomBarScreens
+import aeb.proyecto.habittracker.ui.navigation.menuItems
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.utils.AppState
 import aeb.proyecto.habittracker.utils.Constans.permissions
-import aeb.proyecto.habittracker.utils.MainLocalViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -40,7 +40,6 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -77,9 +76,7 @@ class MainActivity : ComponentActivity() {
                 RequestPermissions()
                 SetStates(mainViewModel)
 
-                CompositionLocalProvider(MainLocalViewModel provides mainViewModel) {
-                    AppContent(navController)
-                }
+                AppContent(navController)
             }
         }
     }
@@ -106,7 +103,7 @@ fun AppContent(navController: NavHostController) {
 @Composable
 fun TopBarHabit(navController: NavHostController) {
 
-    val menuItems = remember { listBottomBarScreens }
+    val menuItems = remember { menuItems() }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -159,27 +156,21 @@ fun TopBarHabit(navController: NavHostController) {
 @Composable
 fun BottomNavigationHabit(navController: NavHostController) {
 
-    val menuItems = remember { listBottomBarScreens }
+    val menuItems = remember { menuItems() }
 
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
+    val currentDestination = navController.currentBackStackEntryAsState().value?.destination
+    val showBottomBar = currentDestination?.route in menuItems.map { it.route::class.qualifiedName }
 
-    val showBottomBar = currentDestination?.hierarchy?.any { item ->
-        menuItems.any {
-            it.route::class.qualifiedName == item.route
-        }
-    }
-
-    if (showBottomBar == true) {
+    if (showBottomBar) {
         NavigationBar(
             containerColor = MaterialTheme.colorScheme.primary
         ) {
-            menuItems.forEach {
+            menuItems.forEach { menuItem ->
                 NavigationBarItem(
-                    selected = currentDestination.hierarchy.any { item -> item.route == it.route::class.qualifiedName },
+                    selected = currentDestination?.route == menuItem.route::class.qualifiedName,
                     onClick = {
-                        if(currentDestination.route != it.route::class.qualifiedName){
-                            navController.navigate(it.route) {
+                        if(currentDestination?.route != menuItem.route::class.qualifiedName){
+                            navController.navigate(menuItem.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     inclusive = true
                                 }
@@ -190,13 +181,13 @@ fun BottomNavigationHabit(navController: NavHostController) {
                     },
                     icon = {
                         Icon(
-                            painter = painterResource(it.icon),
-                            contentDescription = stringResource(it.label),
+                            painter = painterResource(menuItem.icon),
+                            contentDescription = stringResource(menuItem.label),
                             modifier = Modifier.size(24.dp)
                         )
                     },
                     label = {
-                        LabelSmallText(stringResource(it.label))
+                        LabelSmallText(stringResource(menuItem.label))
                     },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
@@ -207,7 +198,6 @@ fun BottomNavigationHabit(navController: NavHostController) {
             }
         }
     }
-
 }
 
 fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostController): TopbarSetUp {

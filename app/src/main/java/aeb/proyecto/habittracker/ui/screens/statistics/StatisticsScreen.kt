@@ -23,9 +23,14 @@ import kotlinx.coroutines.delay
 @Composable
 fun StatisticsScreen(statisticsViewModel: StatisticsViewModel = hiltViewModel()) {
 
-    val habits = statisticsViewModel.habits.collectAsState().value
+    LaunchedEffect(true) {
+        statisticsViewModel.getHabits()
+    }
 
-    if (statisticsViewModel.getSharedState().appState.collectAsState().value != AppState.Loading) {
+    val habits = statisticsViewModel.habits.collectAsState().value
+    val loaded = statisticsViewModel.loaded.collectAsState().value
+
+    if (loaded) {
         if (habits.isEmpty()) {
             Column(
                 modifier = Modifier

@@ -11,7 +11,6 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing24
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import aeb.proyecto.habittracker.utils.MainLocalViewModel
 import aeb.proyecto.habittracker.utils.sendEmail
 import android.content.Intent
 import android.net.Uri
@@ -32,7 +31,6 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel(), onImp
 
     val context = LocalContext.current
     val showDialog = remember { mutableStateOf(false) }
-    val mainViewModel = MainLocalViewModel.current
 
     Column (modifier = Modifier
         .fillMaxSize()
@@ -66,7 +64,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel(), onImp
         SettingsCard(onDismiss = {
             showDialog.value = false
         }, onSaveDataStore = {mode ->
-            mainViewModel.saveMode(mode)
+            settingsViewModel.setMode(mode)
         })
     }
 }

@@ -1,13 +1,11 @@
 package aeb.proyecto.habittracker.data.model.state
 
-import androidx.compose.ui.graphics.Color
 import java.time.LocalDate
 
 data class StatisticsState(
     val timesCompleted:Int = 0,
-    val streak:Int = 0,
-    val bestStreak:BestStreak = BestStreak(),
-    val daysCompleted:DaysCompleted = DaysCompleted()
+    val actualStreak:Int = 0,
+    val bestStreak:Int = 0
 )
 
 data class BestStreak(

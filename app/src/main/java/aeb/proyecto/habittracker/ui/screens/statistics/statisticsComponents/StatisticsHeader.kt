@@ -23,6 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +31,9 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun StatisticsHeader(habit: Habit) {
+    val habitColor = remember { Color(habit.color).copy(alpha = 0.3f) }
+    val icon = remember { iconByName(habit.icon) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,16 +56,12 @@ fun StatisticsHeader(habit: Habit) {
         ) {
             Box(
                 modifier = Modifier
-                    .wrapContentSize()
-                    .background(
-                        Color(habit.color).copy(alpha = 0.3f), RoundedCornerShape(
-                            spacing12
-                        )
-                    )
+                    .size(40.dp)
+                    .background(habitColor, RoundedCornerShape(spacing12))
             ) {
                 Icon(
-                    imageVector = iconByName(habit.icon),
-                    contentDescription = "Add",
+                    imageVector = icon,
+                    contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .padding(spacing8)
@@ -81,7 +81,6 @@ fun StatisticsHeader(habit: Habit) {
                     LabelMediumText(text = it)
                 }
             }
-
         }
     }
 }

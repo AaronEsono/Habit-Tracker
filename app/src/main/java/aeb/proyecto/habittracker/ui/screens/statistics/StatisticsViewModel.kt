@@ -8,6 +8,7 @@ import aeb.proyecto.habittracker.data.model.state.StatisticsState
 import aeb.proyecto.habittracker.data.repo.DailyHabitRepo
 import aeb.proyecto.habittracker.data.repo.HabitRepo
 import aeb.proyecto.habittracker.utils.SharedState
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,67 +34,72 @@ class StatisticsViewModel @Inject constructor(
     private val sharedState: SharedState
 ) : ViewModel() {
 
-    init {
-        sharedState.setLoading()
-    }
+    private val _habits: MutableStateFlow<List<Habit>> = MutableStateFlow(emptyList())
+    val habits: StateFlow<List<Habit>> = _habits.asStateFlow()
 
-    val habits: StateFlow<List<Habit>> = habitRepo.getAllHabits()
-        .onEach { sharedState.setNeutral() }
-        .onStart { delay(150) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000), // Mantener activo mientras hay suscriptores
-            initialValue = emptyList() // Valor inicial vacío
-        )
+    private val _selectedDailyHabit: MutableStateFlow<Habit?> = MutableStateFlow(null)
+    val selectedDailyHabit: StateFlow<Habit?> = _selectedDailyHabit.asStateFlow()
 
-    private val _dailyHabits: MutableStateFlow<List<DailyHabit>> = MutableStateFlow(listOf())
+    private val _dailyHabits: MutableStateFlow<List<DailyHabit>> = MutableStateFlow(emptyList())
     val dailyHabits: StateFlow<List<DailyHabit>> = _dailyHabits.asStateFlow()
 
-    private val _statisticsState: MutableStateFlow<StatisticsState> =
-        MutableStateFlow(StatisticsState())
-    val statisticsState: StateFlow<StatisticsState> = _statisticsState.asStateFlow()
+    private val _statisticsState: MutableStateFlow<StatisticsState?> = MutableStateFlow(null)
+    val statisticsState: StateFlow<StatisticsState?> = _statisticsState.asStateFlow()
 
-    private val _showData: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showData: StateFlow<Boolean> = _showData.asStateFlow()
+    private val _loaded: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val loaded: StateFlow<Boolean> = _loaded.asStateFlow()
 
-    fun getDailyHabits(id: Long) = viewModelScope.launch(Dispatchers.IO) {
-        _showData.value = false
+    fun getHabits() = viewModelScope.launch(Dispatchers.IO) {
+        setLoading()
 
-        _dailyHabits.value = dailyHabitRepo.getDailyHabits(id)
+        _habits.value = habitRepo.getAllHabits()
+        _loaded.value = true
 
-        _statisticsState.update { currentState ->
-            currentState.copy(
-                timesCompleted = timesCompleted(),
-                streak = getStreak(),
-                bestStreak = getBestStreak(),
-                daysCompleted = getDaysCompleted()
-            )
+        if(_habits.value.isEmpty()){
+            setNeutral()
         }
-
-        _showData.value = true
     }
 
-    fun timesCompleted(): Int {
+    fun getDailyHabits() = viewModelScope.launch(Dispatchers.IO) {
+        setLoading()
+        _statisticsState.value = null
+
+        val habit = habits.value[0]
+
+        _selectedDailyHabit.value = habit
+        _dailyHabits.value = dailyHabitRepo.getDailyHabits(habit.id)
+
+        _statisticsState.update {
+            StatisticsState(
+                timesCompleted = timesCompleted(),
+                actualStreak = getStreak(),
+                bestStreak = getBestStreak()
+            )
+        }
+        setNeutral()
+    }
+
+    fun setSelectedHabit(habit: Habit){
+        _selectedDailyHabit.value = habit
+        getDailyHabits()
+    }
+
+    private fun findHabit(): Habit? {
+        return habits.value.find { it == _selectedDailyHabit.value }
+    }
+
+    private fun timesCompleted(): Int {
         findHabit()?.let {
             return _dailyHabits.value.count { dailyHabit -> dailyHabit.timesDone == it.times }
         }
         return 0
     }
 
-    fun getSharedState(): SharedState {
-        return sharedState
+    private fun findMaxTimes(): Int {
+        return findHabit()?.times ?: 0
     }
 
-    fun findHabit(): Habit? {
-        return habits.value.find { _dailyHabits.value.any { dailyHabit -> dailyHabit.idHabit == it.id } }
-    }
-
-    fun findMaxTimes(): Int {
-        return habits.value.find { _dailyHabits.value.any { dailyHabit -> dailyHabit.idHabit == it.id } }?.times
-            ?: 0
-    }
-
-    fun getStreak(): Int {
+    private fun getStreak(): Int {
         val sortedList = _dailyHabits.value.sortedByDescending { it.date }
         val maxTimes = findMaxTimes()
         var streak = 0
@@ -110,12 +116,12 @@ class StatisticsViewModel @Inject constructor(
         return streak
     }
 
-    fun getBestStreak(): BestStreak {
+    private fun getBestStreak(): Int {
         val sortedList = _dailyHabits.value.sortedByDescending { it.date }
         val maxTimes = findMaxTimes()
         var today = LocalDate.now()
 
-        var streak = BestStreak()
+        var streak:Int = 0
         var times = 0
         var startDateTemp = LocalDate.now()
 
@@ -135,12 +141,8 @@ class StatisticsViewModel @Inject constructor(
 
             } else {
                 //Comparamos con la anterior
-                if (times > streak.times) {
-                    streak = BestStreak(
-                        startDate = today.plusDays(1),
-                        endDate = startDateTemp,
-                        times = times
-                    )
+                if (times > streak) {
+                    streak = times
                 }
                 times = 0
                 today = today.minusDays(1)
@@ -148,38 +150,18 @@ class StatisticsViewModel @Inject constructor(
         }
 
         // Comparar la última racha
-        if (times > streak.times) {
-            streak = BestStreak(
-                startDate = today.plusDays(1),
-                endDate = LocalDate.parse(sortedList.first().date),
-                times = times
-            )
+        if (times > streak) {
+            streak = times
         }
 
         return streak
     }
 
-    private fun getDaysCompleted(): DaysCompleted {
-        val sortedList = _dailyHabits.value.filter { it.timesDone != 0 }.sortedByDescending { it.date }
-
-        if (sortedList.isNotEmpty()) {
-            val totalDays = ChronoUnit.DAYS.between(LocalDate.parse(sortedList.last().date), LocalDate.now()) + 1
-            val daysTried = sortedList.size
-
-            return DaysCompleted(
-                completed = timesCompleted(),
-                uncompleted = daysTried - timesCompleted(),
-                noDone = (totalDays - daysTried - (daysTried - timesCompleted())).toInt()
-            )
-        } else {
-            return DaysCompleted()
-        }
+    private fun setLoading(){
+        sharedState.setLoading()
     }
 
-    //Calendario dias completados X
-    //Numero veces completado X
-    //Racha actual X
-    //Mejor racha y fecha X
-    //Media de hora en la que el habito se hace
-    //Chart circular con los completados, no completados y pendientes
+    private fun setNeutral(){
+        sharedState.setNeutral()
+    }
 }

@@ -43,11 +43,14 @@ fun NavigationWrapper(navController: NavHostController){
             AddHabitScreen(
                 edit = edit,
                 id = id,
-                navigateToHabit = { navController.navigate(Habits){
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        inclusive = true
+                navigateToHabit = {
+                    navController.navigate(Habits) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            inclusive = true
+                        }
                     }
-                } })
+                }
+            )
         }
         composable<ImportHabit>{
             ImportHabitScreen(){
