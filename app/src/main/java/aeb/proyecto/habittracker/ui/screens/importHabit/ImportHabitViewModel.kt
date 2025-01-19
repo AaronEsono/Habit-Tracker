@@ -1,9 +1,9 @@
 package aeb.proyecto.habittracker.ui.screens.importHabit
 
+import aeb.proyecto.datastore.DatastoreInterface
+import aeb.proyecto.datastore.model.EmailPassword
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.state.ImportState
-import aeb.proyecto.habittracker.di.DataStoreManager
-import aeb.proyecto.habittracker.di.EmailPassword
 import aeb.proyecto.habittracker.utils.AuthResponse
 import aeb.proyecto.habittracker.utils.AuthenticationManager
 import aeb.proyecto.habittracker.utils.Constans.DEFAULT_ERROR_FIREBASE
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ImportHabitViewModel @Inject constructor(
     private val sharedState: SharedState,
-    private val dataStoreManager: DataStoreManager,
+    private val datastoreInterface: DatastoreInterface,
     private val authenticationManager: AuthenticationManager
 ) : ViewModel() {
 
@@ -35,12 +35,12 @@ class ImportHabitViewModel @Inject constructor(
     private val _uiState:MutableStateFlow<ImportState> = MutableStateFlow(ImportState())
     val uiState: StateFlow<ImportState> = _uiState.asStateFlow()
 
-    private val _emailPassword : MutableStateFlow<EmailPassword?> = MutableStateFlow(null)
-    val emailPassword: StateFlow<EmailPassword?> = _emailPassword.asStateFlow()
+    private val _emailPassword : MutableStateFlow<EmailPassword> = MutableStateFlow(EmailPassword())
+    val emailPassword: StateFlow<EmailPassword> = _emailPassword.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _emailPassword.value = dataStoreManager.emailPassword.first()
+            _emailPassword.value = datastoreInterface.getEmailAndPassword()
         }
     }
 
@@ -147,12 +147,12 @@ class ImportHabitViewModel @Inject constructor(
 
             if(saveCredentials){
                 viewModelScope.launch {
-                    dataStoreManager.setEmail(email)
-                    dataStoreManager.setPassword(password)
+                    datastoreInterface.setEmail(email)
+                    datastoreInterface.setPassword(password)
                 }
             }else{
                 viewModelScope.launch {
-                    dataStoreManager.clearDataUser()
+                    datastoreInterface.clearUser()
                 }
             }
 

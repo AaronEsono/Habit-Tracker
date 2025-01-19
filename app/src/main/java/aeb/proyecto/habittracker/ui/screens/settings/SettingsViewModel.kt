@@ -1,6 +1,6 @@
 package aeb.proyecto.habittracker.ui.screens.settings
 
-import aeb.proyecto.habittracker.di.DataStoreManager
+import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.habittracker.utils.AuthResponse
 import aeb.proyecto.habittracker.utils.AuthenticationManager
 import aeb.proyecto.habittracker.utils.SharedState
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val authenticationManager: AuthenticationManager,
     private val sharedState: SharedState,
-    private val dataStoreManager: DataStoreManager
+    private val datastoreInterface: DatastoreInterface
 ) : ViewModel() {
 
     fun checkUser(onSaveScreen: () -> Unit, onImportScreen: () -> Unit) {
@@ -41,7 +41,7 @@ class SettingsViewModel @Inject constructor(
 
     fun setMode(mode:Int){
         viewModelScope.launch {
-            dataStoreManager.setModeTheme(mode)
+            datastoreInterface.setModeTheme(mode)
         }
     }
 }

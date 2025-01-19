@@ -1,5 +1,6 @@
 package aeb.proyecto.habittracker.ui.screens.saveHabit
 
+import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.data.entities.Habit
@@ -12,7 +13,6 @@ import aeb.proyecto.habittracker.data.model.firestoreHabit.HabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.NotificationCompressed
 import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
 import aeb.proyecto.habittracker.data.repo.CompleteHabitRepo
-import aeb.proyecto.habittracker.di.DataStoreManager
 import aeb.proyecto.habittracker.utils.AuthResponse
 import aeb.proyecto.habittracker.utils.AuthResponseGetData
 import aeb.proyecto.habittracker.utils.AuthenticationManager
@@ -45,7 +45,7 @@ class SaveHabitViewModel @Inject constructor(
     private val firestoreManager: FirestoreManager,
     private val completeHabitRepo: CompleteHabitRepo,
     private val sharedState: SharedState,
-    private val dataStoreManager: DataStoreManager
+    private val datastoreInterface: DatastoreInterface
 ):ViewModel() {
 
     private val _date = MutableStateFlow<String?>(null)
@@ -72,7 +72,7 @@ class SaveHabitViewModel @Inject constructor(
     private fun searchData() {
         try {
             viewModelScope.launch {
-                val lastSearchedDataStore = dataStoreManager.getLastSearched().first()
+                val lastSearchedDataStore = datastoreInterface.getLastSearched()
 
                 if (!lastSearchedDataStore.searched || lastSearchedDataStore.uid != getCurrentId()) {
                     setLoading()
@@ -80,7 +80,7 @@ class SaveHabitViewModel @Inject constructor(
                     firestoreManager.getData(getCurrentId()).onEach { response ->
                         if(response is AuthResponseGetData.Success){
                             val data = response.data
-                            dataStoreManager.setLastSearched(getCurrentId(), data?.date.orEmpty())
+                            datastoreInterface.setLastSearched(getCurrentId(), data?.date.orEmpty())
                             _date.value = data?.date?.let { convertDateFormat(it) }
                             setNeutral()
                         }else{
@@ -178,7 +178,7 @@ class SaveHabitViewModel @Inject constructor(
     }
 
     private suspend fun setDatainDataStore(date: String){
-        dataStoreManager.setLastSearched(getCurrentId(), date)
+        datastoreInterface.setLastSearched(getCurrentId(), date)
     }
 
     private fun decompressJsonFirestore(compressed: String): List<CompleteHabit> {

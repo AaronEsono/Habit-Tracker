@@ -22,15 +22,18 @@ navigationCompose = "2.8.5"
 room = "2.0.21-1.0.28"
 firebase = "4.4.2"
 crashlytics = "2.9.9"
-
-#hilt y dagger
+androidGradlePlugin = "8.0.2"
 hilt-version = "2.52"
 roomRuntime = "2.6.1"
 runtimeLivedata = "1.7.6"
 playServicesTfliteSupport = "16.4.0"
 workRuntimeVersion = "2.10.0"
+appcompat = "1.7.0"
+material = "1.12.0"
 
 [libraries]
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 androidx-activity-compose-v172 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentialsPlayServicesAuth" }
@@ -48,7 +51,6 @@ firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
-google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -74,6 +76,8 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", v
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 play-services-tflite-support = { group = "com.google.android.gms", name = "play-services-tflite-support", version.ref = "playServicesTfliteSupport" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -86,3 +90,11 @@ firebase-crashlytics = {id = "com.google.firebase.crashlytics", version.ref = "c
 
 #hilt y dagger
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-version" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
+#Plugins project
+habittracker-android-application-plugin-convention = { id = "habittracker-android-application-plugin-convention"}
+habittracker-hilt-plugin-convention = {id = "habittracker-hilt-plugin-convention"}
+habittracker-firebase-base-plugin-convention = {id = "habittracker-firebase-base-plugin-convention"}
+habittracker-datastore-plugin-convention = {id = "habittracker-datastore-plugin-convention"}
+habittracker-android-library-plugin-convention = {id = "habittracker-android-library-plugin-convention"}

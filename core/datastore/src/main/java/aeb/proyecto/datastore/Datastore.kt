@@ -1,6 +1,7 @@
-package aeb.proyecto.habittracker.di
+package aeb.proyecto.datastore
 
-import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
+import aeb.proyecto.datastore.model.EmailPassword
+import aeb.proyecto.datastore.model.LastSearched
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -9,7 +10,9 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,7 +28,7 @@ class DataStoreManager @Inject constructor(
         private val EMAIL = stringPreferencesKey("email")
         private val PASSWORD = stringPreferencesKey("password")
         private val CURRENTID = stringPreferencesKey("currentId")
-        private val DATE  =stringPreferencesKey("date")
+        private val DATE  = stringPreferencesKey("date")
         private val SEARCHED = booleanPreferencesKey("searched")
     }
 
@@ -33,12 +36,21 @@ class DataStoreManager @Inject constructor(
         preferences[THEMEMODE] ?: 0
     }
 
-    val emailPassword:Flow<EmailPassword?> = context.dataStore.data.map { preferences ->
+    suspend fun getEmailPassword() = context.dataStore.data.map { preferences ->
         EmailPassword(
             email = preferences[EMAIL] ?: "",
             password = preferences[PASSWORD] ?: ""
         )
-    }
+    }.firstOrNull() ?: EmailPassword()
+
+    suspend fun getLastSearched() =
+        context.dataStore.data.map { preferences ->
+            LastSearched(
+                uid = preferences[CURRENTID] ?: "",
+                date = preferences[DATE] ?: "",
+                searched = preferences[SEARCHED] ?: false
+            )
+        }.firstOrNull() ?: LastSearched()
 
     suspend fun setModeTheme(themeMode: Int) {
         context.dataStore.edit { preferences ->
@@ -58,13 +70,6 @@ class DataStoreManager @Inject constructor(
         }
     }
 
-    suspend fun clearDataUser(){
-        context.dataStore.edit { preferences ->
-            preferences[EMAIL] = ""
-            preferences[PASSWORD] = ""
-        }
-    }
-
     suspend fun setLastSearched(uid:String, date:String){
         context.dataStore.edit { preferences ->
             preferences[CURRENTID] = uid
@@ -73,24 +78,11 @@ class DataStoreManager @Inject constructor(
         }
     }
 
-    fun getLastSearched(): Flow<LastSearched> {
-        return context.dataStore.data.map { preferences ->
-            LastSearched(
-                uid = preferences[CURRENTID] ?: "",
-                date = preferences[DATE] ?: "",
-                searched = preferences[SEARCHED] ?: false
-            )
+    suspend fun clearDataUser(){
+        context.dataStore.edit { preferences ->
+            preferences[EMAIL] = ""
+            preferences[PASSWORD] = ""
         }
     }
+
 }
-
-data class EmailPassword(
-    val email: String,
-    val password: String
-)
-
-data class LastSearched(
-    val uid:String? = "",
-    val date:String? = "",
-    val searched:Boolean = false
-)
