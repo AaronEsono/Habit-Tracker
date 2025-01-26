@@ -1,8 +1,10 @@
 [versions]
 activityComposeVersion = "1.9.3"
 agp = "8.7.3"
+byteBuddy = "1.14.5"
 credentialsPlayServicesAuth = "1.5.0-beta01"
 datastorePreferences = "1.1.1"
+datastorePreferencesVersion = "1.0.0"
 firebaseBom = "33.7.0"
 googleid = "1.1.1"
 gson = "2.10.1"
@@ -12,12 +14,17 @@ coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
+kotlinxCoroutinesTest = "1.10.1"
 kotlinxSerializationJson = "1.6.3"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.12.01"
 material3 = "1.4.0-alpha05"
 material3AdaptiveNavigationSuite = "1.4.0-alpha05"
+mockitoKotlin = "4.0.0"
+mockitoMockitoCore = "4.5.1"
+mockk = "1.13.5"
+mockkVersion = "1.13.5"
 navigationCompose = "2.8.5"
 room = "2.0.21-1.0.28"
 firebase = "4.4.2"
@@ -27,12 +34,16 @@ hilt-version = "2.52"
 roomRuntime = "2.6.1"
 runtimeLivedata = "1.7.6"
 playServicesTfliteSupport = "16.4.0"
+slf4jSimple = "2.0.9"
 workRuntimeVersion = "2.10.0"
 appcompat = "1.7.0"
 material = "1.12.0"
+coreKtxVersion = "1.6.1"
 
 [libraries]
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+androidx-datastore-preferences-v100 = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferencesVersion" }
+byte-buddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 androidx-activity-compose-v172 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -66,18 +77,21 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-#Más iconos
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
-
-#hilt y dagger
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-version" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-version" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockito-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoMockitoCore" }
+mockk-mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
 play-services-tflite-support = { group = "com.google.android.gms", name = "play-services-tflite-support", version.ref = "playServicesTfliteSupport" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

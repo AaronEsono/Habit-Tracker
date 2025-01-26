@@ -13,10 +13,12 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    //Datastore
-    implementation(libs.androidx.datastore.preferences)
+    testImplementation (libs.mockk.mockk)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockito.mockito.core)
+    testImplementation (libs.mockito.kotlin)
 }

@@ -15,3 +15,4 @@
 local.properties
 /app/google-services.json
 /app/src/main/res/values/web_client_id.xml
+/.kotlin/errors

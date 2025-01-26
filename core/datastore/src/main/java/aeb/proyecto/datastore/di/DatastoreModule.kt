@@ -1,19 +1,25 @@
 package aeb.proyecto.datastore.di
 
-import aeb.proyecto.datastore.DatastoreInterface
-import aeb.proyecto.datastore.repository.DatastoreRepository
-import dagger.Binds
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_prefs")
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DatastoreModule {
+object DataStoreModule {
 
-    @Binds
-    internal abstract fun bindDatastoreInterface(
-        datastoreRepository: DatastoreRepository
-    ): DatastoreInterface
-
+    @Provides
+    @Singleton
+    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+        return context.dataStore
+    }
 }
