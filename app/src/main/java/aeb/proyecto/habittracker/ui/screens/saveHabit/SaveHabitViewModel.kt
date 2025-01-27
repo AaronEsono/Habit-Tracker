@@ -15,7 +15,7 @@ import aeb.proyecto.habittracker.utils.SharedState
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.Notification
-import aeb.proyecto.room.model.NotificationWithName
+import aeb.proyecto.room.model.NotificationWithNameAndColor
 import aeb.proyecto.room.relations.EntireHabit
 import aeb.proyecto.room.repository.EntireHabitRepo
 import androidx.lifecycle.ViewModel
@@ -53,8 +53,8 @@ class SaveHabitViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(UiStateSaveHabits())
     val uiState: StateFlow<UiStateSaveHabits> = _uiState.asStateFlow()
 
-    private val _notificationsWithNames = MutableStateFlow<List<NotificationWithName>>(emptyList())
-    val notificationsWithNames: StateFlow<List<NotificationWithName>> = _notificationsWithNames.asStateFlow()
+    private val _notificationsWithNames = MutableStateFlow<List<NotificationWithNameAndColor>>(emptyList())
+    val notificationsWithNames: StateFlow<List<NotificationWithNameAndColor>> = _notificationsWithNames.asStateFlow()
 
     init {
         searchData()

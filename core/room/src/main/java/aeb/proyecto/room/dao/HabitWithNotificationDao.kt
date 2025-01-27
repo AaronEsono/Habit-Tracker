@@ -17,6 +17,7 @@ interface HabitWithNotificationDao {
     @Insert
     fun insertHabit(habit: Habit):Long
 
+    @Transaction
     @Query("SELECT * FROM Habit WHERE id = :habitId")
     fun getHabitById(habitId: Long): HabitWithNotification
 
@@ -50,5 +51,4 @@ interface HabitWithNotificationDao {
 
     @Query("SELECT * FROM Notification where habitId = :id")
     fun getNotificationById(id:Long):List<Notification>
-
 }

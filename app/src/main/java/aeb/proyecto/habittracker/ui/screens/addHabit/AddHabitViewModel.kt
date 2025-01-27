@@ -68,7 +68,7 @@ class AddHabitViewModel @Inject constructor(
         )
 
         if (!edit){
-            id = habitWithNotificacionRepo.insertaHabit(habitUpt.habit, notifications.value)
+            id = habitWithNotificacionRepo.insertHabit(habitUpt.habit, notifications.value)
         }
         else {
             habitWithNotificacionRepo.updateHabit(habitUpt.habit, notifications.value)

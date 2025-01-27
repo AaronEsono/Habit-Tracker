@@ -10,9 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HabitDao {
-    @Insert
-    fun insertHabit(habit: Habit)
-
+    @Transaction
     @Query("SELECT * FROM HABIT")
     fun getHabits(): Flow<List<HabitWithDailyHabit>>
 

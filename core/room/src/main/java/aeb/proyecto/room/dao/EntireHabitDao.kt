@@ -3,9 +3,8 @@ package aeb.proyecto.room.dao
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.Notification
-import aeb.proyecto.room.model.NotificationWithName
+import aeb.proyecto.room.model.NotificationWithNameAndColor
 import aeb.proyecto.room.relations.EntireHabit
-import androidx.compose.ui.graphics.Color
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -14,6 +13,7 @@ import androidx.room.Transaction
 
 @Dao
 interface EntireHabitDao {
+    @Transaction
     @Query("SELECT * FROM Habit")
     fun getAll():List<EntireHabit>
 
@@ -42,9 +42,10 @@ interface EntireHabitDao {
         deleteHabits()
     }
 
+    //Guardamos todos los valores y devolvemos las notificaciones para el alarmManager
     @Transaction
-    fun setData(data:List<EntireHabit>):List<NotificationWithName>{
-        val notifications:MutableList<NotificationWithName> = mutableListOf()
+    fun setData(data:List<EntireHabit>):List<NotificationWithNameAndColor>{
+        val notifications:MutableList<NotificationWithNameAndColor> = mutableListOf()
         deleteAll()
 
         data.forEach { habitComplete ->
@@ -57,9 +58,9 @@ interface EntireHabitDao {
 
             habitComplete.notifications.forEach{ notification ->
                 notification.habitId = id
-                val id = insertNotification(notification)
+                val idRoom = insertNotification(notification)
 
-                notifications.add(NotificationWithName(notification.copy(id = id),habitComplete.habit.name, Color(habitComplete.habit.color)))
+                notifications.add(NotificationWithNameAndColor(notification.copy(id = idRoom),habitComplete.habit.name, habitComplete.habit.color))
             }
         }
 

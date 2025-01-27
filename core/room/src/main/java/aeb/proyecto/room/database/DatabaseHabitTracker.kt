@@ -13,7 +13,7 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [Habit::class, Notification::class, DailyHabit::class],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
 abstract class DatabaseHabitTracker : RoomDatabase() {
     abstract fun habitDao(): HabitDao

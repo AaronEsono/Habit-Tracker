@@ -1,7 +1,7 @@
 package aeb.proyecto.room.repository
 
 import aeb.proyecto.room.dao.EntireHabitDao
-import aeb.proyecto.room.model.NotificationWithName
+import aeb.proyecto.room.model.NotificationWithNameAndColor
 import aeb.proyecto.room.relations.EntireHabit
 import javax.inject.Inject
 
@@ -13,7 +13,7 @@ class EntireHabitRepo @Inject constructor(
         return completeDaoHabit.getAll()
     }
 
-    fun setData(data:List<EntireHabit>):List<NotificationWithName>{
+    fun setData(data:List<EntireHabit>):List<NotificationWithNameAndColor>{
         return completeDaoHabit.setData(data)
     }
 

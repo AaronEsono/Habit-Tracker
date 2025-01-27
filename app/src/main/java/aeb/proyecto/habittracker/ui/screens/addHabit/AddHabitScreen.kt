@@ -20,7 +20,7 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing72
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import aeb.proyecto.habittracker.utils.cancelAlarm
 import aeb.proyecto.habittracker.utils.setUpAlarm
-import aeb.proyecto.room.model.NotificationWithName
+import aeb.proyecto.room.model.NotificationWithNameAndColor
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -57,6 +57,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -304,7 +305,7 @@ fun AddHabitScreen(
                         }
 
                         notificationsInsert.forEach {
-                            setUpAlarm(context, NotificationWithName(it, nameHabit.text.toString(), uiState.color))
+                            setUpAlarm(context, NotificationWithNameAndColor(it, nameHabit.text.toString(), uiState.color.toArgb()))
                         }
                         navigateToHabit()
                     }

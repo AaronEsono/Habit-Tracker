@@ -9,23 +9,23 @@ import javax.inject.Singleton
 
 @Singleton
 class HabitWithNotificacionRepo @Inject constructor(
-    private val habitWithNofiticationDao: HabitWithNotificationDao
+    private val habitWithNotificationDao: HabitWithNotificationDao
 ) {
 
-    fun insertaHabit(habit: Habit, notifications: List<Notification>):Long{
-        return habitWithNofiticationDao.insertHabitAndNotifications(habit,notifications)
+    fun insertHabit(habit: Habit, notifications: List<Notification>):Long{
+        return habitWithNotificationDao.insertHabitAndNotifications(habit,notifications)
     }
 
     fun updateHabit(habit: Habit, notifications: List<Notification>){
-        habitWithNofiticationDao.updateHabit(habit,notifications)
+        habitWithNotificationDao.updateHabit(habit,notifications)
     }
 
     fun getHabitById(id:Long): HabitWithNotification {
-        return habitWithNofiticationDao.getHabitById(id)
+        return habitWithNotificationDao.getHabitById(id)
     }
 
     fun getNotificationById(id:Long):List<Notification>{
-        return habitWithNofiticationDao.getNotificationById(id)
+        return habitWithNotificationDao.getNotificationById(id)
     }
 
 }

@@ -1,7 +1,7 @@
 package aeb.proyecto.habittracker.utils
 
 import aeb.proyecto.habittracker.data.alarmManager.AlarmNotification
-import aeb.proyecto.room.model.NotificationWithName
+import aeb.proyecto.room.model.NotificationWithNameAndColor
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -14,7 +14,7 @@ const val REMINDER = "REMINDER"
 val interval = 24L * 60L * 60L * 1000L // 24 horas en milisegundos
 
 @SuppressLint("ScheduleExactAlarm", "MissingPermission")
-fun setUpAlarm(context: Context, alarmItem: NotificationWithName, repeated: Boolean = false) {
+fun setUpAlarm(context: Context, alarmItem: NotificationWithNameAndColor, repeated: Boolean = false) {
 
     var calendar = Calendar.getInstance().timeInMillis + (interval)
 

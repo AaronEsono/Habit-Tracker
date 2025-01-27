@@ -1,10 +1,9 @@
 package aeb.proyecto.room.model
 
 import aeb.proyecto.room.entities.Notification
-import androidx.compose.ui.graphics.Color
 
-data class NotificationWithName(
+data class NotificationWithNameAndColor(
     val notification: Notification,
     val name: String,
-    val color: Color
+    val colorInt: Int
 )
