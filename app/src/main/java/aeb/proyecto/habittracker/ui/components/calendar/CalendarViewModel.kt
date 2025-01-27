@@ -1,15 +1,13 @@
 package aeb.proyecto.habittracker.ui.components.calendar
 
-import aeb.proyecto.habittracker.data.entities.DailyHabit
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.data.model.calendar.CalendarDataSource
 import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
-import android.util.Log
+import aeb.proyecto.room.entities.DailyHabit
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.relations.HabitWithDailyHabit
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -111,7 +109,7 @@ class CalendarViewModel @Inject constructor(
         return dailyHabits.value.find { LocalDate.parse(it.date) == createDate(date) }
     }
 
-    fun setHabitsAndColor(habits:HabitWithDailyHabit){
+    fun setHabitsAndColor(habits: HabitWithDailyHabit){
         _showCalendar.value = false
         _dailyHabits.update { habits.dailyHabits }
         _habit.update { habits.habit }

@@ -1,10 +1,10 @@
 package aeb.proyecto.habittracker.ui.components.dailyHabit
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.DailyHabit
-import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Constans.numberOfDays
+import aeb.proyecto.room.entities.DailyHabit
+import aeb.proyecto.room.entities.Habit
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check

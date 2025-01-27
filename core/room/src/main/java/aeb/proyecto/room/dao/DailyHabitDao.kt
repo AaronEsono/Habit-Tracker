@@ -1,6 +1,6 @@
-package aeb.proyecto.habittracker.data.dao
+package aeb.proyecto.room.dao
 
-import aeb.proyecto.habittracker.data.entities.DailyHabit
+import aeb.proyecto.room.entities.DailyHabit
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query

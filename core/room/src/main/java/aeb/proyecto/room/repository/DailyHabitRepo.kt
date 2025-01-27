@@ -1,7 +1,7 @@
-package aeb.proyecto.habittracker.data.repo
+package aeb.proyecto.room.repository
 
-import aeb.proyecto.habittracker.data.dao.DailyHabitDao
-import aeb.proyecto.habittracker.data.entities.DailyHabit
+import aeb.proyecto.room.dao.DailyHabitDao
+import aeb.proyecto.room.entities.DailyHabit
 import javax.inject.Inject
 import javax.inject.Singleton
 

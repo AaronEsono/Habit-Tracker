@@ -1,20 +1,18 @@
 package aeb.proyecto.habittracker.ui.screens.habits
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.DailyHabit
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.data.model.state.HabitsScreenState
-import aeb.proyecto.habittracker.data.repo.DailyHabitRepo
-import aeb.proyecto.habittracker.data.repo.HabitRepo
-import aeb.proyecto.habittracker.data.repo.HabitWithNotificacionRepo
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.SharedState
-import android.util.Log
+import aeb.proyecto.room.entities.DailyHabit
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.relations.HabitWithDailyHabit
+import aeb.proyecto.room.repository.DailyHabitRepo
+import aeb.proyecto.room.repository.HabitRepo
+import aeb.proyecto.room.repository.HabitWithNotificacionRepo
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -27,10 +25,8 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.zip.GZIPOutputStream
 import javax.inject.Inject
 
 @HiltViewModel

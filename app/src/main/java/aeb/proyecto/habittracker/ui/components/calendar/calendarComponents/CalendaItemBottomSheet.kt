@@ -1,9 +1,9 @@
 package aeb.proyecto.habittracker.ui.components.calendar.calendarComponents
 
-import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
 import aeb.proyecto.habittracker.ui.components.text.BodyMediumText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing10
+import aeb.proyecto.room.entities.DailyHabit
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

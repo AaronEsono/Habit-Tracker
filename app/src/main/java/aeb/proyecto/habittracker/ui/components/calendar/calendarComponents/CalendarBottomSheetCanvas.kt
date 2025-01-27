@@ -1,11 +1,11 @@
 package aeb.proyecto.habittracker.ui.components.calendar.calendarComponents
 
-import aeb.proyecto.habittracker.data.entities.DailyHabit
 import aeb.proyecto.habittracker.ui.components.text.CalendarText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing3
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing6
+import aeb.proyecto.room.entities.DailyHabit
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

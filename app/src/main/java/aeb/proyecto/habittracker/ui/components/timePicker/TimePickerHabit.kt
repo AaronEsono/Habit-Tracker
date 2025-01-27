@@ -1,11 +1,11 @@
 package aeb.proyecto.habittracker.ui.components.timePicker
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.Notification
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.buttons.CustomOutlinedButton
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import aeb.proyecto.room.entities.Notification
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

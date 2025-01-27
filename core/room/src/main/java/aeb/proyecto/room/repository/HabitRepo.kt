@@ -1,13 +1,10 @@
-package aeb.proyecto.habittracker.data.repo
+package aeb.proyecto.room.repository
 
-import aeb.proyecto.habittracker.data.dao.HabitDao
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
-import aeb.proyecto.habittracker.data.entities.HabitWithNotification
-import androidx.lifecycle.LiveData
+import aeb.proyecto.room.dao.HabitDao
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.relations.HabitWithDailyHabit
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class HabitRepo @Inject constructor(
     private val habitDao: HabitDao

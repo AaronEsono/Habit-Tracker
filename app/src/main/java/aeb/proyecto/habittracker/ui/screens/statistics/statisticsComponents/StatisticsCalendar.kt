@@ -1,7 +1,6 @@
 package aeb.proyecto.habittracker.ui.screens.statistics.statisticsComponents
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarContent
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarHeader
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarViewModel
@@ -10,6 +9,7 @@ import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import aeb.proyecto.room.relations.HabitWithDailyHabit
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

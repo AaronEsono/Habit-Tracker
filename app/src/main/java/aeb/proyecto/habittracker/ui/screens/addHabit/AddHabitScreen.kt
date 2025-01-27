@@ -1,7 +1,6 @@
 package aeb.proyecto.habittracker.ui.screens.addHabit
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.card.CardInfoAddHabit
 import aeb.proyecto.habittracker.ui.components.card.CardPickColorAddHabit
@@ -21,6 +20,7 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing72
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import aeb.proyecto.habittracker.utils.cancelAlarm
 import aeb.proyecto.habittracker.utils.setUpAlarm
+import aeb.proyecto.room.model.NotificationWithName
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent

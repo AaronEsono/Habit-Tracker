@@ -1,20 +1,21 @@
-package aeb.proyecto.habittracker.data.dao
+package aeb.proyecto.room.dao
 
-import aeb.proyecto.habittracker.data.entities.DailyHabit
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.Notification
-import aeb.proyecto.habittracker.data.model.firestoreHabit.CompleteHabit
-import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
+import aeb.proyecto.room.entities.DailyHabit
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.Notification
+import aeb.proyecto.room.model.NotificationWithName
+import aeb.proyecto.room.relations.EntireHabit
 import androidx.compose.ui.graphics.Color
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 
+
 @Dao
-interface CompleteDaoHabit {
+interface EntireHabitDao {
     @Query("SELECT * FROM Habit")
-    fun getAll():List<CompleteHabit>
+    fun getAll():List<EntireHabit>
 
     @Query("DELETE FROM Notification")
     fun deleteNotifications()
@@ -42,7 +43,7 @@ interface CompleteDaoHabit {
     }
 
     @Transaction
-    fun setData(data:List<CompleteHabit>):List<NotificationWithName>{
+    fun setData(data:List<EntireHabit>):List<NotificationWithName>{
         val notifications:MutableList<NotificationWithName> = mutableListOf()
         deleteAll()
 

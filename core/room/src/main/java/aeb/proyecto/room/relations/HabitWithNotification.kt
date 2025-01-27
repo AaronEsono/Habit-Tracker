@@ -1,5 +1,7 @@
-package aeb.proyecto.habittracker.data.entities
+package aeb.proyecto.room.relations
 
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.Notification
 import androidx.room.Embedded
 import androidx.room.Relation
 

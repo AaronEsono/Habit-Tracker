@@ -1,15 +1,15 @@
-package aeb.proyecto.habittracker.data.repo
+package aeb.proyecto.room.repository
 
-import aeb.proyecto.habittracker.data.dao.HabitWithNofiticationDao
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.HabitWithNotification
-import aeb.proyecto.habittracker.data.entities.Notification
+import aeb.proyecto.room.dao.HabitWithNotificationDao
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.Notification
+import aeb.proyecto.room.relations.HabitWithNotification
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class HabitWithNotificacionRepo @Inject constructor(
-    private val habitWithNofiticationDao: HabitWithNofiticationDao
+    private val habitWithNofiticationDao: HabitWithNotificationDao
 ) {
 
     fun insertaHabit(habit: Habit, notifications: List<Notification>):Long{

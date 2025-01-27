@@ -1,11 +1,11 @@
 package aeb.proyecto.habittracker.ui.components.dailyHabit
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import aeb.proyecto.room.entities.Habit
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing

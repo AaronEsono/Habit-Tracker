@@ -1,13 +1,13 @@
 package aeb.proyecto.habittracker.ui.screens.addHabit
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.HabitWithNotification
-import aeb.proyecto.habittracker.data.entities.Notification
 import aeb.proyecto.habittracker.data.model.state.AddHabitScreenState
-import aeb.proyecto.habittracker.data.repo.HabitRepo
-import aeb.proyecto.habittracker.data.repo.HabitWithNotificacionRepo
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.utils.Constans
+import aeb.proyecto.room.entities.Notification
+import aeb.proyecto.room.relations.HabitWithNotification
+import aeb.proyecto.room.repository.HabitRepo
+import aeb.proyecto.room.repository.HabitWithNotificacionRepo
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

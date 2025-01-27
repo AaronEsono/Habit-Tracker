@@ -1,17 +1,16 @@
-package aeb.proyecto.habittracker.data.dao
+package aeb.proyecto.room.dao
 
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.HabitWithNotification
-import aeb.proyecto.habittracker.data.entities.Notification
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.Notification
+import aeb.proyecto.room.relations.HabitWithNotification
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 
 @Dao
-interface HabitWithNofiticationDao {
+interface HabitWithNotificationDao {
     @Insert
     fun notification(notification: List<Notification>)
 

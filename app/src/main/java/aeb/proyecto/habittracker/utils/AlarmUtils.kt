@@ -1,7 +1,7 @@
 package aeb.proyecto.habittracker.utils
 
 import aeb.proyecto.habittracker.data.alarmManager.AlarmNotification
-import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
+import aeb.proyecto.room.model.NotificationWithName
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent

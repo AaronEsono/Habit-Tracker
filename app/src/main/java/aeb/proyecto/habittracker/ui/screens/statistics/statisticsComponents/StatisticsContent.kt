@@ -1,12 +1,11 @@
 package aeb.proyecto.habittracker.ui.screens.statistics.statisticsComponents
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.radioButton.RadioButtonStatistics
 import aeb.proyecto.habittracker.ui.screens.statistics.StatisticsViewModel
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import android.annotation.SuppressLint
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.relations.HabitWithDailyHabit
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
@@ -34,8 +33,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 

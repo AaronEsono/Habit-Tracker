@@ -1,9 +1,9 @@
 package aeb.proyecto.habittracker.ui.components.dailyHabit
 
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import aeb.proyecto.room.relations.HabitWithDailyHabit
 import android.annotation.SuppressLint
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable

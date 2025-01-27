@@ -1,7 +1,7 @@
 package aeb.proyecto.habittracker.ui.components.dialog
 
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.dailyHabit.CardDailyHabit
+import aeb.proyecto.room.relations.HabitWithDailyHabit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
 

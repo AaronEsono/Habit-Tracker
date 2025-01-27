@@ -2,22 +2,22 @@ package aeb.proyecto.habittracker.ui.screens.saveHabit
 
 import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.DailyHabit
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.Notification
 import aeb.proyecto.habittracker.data.model.data.FirestoreData
-import aeb.proyecto.habittracker.data.model.firestoreHabit.CompleteHabit
 import aeb.proyecto.habittracker.data.model.firestoreHabit.CompleteHabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.DailyHabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.HabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.NotificationCompressed
-import aeb.proyecto.habittracker.data.model.notification.NotificationWithName
-import aeb.proyecto.habittracker.data.repo.CompleteHabitRepo
 import aeb.proyecto.habittracker.utils.AuthResponse
 import aeb.proyecto.habittracker.utils.AuthResponseGetData
 import aeb.proyecto.habittracker.utils.AuthenticationManager
 import aeb.proyecto.habittracker.utils.FirestoreManager
 import aeb.proyecto.habittracker.utils.SharedState
+import aeb.proyecto.room.entities.DailyHabit
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.Notification
+import aeb.proyecto.room.model.NotificationWithName
+import aeb.proyecto.room.relations.EntireHabit
+import aeb.proyecto.room.repository.EntireHabitRepo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -26,7 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -43,7 +42,7 @@ import javax.inject.Inject
 class SaveHabitViewModel @Inject constructor(
     private val authenticationManager: AuthenticationManager,
     private val firestoreManager: FirestoreManager,
-    private val completeHabitRepo: CompleteHabitRepo,
+    private val completeHabitRepo: EntireHabitRepo,
     private val sharedState: SharedState,
     private val datastoreInterface: DatastoreInterface
 ):ViewModel() {
@@ -181,12 +180,12 @@ class SaveHabitViewModel @Inject constructor(
         datastoreInterface.setLastSearched(getCurrentId(), date)
     }
 
-    private fun decompressJsonFirestore(compressed: String): List<CompleteHabit> {
+    private fun decompressJsonFirestore(compressed: String): List<EntireHabit> {
         val decompressed = decompressJson(compressed)
         val habits = Gson().fromJson(decompressed, Array<CompleteHabitCompressed>::class.java).toList()
 
         val habitsComplete = habits.map { habitCompressed ->
-            CompleteHabit(
+            EntireHabit(
                 habit = Habit(name = habitCompressed.habit.name, description = habitCompressed.habit.description, color = habitCompressed.habit.color, icon = habitCompressed.habit.icon, times =  habitCompressed.habit.times, unit =  habitCompressed.habit.unit),
                 dailyHabits = habitCompressed.dailyHabits.map { DailyHabit(timesDone = it.timesDone, date =  it.date) }.toMutableList(),
                 notifications = habitCompressed.notifications.map { Notification(hour = it.hour, minute =  it.minute) }.toMutableList()
@@ -196,7 +195,7 @@ class SaveHabitViewModel @Inject constructor(
         return habitsComplete
     }
 
-    private fun jsonCompressed(habits:List<CompleteHabit>):String{
+    private fun jsonCompressed(habits:List<EntireHabit>):String{
 
         val filteredHabitsAndCompressed = habits.map { habit ->
             CompleteHabitCompressed(

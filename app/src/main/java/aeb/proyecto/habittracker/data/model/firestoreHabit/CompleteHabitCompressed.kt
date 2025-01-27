@@ -1,9 +1,5 @@
 package aeb.proyecto.habittracker.data.model.firestoreHabit
 
-import aeb.proyecto.habittracker.data.entities.DailyHabit
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.Notification
-
 data class CompleteHabitCompressed(
     val habit: HabitCompressed,
     val dailyHabits: List<DailyHabitCompressed>,

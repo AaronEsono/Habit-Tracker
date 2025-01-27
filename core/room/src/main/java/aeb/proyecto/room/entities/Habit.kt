@@ -1,4 +1,4 @@
-package aeb.proyecto.habittracker.data.entities
+package aeb.proyecto.room.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

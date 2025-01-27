@@ -1,11 +1,11 @@
 package aeb.proyecto.habittracker.ui.screens.statistics.statisticsComponents
 
-import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import aeb.proyecto.room.entities.Habit
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults

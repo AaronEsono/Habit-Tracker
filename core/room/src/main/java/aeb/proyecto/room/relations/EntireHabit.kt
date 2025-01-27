@@ -1,12 +1,12 @@
-package aeb.proyecto.habittracker.data.model.firestoreHabit
+package aeb.proyecto.room.relations
 
-import aeb.proyecto.habittracker.data.entities.DailyHabit
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.Notification
+import aeb.proyecto.room.entities.DailyHabit
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.Notification
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class CompleteHabit(
+data class EntireHabit(
     @Embedded val habit: Habit = Habit(),
     @Relation(
         parentColumn = "id",

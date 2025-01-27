@@ -1,30 +1,21 @@
 package aeb.proyecto.habittracker.ui.screens.statistics
 
-import aeb.proyecto.habittracker.data.entities.DailyHabit
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.model.state.BestStreak
-import aeb.proyecto.habittracker.data.model.state.DaysCompleted
 import aeb.proyecto.habittracker.data.model.state.StatisticsState
-import aeb.proyecto.habittracker.data.repo.DailyHabitRepo
-import aeb.proyecto.habittracker.data.repo.HabitRepo
 import aeb.proyecto.habittracker.utils.SharedState
-import android.util.Log
+import aeb.proyecto.room.entities.DailyHabit
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.repository.DailyHabitRepo
+import aeb.proyecto.room.repository.HabitRepo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,8 +1,6 @@
 package aeb.proyecto.habittracker.ui.components.bottomSheets
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.DailyHabit
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.buttons.CustomFilledButton
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarContent
 import aeb.proyecto.habittracker.ui.components.calendar.CalendarHeader
@@ -11,6 +9,7 @@ import aeb.proyecto.habittracker.ui.components.calendar.calendarComponents.Conte
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import aeb.proyecto.room.relations.HabitWithDailyHabit
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,7 +20,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color

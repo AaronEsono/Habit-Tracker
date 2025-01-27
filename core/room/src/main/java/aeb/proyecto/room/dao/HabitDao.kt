@@ -1,15 +1,11 @@
-package aeb.proyecto.habittracker.data.dao
+package aeb.proyecto.room.dao
 
-import aeb.proyecto.habittracker.data.entities.Habit
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
-import aeb.proyecto.habittracker.data.entities.HabitWithNotification
-import androidx.lifecycle.LiveData
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.relations.HabitWithDailyHabit
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao

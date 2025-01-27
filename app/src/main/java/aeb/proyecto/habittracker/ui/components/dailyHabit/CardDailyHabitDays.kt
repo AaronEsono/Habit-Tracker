@@ -1,7 +1,6 @@
 package aeb.proyecto.habittracker.ui.components.dailyHabit
 
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.entities.HabitWithDailyHabit
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.utils.Constans.visibleItems
@@ -9,6 +8,7 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing3
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
+import aeb.proyecto.room.relations.HabitWithDailyHabit
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing

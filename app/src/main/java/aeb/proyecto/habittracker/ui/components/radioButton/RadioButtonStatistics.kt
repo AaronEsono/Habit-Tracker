@@ -1,9 +1,9 @@
 package aeb.proyecto.habittracker.ui.components.radioButton
 
-import aeb.proyecto.habittracker.data.entities.Habit
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.utils.Dimmens.spacing10
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
+import aeb.proyecto.room.entities.Habit
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
