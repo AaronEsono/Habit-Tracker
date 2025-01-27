@@ -43,5 +43,9 @@ gradlePlugin {
             id = libs.plugins.habittracker.android.library.plugin.convention.get().pluginId
             implementationClass = "AndroidLibraryPluginConvention"
         }
+        register("testingPluginConvention"){
+            id = libs.plugins.habittracker.testing.plugin.convention.get().pluginId
+            implementationClass = "TestingPluginConvention"
+        }
     }
 }
