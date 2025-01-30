@@ -2,7 +2,7 @@ package aeb.proyecto.room.dao
 
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.Notification
-import aeb.proyecto.room.relations.HabitWithNotification
+import aeb.proyecto.room.entities.relations.HabitWithNotification
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -16,6 +16,18 @@ interface HabitWithNotificationDao {
 
     @Insert
     fun insertHabit(habit: Habit):Long
+
+    @Update
+    fun updateHabit(habit: Habit)
+
+    @Update
+    fun updateNotification(notification: List<Notification>)
+
+    @Query("DELETE FROM NOTIFICATION WHERE habitId = :id")
+    fun deleteNotifications(id:Long)
+
+    @Query("SELECT * FROM Notification where habitId = :id")
+    fun getNotificationById(id:Long):List<Notification>
 
     @Transaction
     @Query("SELECT * FROM Habit WHERE id = :habitId")
@@ -33,22 +45,10 @@ interface HabitWithNotificationDao {
         return habitInserted
     }
 
-    @Update
-    fun updateHabit(habit: Habit)
-
-    @Update
-    fun updateNotification(notification: List<Notification>)
-
-    @Query("DELETE FROM NOTIFICATION WHERE habitId = :id")
-    fun deleteNotifications(id:Long)
-
     @Transaction
     fun updateHabit(habit: Habit, notifications: List<Notification>){
         updateHabit(habit)
         deleteNotifications(habit.id)
         notification(notifications)
     }
-
-    @Query("SELECT * FROM Notification where habitId = :id")
-    fun getNotificationById(id:Long):List<Notification>
 }

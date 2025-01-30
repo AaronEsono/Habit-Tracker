@@ -2,7 +2,7 @@ package aeb.proyecto.room.repository
 
 import aeb.proyecto.room.dao.EntireHabitDao
 import aeb.proyecto.room.model.NotificationWithNameAndColor
-import aeb.proyecto.room.relations.EntireHabit
+import aeb.proyecto.room.entities.relations.EntireHabit
 import javax.inject.Inject
 
 class EntireHabitRepo @Inject constructor(

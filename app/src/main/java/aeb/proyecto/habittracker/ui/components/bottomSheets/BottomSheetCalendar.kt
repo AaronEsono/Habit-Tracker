@@ -9,7 +9,7 @@ import aeb.proyecto.habittracker.ui.components.calendar.calendarComponents.Conte
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing16
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import aeb.proyecto.room.relations.HabitWithDailyHabit
+import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

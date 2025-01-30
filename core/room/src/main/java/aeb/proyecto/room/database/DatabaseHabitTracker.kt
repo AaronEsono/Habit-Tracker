@@ -1,8 +1,7 @@
 package aeb.proyecto.room.database
 
-import aeb.proyecto.room.dao.DailyHabitDao
 import aeb.proyecto.room.dao.EntireHabitDao
-import aeb.proyecto.room.dao.HabitDao
+import aeb.proyecto.room.dao.HabitWithDailyHabitDao
 import aeb.proyecto.room.dao.HabitWithNotificationDao
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit
@@ -16,8 +15,7 @@ import androidx.room.RoomDatabase
     exportSchema = false
 )
 abstract class DatabaseHabitTracker : RoomDatabase() {
-    abstract fun habitDao(): HabitDao
-    abstract fun dailyHabitDao(): DailyHabitDao
     abstract fun habitWithNotificationDao(): HabitWithNotificationDao
     abstract fun entireDaoHabit(): EntireHabitDao
+    abstract fun habitWithDailyHabitDao(): HabitWithDailyHabitDao
 }

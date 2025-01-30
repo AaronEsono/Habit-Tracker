@@ -4,8 +4,7 @@ import aeb.proyecto.habittracker.data.model.state.StatisticsState
 import aeb.proyecto.habittracker.utils.SharedState
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit
-import aeb.proyecto.room.repository.DailyHabitRepo
-import aeb.proyecto.room.repository.HabitRepo
+import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
-    private val habitRepo: HabitRepo,
-    private val dailyHabitRepo: DailyHabitRepo,
+    private val habitWithDailyHabitRepo: HabitWithDailyHabitRepo,
     private val sharedState: SharedState
 ) : ViewModel() {
 
@@ -43,7 +41,7 @@ class StatisticsViewModel @Inject constructor(
     fun getHabits() = viewModelScope.launch(Dispatchers.IO) {
         setLoading()
 
-        _habits.value = habitRepo.getAllHabits()
+        _habits.value = habitWithDailyHabitRepo.getAllHabits()
         _loaded.value = true
 
         if(_habits.value.isEmpty()){
@@ -58,7 +56,7 @@ class StatisticsViewModel @Inject constructor(
         val habit = habits.value[0]
 
         _selectedDailyHabit.value = habit
-        _dailyHabits.value = dailyHabitRepo.getDailyHabits(habit.id)
+        _dailyHabits.value = habitWithDailyHabitRepo.getDailyHabits(habit.id)
 
         _statisticsState.update {
             StatisticsState(

@@ -1,4 +1,4 @@
-package aeb.proyecto.room.relations
+package aeb.proyecto.room.entities.relations
 
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit

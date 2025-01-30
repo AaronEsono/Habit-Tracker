@@ -26,11 +26,7 @@ object RoomModule {
 
     @Provides
     @Singleton
-    fun provideHabitDao(databaseHabit: DatabaseHabitTracker) = databaseHabit.habitDao()
-
-    @Provides
-    @Singleton
-    fun provideDailyHabitDao(databaseHabit: DatabaseHabitTracker) = databaseHabit.dailyHabitDao()
+    fun provideHabitWithDailyHabitDao(databaseHabit: DatabaseHabitTracker) = databaseHabit.habitWithDailyHabitDao()
 
     @Provides
     @Singleton

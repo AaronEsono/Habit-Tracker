@@ -5,8 +5,7 @@ import aeb.proyecto.habittracker.data.model.state.AddHabitScreenState
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.room.entities.Notification
-import aeb.proyecto.room.relations.HabitWithNotification
-import aeb.proyecto.room.repository.HabitRepo
+import aeb.proyecto.room.entities.relations.HabitWithNotification
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -29,7 +28,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AddHabitViewModel @Inject constructor(
     private val habitWithNotificacionRepo: HabitWithNotificacionRepo,
-    private val habitRepo: HabitRepo,
 ) : ViewModel() {
 
     private val _habit: MutableStateFlow<HabitWithNotification> =

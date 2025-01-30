@@ -16,7 +16,7 @@ import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.Notification
 import aeb.proyecto.room.model.NotificationWithNameAndColor
-import aeb.proyecto.room.relations.EntireHabit
+import aeb.proyecto.room.entities.relations.EntireHabit
 import aeb.proyecto.room.repository.EntireHabitRepo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

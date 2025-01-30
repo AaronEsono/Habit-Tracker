@@ -6,9 +6,8 @@ import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.SharedState
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit
-import aeb.proyecto.room.relations.HabitWithDailyHabit
-import aeb.proyecto.room.repository.DailyHabitRepo
-import aeb.proyecto.room.repository.HabitRepo
+import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
+import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -31,8 +30,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HabitsViewModel @Inject constructor(
-    private val habitRepo: HabitRepo,
-    private val dailyHabitRepo: DailyHabitRepo,
+    private val habitWithDailyHabitRepo: HabitWithDailyHabitRepo,
     private val habitWithNotification: HabitWithNotificacionRepo,
     private val sharedState: SharedState
 ) : ViewModel() {
@@ -41,7 +39,7 @@ class HabitsViewModel @Inject constructor(
         sharedState.setLoading()
     }
 
-    val habits: StateFlow<List<HabitWithDailyHabit>> = habitRepo.getHabits()
+    val habits: StateFlow<List<HabitWithDailyHabit>> = habitWithDailyHabitRepo.getHabits()
         .onEach { sharedState.setNeutral() }
         .onStart { delay(150) }
         .stateIn(
@@ -100,8 +98,8 @@ class HabitsViewModel @Inject constructor(
                 if (timesDone == maxTimes) hourFinishDate = LocalDateTime.now().toString()
             }
 
-            if (daily == null) dailyHabitRepo.insertDailyHabit(updatedDaily)
-            else dailyHabitRepo.updateDailyHabit(updatedDaily)
+            if (daily == null) habitWithDailyHabitRepo.insertDailyHabit(updatedDaily)
+            else habitWithDailyHabitRepo.updateDailyHabit(updatedDaily)
         }
 
     fun generalDxLogic(cancelNotificacions: (List<Long>) -> Unit) {
@@ -124,7 +122,7 @@ class HabitsViewModel @Inject constructor(
     }
 
     fun deleteHabit() = viewModelScope.launch(Dispatchers.IO) {
-        habitRepo.deleteHabit(habitSelected.value?.habit?.id ?: 1)
+        habitWithDailyHabitRepo.deleteHabit(habitSelected.value?.habit?.id ?: 1)
     }
 
     fun getRestSteps(id: Long, date: LocalDate? = null): Int {

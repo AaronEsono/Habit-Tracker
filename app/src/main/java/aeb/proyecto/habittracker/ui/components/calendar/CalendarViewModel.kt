@@ -4,7 +4,7 @@ import aeb.proyecto.habittracker.data.model.calendar.CalendarDataSource
 import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit
-import aeb.proyecto.room.relations.HabitWithDailyHabit
+import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

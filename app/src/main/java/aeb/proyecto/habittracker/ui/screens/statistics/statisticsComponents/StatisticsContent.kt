@@ -5,7 +5,7 @@ import aeb.proyecto.habittracker.ui.components.radioButton.RadioButtonStatistics
 import aeb.proyecto.habittracker.ui.screens.statistics.StatisticsViewModel
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
 import aeb.proyecto.room.entities.Habit
-import aeb.proyecto.room.relations.HabitWithDailyHabit
+import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn

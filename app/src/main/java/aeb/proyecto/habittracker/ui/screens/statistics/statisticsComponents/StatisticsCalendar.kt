@@ -9,7 +9,7 @@ import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import aeb.proyecto.room.relations.HabitWithDailyHabit
+import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

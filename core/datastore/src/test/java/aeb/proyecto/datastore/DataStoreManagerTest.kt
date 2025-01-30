@@ -42,7 +42,7 @@ class DataStoreManagerTest{
 
         //Then
         val value = dataStoreManager.themeMode.first()
-        assertEquals(value,1)
+        assertEquals(1,value)
         assertNotNull(value)
     }
 
@@ -56,7 +56,7 @@ class DataStoreManagerTest{
 
         //Then
         val value = dataStoreManager.getEmailPassword().email
-        assertEquals(value,"valueExample@gmail.com")
+        assertEquals("valueExample@gmail.com",value)
         assertNotNull(value)
     }
 
@@ -70,7 +70,7 @@ class DataStoreManagerTest{
 
         //Then
         val value = dataStoreManager.getEmailPassword().password
-        assertEquals(value,"passwordExample")
+        assertEquals("passwordExample",value)
         assertNotNull(value)
     }
 
@@ -84,9 +84,9 @@ class DataStoreManagerTest{
 
         //Then
         val value = dataStoreManager.getLastSearched()
-        assertEquals(value.uid,"uidExample")
-        assertEquals(value.date,"dateExample")
-        assertEquals(value.searched,true)
+        assertEquals("uidExample",value.uid)
+        assertEquals("dateExample",value.date)
+        assertEquals(true,value.searched)
 
         assertNotNull(value.uid)
         assertNotNull(value.date)
@@ -99,7 +99,7 @@ class DataStoreManagerTest{
         val value = dataStoreManager.themeMode.first()
 
         //Then
-        assertEquals(value,0)
+        assertEquals(0,value)
 
         assertNotNull(value)
     }
@@ -110,8 +110,8 @@ class DataStoreManagerTest{
         val value = dataStoreManager.getEmailPassword()
 
         //Then
-        assertEquals(value.email,"")
-        assertEquals(value.password,"")
+        assertEquals("",value.email)
+        assertEquals("",value.password)
 
         assertNotNull(value.email)
         assertNotNull(value.password)
@@ -123,9 +123,9 @@ class DataStoreManagerTest{
         val value = dataStoreManager.getLastSearched()
 
         //Then
-        assertEquals(value.uid,"")
-        assertEquals(value.date,"")
-        assertEquals(value.searched,false)
+        assertEquals("",value.uid)
+        assertEquals("",value.date)
+        assertEquals(false,value.searched)
 
         assertNotNull(value.uid)
         assertNotNull(value.date)
@@ -154,13 +154,13 @@ class DataStoreManagerTest{
         val lastSearchedValue = dataStoreManager.getLastSearched()
 
         //Then
-        assertEquals(emailValue,"")
-        assertEquals(passwordValue,"")
+        assertEquals("",emailValue)
+        assertEquals("",passwordValue)
 
         assertEquals(themeModeValue,1)
-        assertEquals(lastSearchedValue.uid,"uidExample")
-        assertEquals(lastSearchedValue.date,"dateExample")
-        assertEquals(lastSearchedValue.searched,true)
+        assertEquals("uidExample",lastSearchedValue.uid)
+        assertEquals("dateExample",lastSearchedValue.date)
+        assertEquals(true,lastSearchedValue.searched)
     }
 
     @Test
@@ -176,8 +176,8 @@ class DataStoreManagerTest{
         //Then
         val value = dataStoreManager.getEmailPassword().email
 
-        assertEquals(value,"newEmail@gmail.com")
-        assertNotEquals(value,"previousEmail@gmail.com")
+        assertEquals("newEmail@gmail.com",value)
+        assertNotEquals("previousEmail@gmail.com",value)
     }
 
     @Test
@@ -193,8 +193,8 @@ class DataStoreManagerTest{
         //Then
         val value = dataStoreManager.themeMode.first()
 
-        assertEquals(value,2)
-        assertNotEquals(value,1)
+        assertEquals(2,value)
+        assertNotEquals(1,value)
     }
 
     @Test
@@ -228,8 +228,8 @@ class DataStoreManagerTest{
         val email = dataStoreManager.getEmailPassword().email
         val themeMode = dataStoreManager.themeMode.first()
 
-        assertEquals(email == "previousEmail@gmail.com" || email == "newEmail@gmail.com", true)
-        assertEquals(themeMode == 1 || themeMode == 2, true)
+        assertEquals(true,email == "previousEmail@gmail.com" || email == "newEmail@gmail.com")
+        assertEquals(true,themeMode == 1 || themeMode == 2)
     }
 
     @Test
@@ -242,7 +242,7 @@ class DataStoreManagerTest{
 
         //Then
         val value = dataStoreManager.getEmailPassword().email
-        assertEquals(value,longEmail)
+        assertEquals(longEmail,value)
     }
 
     @Test
@@ -259,8 +259,8 @@ class DataStoreManagerTest{
         val secondValue = dataStoreManager.themeMode.first()
 
         //Then
-        assertEquals(firstValue,negativeThemeMode)
-        assertEquals(secondValue,largeThemeMode)
+        assertEquals(negativeThemeMode,firstValue)
+        assertEquals(largeThemeMode,secondValue)
     }
 
 }

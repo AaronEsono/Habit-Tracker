@@ -8,7 +8,7 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing3
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
-import aeb.proyecto.room.relations.HabitWithDailyHabit
+import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
