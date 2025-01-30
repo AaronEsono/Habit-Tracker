@@ -1,9 +1,9 @@
 package aeb.proyecto.room.model
 
-import aeb.proyecto.room.entities.Notification
-
 data class NotificationWithNameAndColor(
-    val notification: Notification,
+    val id:Long = 0,
+    val hour:Int = 0,
+    val minute:Int = 0,
     val name: String,
-    val colorInt: Int
+    val color: Int
 )

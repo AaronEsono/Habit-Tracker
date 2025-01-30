@@ -5,6 +5,8 @@ import aeb.proyecto.room.database.DatabaseHabitTracker
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
+import aeb.proyecto.room.utils.createDailyHabit
+import aeb.proyecto.room.utils.createHabit
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
@@ -322,30 +324,4 @@ class HabitWithDailyRepoTest {
     fun closeDatabase() {
         database.close()
     }
-
-    fun createDailyHabit(idHabit: Long = 0, timesDone: Int = 0, date: String = "prueba"):DailyHabit{
-        return DailyHabit(
-            idHabit = idHabit,
-            timesDone = timesDone,
-            date = date
-        )
-    }
-
-}
-
-fun createHabit(
-    name: String = "prueba",
-    description: String? = "prueba",
-    color: Int = 0,
-    icon: String = "prueba",
-    times: Int = 0,
-    unit: Int = 0
-): Habit {
-    return Habit(
-        name = name,
-        description = description,
-        color = color,
-        icon = icon,
-        times = times,
-    )
 }

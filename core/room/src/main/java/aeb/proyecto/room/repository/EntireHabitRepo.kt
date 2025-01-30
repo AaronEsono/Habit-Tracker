@@ -8,7 +8,6 @@ import javax.inject.Inject
 class EntireHabitRepo @Inject constructor(
     private val completeDaoHabit: EntireHabitDao
 ) {
-
     fun getAll():List<EntireHabit>{
         return completeDaoHabit.getAll()
     }
@@ -16,5 +15,4 @@ class EntireHabitRepo @Inject constructor(
     fun setData(data:List<EntireHabit>):List<NotificationWithNameAndColor>{
         return completeDaoHabit.setData(data)
     }
-
 }

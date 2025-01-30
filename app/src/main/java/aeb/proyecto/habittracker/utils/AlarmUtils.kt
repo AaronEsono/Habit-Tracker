@@ -20,8 +20,8 @@ fun setUpAlarm(context: Context, alarmItem: NotificationWithNameAndColor, repeat
 
     if (!repeated) {
         calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, alarmItem.notification.hour)
-            set(Calendar.MINUTE, alarmItem.notification.minute)
+            set(Calendar.HOUR_OF_DAY, alarmItem.hour)
+            set(Calendar.MINUTE, alarmItem.minute)
             set(Calendar.SECOND, 0)
         }.timeInMillis
 
@@ -34,7 +34,7 @@ fun setUpAlarm(context: Context, alarmItem: NotificationWithNameAndColor, repeat
 
     val pendingIntent = PendingIntent.getBroadcast(
         context,
-        alarmItem.notification.id.toInt(),
+        alarmItem.id.toInt(),
         intent,
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )

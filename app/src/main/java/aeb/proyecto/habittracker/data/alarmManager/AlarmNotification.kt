@@ -41,9 +41,9 @@ class AlarmNotification : BroadcastReceiver() {
         ){
 
             val flag = PendingIntent.FLAG_IMMUTABLE
-            val pendingIntent = PendingIntent.getActivity(context,data.notification.id.toInt(),intent,flag)
+            val pendingIntent = PendingIntent.getActivity(context,data.id.toInt(),intent,flag)
 
-            val color = Color(data.colorInt)
+            val color = Color(data.color)
 
             val notification = NotificationCompat.Builder(context, CHANNEL)
                 .setSmallIcon(R.drawable.ic_achievement)
@@ -54,7 +54,7 @@ class AlarmNotification : BroadcastReceiver() {
                 .build()
 
             val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
-            manager.notify(data.notification.id.toInt(),notification)
+            manager.notify(data.id.toInt(),notification)
         }
 
         setUpAlarm(context,data,true)

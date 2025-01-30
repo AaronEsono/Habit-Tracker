@@ -1,11 +1,10 @@
 package aeb.proyecto.room
 
-import aeb.proyecto.room.dao.HabitWithDailyHabitDao
 import aeb.proyecto.room.dao.HabitWithNotificationDao
 import aeb.proyecto.room.database.DatabaseHabitTracker
-import aeb.proyecto.room.entities.Notification
-import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
+import aeb.proyecto.room.utils.createHabit
+import aeb.proyecto.room.utils.createNotification
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
@@ -16,12 +15,12 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.After
-import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.Assert.*
-import javax.annotation.meta.When
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -201,13 +200,4 @@ class HabitWithNotificationTest {
     fun closeDatabase() {
         database.close()
     }
-
-    fun createNotification(hour:Int = 1, minute:Int = 30, habitId:Long = 1): Notification {
-        return Notification(
-            hour = hour,
-            minute = minute,
-            habitId = habitId
-        )
-    }
-
 }

@@ -37,8 +37,9 @@ interface HabitWithNotificationDao {
     fun insertHabitAndNotifications(habit: Habit, notifications: List<Notification>):Long{
         val habitInserted = insertHabit(habit)
 
-        val updatedNotifications = notifications.map { it.copy(habitId = habitInserted) }
-        insertNotifications(updatedNotifications)
+        if (notifications.isNotEmpty()) {
+            insertNotifications(notifications.map { it.copy(habitId = habitInserted) })
+        }
 
         return habitInserted
     }
@@ -49,7 +50,8 @@ interface HabitWithNotificationDao {
 
         deleteNotifications(habit.id)
 
-        val updatedNotifications = notifications.map { it.copy(habitId = habit.id) }
-        insertNotifications(updatedNotifications)
+        if (notifications.isNotEmpty()) {
+            insertNotifications(notifications.map { it.copy(habitId = habit.id) })
+        }
     }
 }

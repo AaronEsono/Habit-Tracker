@@ -305,7 +305,7 @@ fun AddHabitScreen(
                         }
 
                         notificationsInsert.forEach {
-                            setUpAlarm(context, NotificationWithNameAndColor(it, nameHabit.text.toString(), uiState.color.toArgb()))
+                            setUpAlarm(context, NotificationWithNameAndColor(name = nameHabit.text.toString(), color = uiState.color.toArgb()))
                         }
                         navigateToHabit()
                     }
