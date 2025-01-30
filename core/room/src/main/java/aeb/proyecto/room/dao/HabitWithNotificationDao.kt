@@ -12,7 +12,7 @@ import androidx.room.Update
 @Dao
 interface HabitWithNotificationDao {
     @Insert
-    fun notification(notification: List<Notification>)
+    fun insertNotifications(notification: List<Notification>)
 
     @Insert
     fun insertHabit(habit: Habit):Long
@@ -37,18 +37,19 @@ interface HabitWithNotificationDao {
     fun insertHabitAndNotifications(habit: Habit, notifications: List<Notification>):Long{
         val habitInserted = insertHabit(habit)
 
-        notifications.forEach {
-            it.habitId = habitInserted
-        }
+        val updatedNotifications = notifications.map { it.copy(habitId = habitInserted) }
+        insertNotifications(updatedNotifications)
 
-        notification(notifications)
         return habitInserted
     }
 
     @Transaction
     fun updateHabit(habit: Habit, notifications: List<Notification>){
         updateHabit(habit)
+
         deleteNotifications(habit.id)
-        notification(notifications)
+
+        val updatedNotifications = notifications.map { it.copy(habitId = habit.id) }
+        insertNotifications(updatedNotifications)
     }
 }

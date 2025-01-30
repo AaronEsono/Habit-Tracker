@@ -323,23 +323,6 @@ class HabitWithDailyRepoTest {
         database.close()
     }
 
-    fun createHabit(
-        name: String = "prueba",
-        description: String? = "prueba",
-        color: Int = 0,
-        icon: String = "prueba",
-        times: Int = 0,
-        unit: Int = 0
-    ): Habit {
-        return Habit(
-            name = name,
-            description = description,
-            color = color,
-            icon = icon,
-            times = times,
-        )
-    }
-
     fun createDailyHabit(idHabit: Long = 0, timesDone: Int = 0, date: String = "prueba"):DailyHabit{
         return DailyHabit(
             idHabit = idHabit,
@@ -348,4 +331,21 @@ class HabitWithDailyRepoTest {
         )
     }
 
+}
+
+fun createHabit(
+    name: String = "prueba",
+    description: String? = "prueba",
+    color: Int = 0,
+    icon: String = "prueba",
+    times: Int = 0,
+    unit: Int = 0
+): Habit {
+    return Habit(
+        name = name,
+        description = description,
+        color = color,
+        icon = icon,
+        times = times,
+    )
 }
