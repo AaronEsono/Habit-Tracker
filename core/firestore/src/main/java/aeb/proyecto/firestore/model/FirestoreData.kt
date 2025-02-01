@@ -1,4 +1,4 @@
-package aeb.proyecto.habittracker.data.model.data
+package aeb.proyecto.firestore.model
 
 import java.time.LocalDateTime
 

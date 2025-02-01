@@ -1,22 +1,20 @@
 package aeb.proyecto.habittracker.ui.screens.saveHabit
 
 import aeb.proyecto.datastore.DatastoreInterface
+import aeb.proyecto.firestore.AuthResponseFirestore
+import aeb.proyecto.firestore.FirestoreInterface
 import aeb.proyecto.habittracker.R
-import aeb.proyecto.habittracker.data.model.data.FirestoreData
 import aeb.proyecto.habittracker.data.model.firestoreHabit.CompleteHabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.DailyHabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.HabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.NotificationCompressed
-import aeb.proyecto.habittracker.utils.AuthResponse
-import aeb.proyecto.habittracker.utils.AuthResponseGetData
 import aeb.proyecto.habittracker.utils.AuthenticationManager
-import aeb.proyecto.habittracker.utils.FirestoreManager
 import aeb.proyecto.habittracker.utils.SharedState
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.Notification
-import aeb.proyecto.room.model.NotificationWithNameAndColor
 import aeb.proyecto.room.entities.relations.EntireHabit
+import aeb.proyecto.room.model.NotificationWithNameAndColor
 import aeb.proyecto.room.repository.EntireHabitRepo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,10 +39,10 @@ import javax.inject.Inject
 @HiltViewModel
 class SaveHabitViewModel @Inject constructor(
     private val authenticationManager: AuthenticationManager,
-    private val firestoreManager: FirestoreManager,
+    private val datastoreInterface: DatastoreInterface,
+    private val firestoreInterface: FirestoreInterface,
     private val completeHabitRepo: EntireHabitRepo,
     private val sharedState: SharedState,
-    private val datastoreInterface: DatastoreInterface
 ):ViewModel() {
 
     private val _date = MutableStateFlow<String?>(null)
@@ -76,8 +74,8 @@ class SaveHabitViewModel @Inject constructor(
                 if (!lastSearchedDataStore.searched || lastSearchedDataStore.uid != getCurrentId()) {
                     setLoading()
 
-                    firestoreManager.getData(getCurrentId()).onEach { response ->
-                        if(response is AuthResponseGetData.Success){
+                    firestoreInterface.getDataUser(getCurrentId()).onEach { response ->
+                        if(response is AuthResponseFirestore.Success){
                             val data = response.data
                             datastoreInterface.setLastSearched(getCurrentId(), data?.date.orEmpty())
                             _date.value = data?.date?.let { convertDateFormat(it) }
@@ -109,10 +107,10 @@ class SaveHabitViewModel @Inject constructor(
             val jsonCompressed = jsonCompressed(habits)
 
             //Subimos a firestore
-            val firestoreData = FirestoreData(habit = jsonCompressed)
+            val firestoreData = aeb.proyecto.firestore.model.FirestoreData(habit = jsonCompressed)
 
-            firestoreManager.saveData(firestoreData,getCurrentId()).onEach {
-                if(it is AuthResponse.Success){
+            firestoreInterface.saveDataUser(firestoreData,getCurrentId()).onEach {
+                if(it is AuthResponseFirestore.Success){
                     val date = LocalDateTime.now().toString()
                     setDatainDataStore(date)
                     _date.value = convertDateFormat(date)
@@ -132,8 +130,8 @@ class SaveHabitViewModel @Inject constructor(
             setLoading()
             closeGeneralDx()
 
-            firestoreManager.deleteData(getCurrentId()).onEach { response ->
-                if(response is AuthResponse.Success){
+            firestoreInterface.deleteDataUser(getCurrentId()).onEach { response ->
+                if(response is AuthResponseFirestore.Success){
                     setDatainDataStore("")
                     _date.value = ""
                     setNeutral()
@@ -155,8 +153,8 @@ class SaveHabitViewModel @Inject constructor(
         try {
             setLoading()
             closeGeneralDx()
-            firestoreManager.getData(getCurrentId()).onEach { response ->
-                if (response is AuthResponseGetData.Success) {
+            firestoreInterface.getDataUser(getCurrentId()).onEach { response ->
+                if (response is AuthResponseFirestore.Success) {
                     response.data?.let {
                         val dataRestored = decompressJsonFirestore(it.habit)
 

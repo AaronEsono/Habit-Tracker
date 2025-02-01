@@ -35,10 +35,4 @@ object FirebaseModule {
     ): AnalyticsManager {
         return AnalyticsManager(firebaseAnalytics)
     }
-
-    @Provides
-    @Singleton
-    fun provideFirestore():FirebaseFirestore{
-        return FirebaseFirestore.getInstance()
-    }
 }
