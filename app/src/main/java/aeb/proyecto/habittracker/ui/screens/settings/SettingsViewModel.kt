@@ -1,14 +1,12 @@
 package aeb.proyecto.habittracker.ui.screens.settings
 
+import aeb.proyecto.authentication.AuthResponseAuthentication
+import aeb.proyecto.authentication.AuthenticationManager
 import aeb.proyecto.datastore.DatastoreInterface
-import aeb.proyecto.habittracker.utils.AuthResponse
-import aeb.proyecto.habittracker.utils.AuthenticationManager
 import aeb.proyecto.habittracker.utils.SharedState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,14 +19,13 @@ class SettingsViewModel @Inject constructor(
 
     fun checkUser(onSaveScreen: () -> Unit, onImportScreen: () -> Unit) {
         setLoading()
-        authenticationManager.currentUser().onEach { result ->
-            setNeutral()
-            if (result is AuthResponse.Success) {
-                onSaveScreen()
-            } else {
-                onImportScreen()
-            }
-        }.launchIn(viewModelScope)
+
+        if (authenticationManager.currentUser() is AuthResponseAuthentication.Success)
+            onSaveScreen()
+        else
+            onImportScreen()
+
+        setNeutral()
     }
 
     private fun setLoading(){

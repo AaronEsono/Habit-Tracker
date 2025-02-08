@@ -1,4 +1,4 @@
-package aeb.proyecto.habittracker.utils
+package aeb.proyecto.analytics
 
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics

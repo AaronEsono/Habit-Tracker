@@ -8,7 +8,7 @@ import aeb.proyecto.habittracker.data.model.firestoreHabit.CompleteHabitCompress
 import aeb.proyecto.habittracker.data.model.firestoreHabit.DailyHabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.HabitCompressed
 import aeb.proyecto.habittracker.data.model.firestoreHabit.NotificationCompressed
-import aeb.proyecto.habittracker.utils.AuthenticationManager
+import aeb.proyecto.authentication.AuthenticationManager
 import aeb.proyecto.habittracker.utils.SharedState
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.Habit
@@ -24,8 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
@@ -150,6 +148,7 @@ class SaveHabitViewModel @Inject constructor(
         try {
             setLoading()
             closeGeneralDx()
+
             val response = firestoreInterface.getDataUser(getCurrentId())
                 if (response is AuthResponseFirestore.Success) {
                     response.data?.let {

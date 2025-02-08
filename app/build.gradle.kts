@@ -22,6 +22,8 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.room)
     implementation(projects.core.firestore)
+    implementation(projects.core.authentication)
+    implementation(projects.core.analytics)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
