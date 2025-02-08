@@ -74,7 +74,7 @@ class SaveHabitViewModel @Inject constructor(
                 if (!lastSearchedDataStore.searched || lastSearchedDataStore.uid != getCurrentId()) {
                     setLoading()
 
-                    firestoreInterface.getDataUser(getCurrentId()).onEach { response ->
+                    val response = firestoreInterface.getDataUser(getCurrentId())
                         if(response is AuthResponseFirestore.Success){
                             val data = response.data
                             datastoreInterface.setLastSearched(getCurrentId(), data?.date.orEmpty())
@@ -83,7 +83,6 @@ class SaveHabitViewModel @Inject constructor(
                         }else{
                             setError(R.string.error_invalid_default)
                         }
-                    }.launchIn(viewModelScope)
                 }else{
                     _date.value = lastSearchedDataStore.date?.let { if(it.isNotEmpty()) convertDateFormat(it) else null }
                 }
@@ -109,8 +108,8 @@ class SaveHabitViewModel @Inject constructor(
             //Subimos a firestore
             val firestoreData = aeb.proyecto.firestore.model.FirestoreData(habit = jsonCompressed)
 
-            firestoreInterface.saveDataUser(firestoreData,getCurrentId()).onEach {
-                if(it is AuthResponseFirestore.Success){
+            val response = firestoreInterface.saveDataUser(firestoreData,getCurrentId())
+                if(response is AuthResponseFirestore.Success){
                     val date = LocalDateTime.now().toString()
                     setDatainDataStore(date)
                     _date.value = convertDateFormat(date)
@@ -119,7 +118,6 @@ class SaveHabitViewModel @Inject constructor(
                 }else{
                     setError(R.string.error_invalid_default)
                 }
-            }.launchIn(viewModelScope)
         }catch (e:Exception){
             setError(R.string.error_invalid_default)
         }
@@ -130,7 +128,7 @@ class SaveHabitViewModel @Inject constructor(
             setLoading()
             closeGeneralDx()
 
-            firestoreInterface.deleteDataUser(getCurrentId()).onEach { response ->
+            val response = firestoreInterface.deleteDataUser(getCurrentId())
                 if(response is AuthResponseFirestore.Success){
                     setDatainDataStore("")
                     _date.value = ""
@@ -139,7 +137,6 @@ class SaveHabitViewModel @Inject constructor(
                 }else{
                     setError(R.string.error_invalid_default)
                 }
-            }.launchIn(viewModelScope)
         }catch (e:Exception){
             setError(R.string.error_invalid_default)
         }
@@ -153,7 +150,7 @@ class SaveHabitViewModel @Inject constructor(
         try {
             setLoading()
             closeGeneralDx()
-            firestoreInterface.getDataUser(getCurrentId()).onEach { response ->
+            val response = firestoreInterface.getDataUser(getCurrentId())
                 if (response is AuthResponseFirestore.Success) {
                     response.data?.let {
                         val dataRestored = decompressJsonFirestore(it.habit)
@@ -168,7 +165,6 @@ class SaveHabitViewModel @Inject constructor(
                 } else {
                     setError(R.string.error_invalid_default)
                 }
-            }.launchIn(viewModelScope)
         } catch (e: Exception) {
             setError(R.string.error_invalid_default)
         }

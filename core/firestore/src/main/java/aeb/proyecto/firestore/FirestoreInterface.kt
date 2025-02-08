@@ -5,9 +5,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface FirestoreInterface {
 
-    fun getDataUser(userId: String): Flow<AuthResponseFirestore>
+    suspend fun getDataUser(userId: String): AuthResponseFirestore
 
-    fun saveDataUser(data: FirestoreData, userId: String): Flow<AuthResponseFirestore>
+    suspend fun saveDataUser(data: FirestoreData, userId: String): AuthResponseFirestore
 
-    fun deleteDataUser(userId: String): Flow<AuthResponseFirestore>
+    suspend fun deleteDataUser(userId: String): AuthResponseFirestore
+
 }
