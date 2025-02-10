@@ -1,5 +1,6 @@
 package aeb.proyecto.habittracker.ui.screens.saveHabit
 
+import aeb.proyecto.authentication.AuthenticationInterface
 import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.firestore.AuthResponseFirestore
 import aeb.proyecto.firestore.FirestoreInterface
@@ -36,7 +37,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SaveHabitViewModel @Inject constructor(
-    private val authenticationManager: AuthenticationManager,
+    private val authenticationInterface: AuthenticationInterface,
     private val datastoreInterface: DatastoreInterface,
     private val firestoreInterface: FirestoreInterface,
     private val completeHabitRepo: EntireHabitRepo,
@@ -58,7 +59,7 @@ class SaveHabitViewModel @Inject constructor(
 
     private fun logOut(){
         try{
-            authenticationManager.logOut()
+            authenticationInterface.logOut()
         }catch (e:Exception){
             setError(R.string.error_invalid_default)
         }
@@ -91,7 +92,7 @@ class SaveHabitViewModel @Inject constructor(
     }
 
     fun getName():String{
-        return authenticationManager.getName()
+        return authenticationInterface.getName()
     }
 
     private fun saveData() = viewModelScope.launch(Dispatchers.IO){
@@ -141,7 +142,7 @@ class SaveHabitViewModel @Inject constructor(
     }
 
     fun getCurrentId():String{
-        return authenticationManager.getCurrentId()
+        return authenticationInterface.getCurrentId()
     }
 
     private fun restoreData() = viewModelScope.launch(Dispatchers.IO) {

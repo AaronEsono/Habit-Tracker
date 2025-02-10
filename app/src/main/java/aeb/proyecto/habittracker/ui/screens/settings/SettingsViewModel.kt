@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.screens.settings
 
 import aeb.proyecto.authentication.AuthResponseAuthentication
+import aeb.proyecto.authentication.AuthenticationInterface
 import aeb.proyecto.authentication.AuthenticationManager
 import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.habittracker.utils.SharedState
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val authenticationManager: AuthenticationManager,
+    private val authenticationInterface: AuthenticationInterface,
     private val sharedState: SharedState,
     private val datastoreInterface: DatastoreInterface
 ) : ViewModel() {
@@ -20,7 +21,7 @@ class SettingsViewModel @Inject constructor(
     fun checkUser(onSaveScreen: () -> Unit, onImportScreen: () -> Unit) {
         setLoading()
 
-        if (authenticationManager.currentUser() is AuthResponseAuthentication.Success)
+        if (authenticationInterface.currentUser() is AuthResponseAuthentication.Success)
             onSaveScreen()
         else
             onImportScreen()

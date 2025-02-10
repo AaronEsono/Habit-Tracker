@@ -2,7 +2,10 @@ package aeb.proyecto.authentication
 
 import aeb.proyecto.analytics.AnalyticsManager
 import aeb.proyecto.analytics.TypeEvent
+import aeb.proyecto.authentication.utils.ERROR_SEND_EMAIL
+import aeb.proyecto.authentication.utils.ERROR_UNVERIFIED_EMAIL
 import aeb.proyecto.authentication.utils.createNonce
+import aeb.proyecto.authentication.utils.treatException
 import android.content.Context
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
@@ -11,6 +14,7 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.userProfileChangeRequest
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,49 +28,50 @@ class AuthenticationManager @Inject constructor(
     @ApplicationContext private val context: Context,
     private val analyticsManager: AnalyticsManager,
     private val auth: FirebaseAuth
-) {
+):AuthenticationInterface {
 
-    suspend fun createAccountWithEmail(email: String, password: String): AuthResponseAuthentication {
+    override suspend fun createAccountWithEmail(email: String, password: String): AuthResponseAuthentication {
         try {
-            val response = auth.createUserWithEmailAndPassword(email,password).await()
+            val response = auth.createUserWithEmailAndPassword(email, password).await()
 
-            if(response.user?.isEmailVerified == true){
-                response.user?.let {
-                    val profileUpdates = userProfileChangeRequest {
-                        displayName = it.email
-                    }
-
-                    it.updateProfile(profileUpdates).await()
-                    it.sendEmailVerification().await()
-
-                    return AuthResponseAuthentication.Success
+            response.user?.let {
+                val profileUpdates = userProfileChangeRequest {
+                    displayName = it.email
                 }
-                return AuthResponseAuthentication.Error("Error al mandar el email?")
-            }else{
-                return AuthResponseAuthentication.Error("No verificado")
+
+                it.updateProfile(profileUpdates).await()
+                it.sendEmailVerification().await()
+
+                auth.signOut()
+                return AuthResponseAuthentication.Success
             }
-        }catch (e:Exception){
-            return AuthResponseAuthentication.Error(e.message.toString())
+
+            auth.signOut()
+            return AuthResponseAuthentication.Error(ERROR_SEND_EMAIL)
+        } catch (e: Exception) {
+            val error = treatException(e)
+            return AuthResponseAuthentication.Error(error)
         }
     }
 
-    suspend fun signInWithEmail(email: String, password: String): AuthResponseAuthentication {
+    override suspend fun signInWithEmail(email: String, password: String): AuthResponseAuthentication {
         return try {
             val response = auth.signInWithEmailAndPassword(email, password).await()
 
             if(response.user?.isEmailVerified == true){
                 AuthResponseAuthentication.Success
             }else{
-                AuthResponseAuthentication.Error("A")
+                AuthResponseAuthentication.Error(ERROR_UNVERIFIED_EMAIL)
             }
         }catch (e:Exception){
-            AuthResponseAuthentication.Error(e.message.toString())
+            val error = treatException(e)
+            AuthResponseAuthentication.Error(error)
         }
     }
 
-    fun signInWithGoogle(): Flow<AuthResponseAuthentication> = callbackFlow {
+    override fun signInWithGoogle(): Flow<AuthResponseAuthentication> = callbackFlow {
         val googleValidation = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
+            .setFilterByAuthorizedAccounts(true)
             .setServerClientId(context.getString(R.string.web_client_id))
             .setNonce(createNonce())
             .setAutoSelectEnabled(true)
@@ -119,7 +124,7 @@ class AuthenticationManager @Inject constructor(
         awaitClose()
     }
 
-    suspend fun resendEmail(): AuthResponseAuthentication {
+    override suspend fun resendEmail(): AuthResponseAuthentication {
         try {
             auth.currentUser?.sendEmailVerification()?.await()
             return AuthResponseAuthentication.Success
@@ -128,7 +133,7 @@ class AuthenticationManager @Inject constructor(
         }
     }
 
-    suspend fun forgotPassword(email: String): AuthResponseAuthentication {
+    override suspend fun forgotPassword(email: String): AuthResponseAuthentication {
         try {
             auth.sendPasswordResetEmail(email).await()
             return AuthResponseAuthentication.Success
@@ -137,20 +142,20 @@ class AuthenticationManager @Inject constructor(
         }
     }
 
-    fun logOut() {
+    override fun logOut() {
         auth.signOut()
     }
 
-    fun currentUser(): AuthResponseAuthentication {
+    override fun currentUser(): AuthResponseAuthentication {
         auth.currentUser?.let{ return AuthResponseAuthentication.Success }
             ?: return AuthResponseAuthentication.Error("No user found")
     }
 
-    fun getName(): String {
+    override fun getName(): String {
         return auth.currentUser?.email?.substringBefore("@") ?: ""
     }
 
-    fun getCurrentId(): String {
+    override fun getCurrentId(): String {
         return auth.currentUser?.uid ?: ""
     }
 }

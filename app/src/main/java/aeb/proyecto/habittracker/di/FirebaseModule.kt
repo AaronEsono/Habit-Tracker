@@ -23,12 +23,6 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseAuth(): FirebaseAuth {
-        return FirebaseAuth.getInstance()
-    }
-
-    @Provides
-    @Singleton
     fun provideAnalyticsManager(
         firebaseAnalytics: FirebaseAnalytics
     ): aeb.proyecto.analytics.AnalyticsManager {

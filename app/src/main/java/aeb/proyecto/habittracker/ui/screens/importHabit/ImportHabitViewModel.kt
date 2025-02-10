@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.screens.importHabit
 
 import aeb.proyecto.authentication.AuthResponseAuthentication
+import aeb.proyecto.authentication.AuthenticationInterface
 import aeb.proyecto.authentication.AuthenticationManager
 import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.datastore.model.EmailPassword
@@ -26,7 +27,7 @@ import javax.inject.Inject
 class ImportHabitViewModel @Inject constructor(
     private val sharedState: SharedState,
     private val datastoreInterface: DatastoreInterface,
-    private val authenticationManager: AuthenticationManager
+    private val authenticationInterface: AuthenticationInterface
 ) : ViewModel() {
 
 
@@ -81,7 +82,7 @@ class ImportHabitViewModel @Inject constructor(
     fun signInGoogle(navigate:() -> Unit){
         setLoading()
 
-        authenticationManager.signInWithGoogle().onEach {
+        authenticationInterface.signInWithGoogle().onEach {
             response -> handleSignInGoogle(response,navigate)
         }.launchIn(viewModelScope)
     }
@@ -89,21 +90,21 @@ class ImportHabitViewModel @Inject constructor(
     fun signIn(email: String, password: String, saveCredentials: Boolean, navigate: () -> Unit) = viewModelScope.launch {
         setLoading()
 
-        val response = authenticationManager.signInWithEmail(email, password)
+        val response = authenticationInterface.signInWithEmail(email, password)
         handleSignIn(response, email, password, saveCredentials, navigate)
     }
 
     fun signUp(email: String, password: String) = viewModelScope.launch {
         setLoading()
 
-        val response = authenticationManager.createAccountWithEmail(email, password)
+        val response = authenticationInterface.createAccountWithEmail(email, password)
         handleSignUp(response)
     }
 
     fun resendEmail(showToast: () -> Unit) = viewModelScope.launch {
         setLoading()
 
-        val response = authenticationManager.resendEmail()
+        val response = authenticationInterface.resendEmail()
         handleResendEmail(response){
             showToast()
         }
@@ -112,7 +113,7 @@ class ImportHabitViewModel @Inject constructor(
     fun forgotPassword(email: String,showToast: () -> Unit) = viewModelScope.launch {
         setLoading()
 
-        val response = authenticationManager.forgotPassword(email)
+        val response = authenticationInterface.forgotPassword(email)
         handleForgotPassword(response){
             showToast()
         }
