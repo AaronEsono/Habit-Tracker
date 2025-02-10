@@ -2,6 +2,7 @@ package aeb.proyecto.authentication
 
 import aeb.proyecto.analytics.AnalyticsManager
 import aeb.proyecto.analytics.TypeEvent
+import aeb.proyecto.authentication.utils.ERROR_NO_USER_FOUND
 import aeb.proyecto.authentication.utils.ERROR_SEND_EMAIL
 import aeb.proyecto.authentication.utils.ERROR_UNVERIFIED_EMAIL
 import aeb.proyecto.authentication.utils.createNonce
@@ -74,7 +75,7 @@ class AuthenticationManager @Inject constructor(
             .setFilterByAuthorizedAccounts(true)
             .setServerClientId(context.getString(R.string.web_client_id))
             .setNonce(createNonce())
-            .setAutoSelectEnabled(true)
+            .setAutoSelectEnabled(false)
             .build()
 
         val request = GetCredentialRequest.Builder()
@@ -129,7 +130,8 @@ class AuthenticationManager @Inject constructor(
             auth.currentUser?.sendEmailVerification()?.await()
             return AuthResponseAuthentication.Success
         }catch (e:Exception){
-            return AuthResponseAuthentication.Error(e.message.toString())
+            val error = treatException(e)
+            return AuthResponseAuthentication.Error(error)
         }
     }
 
@@ -138,7 +140,8 @@ class AuthenticationManager @Inject constructor(
             auth.sendPasswordResetEmail(email).await()
             return AuthResponseAuthentication.Success
         }catch (e:Exception){
-            return AuthResponseAuthentication.Error(e.message.toString())
+            val error = treatException(e)
+            return AuthResponseAuthentication.Error(error)
         }
     }
 
@@ -147,8 +150,9 @@ class AuthenticationManager @Inject constructor(
     }
 
     override fun currentUser(): AuthResponseAuthentication {
-        auth.currentUser?.let{ return AuthResponseAuthentication.Success }
-            ?: return AuthResponseAuthentication.Error("No user found")
+        auth.currentUser?.let{
+            return AuthResponseAuthentication.Success
+        } ?: return AuthResponseAuthentication.Error(ERROR_NO_USER_FOUND)
     }
 
     override fun getName(): String {
