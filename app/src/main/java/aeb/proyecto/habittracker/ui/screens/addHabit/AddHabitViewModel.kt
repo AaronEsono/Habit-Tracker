@@ -6,6 +6,7 @@ import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.room.entities.Notification
 import aeb.proyecto.room.entities.relations.HabitWithNotification
+import aeb.proyecto.room.model.NotificationWithNameAndColor
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -27,7 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddHabitViewModel @Inject constructor(
-    private val habitWithNotificacionRepo: HabitWithNotificacionRepo,
+    private val habitWithNotificationRepo: HabitWithNotificacionRepo,
 ) : ViewModel() {
 
     private val _habit: MutableStateFlow<HabitWithNotification> =
@@ -49,8 +50,8 @@ class AddHabitViewModel @Inject constructor(
         name: String,
         description: String?,
         times: String,
-        edit: Boolean,
-        done: (List<Notification>,List<Long>) -> Unit
+        idHabit: Long?,
+        done: (List<NotificationWithNameAndColor>,List<Long>) -> Unit
     ) = viewModelScope.launch(Dispatchers.IO) {
         val habitUpt = _habit.value
         var id = _habit.value.habit.id
@@ -65,17 +66,14 @@ class AddHabitViewModel @Inject constructor(
             icon = uiState.value.icon.name.split(".")[1]
         )
 
-        if (!edit){
-            id = habitWithNotificacionRepo.insertHabit(habitUpt.habit, notifications.value)
+        if (idHabit == -1L){
+            id = habitWithNotificationRepo.insertHabit(habitUpt.habit, notifications.value)
         }
         else {
-            habitWithNotificacionRepo.updateHabit(habitUpt.habit, notifications.value)
+            habitWithNotificationRepo.updateHabit(habitUpt.habit, notifications.value)
         }
 
-        val notificationsWithId = habitWithNotificacionRepo.getNotificationById(id)
-
-        Log.d("notificationsWithId", notificationsWithId.toString())
-        Log.d("notificationsWithIdCancel", _notificationsCancel.value.toString())
+        val notificationsWithId = habitWithNotificationRepo.getAllNotificationsWithId(id)
 
         withContext(Dispatchers.Main) { done(notificationsWithId, _notificationsCancel.value) }
     }
@@ -108,7 +106,7 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
-    fun deleteNotificacion(notification: Notification) {
+    fun deleteNotification(notification: Notification) {
         _notifications.update { currentState ->
             currentState.filter { it != notification }
         }
@@ -140,7 +138,7 @@ class AddHabitViewModel @Inject constructor(
 
     fun getHabit(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            _habit.value = habitWithNotificacionRepo.getHabitById(id)
+            _habit.value = habitWithNotificationRepo.getHabitById(id)
             _notifications.value = _habit.value.notifications
 
             _notificationsCancel.value = _notifications.value.map { it.id }

@@ -75,7 +75,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 fun AddHabitScreen(
     addHabitViewModel: AddHabitViewModel = hiltViewModel(),
     navigateToHabit: () -> Unit,
-    edit: Boolean = false,
     id: Long? = null
 ) {
     val habit = addHabitViewModel.habit.collectAsState().value
@@ -87,7 +86,6 @@ fun AddHabitScreen(
     val timesHabit = rememberTextFieldState("")
 
     val context = LocalContext.current
-    val interactionSource = remember { MutableInteractionSource() }
 
     val wasFilledName = remember { mutableStateOf(false) }
     val wasFilledTimes = remember { mutableStateOf(false) }
@@ -96,7 +94,7 @@ fun AddHabitScreen(
     if (timesHabit.text.isNotEmpty()) wasFilledTimes.value = true
 
     LaunchedEffect(Unit) {
-        if (edit && id != null) {
+        if (id != -1L && id != null) {
             addHabitViewModel.getHabit(id)
         }
     }
@@ -282,7 +280,7 @@ fun AddHabitScreen(
         }
 
         CustomFilledButton(
-            title = if (edit) R.string.buttons_edit else R.string.buttons_save,
+            title = if (id != -1L) R.string.buttons_edit else R.string.buttons_save,
             icon = R.drawable.ic_check,
             color = uiState.color,
             modifier = Modifier
@@ -298,14 +296,14 @@ fun AddHabitScreen(
                         nameHabit.text.toString(),
                         descriptionHabit.text.toString(),
                         timesHabit.text.toString(),
-                        edit
+                        id
                     ) { notificationsInsert, cancel ->
-                        if (edit) {
+                        if (id != -1L) {
                             cancel.forEach { cancelAlarm(context, it) }
                         }
 
                         notificationsInsert.forEach {
-                            setUpAlarm(context, NotificationWithNameAndColor(name = nameHabit.text.toString(), color = uiState.color.toArgb()))
+                            setUpAlarm(context, it)
                         }
                         navigateToHabit()
                     }

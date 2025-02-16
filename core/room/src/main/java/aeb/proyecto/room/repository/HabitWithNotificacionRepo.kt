@@ -4,6 +4,7 @@ import aeb.proyecto.room.dao.HabitWithNotificationDao
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.Notification
 import aeb.proyecto.room.entities.relations.HabitWithNotification
+import aeb.proyecto.room.model.NotificationWithNameAndColor
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,6 +27,10 @@ class HabitWithNotificacionRepo @Inject constructor(
 
     fun getNotificationById(id:Long):List<Notification>{
         return habitWithNotificationDao.getNotificationById(id)
+    }
+
+    fun getAllNotificationsWithId(id:Long):List<NotificationWithNameAndColor>{
+        return habitWithNotificationDao.getAllNotificationswithId(id)
     }
 
 }

@@ -19,6 +19,7 @@ import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.utils.AppState
 import aeb.proyecto.habittracker.utils.Constans.permissions
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -207,7 +208,7 @@ fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostContro
         Habits::class.qualifiedName -> {
             title = TopbarSetUp(R.string.topbar_habit, listOf(
                 ActionIcon(R.drawable.ic_add) {
-                    navController.navigate(AddHabit(edit = false, id = null))
+                    navController.navigate(AddHabit(id = -1))
                 }
             ))
         }
@@ -229,8 +230,8 @@ fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostContro
         }
 
         AddHabit::class.qualifiedName -> {
-            val edit = navController.currentBackStackEntry?.arguments?.getBoolean("edit") ?: true
-            val titleText = if (edit) R.string.tobbar_add_habit_true else R.string.topbar_add_habit
+            val idHabit = navController.currentBackStackEntry?.arguments?.getLong("id")
+            val titleText = if(idHabit == -1L) R.string.topbar_add_habit else R.string.tobbar_add_habit_true
 
             title = TopbarSetUp(titleText, listOf())
         }

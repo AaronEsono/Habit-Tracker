@@ -84,7 +84,7 @@ fun AddHabitNotifications(
                 indication = null,
                 interactionSource = interactionSource
             ) {
-                addHabitViewModel.deleteNotificacion(notification)
+                addHabitViewModel.deleteNotification(notification)
             }
         )
     }

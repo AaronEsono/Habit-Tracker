@@ -3,6 +3,7 @@ package aeb.proyecto.room.dao
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.Notification
 import aeb.proyecto.room.entities.relations.HabitWithNotification
+import aeb.proyecto.room.model.NotificationWithNameAndColor
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -22,6 +23,14 @@ interface HabitWithNotificationDao {
 
     @Update
     fun updateNotification(notification: List<Notification>)
+
+    @Query("""
+        SELECT Notification.id AS id, Notification.hour AS hour, Notification.minute AS minute, Habit.name AS name, Habit.color AS color
+        FROM Notification
+        INNER JOIN Habit ON Notification.habitId = Habit.id
+        WHERE Habit.id = :id
+    """)
+    fun getAllNotificationswithId(id:Long):List<NotificationWithNameAndColor>
 
     @Query("DELETE FROM NOTIFICATION WHERE habitId = :id")
     fun deleteNotifications(id:Long)

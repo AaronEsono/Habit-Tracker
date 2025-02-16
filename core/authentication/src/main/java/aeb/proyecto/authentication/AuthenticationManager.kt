@@ -1,11 +1,9 @@
 package aeb.proyecto.authentication
 
 import aeb.proyecto.analytics.AnalyticsManager
-import aeb.proyecto.analytics.TypeEvent
 import aeb.proyecto.authentication.utils.ERROR_NO_USER_FOUND
 import aeb.proyecto.authentication.utils.ERROR_SEND_EMAIL
 import aeb.proyecto.authentication.utils.ERROR_UNVERIFIED_EMAIL
-import aeb.proyecto.authentication.utils.createNonce
 import aeb.proyecto.authentication.utils.treatException
 import android.content.Context
 import androidx.credentials.CredentialManager
@@ -15,7 +13,6 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.userProfileChangeRequest
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,6 +20,8 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.security.MessageDigest
+import java.util.UUID
 import javax.inject.Inject
 
 class AuthenticationManager @Inject constructor(
@@ -72,29 +71,31 @@ class AuthenticationManager @Inject constructor(
 
     override fun signInWithGoogle(): Flow<AuthResponseAuthentication> = callbackFlow {
         val googleValidation = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(true)
-            .setServerClientId(context.getString(R.string.web_client_id))
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId("294221999821-bnpi678gbeoeinrhcshrhgd5ukv898i7.apps.googleusercontent.com")
             .setNonce(createNonce())
-            .setAutoSelectEnabled(false)
+            .setAutoSelectEnabled(true)
             .build()
 
         val request = GetCredentialRequest.Builder()
             .addCredentialOption(googleValidation)
             .build()
 
-        try {
+        try{
             val credentialManager = CredentialManager.create(context)
+
             val result = credentialManager.getCredential(
-                request = request,
-                context = context
+                context = context,
+                request = request
             )
 
             val credential = result.credential
-            if (credential is CustomCredential) {
-                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+
+            if(credential is CustomCredential){
+                if(credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL){
                     try {
-                        val googleIdTokenCredential =
-                            GoogleIdTokenCredential.createFrom(credential.data)
+                        val googleIdTokenCredential = GoogleIdTokenCredential
+                            .createFrom(credential.data)
 
                         val firebaseCredential = GoogleAuthProvider.getCredential(
                             googleIdTokenCredential.idToken,
@@ -102,25 +103,26 @@ class AuthenticationManager @Inject constructor(
                         )
 
                         auth.signInWithCredential(firebaseCredential)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
+                            .addOnCompleteListener {
+                                if(it.isSuccessful){
                                     trySend(AuthResponseAuthentication.Success)
-                                } else {
-                                    trySend(AuthResponseAuthentication.Error(task.exception?.message.toString()))
+                                }else{
+                                    val error = treatException(it.exception!!)
+                                    trySend(AuthResponseAuthentication.Error(error))
                                 }
                             }
 
-                    } catch (e: GoogleIdTokenParsingException) {
-                        trySend(AuthResponseAuthentication.Error(e.message.toString()))
+                    }catch (e:GoogleIdTokenParsingException){
+                        val error = treatException(e)
+                        trySend(AuthResponseAuthentication.Error(error))
                     }
                 }
             }
-
-
-        } catch (e: Exception) {
-            trySend(AuthResponseAuthentication.Error(e.message.toString()))
-            analyticsManager.logEvent(TypeEvent.error(e.message.toString()))
+        }catch (e:Exception){
+            val error = treatException(e)
+            trySend(AuthResponseAuthentication.Error(error))
         }
+
 
         awaitClose()
     }
@@ -161,6 +163,14 @@ class AuthenticationManager @Inject constructor(
 
     override fun getCurrentId(): String {
         return auth.currentUser?.uid ?: ""
+    }
+
+    private fun createNonce(): String {
+        val rawNonce = UUID.randomUUID().toString()
+        val bytes = rawNonce.toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        return digest.fold("") { str, it -> str + "%02x".format(it) }
     }
 }
 

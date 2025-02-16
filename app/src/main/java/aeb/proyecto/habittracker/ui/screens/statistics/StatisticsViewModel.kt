@@ -43,6 +43,11 @@ class StatisticsViewModel @Inject constructor(
 
         _habits.value = habitWithDailyHabitRepo.getAllHabits()
         _loaded.value = true
+        _selectedDailyHabit.value = _habits.value.firstOrNull()
+
+        if(_selectedDailyHabit.value != null){
+            getDailyHabits()
+        }
 
         if(_habits.value.isEmpty()){
             setNeutral()
@@ -53,10 +58,7 @@ class StatisticsViewModel @Inject constructor(
         setLoading()
         _statisticsState.value = null
 
-        val habit = habits.value[0]
-
-        _selectedDailyHabit.value = habit
-        _dailyHabits.value = habitWithDailyHabitRepo.getDailyHabits(habit.id)
+        _dailyHabits.value = habitWithDailyHabitRepo.getDailyHabits(_selectedDailyHabit.value?.id ?: 0)
 
         _statisticsState.update {
             StatisticsState(

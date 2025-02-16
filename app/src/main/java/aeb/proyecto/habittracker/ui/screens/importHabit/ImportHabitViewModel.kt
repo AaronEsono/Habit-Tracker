@@ -2,7 +2,6 @@ package aeb.proyecto.habittracker.ui.screens.importHabit
 
 import aeb.proyecto.authentication.AuthResponseAuthentication
 import aeb.proyecto.authentication.AuthenticationInterface
-import aeb.proyecto.authentication.AuthenticationManager
 import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.datastore.model.EmailPassword
 import aeb.proyecto.habittracker.R
