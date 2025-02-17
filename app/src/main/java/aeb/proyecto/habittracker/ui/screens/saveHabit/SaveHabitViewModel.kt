@@ -179,8 +179,10 @@ class SaveHabitViewModel @Inject constructor(
         val habits = Gson().fromJson(decompressed, Array<CompleteHabitCompressed>::class.java).toList()
 
         val habitsComplete = habits.map { habitCompressed ->
+            val description = if(habitCompressed.habit.description.isNullOrEmpty()) null else habitCompressed.habit.description
+
             EntireHabit(
-                habit = Habit(name = habitCompressed.habit.name, description = habitCompressed.habit.description, color = habitCompressed.habit.color, icon = habitCompressed.habit.icon, times =  habitCompressed.habit.times, unit =  habitCompressed.habit.unit),
+                habit = Habit(name = habitCompressed.habit.name, description = description, color = habitCompressed.habit.color, icon = habitCompressed.habit.icon, times =  habitCompressed.habit.times, unit =  habitCompressed.habit.unit),
                 dailyHabits = habitCompressed.dailyHabits.map { DailyHabit(timesDone = it.timesDone, date =  it.date) }.toMutableList(),
                 notifications = habitCompressed.notifications.map { Notification(hour = it.hour, minute =  it.minute) }.toMutableList()
             )

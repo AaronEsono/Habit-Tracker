@@ -72,7 +72,7 @@ class AuthenticationManager @Inject constructor(
     override fun signInWithGoogle(): Flow<AuthResponseAuthentication> = callbackFlow {
         val googleValidation = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
-            .setServerClientId("294221999821-bnpi678gbeoeinrhcshrhgd5ukv898i7.apps.googleusercontent.com")
+            .setServerClientId("")
             .setNonce(createNonce())
             .setAutoSelectEnabled(true)
             .build()
