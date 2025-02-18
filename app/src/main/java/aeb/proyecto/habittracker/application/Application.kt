@@ -1,10 +1,9 @@
-package aeb.proyecto.habittracker.di
+package aeb.proyecto.habittracker.application
 
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
 import dagger.hilt.android.HiltAndroidApp
 
 

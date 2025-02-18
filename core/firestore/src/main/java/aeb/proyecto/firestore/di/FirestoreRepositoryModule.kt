@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 abstract class FirestoreRepositoryModule {
 
     @Binds
-    internal abstract fun bindDatastoreInterface(
+    internal abstract fun bindFirestoreManager(
         firestoreManager: FirestoreManager
     ): FirestoreInterface
 }

@@ -1,9 +1,8 @@
-package aeb.proyecto.habittracker.di
+package aeb.proyecto.analytics.di
 
 import aeb.proyecto.analytics.AnalyticsManager
 import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +12,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object FirebaseModule {
+object AnalyticsModule {
 
     @Provides
     @Singleton
@@ -25,7 +24,7 @@ object FirebaseModule {
     @Singleton
     fun provideAnalyticsManager(
         firebaseAnalytics: FirebaseAnalytics
-    ): aeb.proyecto.analytics.AnalyticsManager {
-        return aeb.proyecto.analytics.AnalyticsManager(firebaseAnalytics)
+    ): AnalyticsManager {
+        return AnalyticsManager(firebaseAnalytics)
     }
 }
