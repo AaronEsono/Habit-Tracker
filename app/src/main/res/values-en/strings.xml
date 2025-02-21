@@ -180,9 +180,6 @@
     <string name="settings_screen_card_dark_alt">Dark Blue</string>
     <string name="settings_screen_card_light_alt">Light Cream</string>
 
-    <!-- Notification -->
-    <string name="notification_subtitle">It’s time to do the habit %1$s</string>
-
     <!-- Days -->
     <string name="day_1">Mon</string>
     <string name="day_2">Tue</string>

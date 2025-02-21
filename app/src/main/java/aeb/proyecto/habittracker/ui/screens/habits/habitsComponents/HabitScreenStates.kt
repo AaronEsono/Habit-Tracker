@@ -7,7 +7,6 @@ import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetChoseStep
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.dialog.DialogHabit
 import aeb.proyecto.habittracker.ui.screens.habits.HabitsViewModel
-import aeb.proyecto.habittracker.utils.cancelAlarm
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
@@ -44,7 +43,7 @@ fun HabitScreenStates(
             onAccept = {
                 habitsViewModel.generalDxLogic() { id ->
                     id.forEach {
-                        cancelAlarm(context, it)
+                        //cancelAlarm(context, it)
                     }
                 }
             }

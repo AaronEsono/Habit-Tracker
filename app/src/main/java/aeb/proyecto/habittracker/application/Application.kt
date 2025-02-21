@@ -1,14 +1,13 @@
 package aeb.proyecto.habittracker.application
 
+import aeb.proyecto.alarmmanager.constants.CHANNEL
+import aeb.proyecto.alarmmanager.constants.NAME
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import dagger.hilt.android.HiltAndroidApp
 
-
-const val CHANNEL = "CHANNEL2"
-const val NAME = "NAME"
 
 @HiltAndroidApp
 class MyApplication : Application(){

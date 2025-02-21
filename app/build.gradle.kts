@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.core.firestore)
     implementation(projects.core.authentication)
     implementation(projects.core.analytics)
+    implementation(projects.core.alarmManager)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

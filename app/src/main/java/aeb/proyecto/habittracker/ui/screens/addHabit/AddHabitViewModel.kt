@@ -4,11 +4,10 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.state.AddHabitScreenState
 import aeb.proyecto.habittracker.ui.components.dailyHabit.iconByName
 import aeb.proyecto.habittracker.utils.Constans
+import aeb.proyecto.alarmmanager.NotificationUtils
 import aeb.proyecto.room.entities.Notification
 import aeb.proyecto.room.entities.relations.HabitWithNotification
-import aeb.proyecto.room.model.NotificationWithNameAndColor
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
@@ -29,6 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddHabitViewModel @Inject constructor(
     private val habitWithNotificationRepo: HabitWithNotificacionRepo,
+    private val notificationUtils: NotificationUtils
 ) : ViewModel() {
 
     private val _habit: MutableStateFlow<HabitWithNotification> =
@@ -51,7 +51,7 @@ class AddHabitViewModel @Inject constructor(
         description: String?,
         times: String,
         idHabit: Long?,
-        done: (List<NotificationWithNameAndColor>,List<Long>) -> Unit
+        done: () -> Unit
     ) = viewModelScope.launch(Dispatchers.IO) {
         val habitUpt = _habit.value
         var id = _habit.value.habit.id
@@ -75,7 +75,15 @@ class AddHabitViewModel @Inject constructor(
 
         val notificationsWithId = habitWithNotificationRepo.getAllNotificationsWithId(id)
 
-        withContext(Dispatchers.Main) { done(notificationsWithId, _notificationsCancel.value) }
+        _notificationsCancel.value.forEach {
+            notificationUtils.cancelAlarm(it)
+        }
+
+        notificationsWithId.forEach {
+            notificationUtils.setUpAlarm(it,false)
+        }
+
+        withContext(Dispatchers.Main){done()}
     }
 
     fun insertNotification(notification: Notification) {

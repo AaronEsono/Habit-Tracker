@@ -41,6 +41,7 @@ appcompat = "1.7.0"
 material = "1.12.0"
 coreKtxVersion = "1.6.1"
 uiGraphicsAndroid = "1.7.6"
+firebaseDatabaseCollection = "18.0.1"
 
 [libraries]
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -96,6 +97,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
+firebase-database-collection = { group = "com.google.firebase", name = "firebase-database-collection", version.ref = "firebaseDatabaseCollection" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

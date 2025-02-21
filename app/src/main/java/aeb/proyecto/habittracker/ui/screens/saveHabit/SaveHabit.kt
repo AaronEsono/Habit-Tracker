@@ -2,7 +2,6 @@ package aeb.proyecto.habittracker.ui.screens.saveHabit
 
 import aeb.proyecto.habittracker.ui.screens.saveHabit.saveHabitComponents.SaveHabitScreen
 import aeb.proyecto.habittracker.ui.screens.saveHabit.saveHabitComponents.SaveHabitScreenStates
-import aeb.proyecto.habittracker.utils.setUpAlarm
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -42,7 +41,7 @@ fun SaveHabit(
     LaunchedEffect (stateSaveHabit.setNotifications){
         if(stateSaveHabit.setNotifications){
             saveHabitViewModel.notificationsWithNames.value.forEach { notification ->
-                setUpAlarm(context,notification)
+                //setUpAlarm(context,notification)
             }
         }
         saveHabitViewModel.setNotifications(false)

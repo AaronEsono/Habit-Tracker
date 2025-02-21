@@ -18,19 +18,14 @@ import aeb.proyecto.habittracker.utils.Dimmens.spacing2
 import aeb.proyecto.habittracker.utils.Dimmens.spacing4
 import aeb.proyecto.habittracker.utils.Dimmens.spacing72
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import aeb.proyecto.habittracker.utils.cancelAlarm
-import aeb.proyecto.habittracker.utils.setUpAlarm
-import aeb.proyecto.room.model.NotificationWithNameAndColor
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,7 +52,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -297,19 +291,11 @@ fun AddHabitScreen(
                         descriptionHabit.text.toString(),
                         timesHabit.text.toString(),
                         id
-                    ) { notificationsInsert, cancel ->
-                        if (id != -1L) {
-                            cancel.forEach { cancelAlarm(context, it) }
-                        }
-
-                        notificationsInsert.forEach {
-                            setUpAlarm(context, it)
-                        }
+                    ) {
                         navigateToHabit()
                     }
                 }
             }
-
         )
 
         AddHabitScreenState(addHabitViewModel, uiState)
