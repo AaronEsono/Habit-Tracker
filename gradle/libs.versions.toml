@@ -119,3 +119,4 @@ habittracker-firebase-base-plugin-convention = {id = "habittracker-firebase-base
 habittracker-datastore-plugin-convention = {id = "habittracker-datastore-plugin-convention"}
 habittracker-android-library-plugin-convention = {id = "habittracker-android-library-plugin-convention"}
 habittracker-testing-plugin-convention = {id = "habittracker-testing-plugin-convention"}
+habittracker-jetpack-compose-plugin-convention = {id = "habittracker-jetpack-compose-plugin-convention"}

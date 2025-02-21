@@ -47,5 +47,9 @@ gradlePlugin {
             id = libs.plugins.habittracker.testing.plugin.convention.get().pluginId
             implementationClass = "TestingPluginConvention"
         }
+        register("jetpackComposePluginConvention"){
+            id = libs.plugins.habittracker.jetpack.compose.plugin.convention.get().pluginId
+            implementationClass = "JetpackComposePluginConvention"
+        }
     }
 }
