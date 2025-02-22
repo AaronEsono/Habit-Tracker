@@ -8,6 +8,10 @@ class JetpackComposePluginConvention: Plugin<Project> {
     override fun apply(target: Project) {
         with(target){
             dependencies {
+                val bom = libs.findLibrary("androidx-compose-bom").get()
+
+                add("implementation", platform(bom))
+                add("androidTestImplementation", platform(bom))
                 add("implementation", libs.findLibrary("androidx-core-ktx").get())
                 add("implementation", libs.findLibrary("androidx-lifecycle-runtime-ktx").get())
                 add("implementation", libs.findLibrary("androidx-activity-compose").get())

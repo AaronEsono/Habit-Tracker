@@ -34,6 +34,8 @@
             <option value="$PROJECT_DIR$/core/firestore" />
             <option value="$PROJECT_DIR$/core/room" />
             <option value="$PROJECT_DIR$/core/ui" />
+            <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/settings" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

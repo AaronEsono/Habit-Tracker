@@ -157,7 +157,7 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 # KSP (Kotlin Symbol Processing)
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
-#Project plugins
+# ---------------------------------- Project Plugins
 habittracker-hilt-plugin-convention = {id = "habittracker-hilt-plugin-convention"}
 habittracker-firebase-base-plugin-convention = {id = "habittracker-firebase-base-plugin-convention"}
 habittracker-datastore-plugin-convention = {id = "habittracker-datastore-plugin-convention"}
