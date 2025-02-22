@@ -1,7 +1,6 @@
 [versions]
 activityComposeVersion = "1.9.3"
 agp = "8.7.3"
-byteBuddy = "1.14.5"
 credentialsPlayServicesAuth = "1.5.0-beta01"
 datastorePreferences = "1.1.1"
 datastorePreferencesVersion = "1.0.0"
@@ -28,6 +27,7 @@ mockk = "1.13.5"
 mockkVersion = "1.13.5"
 navigationCompose = "2.8.5"
 room = "2.0.21-1.0.28"
+ksp = "2.0.0-1.0.21"
 firebase = "4.4.2"
 crashlytics = "2.9.9"
 androidGradlePlugin = "8.0.2"
@@ -35,7 +35,6 @@ hilt-version = "2.52"
 roomRuntime = "2.6.1"
 runtimeLivedata = "1.7.6"
 playServicesTfliteSupport = "16.4.0"
-slf4jSimple = "2.0.9"
 workRuntimeVersion = "2.10.0"
 appcompat = "1.7.0"
 material = "1.12.0"
@@ -43,77 +42,122 @@ coreKtxVersion = "1.6.1"
 uiGraphicsAndroid = "1.7.6"
 firebaseDatabaseCollection = "18.0.1"
 
+# ---------------------------------- Libraries
 [libraries]
+# Android Gradle Plugin
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
-androidx-datastore-preferences-v100 = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferencesVersion" }
-byte-buddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
+
+# Kotlin
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-androidx-activity-compose-v172 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
+
+# AndroidX Core & Activity
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentialsPlayServicesAuth" }
-androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
-androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
-androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-androidx-material3-adaptive-navigation-suite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite", version.ref = "material3AdaptiveNavigationSuite" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
+
+# AndroidX Navigation & Hilt
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
+# AndroidX Room
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+
+# AndroidX WorkManager
 androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntimeVersion" }
+
+# AndroidX Datastore
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+
+# AndroidX Material 3
+androidx-material3-adaptive-navigation-suite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite", version.ref = "material3AdaptiveNavigationSuite" }
+
+# AndroidX Credentials
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentialsPlayServicesAuth" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
+
+# Firebase
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
+
+# Google Services
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+# AndroidX Lifecycle
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+
+# AndroidX Compose
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+
+# AndroidX Testing
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+# JUnit (Standalone)
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+# Google Services
+play-services-tflite-support = { group = "com.google.android.gms", name = "play-services-tflite-support", version.ref = "playServicesTfliteSupport" }
+
+# KotlinX
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
+# AndroidX Core & UI
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
+
+# AndroidX Compose (Material & Runtime)
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+
+# Material Components
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# Hilt (Dagger)
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-version" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-version" }
-androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+
+# Testing (Mockito & MockK)
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 mockito-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoMockitoCore" }
 mockk-mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
-play-services-tflite-support = { group = "com.google.android.gms", name = "play-services-tflite-support", version.ref = "playServicesTfliteSupport" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
-slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
-androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
-firebase-database-collection = { group = "com.google.firebase", name = "firebase-database-collection", version.ref = "firebaseDatabaseCollection" }
 
+# ---------------------------------- Plugins
 [plugins]
+# Android Plugins
 android-application = { id = "com.android.application", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-jetbrainsKotlinSerialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
-ksp = {id = "com.google.devtools.ksp", version.ref = "room"}
-google-services = {id = "com.google.gms.google-services", version.ref = "firebase"}
-firebase-crashlytics = {id = "com.google.firebase.crashlytics", version.ref = "crashlytics"}
-
-#hilt y dagger
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-version" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 
-#Plugins project
-habittracker-android-application-plugin-convention = { id = "habittracker-android-application-plugin-convention"}
+# Kotlin Plugins
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+jetbrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+# Dependency Injection
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-version" }
+
+# Google & Firebase Services
+google-services = { id = "com.google.gms.google-services", version.ref = "firebase" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
+
+# KSP (Kotlin Symbol Processing)
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+#Project plugins
 habittracker-hilt-plugin-convention = {id = "habittracker-hilt-plugin-convention"}
 habittracker-firebase-base-plugin-convention = {id = "habittracker-firebase-base-plugin-convention"}
 habittracker-datastore-plugin-convention = {id = "habittracker-datastore-plugin-convention"}

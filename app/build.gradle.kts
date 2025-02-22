@@ -1,21 +1,67 @@
 plugins {
-    alias(libs.plugins.habittracker.android.application.plugin.convention)
-    alias(libs.plugins.habittracker.hilt.plugin.convention)
-    alias(libs.plugins.habittracker.firebase.base.plugin.convention)
-    alias(libs.plugins.habittracker.datastore.plugin.convention)
-
+    alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.jetbrainsKotlinSerialization)
     kotlin("kapt")
+    alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.services)
 }
 
 android {
     namespace = "aeb.proyecto.habittracker"
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "aeb.proyecto.habittracker"
     }
+
+    defaultConfig {
+        minSdk = 26
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    buildTypes {
+        debug {
+            isDebuggable = false
+        }
+
+        release {
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = false
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+            signingConfig = signingConfigs.findByName("debug")
+        }
+    }
+
+    buildFeatures{
+        compose = true
+    }
+
+    kotlinOptions{
+        jvmTarget = "11"
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
+    }
+
+
 }
 
 dependencies {
@@ -26,6 +72,7 @@ dependencies {
     implementation(projects.core.analytics)
     implementation(projects.core.alarmManager)
 
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -39,6 +86,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
@@ -48,6 +96,7 @@ dependencies {
     //Serializable
     implementation (libs.kotlinx.serialization.json)
 
+    //Material 3
     implementation(libs.material3)
     implementation(libs.androidx.material3.adaptive.navigation.suite)
 
@@ -66,7 +115,36 @@ dependencies {
     implementation(libs.gson)
 
     //Permissions
-    implementation (libs.androidx.activity.compose.v172)
+    implementation (libs.androidx.activity.compose)
+
+    //Datastore
+    implementation(libs.androidx.datastore.preferences)
+
+    //Firebase
+    implementation(platform(libs.firebase.bom))
+
+    //Analytics
+    implementation(libs.firebase.analytics)
+
+    //Authentication
+    implementation(libs.firebase.auth.ktx)
+
+    //Crashlytics
+    implementation(libs.firebase.crashlytics)
+
+    //Firestore
+    implementation(libs.firebase.firestore.ktx)
+
+    //Android credentials
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+
+    //Google id
+    implementation(libs.googleid)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     //Datastore
     implementation(libs.androidx.datastore.preferences)

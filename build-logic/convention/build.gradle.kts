@@ -23,10 +23,6 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("androidApplicationPluginConvention"){
-            id = libs.plugins.habittracker.android.application.plugin.convention.get().pluginId
-            implementationClass = "AndroidApplicationPluginConvention"
-        }
         register("hiltPluginConvention"){
             id = libs.plugins.habittracker.hilt.plugin.convention.get().pluginId
             implementationClass = "HiltPluginConvention"
