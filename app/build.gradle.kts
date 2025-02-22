@@ -72,6 +72,8 @@ dependencies {
     implementation(projects.core.analytics)
     implementation(projects.core.alarmManager)
 
+    implementation(projects.feature.settings)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

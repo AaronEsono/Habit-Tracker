@@ -7,7 +7,6 @@ import aeb.proyecto.habittracker.ui.components.loading.LoadingScreen
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
 import aeb.proyecto.habittracker.ui.navigation.AddHabit
-import aeb.proyecto.habittracker.ui.navigation.BottomBarScreens
 import aeb.proyecto.habittracker.ui.navigation.Habits
 import aeb.proyecto.habittracker.ui.navigation.ImportHabit
 import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
@@ -19,7 +18,6 @@ import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.utils.AppState
 import aeb.proyecto.habittracker.utils.Constans.permissions
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult

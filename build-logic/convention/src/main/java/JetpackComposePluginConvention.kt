@@ -12,6 +12,7 @@ class JetpackComposePluginConvention: Plugin<Project> {
 
                 add("implementation", platform(bom))
                 add("androidTestImplementation", platform(bom))
+
                 add("implementation", libs.findLibrary("androidx-core-ktx").get())
                 add("implementation", libs.findLibrary("androidx-lifecycle-runtime-ktx").get())
                 add("implementation", libs.findLibrary("androidx-activity-compose").get())
@@ -20,8 +21,9 @@ class JetpackComposePluginConvention: Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx-ui").get())
                 add("implementation", libs.findLibrary("material3").get())
                 add("implementation", libs.findLibrary("androidx-ui-graphics").get())
+
+                add("implementation", libs.findLibrary("androidx-navigation-compose").get())
             }
         }
     }
-
 }
