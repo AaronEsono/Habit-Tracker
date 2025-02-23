@@ -1,0 +1,13 @@
+<resources>
+    <string name="settings_configuration">Configuración</string>
+    <string name="settings_about">Acerca de</string>
+
+    <string name="settings_theme">Tema</string>
+    <string name="settings_export_import">Exportar e importar hábitos</string>
+    <string name="settings_email">Contacta conmigo</string>
+    <string name="settings_github">Código de la aplicación</string>
+    <string name="settings_link">Sígueme en mis redes sociales</string>
+
+    <string name="settings_email_title">Mejoras de la aplicación</string>
+
+</resources>

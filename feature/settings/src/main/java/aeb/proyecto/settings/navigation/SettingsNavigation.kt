@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable object Settings
 
 fun NavController.navigateToSettings(){
-    navigate(Settings){}
+    navigate(Settings)
 }
 
 fun NavGraphBuilder.settingsScreen(onImportScreen: () -> Unit, onSaveScreen: () -> Unit) {

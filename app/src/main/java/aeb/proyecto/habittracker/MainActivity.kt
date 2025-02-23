@@ -11,12 +11,12 @@ import aeb.proyecto.habittracker.ui.navigation.Habits
 import aeb.proyecto.habittracker.ui.navigation.ImportHabit
 import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
 import aeb.proyecto.habittracker.ui.navigation.SaveHabit
-import aeb.proyecto.habittracker.ui.navigation.Settings
 import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.menuItems
 import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.utils.AppState
 import aeb.proyecto.habittracker.utils.Constans.permissions
+import aeb.proyecto.settings.navigation.Settings
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle

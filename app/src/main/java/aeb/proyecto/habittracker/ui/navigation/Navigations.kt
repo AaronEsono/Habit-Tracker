@@ -1,6 +1,7 @@
 package aeb.proyecto.habittracker.ui.navigation
 
 import aeb.proyecto.habittracker.R
+import aeb.proyecto.settings.navigation.Settings
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.remember
@@ -11,9 +12,6 @@ object Habits
 
 @Serializable
 object Statistics
-
-@Serializable
-object Settings
 
 @Serializable
 data class AddHabit(val id:Long?)
