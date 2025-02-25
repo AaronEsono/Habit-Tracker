@@ -11,7 +11,6 @@ fun openLink(context: Context, uri:String){
     context.startActivity(intent)
 }
 
-
 fun sendEmail(context:Context){
     val intent = Intent(Intent.ACTION_SENDTO).apply {
         data = Uri.parse("mailto:") // Especifica el esquema mailto

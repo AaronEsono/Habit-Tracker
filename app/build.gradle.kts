@@ -71,6 +71,7 @@ dependencies {
     implementation(projects.core.authentication)
     implementation(projects.core.analytics)
     implementation(projects.core.alarmManager)
+    implementation(projects.core.ui)
 
     implementation(projects.feature.settings)
 

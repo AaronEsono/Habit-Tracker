@@ -1,6 +1,7 @@
 package aeb.proyecto.settings
 
 import aeb.proyecto.settings.components.button.ButtonSettings
+import aeb.proyecto.settings.components.dialog.DialogSettings
 import aeb.proyecto.settings.components.divider.CustomHorizontalDivider
 import aeb.proyecto.settings.constants.SettingsConstants
 import aeb.proyecto.settings.utils.openLink
@@ -16,14 +17,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
+// Hacer dialog
+// Hacer config idioma
+// Testing
 
 @Composable
 fun SettingsScreen(
@@ -32,29 +40,28 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    var showDialogTheme by remember { mutableStateOf(false) }
 
     SettingsScreen(
-        onClickTheme = {},
-        onClickExport = {
-            if (viewModel.getCurrentUser()) {
-                onSaveScreen()
-            } else {
-                onImportScreen()
-            }
-        },
+        onClickTheme = {showDialogTheme = true},
+        onClickExport = {(if (viewModel.getCurrentUser()) onSaveScreen else onImportScreen)()},
         onClickEmail = { sendEmail(context) },
         onClickGithub = {uri -> openLink(context,uri) },
-        onClickLinkedn = {uri -> openLink(context,uri)}
+        onClickLinkedin = {uri -> openLink(context,uri)}
     )
+
+    if(showDialogTheme){
+        DialogSettings(onDismissRequest = {showDialogTheme = false})
+    }
 }
 
 @Composable
-fun SettingsScreen(
+internal fun SettingsScreen(
     onClickTheme:() -> Unit,
     onClickExport:() -> Unit,
     onClickEmail:() -> Unit,
     onClickGithub:(String) -> Unit,
-    onClickLinkedn:(String) -> Unit,
+    onClickLinkedin:(String) -> Unit,
 ) {
 
     Column(
@@ -107,7 +114,6 @@ fun SettingsScreen(
         ButtonSettings(
             title = R.string.settings_github,
             leadingIcon = R.drawable.ic_github,
-            shape = RectangleShape,
             onClick = { onClickGithub(SettingsConstants.LINK_GITHUB) }
         )
 
@@ -117,7 +123,7 @@ fun SettingsScreen(
             title = R.string.settings_link,
             leadingIcon = R.drawable.ic_link,
             shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
-            onClick = { onClickLinkedn(SettingsConstants.LINK_LINKEDN) }
+            onClick = { onClickLinkedin(SettingsConstants.LINK_LINKEDN) }
         )
     }
 }

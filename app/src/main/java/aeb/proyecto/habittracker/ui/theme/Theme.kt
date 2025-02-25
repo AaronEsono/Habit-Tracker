@@ -21,7 +21,8 @@ private val Dark = darkColorScheme(
     error = colorErrorGeneral,
     surfaceContainer = surfaceContainerDark,
     surfaceTint = surfaceTintDark,
-    surfaceContainerHighest = surfaceContainerHighestDark
+    surfaceContainerHighest = surfaceContainerHighestDark,
+    scrim = scrimDark
 )
 
 private val Light = lightColorScheme(
@@ -38,7 +39,8 @@ private val Light = lightColorScheme(
     error = colorErrorGeneral,
     surfaceContainer = surfaceContainerLight,
     surfaceTint = surfaceTintLight,
-    surfaceContainerHighest = surfaceContainerHighestLight
+    surfaceContainerHighest = surfaceContainerHighestLight,
+    scrim = Color.Gray
 )
 
 private val DarkAlt = darkColorScheme(

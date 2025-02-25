@@ -24,8 +24,3 @@ class SettingsViewModel @Inject constructor(
     }
 
 }
-
-sealed interface SettingsUIState{
-    data object Loading
-    data object Success
-}
