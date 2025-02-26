@@ -13,10 +13,10 @@ import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
 import aeb.proyecto.habittracker.ui.navigation.SaveHabit
 import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.menuItems
-import aeb.proyecto.habittracker.ui.theme.HabitTrackerTheme
 import aeb.proyecto.habittracker.utils.AppState
 import aeb.proyecto.habittracker.utils.Constans.permissions
 import aeb.proyecto.settings.navigation.Settings
+import aeb.proyecto.ui.theme.HabitTrackerTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -24,7 +24,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

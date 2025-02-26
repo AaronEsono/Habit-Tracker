@@ -17,20 +17,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-// Hacer dialog
 // Hacer config idioma
+// Poner selected
 // Testing
 
 @Composable
@@ -40,28 +36,31 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    var showDialogTheme by remember { mutableStateOf(false) }
+    val settingsDialogState = viewModel.settingDialogState.collectAsStateWithLifecycle().value
 
     SettingsScreen(
-        onClickTheme = {showDialogTheme = true},
-        onClickExport = {(if (viewModel.getCurrentUser()) onSaveScreen else onImportScreen)()},
+        onClickTheme = { viewModel.setStateDialog(true) },
+        onClickLanguage = { viewModel.setStateDialog(true) },
+        onClickExport = { (if (viewModel.getCurrentUser()) onSaveScreen else onImportScreen)() },
         onClickEmail = { sendEmail(context) },
-        onClickGithub = {uri -> openLink(context,uri) },
-        onClickLinkedin = {uri -> openLink(context,uri)}
+        onClickGithub = { uri -> openLink(context, uri) },
+        onClickLinkedin = { uri -> openLink(context, uri) }
     )
 
-    if(showDialogTheme){
-        DialogSettings(onDismissRequest = {showDialogTheme = false})
+    if (settingsDialogState.showDialog) {
+        DialogSettings(onDismissRequest = { viewModel.setStateDialog(false) },
+            onClickButton = { value -> viewModel.setTheme(value) })
     }
 }
 
 @Composable
 internal fun SettingsScreen(
-    onClickTheme:() -> Unit,
-    onClickExport:() -> Unit,
-    onClickEmail:() -> Unit,
-    onClickGithub:(String) -> Unit,
-    onClickLinkedin:(String) -> Unit,
+    onClickTheme: () -> Unit,
+    onClickLanguage: () -> Unit,
+    onClickExport: () -> Unit,
+    onClickEmail: () -> Unit,
+    onClickGithub: (String) -> Unit,
+    onClickLinkedin: (String) -> Unit,
 ) {
 
     Column(
@@ -81,7 +80,15 @@ internal fun SettingsScreen(
             title = R.string.settings_theme,
             leadingIcon = R.drawable.ic_palette,
             shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-            onClick = {onClickTheme()}
+            onClick = { onClickTheme() }
+        )
+
+        CustomHorizontalDivider()
+
+        ButtonSettings(
+            title = R.string.settings_language,
+            leadingIcon = R.drawable.ic_language,
+            onClick = { onClickLanguage() }
         )
 
         CustomHorizontalDivider()
@@ -90,7 +97,7 @@ internal fun SettingsScreen(
             title = R.string.settings_export_import,
             leadingIcon = R.drawable.ic_save,
             shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
-            onClick = {onClickExport()}
+            onClick = { onClickExport() }
         )
 
         Spacer(modifier = Modifier.padding(vertical = spacing16))
@@ -106,7 +113,7 @@ internal fun SettingsScreen(
             title = R.string.settings_email,
             leadingIcon = R.drawable.ic_email,
             shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-            onClick = {onClickEmail()}
+            onClick = { onClickEmail() }
         )
 
         CustomHorizontalDivider()

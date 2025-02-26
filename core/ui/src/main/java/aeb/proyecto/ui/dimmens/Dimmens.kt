@@ -3,6 +3,7 @@ package aeb.proyecto.ui.dimmens
 import androidx.compose.ui.unit.dp
 
 object Dimmens {
+    val spacing1 = 1.dp
     val spacing2 = 2.dp
     val spacing3 = 3.dp
     val spacing4 = 4.dp

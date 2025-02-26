@@ -2,7 +2,7 @@ package aeb.proyecto.settings.components.button
 
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
-import aeb.proyecto.ui.ripple.customRipple
+import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.TitleSmallText
 import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
@@ -17,10 +17,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -39,7 +37,7 @@ fun ButtonSettings(
     onClick: () -> Unit
 ) {
 
-    CompositionLocalProvider(LocalRippleConfiguration provides customRipple()) {
+    CustomRipple{
         ElevatedButton(
             onClick = { onClick() },
             shape = shape,

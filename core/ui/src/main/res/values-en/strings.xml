@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="ui_theme_dark">Dark</string>
+    <string name="ui_theme_dark_alt">Dark alt.</string>
+    <string name="ui_theme_light">Light</string>
+    <string name="ui_theme_light_alt">Light alt.</string>
+
+</resources>

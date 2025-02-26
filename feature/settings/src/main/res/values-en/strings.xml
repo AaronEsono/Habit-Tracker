@@ -4,11 +4,12 @@
 
     <string name="settings_theme">Appearance</string>
     <string name="settings_export_import">Import &amp; Export Habits</string>
+    <string name="settings_language">Language</string>
     <string name="settings_email">Report a Problem</string>
     <string name="settings_github">App Source Code</string>
     <string name="settings_link">Follow Me on Social Media</string>
 
     <string name="settings_email_title">App Improvements</string>
 
-    <string name="settings_theme_pick">Chose theme</string>
+    <string name="settings_theme_pick">Choose a Theme</string>
 </resources>
