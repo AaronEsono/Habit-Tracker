@@ -13,6 +13,8 @@ interface DatastoreInterface {
 
     suspend fun getLastSearched():LastSearched
 
+    suspend fun setLanguage(language:String)
+
     suspend fun setModeTheme(themeMode:Int)
 
     suspend fun setEmail(email:String)

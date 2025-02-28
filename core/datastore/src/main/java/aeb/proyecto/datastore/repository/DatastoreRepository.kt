@@ -21,6 +21,10 @@ class DatastoreRepository @Inject constructor(
         return dataStoreManager.getLastSearched()
     }
 
+    override suspend fun setLanguage(language: String) {
+        dataStoreManager.setLanguage(language)
+    }
+
     override suspend fun setModeTheme(themeMode: Int) {
         dataStoreManager.setModeTheme(themeMode)
     }

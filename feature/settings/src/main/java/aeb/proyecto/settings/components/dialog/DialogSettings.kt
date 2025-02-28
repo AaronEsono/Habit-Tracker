@@ -2,6 +2,9 @@ package aeb.proyecto.settings.components.dialog
 
 import aeb.proyecto.settings.R
 import aeb.proyecto.settings.components.button.ButtonDialog
+import aeb.proyecto.settings.model.DataDialog
+import aeb.proyecto.settings.model.DataResult
+import aeb.proyecto.settings.model.DialogElements
 import aeb.proyecto.ui.dialog.CustomDialog
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
@@ -33,13 +36,14 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DialogSettings(
+    dataDialog: DataDialog,
     onDismissRequest: () -> Unit,
-    onClickButton: (Int) -> Unit
+    onClickButton: (DataResult) -> Unit
 ) {
 
     CustomDialog(
         modifier = Modifier.fillMaxWidth(0.8f),
-        onDismissRequest = { onDismissRequest() },
+        onDismissRequest = onDismissRequest,
         containerColor = MaterialTheme.colorScheme.primary
     ) {
         Column(
@@ -54,7 +58,7 @@ fun DialogSettings(
                     .padding(horizontal = spacing8)
             ) {
                 Image(
-                    painter = painterResource(R.drawable.im_theme),
+                    painter = painterResource(dataDialog.image),
                     contentDescription = "image dialog",
                     modifier = Modifier
                         .size(85.dp)
@@ -75,7 +79,7 @@ fun DialogSettings(
             }
 
             TitleMediumText(
-                stringResource(R.string.settings_theme_pick),
+                stringResource(dataDialog.title),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = spacing6),
@@ -84,12 +88,25 @@ fun DialogSettings(
 
             Spacer(modifier = Modifier.padding(vertical = spacing8))
 
-            EnumTheme.entries.forEach { entrie ->
-                ButtonDialog(
-                    modifier = Modifier.padding(vertical = spacing2),
-                    text = stringResource(entrie.text),
-                    onClick = { onClickButton(entrie.theme) }
-                )
+            when(dataDialog.dialogComponent){
+                is DialogElements.DialogLanguage -> {
+                    dataDialog.dialogComponent.language.forEach { elementLanguage ->
+                        ButtonDialog(
+                            modifier = Modifier.padding(vertical = spacing2),
+                            text = stringResource(elementLanguage.title),
+                            onClick = { onClickButton(DataResult.LanguageResult(elementLanguage.value)) }
+                        )
+                    }
+                }
+                is DialogElements.DialogTheme -> {
+                    dataDialog.dialogComponent.theme.forEach { elementTheme ->
+                        ButtonDialog(
+                            modifier = Modifier.padding(vertical = spacing2),
+                            text = stringResource(elementTheme.title),
+                            onClick = { onClickButton(DataResult.ThemeResult(elementTheme.theme)) }
+                        )
+                    }
+                }
             }
         }
     }

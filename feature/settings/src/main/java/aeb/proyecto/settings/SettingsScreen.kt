@@ -4,6 +4,7 @@ import aeb.proyecto.settings.components.button.ButtonSettings
 import aeb.proyecto.settings.components.dialog.DialogSettings
 import aeb.proyecto.settings.components.divider.CustomHorizontalDivider
 import aeb.proyecto.settings.constants.SettingsConstants
+import aeb.proyecto.settings.model.DataDialog
 import aeb.proyecto.settings.utils.openLink
 import aeb.proyecto.settings.utils.sendEmail
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
@@ -25,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-// Hacer config idioma
+// Cambio menos brusco al cambiar de idioma
 // Poner selected
 // Testing
 
@@ -39,8 +40,8 @@ fun SettingsScreen(
     val settingsDialogState = viewModel.settingDialogState.collectAsStateWithLifecycle().value
 
     SettingsScreen(
-        onClickTheme = { viewModel.setStateDialog(true) },
-        onClickLanguage = { viewModel.setStateDialog(true) },
+        onClickTheme = { viewModel.setDataDialogMode(DataDialog.THEME) },
+        onClickLanguage = { viewModel.setDataDialogMode(DataDialog.LANGUAGE) },
         onClickExport = { (if (viewModel.getCurrentUser()) onSaveScreen else onImportScreen)() },
         onClickEmail = { sendEmail(context) },
         onClickGithub = { uri -> openLink(context, uri) },
@@ -48,8 +49,9 @@ fun SettingsScreen(
     )
 
     if (settingsDialogState.showDialog) {
-        DialogSettings(onDismissRequest = { viewModel.setStateDialog(false) },
-            onClickButton = { value -> viewModel.setTheme(value) })
+        DialogSettings(dataDialog = settingsDialogState.dataDialog,
+            onDismissRequest = { viewModel.setStateDialog(false) },
+            onClickButton = { dataResult -> viewModel.treatResultDialog(dataResult) })
     }
 }
 

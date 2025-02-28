@@ -3,8 +3,10 @@ package aeb.proyecto.settings
 import aeb.proyecto.authentication.AuthResponseAuthentication
 import aeb.proyecto.authentication.AuthenticationInterface
 import aeb.proyecto.datastore.DatastoreInterface
+import aeb.proyecto.language.LanguageInterface
+import aeb.proyecto.settings.model.DataDialog
+import aeb.proyecto.settings.model.DataResult
 import aeb.proyecto.settings.model.SettingsDialogState
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,14 +20,20 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val authenticationInterface: AuthenticationInterface,
-    private val datastoreInterface: DatastoreInterface
+    private val datastoreInterface: DatastoreInterface,
+    private val languageInterface: LanguageInterface
 ):ViewModel() {
 
     private val _settingDialogState:MutableStateFlow<SettingsDialogState> = MutableStateFlow(SettingsDialogState())
     val settingDialogState:StateFlow<SettingsDialogState> = _settingDialogState.asStateFlow()
 
-    fun setTheme(themeMode:Int) = viewModelScope.launch{
+    private fun setTheme(themeMode:Int) = viewModelScope.launch{
         datastoreInterface.setModeTheme(themeMode)
+    }
+
+    private fun setLanguage(language:String) = viewModelScope.launch{
+        languageInterface.setLanguage(language)
+        datastoreInterface.setLanguage(language)
     }
 
     fun getCurrentUser():Boolean{
@@ -35,6 +43,19 @@ class SettingsViewModel @Inject constructor(
     fun setStateDialog(state:Boolean){
         _settingDialogState.update { currentState ->
             currentState.copy(showDialog = state)
+        }
+    }
+
+    fun setDataDialogMode(dataDialogMode: DataDialog) {
+        _settingDialogState.update { currentState ->
+            currentState.copy(dataDialog = dataDialogMode, showDialog = true)
+        }
+    }
+
+    fun treatResultDialog(dataResult: DataResult){
+        when(dataResult){
+            is DataResult.LanguageResult -> {setLanguage(dataResult.language)}
+            is DataResult.ThemeResult -> {setTheme(dataResult.theme)}
         }
     }
 }

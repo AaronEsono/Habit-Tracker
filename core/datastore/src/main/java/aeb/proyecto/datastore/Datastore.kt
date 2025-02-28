@@ -21,6 +21,7 @@ class DataStoreManager @Inject constructor(
 
     private companion object {
         private val THEME_MODE = intPreferencesKey("themeMode")
+        private val LANGUAGE = stringPreferencesKey("language")
         private val EMAIL = stringPreferencesKey("email")
         private val PASSWORD = stringPreferencesKey("password")
         private val CURRENT_ID = stringPreferencesKey("currentId")
@@ -47,6 +48,12 @@ class DataStoreManager @Inject constructor(
                 searched = preferences[SEARCHED] ?: false
             )
         }.firstOrNull() ?: LastSearched()
+
+    suspend fun setLanguage(language:String){
+        dataStore.edit { preferences ->
+            preferences[LANGUAGE] = language
+        }
+    }
 
     suspend fun setModeTheme(themeMode: Int) {
         dataStore.edit { preferences ->

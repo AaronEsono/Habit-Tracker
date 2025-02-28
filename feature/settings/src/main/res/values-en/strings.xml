@@ -12,4 +12,5 @@
     <string name="settings_email_title">App Improvements</string>
 
     <string name="settings_theme_pick">Choose a Theme</string>
+    <string name="settings_language_pick">Choose a Language</string>
 </resources>

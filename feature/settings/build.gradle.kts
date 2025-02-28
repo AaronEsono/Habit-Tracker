@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.core.authentication)
     implementation(projects.core.datastore)
+    implementation(projects.core.language)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

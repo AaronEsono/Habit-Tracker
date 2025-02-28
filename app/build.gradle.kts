@@ -72,6 +72,7 @@ dependencies {
     implementation(projects.core.analytics)
     implementation(projects.core.alarmManager)
     implementation(projects.core.ui)
+    implementation(projects.core.language)
 
     implementation(projects.feature.settings)
 
