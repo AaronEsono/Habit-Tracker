@@ -9,6 +9,8 @@ interface DatastoreInterface {
 
     val themeMode: Flow<Int>
 
+    val language:Flow<String>
+
     suspend fun getEmailAndPassword():EmailPassword
 
     suspend fun getLastSearched():LastSearched

@@ -10,8 +10,12 @@ import javax.inject.Inject
 class DatastoreRepository @Inject constructor(
     private val dataStoreManager: DataStoreManager
 ): DatastoreInterface {
+
     override val themeMode: Flow<Int>
         get() = dataStoreManager.themeMode
+
+    override val language: Flow<String>
+        get() = dataStoreManager.languageMode
 
     override suspend fun getEmailAndPassword(): EmailPassword {
         return dataStoreManager.getEmailPassword()

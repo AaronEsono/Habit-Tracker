@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-// Cambio menos brusco al cambiar de idioma
 // Poner selected
+// Poner banderas
 // Testing
 
 @Composable
@@ -38,6 +38,8 @@ fun SettingsScreen(
 ) {
     val context = LocalContext.current
     val settingsDialogState = viewModel.settingDialogState.collectAsStateWithLifecycle().value
+    val themeSelected = viewModel.themeSelected.collectAsStateWithLifecycle().value
+    val languageSelected = viewModel.languageSelected.collectAsStateWithLifecycle().value
 
     SettingsScreen(
         onClickTheme = { viewModel.setDataDialogMode(DataDialog.THEME) },
@@ -49,11 +51,16 @@ fun SettingsScreen(
     )
 
     if (settingsDialogState.showDialog) {
-        DialogSettings(dataDialog = settingsDialogState.dataDialog,
+        DialogSettings(
+            dataDialog = settingsDialogState.dataDialog,
+            themeSelected = themeSelected,
+            languageSelected = languageSelected,
             onDismissRequest = { viewModel.setStateDialog(false) },
-            onClickButton = { dataResult -> viewModel.treatResultDialog(dataResult) })
+            onClickButton = { dataResult -> viewModel.treatResultDialog(dataResult) }
+        )
     }
 }
+
 
 @Composable
 internal fun SettingsScreen(

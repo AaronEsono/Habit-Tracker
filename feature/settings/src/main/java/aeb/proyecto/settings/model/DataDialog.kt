@@ -5,6 +5,7 @@ import aeb.proyecto.settings.R
 import aeb.proyecto.ui.theme.EnumTheme
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import kotlinx.coroutines.flow.Flow
 
 enum class DataDialog(
     @DrawableRes val image: Int,

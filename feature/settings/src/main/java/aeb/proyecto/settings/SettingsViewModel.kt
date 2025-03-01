@@ -11,8 +11,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,11 +29,25 @@ class SettingsViewModel @Inject constructor(
     private val _settingDialogState:MutableStateFlow<SettingsDialogState> = MutableStateFlow(SettingsDialogState())
     val settingDialogState:StateFlow<SettingsDialogState> = _settingDialogState.asStateFlow()
 
+    val themeSelected = datastoreInterface.themeMode.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = 0
+    )
+
+    val languageSelected = datastoreInterface.language.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = "en"
+    )
+
     private fun setTheme(themeMode:Int) = viewModelScope.launch{
+        setStateDialog(false)
         datastoreInterface.setModeTheme(themeMode)
     }
 
     private fun setLanguage(language:String) = viewModelScope.launch{
+        setStateDialog(false)
         languageInterface.setLanguage(language)
         datastoreInterface.setLanguage(language)
     }

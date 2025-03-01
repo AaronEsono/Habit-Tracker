@@ -33,6 +33,10 @@ class DataStoreManager @Inject constructor(
         preferences[THEME_MODE] ?: 0
     }
 
+    val languageMode: Flow<String> = dataStore.data.map { preferences ->
+        preferences[LANGUAGE]?: ""
+    }
+
     suspend fun getEmailPassword() = dataStore.data.map { preferences ->
         EmailPassword(
             email = preferences[EMAIL] ?: "",
