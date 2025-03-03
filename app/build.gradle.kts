@@ -23,6 +23,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -49,6 +50,10 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+
     buildFeatures{
         compose = true
     }
@@ -60,8 +65,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
-
-
 }
 
 dependencies {
