@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.habittracker.jetpack.compose.plugin.convention)
     alias(libs.plugins.habittracker.hilt.plugin.convention)
     alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.habittracker.compose.ui.test.plugin.contention)
 }
 
 android {
@@ -19,7 +20,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     //Serializable
