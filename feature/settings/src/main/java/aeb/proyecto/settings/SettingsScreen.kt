@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-// Poner selected
-// Poner banderas
+// Future -> TODO transicion en los botones del idioma
+// Poner mas informacion en el email
 // Testing
 
 @Composable
