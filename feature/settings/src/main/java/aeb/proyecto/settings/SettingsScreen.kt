@@ -10,6 +10,7 @@ import aeb.proyecto.settings.utils.sendEmail
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
+import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleMediumText
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +28,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 // Future -> TODO transicion en los botones del idioma
+
 // Poner mas informacion en el email
+
 // Testing
 
 @Composable
@@ -141,5 +144,9 @@ internal fun SettingsScreen(
             shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
             onClick = { onClickLinkedin(SettingsConstants.LINK_LINKEDN) }
         )
+
+        Spacer(modifier = Modifier.padding(vertical = spacing6))
+
+        LabelMediumText(stringResource(R.string.settings_version,BuildConfig.APP_VERSION))
     }
 }

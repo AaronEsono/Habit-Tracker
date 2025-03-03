@@ -13,4 +13,6 @@
 
     <string name="settings_theme_pick">Choose a Theme</string>
     <string name="settings_language_pick">Choose a Language</string>
+
+    <string name="settings_version">Version %s</string>
 </resources>

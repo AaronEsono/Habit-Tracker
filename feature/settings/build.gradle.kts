@@ -9,6 +9,15 @@ plugins {
 
 android {
     namespace = "aeb.proyecto.settings"
+
+    defaultConfig {
+        buildConfigField("String","APP_VERSION","\"${project.properties["versionName"].toString()}\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
 }
 
 dependencies {

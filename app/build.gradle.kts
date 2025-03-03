@@ -22,7 +22,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName =  project.properties["versionName"].toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -56,6 +56,7 @@ android {
 
     buildFeatures{
         compose = true
+        buildConfig = true
     }
 
     kotlinOptions{
