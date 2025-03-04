@@ -10,11 +10,11 @@ import aeb.proyecto.habittracker.ui.navigation.AddHabit
 import aeb.proyecto.habittracker.ui.navigation.Habits
 import aeb.proyecto.habittracker.ui.navigation.ImportHabit
 import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
-import aeb.proyecto.habittracker.ui.navigation.SaveHabit
 import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.menuItems
 import aeb.proyecto.habittracker.utils.AppState
 import aeb.proyecto.habittracker.utils.Constans.permissions
+import aeb.proyecto.save.navigation.Save
 import aeb.proyecto.settings.navigation.Settings
 import aeb.proyecto.ui.theme.HabitTrackerTheme
 import android.os.Bundle
@@ -223,7 +223,7 @@ fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostContro
             title = TopbarSetUp(R.string.topbar_import_habit, listOf())
         }
 
-        SaveHabit::class.qualifiedName -> {
+        Save::class.qualifiedName -> {
             title = TopbarSetUp(R.string.topbar_save_habit, listOf())
         }
 

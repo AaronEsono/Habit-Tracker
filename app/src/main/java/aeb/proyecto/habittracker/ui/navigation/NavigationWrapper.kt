@@ -5,6 +5,9 @@ import aeb.proyecto.habittracker.ui.screens.habits.HabitsScreen
 import aeb.proyecto.habittracker.ui.screens.importHabit.ImportHabitScreen
 import aeb.proyecto.habittracker.ui.screens.saveHabit.SaveHabit
 import aeb.proyecto.habittracker.ui.screens.statistics.StatisticsScreen
+import aeb.proyecto.save.navigation.Save
+import aeb.proyecto.save.navigation.navigateToSave
+import aeb.proyecto.save.navigation.saveScreen
 import aeb.proyecto.settings.navigation.settingsScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -26,12 +29,8 @@ fun NavigationWrapper(navController: NavHostController){
         }
 
         settingsScreen(
-            onImportScreen = {
-                navController.navigate(ImportHabit)
-            },
-            onSaveScreen = {
-                navController.navigate(SaveHabit)
-            }
+            onImportScreen = {navController.navigate(ImportHabit)},
+            onSaveScreen = {navController.navigateToSave()}
         )
 
         composable<AddHabit>{backStackEntry ->
@@ -50,19 +49,17 @@ fun NavigationWrapper(navController: NavHostController){
         }
         composable<ImportHabit>{
             ImportHabitScreen(){
-                navController.navigate(SaveHabit){
+                navController.navigate(Save){
                     popUpTo(ImportHabit) {
                         inclusive = true
                     }
                 }
             }
         }
-        composable<SaveHabit>{
-            SaveHabit(){
-                navController.navigate(ImportHabit){
-                    popUpTo(SaveHabit) {
-                        inclusive = true
-                    }
+        saveScreen {
+            navController.navigate(ImportHabit){
+                popUpTo(Save) {
+                    inclusive = true
                 }
             }
         }

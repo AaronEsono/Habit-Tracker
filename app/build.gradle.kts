@@ -79,6 +79,7 @@ dependencies {
     implementation(projects.core.language)
 
     implementation(projects.feature.settings)
+    implementation(projects.feature.save)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
