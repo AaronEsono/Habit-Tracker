@@ -15,4 +15,12 @@
     <string name="settings_language_pick">Choose a Language</string>
 
     <string name="settings_version">Version %s</string>
+
+    <string name="settings_message">
+    Please write your request here \n👇\n\n\n\n\n👆\n
+    ------------------------------\n
+    Device: %s\n
+    Date: %s\n
+    Version: %s
+    </string>
 </resources>

@@ -28,10 +28,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 // Future -> TODO transicion en los botones del idioma
-
 // Poner mas informacion en el email
 
-// Testing
 
 @Composable
 fun SettingsScreen(
