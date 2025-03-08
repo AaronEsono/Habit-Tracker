@@ -12,6 +12,10 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.authentication)
+    implementation(projects.core.firestore)
+    implementation(projects.core.room)
+    implementation(projects.core.ui)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -20,4 +24,7 @@ dependencies {
 
     //Serializable
     implementation (libs.kotlinx.serialization.json)
+
+    //Mas iconos
+    implementation(libs.material.icons.extended)
 }

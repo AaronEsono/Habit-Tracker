@@ -89,7 +89,7 @@ internal fun SettingsScreen(
             title = R.string.settings_theme,
             leadingIcon = R.drawable.ic_palette,
             shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-            onClick = { onClickTheme() }
+            onClick = onClickTheme
         )
 
         CustomHorizontalDivider()
@@ -97,7 +97,7 @@ internal fun SettingsScreen(
         ButtonSettings(
             title = R.string.settings_language,
             leadingIcon = R.drawable.ic_language,
-            onClick = { onClickLanguage() }
+            onClick = onClickLanguage
         )
 
         CustomHorizontalDivider()
@@ -106,7 +106,7 @@ internal fun SettingsScreen(
             title = R.string.settings_export_import,
             leadingIcon = R.drawable.ic_save,
             shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
-            onClick = { onClickExport() }
+            onClick = onClickExport
         )
 
         Spacer(modifier = Modifier.padding(vertical = spacing16))
@@ -122,7 +122,7 @@ internal fun SettingsScreen(
             title = R.string.settings_email,
             leadingIcon = R.drawable.ic_email,
             shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-            onClick = { onClickEmail() }
+            onClick = onClickEmail
         )
 
         CustomHorizontalDivider()

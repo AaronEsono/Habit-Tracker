@@ -1,0 +1,28 @@
+<resources>
+
+    <string name="save_email">Hola, %s</string>
+    <string name="save_label">Sube a la nube tus hábitos para poder recuperarlos en otro teléfono.</string>
+
+    <string name="save_no_data">No hay datos guardados.</string>
+
+    <string name="save_data"> Datos guardados</string>
+    <string name="save_date_data">Fecha de guardado: %1$s de %2$s de %3$s</string>
+    <string name="save_time_data">Hora de guardado: %1$s:%2$s</string>
+
+    <string name="save_save_habit">Guardar hábitos</string>
+    <string name="save_delete_habit">Borrar hábitos</string>
+    <string name="save_log_out">Cerrar sesión</string>
+
+    <string name="save_bottom_sheet_acept">Aceptar</string>
+    <string name="save_bottom_sheet_cancel">Cancelar</string>
+
+    <string name="data_bottomSheet_save_title">Guardar hábitos</string>
+    <string name="data_bottomSheet_save_label">¿Estás seguro de que quieres guardar tus hábitos en la nube? Los antiguos datos guardados se perderán.</string>
+
+    <string name="data_bottomSheet_delete_title">Borrar hábitos</string>
+    <string name="data_bottomSheet_delete_label">¿Estás seguro de que quieres borrar los datos guardados de la nube?.</string>
+
+    <string name="data_bottomSheet_logOut_title">Cerrar sesión</string>
+    <string name="data_bottomSheet_logOut_label">¿Deseas cerrar sesión?</string>
+
+</resources>

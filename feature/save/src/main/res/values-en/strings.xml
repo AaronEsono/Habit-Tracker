@@ -1,0 +1,28 @@
+<resources>
+
+    <string name="save_email">Hi, %s</string>
+    <string name="save_label">Upload your habits to the cloud so you can retrieve them on another phone.</string>
+
+    <string name="save_no_data">No data saved.</string>
+
+    <string name="save_data">Data saved</string>
+    <string name="save_date_data">Save date: %2$s of %1$s, %3$s</string>
+    <string name="save_time_data">Save time: %1$s:%2$s</string>
+
+    <string name="save_save_habit">Save habits</string>
+    <string name="save_delete_habit">Delete habits</string>
+    <string name="save_log_out">Log out</string>
+
+    <string name="save_bottom_sheet_acept">Accept</string>
+    <string name="save_bottom_sheet_cancel">Cancel</string>
+
+    <string name="data_bottomSheet_save_title">Save habits</string>
+    <string name="data_bottomSheet_save_label">Are you sure you want to save your habits to the cloud? Your previously saved data will be lost.</string>
+
+    <string name="data_bottomSheet_delete_title">Delete habits</string>
+    <string name="data_bottomSheet_delete_label">Are you sure you want to delete your saved data from the cloud?</string>
+
+    <string name="data_bottomSheet_logOut_title">Log Out</string>
+    <string name="data_bottomSheet_logOut_label">Do you want to log out?</string>
+
+</resources>
