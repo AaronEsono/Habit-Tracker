@@ -87,24 +87,30 @@ fun SaveBottomSheet(
                     .padding(vertical = spacing12)
             ) {
 
-                BottomSheetOutLinedButton(
-                    modifier = Modifier.weight(1f),
-                    onClick = {
-                        coroutineScope.launch {
-                            sheetState.hide()
-                            onDismiss()
-                        }
-                    }
-                )
+                when (dataBottomSheet) {
+                    DataBottomSheet.SAVE_HABIT, DataBottomSheet.DELETE_HABIT, DataBottomSheet.LOG_OUT, DataBottomSheet.RESTORE_HABIT -> {
+                        BottomSheetOutLinedButton(
+                            modifier = Modifier.weight(1f),
+                            onClick = {
+                                coroutineScope.launch {
+                                    sheetState.hide()
+                                    onDismiss()
+                                }
+                            }
+                        )
 
-                Spacer(modifier = Modifier.padding(horizontal = spacing8))
+                        Spacer(modifier = Modifier.padding(horizontal = spacing8))
+                    }
+
+                    else -> Unit
+                }
 
                 BottomSheetFilledButton(
                     modifier = Modifier.weight(1f),
                     onClick = {
                         coroutineScope.launch {
-                            sheetState.hide()
                             onAccept()
+                            sheetState.hide()
                         }
                     }
                 )

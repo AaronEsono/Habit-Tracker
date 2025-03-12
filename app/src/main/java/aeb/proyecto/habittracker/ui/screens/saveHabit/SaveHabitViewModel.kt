@@ -102,10 +102,9 @@ class SaveHabitViewModel @Inject constructor(
 
             //Pillamos todos los habitos y comprimimos
             val habits = completeHabitRepo.getAll()
-            val jsonCompressed = jsonCompressed(habits)
 
             //Subimos a firestore
-            val firestoreData = aeb.proyecto.firestore.model.FirestoreData(habit = jsonCompressed)
+            val firestoreData = aeb.proyecto.firestore.model.FirestoreData(habit = "Hola")
 
             val response = firestoreInterface.saveDataUser(firestoreData,getCurrentId())
                 if(response is AuthResponseFirestore.Success){
@@ -129,6 +128,7 @@ class SaveHabitViewModel @Inject constructor(
 
             val response = firestoreInterface.deleteDataUser(getCurrentId())
                 if(response is AuthResponseFirestore.Success){
+
                     setDatainDataStore("")
                     _date.value = ""
                     setNeutral()
@@ -152,11 +152,11 @@ class SaveHabitViewModel @Inject constructor(
 
             val response = firestoreInterface.getDataUser(getCurrentId())
                 if (response is AuthResponseFirestore.Success) {
+
                     response.data?.let {
                         val dataRestored = decompressJsonFirestore(it.habit)
 
                         viewModelScope.launch (Dispatchers.IO){
-                            _notificationsWithNames.value = completeHabitRepo.setData(dataRestored)
                             setContextDx(DxInfoSaveHabit.RestoreDataSuccess)
                             setNotifications(true)
                             setNeutral()

@@ -10,6 +10,7 @@
     <string name="save_time_data">Hora de guardado: %1$s:%2$s</string>
 
     <string name="save_save_habit">Guardar hábitos</string>
+    <string name="save_restore_habit">Restaurar Hábitos</string>
     <string name="save_delete_habit">Borrar hábitos</string>
     <string name="save_log_out">Cerrar sesión</string>
 
@@ -19,10 +20,27 @@
     <string name="data_bottomSheet_save_title">Guardar hábitos</string>
     <string name="data_bottomSheet_save_label">¿Estás seguro de que quieres guardar tus hábitos en la nube? Los antiguos datos guardados se perderán.</string>
 
+    <string name="data_bottomSheet_restore_title">Recuperar hábitos</string>
+    <string name="data_bottomSheet_restore_label">¿Deseas recuperar los hábitos guardados en la nube? Tus datos actuales se perderán.</string>
+
     <string name="data_bottomSheet_delete_title">Borrar hábitos</string>
     <string name="data_bottomSheet_delete_label">¿Estás seguro de que quieres borrar los datos guardados de la nube?.</string>
 
     <string name="data_bottomSheet_logOut_title">Cerrar sesión</string>
     <string name="data_bottomSheet_logOut_label">¿Deseas cerrar sesión?</string>
+
+    <string name="data_bottomSheet_error_title">Atención</string>
+    <string name="data_bottomSheet_error_label">Ha ocurrido un error inesperado. Vuelva a intentarlo de nuevo.</string>
+
+    <string name="data_bottomSheet_savedData_title">Hábitos guardados</string>
+    <string name="data_bottomSheet_savedData_label">Los hábitos se han guardado en la nube.</string>
+
+    <string name="data_bottomSheet_restoredData_title">Hábitos recuperados</string>
+    <string name="data_bottomSheet_restoredData_label">Los hábitos se han se han recuperado correctamente.</string>
+
+    <string name="data_bottomSheet_deleteData_title">Hábitos borrados</string>
+    <string name="data_bottomSheet_deleteData_label">Los hábitos se han borrado correctamente.</string>
+
+    <string name="save_error_generic">Ha ocurrido un error. Por favor, inténtelo más tarde.</string>
 
 </resources>

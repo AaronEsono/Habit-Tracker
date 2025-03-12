@@ -1,10 +1,11 @@
 package aeb.proyecto.save.components.button
 
+import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
-import aeb.proyecto.ui.text.TitleMediumText
 import aeb.proyecto.ui.text.TitleSmallText
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,7 @@ fun SaveButton(
         ElevatedButton(
             modifier = modifier.fillMaxWidth(),
             onClick = onClick,
+            border = BorderStroke(spacing1, MaterialTheme.colorScheme.outline),
             shape = RoundedCornerShape(spacing12),
             contentPadding = PaddingValues(vertical = spacing12, horizontal = spacing8),
             colors = ButtonDefaults.buttonColors(

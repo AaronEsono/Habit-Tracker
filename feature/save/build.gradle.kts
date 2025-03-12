@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.core.firestore)
     implementation(projects.core.room)
     implementation(projects.core.ui)
+    implementation(projects.core.alarmManager)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

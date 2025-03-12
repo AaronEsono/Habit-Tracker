@@ -10,6 +10,7 @@
     <string name="save_time_data">Save time: %1$s:%2$s</string>
 
     <string name="save_save_habit">Save habits</string>
+    <string name="save_restore_habit">Restore habits</string>
     <string name="save_delete_habit">Delete habits</string>
     <string name="save_log_out">Log out</string>
 
@@ -19,10 +20,27 @@
     <string name="data_bottomSheet_save_title">Save habits</string>
     <string name="data_bottomSheet_save_label">Are you sure you want to save your habits to the cloud? Your previously saved data will be lost.</string>
 
+    <string name="data_bottomSheet_restore_title">Restore Habits</string>
+    <string name="data_bottomSheet_restore_label">Do you want to restore the habits saved in the cloud? Your current data will be lost.</string>
+
+
     <string name="data_bottomSheet_delete_title">Delete habits</string>
     <string name="data_bottomSheet_delete_label">Are you sure you want to delete your saved data from the cloud?</string>
 
     <string name="data_bottomSheet_logOut_title">Log Out</string>
     <string name="data_bottomSheet_logOut_label">Do you want to log out?</string>
 
+    <string name="data_bottomSheet_error_title">Attention</string>
+    <string name="data_bottomSheet_error_label">An unexpected error has occurred. Please try again.</string>
+
+    <string name="data_bottomSheet_savedData_title">Habits Saved</string>
+    <string name="data_bottomSheet_savedData_label">The habits have been saved to the cloud.</string>
+
+    <string name="data_bottomSheet_restoredData_title">Habits Restored</string>
+    <string name="data_bottomSheet_restoredData_label">The habits have been restored successfully.</string>
+
+    <string name="data_bottomSheet_deleteData_title">Habits Deleted</string>
+    <string name="data_bottomSheet_deleteData_label">The habits have been deleted successfully.</string>
+
+    <string name="save_error_generic">An error has occurred. Please try again later.</string>
 </resources>

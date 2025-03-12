@@ -2,8 +2,10 @@ package aeb.proyecto.firestore
 
 import aeb.proyecto.analytics.AnalyticsManagerInterface
 import aeb.proyecto.analytics.events.FirestoreEvents
+import aeb.proyecto.firestore.errors.treatError
 import aeb.proyecto.firestore.model.FirestoreData
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -20,9 +22,12 @@ class FirestoreManager @Inject constructor(
 
             analyticsManagerInterface.logEvent(FirestoreEvents.getDataUser(userId))
             AuthResponseFirestore.Success(document.toObject(FirestoreData::class.java))
+
         }catch (e:Exception){
             analyticsManagerInterface.logEvent(FirestoreEvents.Error(e.message.toString()))
-            AuthResponseFirestore.Error(e.message.toString())
+
+            val message = treatError(e)
+            AuthResponseFirestore.Error(message)
         }
     }
 
@@ -34,7 +39,9 @@ class FirestoreManager @Inject constructor(
             AuthResponseFirestore.Success(null)
         }catch (e:Exception){
             analyticsManagerInterface.logEvent(FirestoreEvents.Error(e.message.toString()))
-            AuthResponseFirestore.Error(e.message.toString())
+
+            val message = treatError(e)
+            AuthResponseFirestore.Error(message)
         }
     }
 
@@ -46,7 +53,9 @@ class FirestoreManager @Inject constructor(
             AuthResponseFirestore.Success(null)
         }catch (e:Exception){
             analyticsManagerInterface.logEvent(FirestoreEvents.Error(e.message.toString()))
-            AuthResponseFirestore.Error(e.message.toString())
+
+            val message = treatError(e)
+            AuthResponseFirestore.Error(message)
         }
     }
 
@@ -54,5 +63,5 @@ class FirestoreManager @Inject constructor(
 
 interface AuthResponseFirestore {
     data class Success(val data: FirestoreData?) : AuthResponseFirestore
-    data class Error(val message: String) : AuthResponseFirestore
+    data class Error(val message: Int) : AuthResponseFirestore
 }

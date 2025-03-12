@@ -3,6 +3,7 @@ package aeb.proyecto.save
 import aeb.proyecto.save.components.bottomSheet.SaveBottomSheet
 import aeb.proyecto.save.components.button.SaveButton
 import aeb.proyecto.save.components.card.CardSave
+import aeb.proyecto.save.components.loading.SaveScreenLoading
 import aeb.proyecto.save.model.DataBottomSheet
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
@@ -10,11 +11,13 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.BodyMediumText
 import aeb.proyecto.ui.text.TitleLargeText
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +29,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import java.time.LocalDateTime
+
+// Objeto con localDate y nombre
+// Testing
 
 @Composable
 fun SaveScreen(
@@ -33,9 +40,19 @@ fun SaveScreen(
     viewModel: SaveViewModel = hiltViewModel()
 ){
     val bottomSheetState = viewModel.bottomSheetState.collectAsStateWithLifecycle().value
+    val saveUIState = viewModel.saveUIState.collectAsStateWithLifecycle().value
+    val localDateTime = viewModel.localDateTime.collectAsStateWithLifecycle().value
+
+    LaunchedEffect (Unit){
+        viewModel.getDataUser()
+    }
 
     SaveScreen(
+        saveUIState = saveUIState,
+        localDateTime = localDateTime,
+        onImportScreen = onImportScreen,
         onSaveClick = { viewModel.setBottomSheetState(DataBottomSheet.SAVE_HABIT) },
+        onRestoreClick = { viewModel.setBottomSheetState(DataBottomSheet.RESTORE_HABIT) },
         onDeleteClick = { viewModel.setBottomSheetState(DataBottomSheet.DELETE_HABIT) },
         onLogOutClick = { viewModel.setBottomSheetState(DataBottomSheet.LOG_OUT) }
     )
@@ -44,17 +61,33 @@ fun SaveScreen(
         SaveBottomSheet(
             dataBottomSheet = bottomSheetState.dataBottomSheet,
             onDismiss = { viewModel.closeBottomSheet() },
-            onAccept =  { viewModel.requestAcceptBottomSheet() }
+            onAccept =  { viewModel.requestAcceptBottomSheet() },
         )
     }
 }
 
 @Composable
 internal fun SaveScreen(
+    saveUIState: SaveUIState,
+    localDateTime: LocalDateTime? = null,
+    onImportScreen: () -> Unit = {},
     onSaveClick: () -> Unit = {},
+    onRestoreClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {},
     onLogOutClick: () -> Unit = {}
 ){
+
+    when (saveUIState) {
+        SaveUIState.Success, SaveUIState.Error -> Unit
+        SaveUIState.LogOut -> {
+            LaunchedEffect(Unit) {
+                onImportScreen()
+            }
+        }
+        SaveUIState.Loading -> {
+            SaveScreenLoading()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -71,7 +104,7 @@ internal fun SaveScreen(
 
         CustomSpacerSave()
 
-        CardSave()
+        CardSave(localDateTime)
 
         CustomSpacerSave()
 
@@ -79,7 +112,29 @@ internal fun SaveScreen(
 
         CustomSpacerSave(spacing6)
 
-        SaveButton(title = stringResource(R.string.save_delete_habit), onClick = onDeleteClick)
+        AnimatedContent(
+            targetState = localDateTime
+        ) { targetState ->
+            when(targetState){
+                null -> Unit
+                else -> {
+                    SaveButton(title = stringResource(R.string.save_restore_habit), onClick = onRestoreClick)
+                }
+            }
+        }
+
+        CustomSpacerSave(spacing6)
+
+        AnimatedContent(
+            targetState = localDateTime
+        ) { targetState ->
+            when(targetState){
+                null -> Unit
+                else -> {
+                    SaveButton(title = stringResource(R.string.save_delete_habit), onClick = onDeleteClick)
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
