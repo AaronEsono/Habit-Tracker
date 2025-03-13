@@ -5,6 +5,7 @@ import aeb.proyecto.save.components.button.SaveButton
 import aeb.proyecto.save.components.card.CardSave
 import aeb.proyecto.save.components.loading.SaveScreenLoading
 import aeb.proyecto.save.model.DataBottomSheet
+import aeb.proyecto.save.model.DataSaveScreen
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
@@ -31,7 +32,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import java.time.LocalDateTime
 
-// Objeto con localDate y nombre
 // Testing
 
 @Composable
@@ -41,7 +41,7 @@ fun SaveScreen(
 ){
     val bottomSheetState = viewModel.bottomSheetState.collectAsStateWithLifecycle().value
     val saveUIState = viewModel.saveUIState.collectAsStateWithLifecycle().value
-    val localDateTime = viewModel.localDateTime.collectAsStateWithLifecycle().value
+    val dataSaveScreen = viewModel.dataSaveScreen.collectAsStateWithLifecycle().value
 
     LaunchedEffect (Unit){
         viewModel.getDataUser()
@@ -49,7 +49,7 @@ fun SaveScreen(
 
     SaveScreen(
         saveUIState = saveUIState,
-        localDateTime = localDateTime,
+        dataSaveScreen = dataSaveScreen,
         onImportScreen = onImportScreen,
         onSaveClick = { viewModel.setBottomSheetState(DataBottomSheet.SAVE_HABIT) },
         onRestoreClick = { viewModel.setBottomSheetState(DataBottomSheet.RESTORE_HABIT) },
@@ -69,7 +69,7 @@ fun SaveScreen(
 @Composable
 internal fun SaveScreen(
     saveUIState: SaveUIState,
-    localDateTime: LocalDateTime? = null,
+    dataSaveScreen: DataSaveScreen,
     onImportScreen: () -> Unit = {},
     onSaveClick: () -> Unit = {},
     onRestoreClick: () -> Unit = {},
@@ -96,7 +96,16 @@ internal fun SaveScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        TitleLargeText(stringResource(R.string.save_email, "aayronmaiden"))
+        AnimatedContent(
+            targetState = dataSaveScreen.name
+        ) { targetState ->
+            when (targetState) {
+                null,"" -> Unit
+                else -> {
+                    TitleLargeText(stringResource(R.string.save_email, targetState))
+                }
+            }
+        }
 
         CustomSpacerSave(spacing6)
 
@@ -104,7 +113,7 @@ internal fun SaveScreen(
 
         CustomSpacerSave()
 
-        CardSave(localDateTime)
+        CardSave(dataSaveScreen.localDateTime)
 
         CustomSpacerSave()
 
@@ -113,7 +122,7 @@ internal fun SaveScreen(
         CustomSpacerSave(spacing6)
 
         AnimatedContent(
-            targetState = localDateTime
+            targetState = dataSaveScreen.localDateTime
         ) { targetState ->
             when(targetState){
                 null -> Unit
@@ -126,7 +135,7 @@ internal fun SaveScreen(
         CustomSpacerSave(spacing6)
 
         AnimatedContent(
-            targetState = localDateTime
+            targetState = dataSaveScreen.localDateTime
         ) { targetState ->
             when(targetState){
                 null -> Unit

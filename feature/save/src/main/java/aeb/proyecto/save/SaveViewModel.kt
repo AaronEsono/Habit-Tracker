@@ -8,6 +8,7 @@ import aeb.proyecto.firestore.model.FirestoreData
 import aeb.proyecto.room.repository.EntireHabitRepo
 import aeb.proyecto.save.model.BottomSheetState
 import aeb.proyecto.save.model.DataBottomSheet
+import aeb.proyecto.save.model.DataSaveScreen
 import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -39,8 +40,8 @@ class SaveViewModel @Inject constructor(
     private val _saveUIState: MutableStateFlow<SaveUIState> = MutableStateFlow(SaveUIState.Loading)
     val saveUIState: StateFlow<SaveUIState> = _saveUIState.asStateFlow()
 
-    private val _localDateTime: MutableStateFlow<LocalDateTime?> = MutableStateFlow(null)
-    val localDateTime: StateFlow<LocalDateTime?> = _localDateTime.asStateFlow()
+    private val _dataSaveScreen: MutableStateFlow<DataSaveScreen> = MutableStateFlow(DataSaveScreen())
+    val dataSaveScreen: StateFlow<DataSaveScreen> = _dataSaveScreen.asStateFlow()
 
     private val _dataSearched: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
@@ -70,7 +71,11 @@ class SaveViewModel @Inject constructor(
                             val dateString = response.data?.date
                             val date:LocalDateTime? = dateString?.let { LocalDateTime.parse(it) }
 
-                            _localDateTime.update { date }
+                            val name = authenticationInterface.getName()
+
+                            _dataSaveScreen.update { currentState ->
+                                currentState.copy(localDateTime = date, name = name)
+                            }
 
                             _saveUIState.update { SaveUIState.Success }
                             _dataSearched.update { true }
@@ -114,7 +119,9 @@ class SaveViewModel @Inject constructor(
                 when(response){
                     is AuthResponseFirestore.Success -> {
                         _saveUIState.update { SaveUIState.Success }
-                        _localDateTime.update { LocalDateTime.now() }
+                        _dataSaveScreen.update { currentState ->
+                            currentState.copy(localDateTime = LocalDateTime.now())
+                        }
                         setBottomSheetState(DataBottomSheet.SAVED_DATA)
                     }
 
@@ -150,7 +157,9 @@ class SaveViewModel @Inject constructor(
                         }
 
                         _saveUIState.update { SaveUIState.Success }
-                        _localDateTime.update { LocalDateTime.now() }
+                        _dataSaveScreen.update { currentState ->
+                            currentState.copy(localDateTime = LocalDateTime.now())
+                        }
                         setBottomSheetState(DataBottomSheet.RESTORED_DATA)
                     }
 
@@ -178,7 +187,9 @@ class SaveViewModel @Inject constructor(
                 when(response){
                     is AuthResponseFirestore.Success -> {
                         _saveUIState.update { SaveUIState.Success }
-                        _localDateTime.update { null }
+                        _dataSaveScreen.update { currentState ->
+                            currentState.copy(localDateTime = null)
+                        }
                         setBottomSheetState(DataBottomSheet.DELETED_DATA)
                     }
 

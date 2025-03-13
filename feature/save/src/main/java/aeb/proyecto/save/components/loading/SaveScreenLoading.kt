@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 
@@ -25,6 +26,7 @@ fun SaveScreenLoading(){
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.8f))
             .zIndex(1f)
+            .testTag("Loading overlay")
             .clickable(enabled = false) {}
     ) {
         Column(
