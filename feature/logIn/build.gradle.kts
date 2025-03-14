@@ -1,43 +1,32 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.habittracker.android.library.plugin.convention)
+    alias(libs.plugins.habittracker.jetpack.compose.plugin.convention)
+    alias(libs.plugins.habittracker.hilt.plugin.convention)
+    alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.habittracker.testing.plugin.convention)
+    alias(libs.plugins.habittracker.compose.ui.test.plugin.contention)
 }
 
 android {
     namespace = "aeb.proyecto.login"
-    compileSdk = 35
-
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 }
 
 dependencies {
+
+    implementation(projects.core.authentication)
+    implementation(projects.core.firestore)
+    implementation(projects.core.room)
+    implementation(projects.core.ui)
+    implementation(projects.core.alarmManager)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+
+    //Serializable
+    implementation (libs.kotlinx.serialization.json)
+
+    //Mas iconos
+    implementation(libs.material.icons.extended)
 }

@@ -14,6 +14,7 @@ import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.menuItems
 import aeb.proyecto.habittracker.utils.AppState
 import aeb.proyecto.habittracker.utils.Constans.permissions
+import aeb.proyecto.login.navigation.Login
 import aeb.proyecto.save.navigation.Save
 import aeb.proyecto.settings.navigation.Settings
 import aeb.proyecto.ui.theme.HabitTrackerTheme
@@ -219,7 +220,7 @@ fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostContro
             title = TopbarSetUp(R.string.topbar_settings, listOf())
         }
 
-        ImportHabit::class.qualifiedName -> {
+        Login::class.qualifiedName -> {
             title = TopbarSetUp(R.string.topbar_import_habit, listOf())
         }
 

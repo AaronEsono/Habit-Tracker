@@ -5,6 +5,9 @@ import aeb.proyecto.habittracker.ui.screens.habits.HabitsScreen
 import aeb.proyecto.habittracker.ui.screens.importHabit.ImportHabitScreen
 import aeb.proyecto.habittracker.ui.screens.saveHabit.SaveHabit
 import aeb.proyecto.habittracker.ui.screens.statistics.StatisticsScreen
+import aeb.proyecto.login.navigation.Login
+import aeb.proyecto.login.navigation.loginScreen
+import aeb.proyecto.login.navigation.navigateToLogin
 import aeb.proyecto.save.navigation.Save
 import aeb.proyecto.save.navigation.navigateToSave
 import aeb.proyecto.save.navigation.saveScreen
@@ -29,7 +32,7 @@ fun NavigationWrapper(navController: NavHostController){
         }
 
         settingsScreen(
-            onImportScreen = {navController.navigate(ImportHabit)},
+            onImportScreen = {navController.navigateToLogin()},
             onSaveScreen = {navController.navigateToSave()}
         )
 
@@ -47,17 +50,17 @@ fun NavigationWrapper(navController: NavHostController){
                 }
             )
         }
-        composable<ImportHabit>{
-            ImportHabitScreen(){
-                navController.navigate(Save){
-                    popUpTo(ImportHabit) {
-                        inclusive = true
-                    }
+
+        loginScreen{
+            navController.navigateToSave{
+                popUpTo(Login) {
+                    inclusive = true
                 }
             }
         }
+
         saveScreen {
-            navController.navigate(ImportHabit){
+            navController.navigateToLogin{
                 popUpTo(Save) {
                     inclusive = true
                 }

@@ -80,6 +80,7 @@ dependencies {
 
     implementation(projects.feature.settings)
     implementation(projects.feature.save)
+    implementation(projects.feature.logIn)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
