@@ -2,11 +2,13 @@ package aeb.proyecto.login.components.button
 
 import aeb.proyecto.login.R
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
+import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
@@ -29,10 +31,10 @@ fun LoginButton(
             onClick = onClick,
             enabled = enabled,
             shape = shape,
-            border = if(enabled) BorderStroke(spacing1, MaterialTheme.colorScheme.onSurface) else null,
             colors = ButtonDefaults.elevatedButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer
             ),
+            contentPadding = PaddingValues(vertical = spacing12),
             modifier = modifier
         ) {
             LabelLargeText(stringResource(R.string.login_accept))

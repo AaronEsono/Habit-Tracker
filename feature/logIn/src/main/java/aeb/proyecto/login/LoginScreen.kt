@@ -85,11 +85,11 @@ internal fun LoginScreen() {
                 val subtitle = if (isLoginMode) stringResource(R.string.login_subtitle)
                 else stringResource(R.string.login_subtitle_register)
 
-                val accountCreated = if (isLoginMode) stringResource(R.string.login_account)
-                else stringResource(R.string.login_no_account)
+                val accountCreated = if (isLoginMode) stringResource(R.string.login_no_account)
+                else stringResource(R.string.login_account)
 
-                val signIn = if (isLoginMode) stringResource(R.string.login_signIn)
-                else stringResource(R.string.login_register)
+                val signIn = if (isLoginMode) stringResource(R.string.login_register)
+                else stringResource(R.string.login_signIn)
                 // -----------------------------------------------------
 
                 TitleLargeText(title)
@@ -98,7 +98,7 @@ internal fun LoginScreen() {
 
                 TitleSmallText(subtitle)
 
-                Spacer(modifier = Modifier.padding(vertical = spacing6))
+                Spacer(modifier = Modifier.padding(vertical = spacing4))
 
                 LoginTextField(
                     label = stringResource(R.string.login_textField_email_label),
@@ -123,9 +123,9 @@ internal fun LoginScreen() {
                     )
                 }
 
-                Spacer(modifier = Modifier.padding(vertical = spacing2))
-
                 if (isLoginMode) {
+                    Spacer(modifier = Modifier.padding(vertical = spacing2))
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Start,
@@ -161,7 +161,7 @@ internal fun LoginScreen() {
                         modifier = Modifier.clickable {})
                 }
 
-                Spacer(modifier = Modifier.padding(vertical = spacing8))
+                Spacer(modifier = Modifier.padding(vertical = spacing6))
 
                 LoginButton(
                     modifier = Modifier.fillMaxWidth()
@@ -171,7 +171,7 @@ internal fun LoginScreen() {
 
                 if(isLoginMode){
 
-                    LabelLargeText(
+                    LabelMediumText(
                         stringResource(R.string.login_continue),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
@@ -182,9 +182,9 @@ internal fun LoginScreen() {
                     LoginGoogleButton(
                         modifier = Modifier.fillMaxWidth()
                     )
-
-                    Spacer(modifier = Modifier.padding(vertical = spacing8))
                 }
+
+                Spacer(modifier = Modifier.padding(vertical = spacing8))
 
                 Row(
                     modifier = Modifier.fillMaxSize(),

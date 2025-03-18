@@ -45,7 +45,7 @@ fun LoginSecureTextField(
     isError: Boolean = false,
     errorText : String? = null,
     label: String? = null,
-    leadingIcon: ImageVector? = Icons.Filled.LockOpen,
+    leadingIcon: ImageVector? = Icons.Filled.Lock,
     imeAction: ImeAction = ImeAction.Next,
     focusManager: FocusManager,
 ){
