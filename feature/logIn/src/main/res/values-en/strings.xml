@@ -1,0 +1,35 @@
+<resources>
+
+    <string name="login_title">Sign in</string>
+    <string name="login_subtitle">Sign in to save your habits to the cloud</string>
+
+    <string name="login_title_register">Sign up</string>
+    <string name="login_subtitle_register">Create an account to save your habits in the cloud</string>
+
+
+    <string name="login_remember">Remember me</string>
+
+    <string name="login_textField_email_label">Email</string>
+    <string name="login_textField_email_error">Invalid email address</string>
+
+    <string name="login_textField_password_label">Password</string>
+    <string name="login_textField_password_error">Please Enter your password</string>
+
+    <string name="login_textField_remember_password_label">Repeat password</string>
+    <string name="login_textField_remember_password_error">Passwords must match</string>
+
+    <string name="login_accept">Accept</string>
+
+    <string name="login_no_account">Don\'t have an account?&#160;</string>
+    <string name="login_register">Sign up</string>
+
+    <string name="login_account">Already have an account?&#160;</string>
+    <string name="login_signIn">Log in</string>
+
+    <string name="login_forgot_password">Forgot your password?</string>
+
+    <string name="login_continue">------ Or continue with ------</string>
+
+    <string name="login_google">Continue with Google</string>
+
+</resources>

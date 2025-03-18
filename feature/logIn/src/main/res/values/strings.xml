@@ -1,0 +1,33 @@
+<resources>
+
+    <string name="login_title">Iniciar sesión</string>
+    <string name="login_subtitle">Inicia sesión para poder guardar tus hábitos en la nube</string>
+
+    <string name="login_title_register">Regístrate</string>
+    <string name="login_subtitle_register">Crea una cuenta para poder guardar tus hábitos en la nube</string>
+
+    <string name="login_remember">Recordar credenciales</string>
+
+    <string name="login_textField_email_label">Email</string>
+    <string name="login_textField_email_error">El email no es válido</string>
+
+    <string name="login_textField_password_label">Contraseña</string>
+    <string name="login_textField_password_error">Rellena la contraseña</string>
+
+    <string name="login_textField_remember_password_label">Repetir contraseña</string>
+    <string name="login_textField_remember_password_error">Las contraseñas deben ser iguales</string>
+
+    <string name="login_accept">Aceptar</string>
+
+    <string name="login_no_account">¿No tienes cuenta?&#160;</string>
+    <string name="login_register">Regístrate </string>
+
+    <string name="login_account">¿Ya tienes cuenta?&#160;</string>
+    <string name="login_signIn">Inicia sesión</string>
+
+    <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
+
+    <string name="login_continue">------ O continúa con ------</string>
+
+    <string name="login_google">Continuar con Google</string>
+</resources>
