@@ -13,6 +13,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -112,25 +114,42 @@ class LoginViewModel @Inject constructor(
 
     }
 
-    fun signInGoogle(){
+    fun signInGoogle() {
+        _uiState.update { LoginUIState.Loading }
 
+        try {
+            authenticationInterface.signInWithGoogle().onEach { response ->
+                when (response) {
+                    is AuthResponseAuthentication.Success -> {
+                        _uiState.update { LoginUIState.Login }
+                    }
+
+                    is AuthResponseAuthentication.Error -> {
+                        setError(response.message)
+                    }
+                    else -> {
+                        setError(R.string.login_error_default)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }catch (e:Exception){
+            setError(R.string.login_error_default)
+        }
     }
 
     fun requestAcceptBottomSheet() {
+        closeBottomSheet()
         when (_dataBottomSheet.value.dataBottomSheet) {
-            DataLoginBottomSheet.ERROR,DataLoginBottomSheet.EMAIL_SENT,DataLoginBottomSheet.EMAIL_SENT_FORGOT_PASSWORD -> {
-                closeBottomSheet()
-            }
+            DataLoginBottomSheet.ERROR, DataLoginBottomSheet.EMAIL_SENT, DataLoginBottomSheet.EMAIL_SENT_FORGOT_PASSWORD -> Unit
             DataLoginBottomSheet.UNVERIFIED_EMAIL -> {
-                closeBottomSheet()
                 resendEmail()
             }
+
             DataLoginBottomSheet.ACCOUNT_CREATED -> {
-                closeBottomSheet()
                 setLoginMode()
             }
+
             DataLoginBottomSheet.FORGOT_PASSWORD -> {
-                closeBottomSheet()
                 forgotPassword()
             }
         }

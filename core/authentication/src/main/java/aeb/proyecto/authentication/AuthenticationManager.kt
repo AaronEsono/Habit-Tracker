@@ -77,7 +77,7 @@ class AuthenticationManager @Inject constructor(
             AuthResponseAuthentication.Error(error)
         }
     }
-
+    
     override fun signInWithGoogle(): Flow<AuthResponseAuthentication> = callbackFlow {
         val googleValidation = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)

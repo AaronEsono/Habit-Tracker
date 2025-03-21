@@ -78,13 +78,6 @@ class ImportHabitViewModel @Inject constructor(
         sharedState.setError(message)
     }
 
-    fun signInGoogle(navigate:() -> Unit){
-        setLoading()
-
-        authenticationInterface.signInWithGoogle().onEach {
-            response -> handleSignInGoogle(response,navigate)
-        }.launchIn(viewModelScope)
-    }
 
     fun signIn(email: String, password: String, saveCredentials: Boolean, navigate: () -> Unit) = viewModelScope.launch {
         setLoading()
@@ -111,6 +104,14 @@ class ImportHabitViewModel @Inject constructor(
         handleForgotPassword(response){
             showToast()
         }
+    }
+
+    fun signInGoogle(navigate:() -> Unit){
+        setLoading()
+
+        authenticationInterface.signInWithGoogle().onEach {
+                response -> handleSignInGoogle(response,navigate)
+        }.launchIn(viewModelScope)
     }
 
     private fun handleSignInGoogle(response: AuthResponseAuthentication, navigate:() -> Unit){
