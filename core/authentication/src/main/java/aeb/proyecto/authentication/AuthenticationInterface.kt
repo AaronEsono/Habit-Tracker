@@ -10,7 +10,7 @@ interface AuthenticationInterface {
 
     suspend fun createAccountWithEmail(email: String, password: String): AuthResponseAuthentication
 
-    suspend fun resendEmail(): AuthResponseAuthentication
+    suspend fun resendEmail(email: String, password: String): AuthResponseAuthentication
 
     suspend fun forgotPassword(email: String): AuthResponseAuthentication
 

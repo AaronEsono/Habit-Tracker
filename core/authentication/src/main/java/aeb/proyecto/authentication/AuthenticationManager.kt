@@ -2,12 +2,12 @@ package aeb.proyecto.authentication
 
 import aeb.proyecto.analytics.AnalyticsManagerInterface
 import aeb.proyecto.analytics.events.AuthenticationEvents
-import aeb.proyecto.authentication.utils.ERROR_NO_USER_FOUND
+import aeb.proyecto.authentication.errors.treatError
 import aeb.proyecto.authentication.utils.ERROR_SEND_EMAIL
 import aeb.proyecto.authentication.utils.ERROR_UNVERIFIED_EMAIL
 import aeb.proyecto.authentication.utils.createNonce
-import aeb.proyecto.authentication.utils.treatException
 import android.content.Context
+import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -50,10 +50,10 @@ class AuthenticationManager @Inject constructor(
 
             auth.signOut()
             analyticsManagerInterface.logEvent(AuthenticationEvents.error(ERROR_SEND_EMAIL))
-            return AuthResponseAuthentication.Error(ERROR_SEND_EMAIL)
+            return AuthResponseAuthentication.Error(R.string.error_auth_send_email)
         } catch (e: Exception) {
-            val error = treatException(e)
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(error))
+            val error = treatError(e)
+            analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
             return AuthResponseAuthentication.Error(error)
         }
     }
@@ -67,11 +67,13 @@ class AuthenticationManager @Inject constructor(
                 AuthResponseAuthentication.Success
             }else{
                 analyticsManagerInterface.logEvent(AuthenticationEvents.error(ERROR_UNVERIFIED_EMAIL))
-                AuthResponseAuthentication.Error(ERROR_UNVERIFIED_EMAIL)
+                auth.signOut()
+                AuthResponseAuthentication.UnverifiedEmail
             }
         }catch (e:Exception){
-            val error = treatException(e)
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(error))
+            val error = treatError(e)
+            auth.signOut()
+            analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
             AuthResponseAuthentication.Error(error)
         }
     }
@@ -115,22 +117,22 @@ class AuthenticationManager @Inject constructor(
                                     analyticsManagerInterface.logEvent(AuthenticationEvents.loggedWithGoogle(it.result.user!!.uid))
                                     trySend(AuthResponseAuthentication.Success)
                                 }else{
-                                    val error = treatException(it.exception!!)
-                                    analyticsManagerInterface.logEvent(AuthenticationEvents.error(error))
+                                    val error = treatError(it.exception!!)
+                                    analyticsManagerInterface.logEvent(AuthenticationEvents.error(it.exception.toString()))
                                     trySend(AuthResponseAuthentication.Error(error))
                                 }
                             }
 
                     }catch (e:GoogleIdTokenParsingException){
-                        val error = treatException(e)
-                        analyticsManagerInterface.logEvent(AuthenticationEvents.error(error))
+                        val error = treatError(e)
+                        analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
                         trySend(AuthResponseAuthentication.Error(error))
                     }
                 }
             }
         }catch (e:Exception){
-            val error = treatException(e)
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(error))
+            val error = treatError(e)
+            analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
             trySend(AuthResponseAuthentication.Error(error))
         }
 
@@ -138,14 +140,18 @@ class AuthenticationManager @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun resendEmail(): AuthResponseAuthentication {
+    override suspend fun resendEmail(email:String, password:String): AuthResponseAuthentication {
         try {
+            auth.signInWithEmailAndPassword(email,password).await()
             auth.currentUser?.sendEmailVerification()?.await()
+
             analyticsManagerInterface.logEvent(AuthenticationEvents.resendEmail(auth.currentUser!!.email!!))
+            auth.signOut()
             return AuthResponseAuthentication.Success
         }catch (e:Exception){
-            val error = treatException(e)
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(error))
+            val error = treatError(e)
+            auth.signOut()
+            analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
             return AuthResponseAuthentication.Error(error)
         }
     }
@@ -156,8 +162,8 @@ class AuthenticationManager @Inject constructor(
             analyticsManagerInterface.logEvent(AuthenticationEvents.forgotPassword(email))
             return AuthResponseAuthentication.Success
         }catch (e:Exception){
-            val error = treatException(e)
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(error))
+            val error = treatError(e)
+            analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
             return AuthResponseAuthentication.Error(error)
         }
     }
@@ -171,7 +177,7 @@ class AuthenticationManager @Inject constructor(
         auth.currentUser?.let{
             analyticsManagerInterface.logEvent(AuthenticationEvents.reconnected(it.uid))
             return AuthResponseAuthentication.Success
-        } ?: return AuthResponseAuthentication.Error(ERROR_NO_USER_FOUND)
+        } ?: return AuthResponseAuthentication.Error(R.string.error_auth_no_user_found)
     }
 
     override fun getName(): String {
@@ -185,5 +191,6 @@ class AuthenticationManager @Inject constructor(
 
 interface AuthResponseAuthentication {
     data object Success : AuthResponseAuthentication
-    data class Error(val message: String) : AuthResponseAuthentication
+    data class Error(val message: Int) : AuthResponseAuthentication
+    data object UnverifiedEmail: AuthResponseAuthentication
 }

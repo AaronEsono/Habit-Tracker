@@ -13,8 +13,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 
@@ -24,20 +26,23 @@ fun LoginButton(
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(spacing8),
     onClick: () -> Unit = {}
-){
+) {
 
-    CustomRipple {
+    CustomRipple (color = MaterialTheme.colorScheme.inverseOnSurface){
         ElevatedButton(
             onClick = onClick,
             enabled = enabled,
             shape = shape,
             colors = ButtonDefaults.elevatedButtonColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer
+                containerColor = MaterialTheme.colorScheme.onSurface,
+                contentColor = MaterialTheme.colorScheme.inverseOnSurface,
+                disabledContainerColor = MaterialTheme.colorScheme.primary,
+                disabledContentColor = MaterialTheme.colorScheme.surfaceVariant
             ),
             contentPadding = PaddingValues(vertical = spacing12),
             modifier = modifier
         ) {
-            LabelLargeText(stringResource(R.string.login_accept))
+            Text(stringResource(R.string.login_accept), style = MaterialTheme.typography.labelLarge)
         }
     }
 

@@ -2,6 +2,7 @@ package aeb.proyecto.login.components.button
 
 import aeb.proyecto.login.R
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
+import aeb.proyecto.ui.dimmens.Dimmens.spacing3
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
@@ -41,7 +42,7 @@ fun LoginGoogleButton(
             ){
                 Image(painterResource(R.drawable.ic_google), contentDescription = "Google image")
 
-                Spacer(modifier = Modifier.padding(horizontal = spacing2))
+                Spacer(modifier = Modifier.padding(horizontal = spacing4))
 
                 LabelLargeText(
                     stringResource(R.string.login_google),

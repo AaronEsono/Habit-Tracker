@@ -11,11 +11,3 @@ fun createNonce(): String {
     val digest = md.digest(bytes)
     return digest.fold("") { str, it -> str + "%02x".format(it) }
 }
-
-fun treatException(e:Exception):String{
-    val error = if (e is FirebaseAuthException)
-        e.errorCode
-    else ""
-
-    return error
-}

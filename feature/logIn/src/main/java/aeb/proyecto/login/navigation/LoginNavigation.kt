@@ -16,6 +16,6 @@ fun NavController.navigateToLogin(optionsBuilder: NavOptionsBuilder.() -> Unit =
 
 fun NavGraphBuilder.loginScreen(onSaveNavigate: () -> Unit) {
     composable<Login> {
-        LoginScreen()
+        LoginScreen(onSaveNavigate)
     }
 }

@@ -101,12 +101,7 @@ class ImportHabitViewModel @Inject constructor(
     }
 
     fun resendEmail(showToast: () -> Unit) = viewModelScope.launch {
-        setLoading()
 
-        val response = authenticationInterface.resendEmail()
-        handleResendEmail(response){
-            showToast()
-        }
     }
 
     fun forgotPassword(email: String,showToast: () -> Unit) = viewModelScope.launch {
@@ -158,16 +153,7 @@ class ImportHabitViewModel @Inject constructor(
     }
 
     private fun handleError(response: AuthResponseAuthentication.Error){
-        val message = response.message
 
-        val errorInt = FIREBASE_ERRORS.find { it.id == message } ?: DEFAULT_ERROR_FIREBASE
-
-        if(errorInt.id == ERROR_UNVERIFIED_EMAIL ){
-            setNeutral()
-            openSendEmail()
-        }else{
-            setError(errorInt.text)
-        }
     }
 
     private fun handleResendEmail(response: AuthResponseAuthentication, showToast: () -> Unit) {
