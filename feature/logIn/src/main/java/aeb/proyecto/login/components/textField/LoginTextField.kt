@@ -53,6 +53,7 @@ fun LoginTextField(
     isError: Boolean = false,
     errorText : String? = null,
     label: String? = null,
+    containerColor: Color = MaterialTheme.colorScheme.background,
     leadingIcon:ImageVector? = Icons.Filled.Email,
     keyboardType: KeyboardType = KeyboardType.Email,
     imeAction: ImeAction = ImeAction.Next,
@@ -115,9 +116,9 @@ fun LoginTextField(
             errorBorderColor = MaterialTheme.colorScheme.error,
             errorTextColor = MaterialTheme.colorScheme.error,
 
-            focusedContainerColor = MaterialTheme.colorScheme.background,
-            unfocusedContainerColor = MaterialTheme.colorScheme.background,
-            errorContainerColor = MaterialTheme.colorScheme.background,
+            focusedContainerColor = containerColor,
+            unfocusedContainerColor = containerColor,
+            errorContainerColor = containerColor,
 
             selectionColors = TextSelectionColors(
                 handleColor = MaterialTheme.colorScheme.onSurface,

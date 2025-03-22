@@ -47,7 +47,7 @@
     <string name="login_email_sent_subtitle">El correo ha sido enviado correctamente, revisa tu bandeja de entrada para verificar tu cuenta</string>
 
     <string name="login_forgot_password_title">Contraseña olvidada</string>
-    <string name="login_forgot_password_subtitle">Escriba el email correspondiente para recibir un enlace para restablecer su contraseña</string>
+    <string name="login_forgot_password_subtitle">Escriba el email para recibir un enlace donde podrá restablecer su cuenta</string>
 
     <string name="login_forgot_password_sent_title">Enlace enviado</string>
     <string name="login_forgot_password_sent_subtitle">El enlace para enviar la contraseña ha sido enviado correctamente, revisa tu bandeja de entrada para reestrablecer tu cuenta</string>

@@ -99,6 +99,7 @@ fun LoginBottomSheet(
                         label = stringResource(R.string.login_textField_email_label),
                         errorText = stringResource(R.string.login_textField_email_error),
                         imeAction = ImeAction.Done,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
                         keyboardType = KeyboardType.Email,
                         modifier = Modifier.padding(vertical = spacing2)
                     )

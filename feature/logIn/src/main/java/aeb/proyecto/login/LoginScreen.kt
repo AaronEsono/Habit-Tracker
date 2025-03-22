@@ -49,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -196,6 +197,7 @@ internal fun LoginScreen(
                         horizontalArrangement = Arrangement.Start,
                         modifier = Modifier
                             .wrapContentWidth()
+                            .testTag("Checkbox row")
                             .toggleable(
                                 value = dataLoginScreen.isChecked,
                                 onValueChange = { onClickChecked() },
@@ -225,13 +227,13 @@ internal fun LoginScreen(
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clickable {
                             onClickResetPassword()
-                        })
+                        }.testTag("Forgot password"))
                 }
 
                 Spacer(modifier = Modifier.padding(vertical = spacing6))
 
                 LoginButton(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().testTag("login button"),
                     enabled = isButtonEnabled(
                         dataLoginScreen.emailTextFieldState,
                         dataLoginScreen.passwordTextFieldState,
@@ -254,7 +256,7 @@ internal fun LoginScreen(
                     Spacer(modifier = Modifier.padding(vertical = spacing6))
 
                     LoginGoogleButton(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().testTag("Google button"),
                         onClick = onClickGoogle
                     )
                 }
@@ -272,7 +274,7 @@ internal fun LoginScreen(
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clickable {
                             onClickLoginMode()
-                        }
+                        }.testTag("Login mode")
                     )
                 }
             }
