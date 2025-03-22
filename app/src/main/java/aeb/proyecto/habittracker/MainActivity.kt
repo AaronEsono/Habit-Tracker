@@ -1,14 +1,14 @@
 package aeb.proyecto.habittracker
 
+import aeb.proyecto.addhabit.navigation.AddHabit
+import aeb.proyecto.addhabit.navigation.navigateToAddHabit
 import aeb.proyecto.habittracker.data.model.action.ActionIcon
 import aeb.proyecto.habittracker.data.model.action.TopbarSetUp
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.loading.LoadingScreen
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.components.text.TitleLargeText
-import aeb.proyecto.habittracker.ui.navigation.AddHabit
 import aeb.proyecto.habittracker.ui.navigation.Habits
-import aeb.proyecto.habittracker.ui.navigation.ImportHabit
 import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
 import aeb.proyecto.habittracker.ui.navigation.Statistics
 import aeb.proyecto.habittracker.ui.navigation.menuItems
@@ -207,7 +207,7 @@ fun setTopBarTitle(navDestination: NavDestination?, navController: NavHostContro
         Habits::class.qualifiedName -> {
             title = TopbarSetUp(R.string.topbar_habit, listOf(
                 ActionIcon(R.drawable.ic_add) {
-                    navController.navigate(AddHabit(id = -1))
+                    navController.navigateToAddHabit(-1)
                 }
             ))
         }

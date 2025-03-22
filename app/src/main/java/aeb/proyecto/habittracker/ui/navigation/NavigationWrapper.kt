@@ -1,5 +1,7 @@
 package aeb.proyecto.habittracker.ui.navigation
 
+import aeb.proyecto.addhabit.navigation.addHabitScreen
+import aeb.proyecto.addhabit.navigation.navigateToAddHabit
 import aeb.proyecto.habittracker.ui.screens.addHabit.AddHabitScreen
 import aeb.proyecto.habittracker.ui.screens.habits.HabitsScreen
 import aeb.proyecto.habittracker.ui.screens.importHabit.ImportHabitScreen
@@ -24,7 +26,7 @@ fun NavigationWrapper(navController: NavHostController){
     NavHost(navController = navController, startDestination = Habits){
         composable<Habits>{
             HabitsScreen(){ id ->
-                navController.navigate(AddHabit(id))
+                navController.navigateToAddHabit(id)
             }
         }
         composable<Statistics>{
@@ -36,19 +38,12 @@ fun NavigationWrapper(navController: NavHostController){
             onSaveScreen = {navController.navigateToSave()}
         )
 
-        composable<AddHabit>{backStackEntry ->
-            val id = backStackEntry.arguments?.getLong("id")
-
-            AddHabitScreen(
-                id = id,
-                navigateToHabit = {
-                    navController.navigate(Habits) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            inclusive = true
-                        }
-                    }
+        addHabitScreen {
+            navController.navigate(Habits){
+                popUpTo(navController.graph.findStartDestination().id) {
+                    inclusive = true
                 }
-            )
+            }
         }
 
         loginScreen{

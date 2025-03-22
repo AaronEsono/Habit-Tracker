@@ -14,9 +14,6 @@ object Habits
 object Statistics
 
 @Serializable
-data class AddHabit(val id:Long?)
-
-@Serializable
 object ImportHabit
 
 @Serializable
