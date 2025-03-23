@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="add_habit_name_label">Nombre</string>
+    <string name="add_habit_description_label">Descripción</string>
+
+    <string name="add_habit_color_label">Color</string>
+    <string name="add_habit_icon_label">Icono</string>
+
+</resources>

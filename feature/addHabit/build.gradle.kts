@@ -13,6 +13,8 @@ android {
 
 dependencies {
 
+    implementation(projects.core.ui)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
