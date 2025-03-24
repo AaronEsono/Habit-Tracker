@@ -3,6 +3,7 @@ package aeb.proyecto.addhabit
 import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
 import aeb.proyecto.addhabit.constants.TypeHabit
+import aeb.proyecto.addhabit.constants.getContrastColor
 import aeb.proyecto.addhabit.model.DataAddHabit
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -39,6 +40,7 @@ class AddHabitViewModel @Inject constructor(
         _dataAddHabit.update { currentState ->
             currentState.copy(
                 color = color,
+                contrastColor = getContrastColor(color),
                 isColorSelected = false
             )
         }
@@ -92,6 +94,14 @@ class AddHabitViewModel @Inject constructor(
         _dataAddHabit.update { currentState ->
             currentState.copy(
                 typeHabit = typeHabit
+            )
+        }
+    }
+
+    fun onClickWeekly(numberDays:Int){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                numberOfDaysWeek = numberDays
             )
         }
     }

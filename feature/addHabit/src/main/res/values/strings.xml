@@ -18,4 +18,7 @@
     <string name="add_habit_type_habit_monthly_label">Cumple con este hábito en fechas específicas del mes.</string>
     <string name="add_habit_type_habit_cyclic_label">Repite este hábito en intervalos personalizados según tu necesidad.</string>
 
+    <string name="add_habit_weekly_type_title">Selecciona el número de días a completar a la semana</string>
+    <string name="add_habit_monthly_type_title">Selecciona el número de días a completar al mes</string>
+
 </resources>

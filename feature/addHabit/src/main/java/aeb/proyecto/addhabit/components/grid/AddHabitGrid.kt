@@ -49,6 +49,7 @@ val height: Dp = (ROWS * itemSize) + ((ROWS - 1) * verticalSpacing) + (verticalP
 fun AddHabitGrid(
     gridOption: GridOption,
     colorSelected: Color,
+    contrastColor: Color = Color.Black,
     iconSelected: ImageVector,
     onClickGridOption: (GridOptionResult) -> Unit = {}
 ){
@@ -79,7 +80,7 @@ fun AddHabitGrid(
                                 Canvas(
                                     modifier = Modifier
                                         .clip(CircleShape)
-                                        .border(colorSelected(color, colorSelected), CircleShape)
+                                        .border(colorSelected(color, colorSelected,contrastColor), CircleShape)
                                         .size(itemSize)
                                         .clickable {
                                             onClickGridOption(GridOptionResult.colorResult(color))
@@ -113,8 +114,8 @@ fun AddHabitGrid(
 }
 
 @Composable
-fun colorSelected(color: Color, colorSelected: Color): BorderStroke {
-    return if (color == colorSelected) BorderStroke(2.dp, MaterialTheme.colorScheme.onSurface)
+fun colorSelected(color: Color, colorSelected: Color, contrastColor: Color): BorderStroke {
+    return if (color == colorSelected) BorderStroke(2.dp, contrastColor)
     else BorderStroke(0.dp, Color.Transparent)
 }
 

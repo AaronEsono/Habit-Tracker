@@ -5,15 +5,20 @@ import aeb.proyecto.addhabit.components.card.AddHabitCardButton
 import aeb.proyecto.addhabit.components.dialog.PickTypeHabitDialog
 import aeb.proyecto.addhabit.components.grid.AddHabitGrid
 import aeb.proyecto.addhabit.components.textField.AddHabitTextField
+import aeb.proyecto.addhabit.components.typeHabit.MonthlyTypeHabit
+import aeb.proyecto.addhabit.components.typeHabit.WeeklyTypeHabit
 import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
 import aeb.proyecto.addhabit.constants.PICK_TYPE_HABIT
 import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.model.DataAddHabit
+import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +32,7 @@ import androidx.compose.material.icons.automirrored.filled.EventNote
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -50,7 +56,8 @@ fun AddHabitScreen(
         onClickGridOption = viewModel::onClickGridOption,
         onClickDialog = viewModel::setDialog,
         onDismissDialog = viewModel::closeDialog,
-        onClickTypeHabit = viewModel::onClickTypeHabit
+        onClickTypeHabit = viewModel::onClickTypeHabit,
+        onClickWeekly = viewModel::onClickWeekly
     )
 
 }
@@ -62,7 +69,8 @@ internal fun AddHabitScreen(
     onClickGridOption: (GridOptionResult) -> Unit = {},
     onClickDialog: (Int) -> Unit = {},
     onDismissDialog: () -> Unit = {},
-    onClickTypeHabit: (TypeHabit) -> Unit = {}
+    onClickTypeHabit: (TypeHabit) -> Unit = {},
+    onClickWeekly: (Int) -> Unit = {}
 ){
 
     val focusManager = LocalFocusManager.current
@@ -72,6 +80,7 @@ internal fun AddHabitScreen(
             .fillMaxSize()
             .padding(start = spacing12, end = spacing12, top = spacing12)
     ){
+        //TextField Nombre y descripción
         AddHabitTextField(
             textFieldState = dataAddHabit.nameTextField,
             label = stringResource(R.string.add_habit_name_label),
@@ -94,18 +103,44 @@ internal fun AddHabitScreen(
 
         Spacer(modifier = Modifier.padding(vertical = spacing8))
 
+        // Tipo de hábito
         LabelLargeText(stringResource(R.string.add_habit_pick_type_habit_title))
 
         Spacer(modifier = Modifier.padding(vertical = spacing4))
 
         AddHabitCardButton(
             title = stringResource(dataAddHabit.typeHabit.title),
-            modifier = Modifier.fillMaxWidth(0.5f),
+            modifier = Modifier.fillMaxWidth(),
             onClick = { onClickDialog(PICK_TYPE_HABIT) }
         )
 
-        Spacer(modifier = Modifier.padding(vertical = spacing12))
+        AnimatedContent(
+            targetState = dataAddHabit.typeHabit
+        ) { typeHabit ->
+            when (typeHabit) {
+                TypeHabit.DAILY -> Unit
+                TypeHabit.WEEKLY -> {
+                    WeeklyTypeHabit(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = spacing10),
+                        numberSelected = dataAddHabit.numberOfDaysWeek,
+                        colorSelected = dataAddHabit.color,
+                        contrastColor = dataAddHabit.contrastColor,
+                        onClickWeekly = onClickWeekly)
+                }
 
+                TypeHabit.MONTHLY -> {
+                    MonthlyTypeHabit(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = spacing10))
+                }
+                TypeHabit.CYCLIC -> {}
+            }
+        }
+
+        Spacer(modifier = Modifier.padding(vertical = spacing8))
+
+        //Colores e iconos
         Row (
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -135,6 +170,7 @@ internal fun AddHabitScreen(
         ) {
             AddHabitGrid(gridOption = GridOption.COLORS,
                 colorSelected = dataAddHabit.color,
+                contrastColor = dataAddHabit.contrastColor,
                 iconSelected = dataAddHabit.icon,
                 onClickGridOption = onClickGridOption
             )
@@ -152,6 +188,10 @@ internal fun AddHabitScreen(
 
     }
 
+    //Unidades
+
+
+    //Dialog
     if (dataAddHabit.showDialog) {
         when (dataAddHabit.typeDialog) {
             PICK_TYPE_HABIT -> PickTypeHabitDialog(

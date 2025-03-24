@@ -1,6 +1,7 @@
 package aeb.proyecto.addhabit.constants
 
 import androidx.compose.ui.graphics.Color
+import kotlin.math.pow
 
 val listColors = listOf(
     Color(0xFFFF5733), // Rojo medio
@@ -80,3 +81,28 @@ val listColors = listOf(
     Color(0xFF37474F), // Gris oscuro
     Color(0xFF263238)  // Gris casi negro
 )
+
+fun getContrastColor(color: Color): Color {
+    val luminance = color.calculateLuminance()
+
+    val contrastWithWhite = (1.0 + 0.05) / (luminance + 0.05)
+
+    return if (contrastWithWhite >= 4.5) Color.White else Color.Black
+}
+
+// Función para obtener la luminancia de un color
+fun Color.calculateLuminance(): Double {
+    // Obtener los valores de los componentes RGB del color
+    val r = red
+    val g = green
+    val b = blue
+
+    // Calcular la luminancia según la fórmula
+    // Primero convertimos a escala de 0-1 y luego aplicamos la fórmula de gamma
+    val gammaCorrectedR = if (r <= 0.03928) r / 12.92 else ((r + 0.055) / 1.055).pow(2.4)
+    val gammaCorrectedG = if (g <= 0.03928) g / 12.92 else ((g + 0.055) / 1.055).pow(2.4)
+    val gammaCorrectedB = if (b <= 0.03928) b / 12.92 else ((b + 0.055) / 1.055).pow(2.4)
+
+    // Calcular la luminancia usando la fórmula estándar
+    return 0.2126 * gammaCorrectedR + 0.7152 * gammaCorrectedG + 0.0722 * gammaCorrectedB
+}
