@@ -1,14 +1,19 @@
 package aeb.proyecto.addhabit
 
 import aeb.proyecto.addhabit.components.card.AddHabitCard
+import aeb.proyecto.addhabit.components.card.AddHabitCardButton
+import aeb.proyecto.addhabit.components.dialog.PickTypeHabitDialog
 import aeb.proyecto.addhabit.components.grid.AddHabitGrid
 import aeb.proyecto.addhabit.components.textField.AddHabitTextField
 import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
+import aeb.proyecto.addhabit.constants.PICK_TYPE_HABIT
+import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.model.DataAddHabit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import aeb.proyecto.ui.text.LabelLargeText
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,7 +47,10 @@ fun AddHabitScreen(
     AddHabitScreen(
         dataAddHabit = dataAddHabit,
         onClickCard = viewModel::onClickCard,
-        onClickGridOption = viewModel::onClickGridOption
+        onClickGridOption = viewModel::onClickGridOption,
+        onClickDialog = viewModel::setDialog,
+        onDismissDialog = viewModel::closeDialog,
+        onClickTypeHabit = viewModel::onClickTypeHabit
     )
 
 }
@@ -51,7 +59,10 @@ fun AddHabitScreen(
 internal fun AddHabitScreen(
     dataAddHabit: DataAddHabit,
     onClickCard: (GridOption) -> Unit,
-    onClickGridOption: (GridOptionResult) -> Unit = {}
+    onClickGridOption: (GridOptionResult) -> Unit = {},
+    onClickDialog: (Int) -> Unit = {},
+    onDismissDialog: () -> Unit = {},
+    onClickTypeHabit: (TypeHabit) -> Unit = {}
 ){
 
     val focusManager = LocalFocusManager.current
@@ -79,6 +90,18 @@ internal fun AddHabitScreen(
             focusManager = focusManager,
             imeAction = ImeAction.Done,
             keyboardType = KeyboardType.Text
+        )
+
+        Spacer(modifier = Modifier.padding(vertical = spacing8))
+
+        LabelLargeText(stringResource(R.string.add_habit_pick_type_habit_title))
+
+        Spacer(modifier = Modifier.padding(vertical = spacing4))
+
+        AddHabitCardButton(
+            title = stringResource(dataAddHabit.typeHabit.title),
+            modifier = Modifier.fillMaxWidth(0.5f),
+            onClick = { onClickDialog(PICK_TYPE_HABIT) }
         )
 
         Spacer(modifier = Modifier.padding(vertical = spacing12))
@@ -127,6 +150,16 @@ internal fun AddHabitScreen(
             )
         }
 
+    }
+
+    if (dataAddHabit.showDialog) {
+        when (dataAddHabit.typeDialog) {
+            PICK_TYPE_HABIT -> PickTypeHabitDialog(
+                onDismissRequest = onDismissDialog,
+                onClickButton = onClickTypeHabit )
+
+            else -> {}
+        }
     }
 
 }

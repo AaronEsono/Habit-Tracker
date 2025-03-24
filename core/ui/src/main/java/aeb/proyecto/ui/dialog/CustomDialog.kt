@@ -21,7 +21,6 @@ fun CustomDialog(
     content: @Composable () -> Unit
 ) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
-
         Card(
             modifier = modifier,
             shape = shape,

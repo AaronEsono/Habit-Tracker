@@ -6,4 +6,16 @@
     <string name="add_habit_color_label">Color</string>
     <string name="add_habit_icon_label">Icono</string>
 
+    <string name="add_habit_pick_type_habit_title">Seleccione el tipo de hábito</string>
+    
+    <string name="add_habit_type_habit_daily">Diario</string>
+    <string name="add_habit_type_habit_weekly">Semanal</string>
+    <string name="add_habit_type_habit_monthly">Mensual</string>
+    <string name="add_habit_type_habit_cyclic">Cíclico</string>
+
+    <string name="add_habit_type_habit_daily_label">Realiza este hábito todos los días sin excepción.</string>
+    <string name="add_habit_type_habit_weekly_label">Establece este hábito para ciertos días de la semana.</string>
+    <string name="add_habit_type_habit_monthly_label">Cumple con este hábito en fechas específicas del mes.</string>
+    <string name="add_habit_type_habit_cyclic_label">Repite este hábito en intervalos personalizados según tu necesidad.</string>
+
 </resources>
