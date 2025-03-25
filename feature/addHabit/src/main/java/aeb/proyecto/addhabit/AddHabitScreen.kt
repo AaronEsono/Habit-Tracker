@@ -6,6 +6,7 @@ import aeb.proyecto.addhabit.components.dialog.PickTypeHabitDialog
 import aeb.proyecto.addhabit.components.grid.AddHabitGrid
 import aeb.proyecto.addhabit.components.textField.AddHabitTextField
 import aeb.proyecto.addhabit.components.typeHabit.MonthlyTypeHabit
+import aeb.proyecto.addhabit.components.typeHabit.RecurringTypeHabit
 import aeb.proyecto.addhabit.components.typeHabit.WeeklyTypeHabit
 import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
@@ -57,7 +58,8 @@ fun AddHabitScreen(
         onClickDialog = viewModel::setDialog,
         onDismissDialog = viewModel::closeDialog,
         onClickTypeHabit = viewModel::onClickTypeHabit,
-        onClickWeekly = viewModel::onClickWeekly
+        onClickWeekly = viewModel::onClickWeekly,
+        onMonthNumberSelected = viewModel::monthNumberSelected
     )
 
 }
@@ -70,7 +72,8 @@ internal fun AddHabitScreen(
     onClickDialog: (Int) -> Unit = {},
     onDismissDialog: () -> Unit = {},
     onClickTypeHabit: (TypeHabit) -> Unit = {},
-    onClickWeekly: (Int) -> Unit = {}
+    onClickWeekly: (Int) -> Unit = {},
+    onMonthNumberSelected: (Int) -> Unit = {}
 ){
 
     val focusManager = LocalFocusManager.current
@@ -132,9 +135,15 @@ internal fun AddHabitScreen(
                 TypeHabit.MONTHLY -> {
                     MonthlyTypeHabit(modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = spacing10))
+                        .padding(top = spacing10),
+                        colorSelected = dataAddHabit.color,
+                        contrastColor = dataAddHabit.contrastColor,
+                        numberSelected = dataAddHabit.numberOfDaysMonth,
+                        onNumberSelected = onMonthNumberSelected)
                 }
-                TypeHabit.CYCLIC -> {}
+                TypeHabit.CYCLIC -> {
+                    RecurringTypeHabit()
+                }
             }
         }
 

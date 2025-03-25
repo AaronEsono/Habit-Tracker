@@ -19,6 +19,7 @@ data class DataAddHabit(
     var icon:ImageVector = listIcons[0],
     var typeHabit:TypeHabit = TypeHabit.DAILY,
     var numberOfDaysWeek:Int = 1,
+    var numberOfDaysMonth:Int = 1,
 
     var isColorSelected:Boolean = false,
     var isIconSelected:Boolean = false,

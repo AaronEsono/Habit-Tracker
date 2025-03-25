@@ -8,10 +8,13 @@ import aeb.proyecto.addhabit.model.DataAddHabit
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -102,6 +105,14 @@ class AddHabitViewModel @Inject constructor(
         _dataAddHabit.update { currentState ->
             currentState.copy(
                 numberOfDaysWeek = numberDays
+            )
+        }
+    }
+
+    fun monthNumberSelected(numberDays:Int) = viewModelScope.launch(Dispatchers.IO){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                numberOfDaysMonth = numberDays
             )
         }
     }
