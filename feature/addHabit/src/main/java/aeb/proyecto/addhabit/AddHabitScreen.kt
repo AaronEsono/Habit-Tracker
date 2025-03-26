@@ -4,6 +4,7 @@ import aeb.proyecto.addhabit.components.card.AddHabitCard
 import aeb.proyecto.addhabit.components.card.AddHabitCardButton
 import aeb.proyecto.addhabit.components.dialog.DatePickerDialogHabit
 import aeb.proyecto.addhabit.components.dialog.PickTypeHabitDialog
+import aeb.proyecto.addhabit.components.dialog.PickUnitDialog
 import aeb.proyecto.addhabit.components.grid.AddHabitGrid
 import aeb.proyecto.addhabit.components.textField.AddHabitTextField
 import aeb.proyecto.addhabit.components.typeHabit.MonthlyTypeHabit
@@ -13,22 +14,30 @@ import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
 import aeb.proyecto.addhabit.constants.PICK_DATE
 import aeb.proyecto.addhabit.constants.PICK_TYPE_HABIT
+import aeb.proyecto.addhabit.constants.PICK_UNIT
 import aeb.proyecto.addhabit.constants.TypeHabit
+import aeb.proyecto.addhabit.constants.Units
 import aeb.proyecto.addhabit.model.DataAddHabit
+import aeb.proyecto.addhabit.utils.IsOnlyDigit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
+import aeb.proyecto.ui.dimmens.Dimmens.spacing5
+import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.EventNote
 import androidx.compose.material.icons.filled.ColorLens
@@ -40,6 +49,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import java.time.LocalDate
@@ -62,7 +72,8 @@ fun AddHabitScreen(
         onClickTypeHabit = viewModel::onClickTypeHabit,
         onClickWeekly = viewModel::onClickWeekly,
         onMonthNumberSelected = viewModel::monthNumberSelected,
-        onDateSelected = viewModel::onClickDate
+        onDateSelected = viewModel::onClickDate,
+        onPickUnit = viewModel::onPickUnit
     )
 
 }
@@ -77,10 +88,13 @@ internal fun AddHabitScreen(
     onClickTypeHabit: (TypeHabit) -> Unit = {},
     onClickWeekly: (Int) -> Unit = {},
     onMonthNumberSelected: (Int) -> Unit = {},
-    onDateSelected: (LocalDate) -> Unit = {}
+    onDateSelected: (LocalDate) -> Unit = {},
+    onPickUnit: (Units) -> Unit = {},
 ){
 
     val focusManager = LocalFocusManager.current
+
+    IsOnlyDigit(dataAddHabit.timesHabit)
 
     Column (
         modifier = Modifier
@@ -204,7 +218,8 @@ internal fun AddHabitScreen(
                 colorSelected = dataAddHabit.color,
                 contrastColor = dataAddHabit.contrastColor,
                 iconSelected = dataAddHabit.icon,
-                onClickGridOption = onClickGridOption
+                onClickGridOption = onClickGridOption,
+                modifier = Modifier.padding(bottom = spacing8)
             )
         }
 
@@ -214,13 +229,41 @@ internal fun AddHabitScreen(
             AddHabitGrid(gridOption = GridOption.ICONS,
                 colorSelected = dataAddHabit.color,
                 iconSelected = dataAddHabit.icon,
-                onClickGridOption = onClickGridOption
+                onClickGridOption = onClickGridOption,
+                modifier = Modifier.padding(bottom = spacing8)
             )
         }
 
-    }
+        //Unidades y veces
+        LabelLargeText(
+            stringResource(R.string.add_habit_times_and_units)
+        )
 
-    //Unidades y veces
+        Row (
+            modifier = Modifier.fillMaxWidth().padding(top = spacing8),
+        ){
+            AddHabitTextField(
+                textFieldState = dataAddHabit.timesHabit,
+                modifier = Modifier
+                    .weight(1f)
+                    .height(51.dp),
+                focusManager = focusManager,
+                contentPadding = PaddingValues(start = spacing12),
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Number
+            )
+
+            Spacer(modifier = Modifier.padding(horizontal = spacing8))
+
+            AddHabitCardButton(
+                title = getTextUnits(dataAddHabit.timesHabit, dataAddHabit.unit),
+                modifier = Modifier.weight(1f).padding(top = spacing4),
+                onClick = { onClickDialog(PICK_UNIT) }
+            )
+        }
+
+        //Notificaciones
+    }
 
 
     //Dialog
@@ -238,8 +281,24 @@ internal fun AddHabitScreen(
                     onClickDate = onDateSelected)
             }
 
+            PICK_UNIT -> {
+                PickUnitDialog(
+                    onDismissRequest = onDismissDialog,
+                    unitSeleted = dataAddHabit.unit,
+                    colorSelected = dataAddHabit.color,
+                    contrastColor = dataAddHabit.contrastColor,
+                    onClickButton = onPickUnit
+                )
+            }
+
             else -> {}
         }
     }
 
+}
+
+@Composable
+fun getTextUnits(timeTextField:TextFieldState, typeUnit: Units):String{
+    return if(timeTextField.text.toString() == "1") stringResource(typeUnit.title)
+    else stringResource(typeUnit.titlePlural)
 }

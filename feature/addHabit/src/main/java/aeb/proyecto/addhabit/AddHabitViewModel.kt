@@ -3,6 +3,7 @@ package aeb.proyecto.addhabit
 import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
 import aeb.proyecto.addhabit.constants.TypeHabit
+import aeb.proyecto.addhabit.constants.Units
 import aeb.proyecto.addhabit.constants.getContrastColor
 import aeb.proyecto.addhabit.model.DataAddHabit
 import androidx.compose.ui.graphics.Color
@@ -122,6 +123,14 @@ class AddHabitViewModel @Inject constructor(
         _dataAddHabit.update { currentState->
             currentState.copy(
                 dateRecurringStartDate = localDate
+            )
+        }
+    }
+
+    fun onPickUnit(unit:Units){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                unit = unit
             )
         }
     }

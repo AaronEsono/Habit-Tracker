@@ -2,6 +2,7 @@ package aeb.proyecto.addhabit.model
 
 import aeb.proyecto.addhabit.constants.PICK_TYPE_HABIT
 import aeb.proyecto.addhabit.constants.TypeHabit
+import aeb.proyecto.addhabit.constants.Units
 import aeb.proyecto.addhabit.constants.getContrastColor
 import aeb.proyecto.addhabit.constants.listColors
 import aeb.proyecto.addhabit.constants.listIcons
@@ -13,6 +14,8 @@ import java.time.LocalDate
 data class DataAddHabit(
     var nameTextField:TextFieldState = TextFieldState(),
     var descriptionTextField:TextFieldState = TextFieldState(),
+    var timesHabit:TextFieldState = TextFieldState(initialText = "1"),
+    val unit:Units = Units.TIMES,
 
     var color:Color = listColors[0],
     var contrastColor:Color = getContrastColor(listColors[0]),

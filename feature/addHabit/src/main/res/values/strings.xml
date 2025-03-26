@@ -49,4 +49,50 @@
     <string name="add_habit_oct">Oct</string>
     <string name="add_habit_nov">Nov</string>
     <string name="add_habit_dec">Dic</string>
+
+    <!-- Tiempo -->
+    <string name="add_habit_seconds">Segundos</string>
+    <string name="add_habit_minutes">Minutos</string>
+    <string name="add_habit_hours">Horas</string>
+
+    <!-- Cantidad -->
+    <string name="add_habit_steps">Pasos</string>
+    <string name="add_habit_pages">Páginas</string>
+    <string name="add_habit_calories">Calorías</string>
+    <string name="add_habit_kilometers">Kilómetros</string>
+    <string name="add_habit_exercises">Ejercicios</string>
+    <string name="add_habit_repetitions">Repeticiones</string>
+
+    <!-- Frecuencia -->
+    <string name="add_habit_times">Veces</string>
+    <string name="add_habit_sessions">Sesiones</string>
+    <string name="add_habit_tasks">Tareas</string>
+    <string name="add_habit_attempts">Intentos</string>
+
+    <!-- Tiempo -->
+    <string name="add_habit_second_singular">Segundo</string>
+    <string name="add_habit_minute_singular">Minuto</string>
+    <string name="add_habit_hour_singular">Hora</string>
+
+    <!-- Cantidad -->
+    <string name="add_habit_step_singular">Paso</string>
+    <string name="add_habit_page_singular">Página</string>
+    <string name="add_habit_calorie_singular">Caloría</string>
+    <string name="add_habit_kilometer_singular">Kilómetro</string>
+    <string name="add_habit_exercise_singular">Ejercicio</string>
+    <string name="add_habit_repetition_singular">Repetición</string>
+
+    <!-- Frecuencia -->
+    <string name="add_habit_time_singular">Vez</string>
+    <string name="add_habit_session_singular">Sesión</string>
+    <string name="add_habit_task_singular">Tarea</string>
+    <string name="add_habit_attempt_singular">Intento</string>
+
+    <string name="add_habit_time_title">Tiempo</string>
+    <string name="add_habit_quantity_title">Cantidad</string>
+    <string name="add_habit_frecuency_title">Frecuencia</string>
+
+    <string name="add_habit_time_label">Mide cuánto tiempo dedicas a tu hábito</string>
+    <string name="add_habit_quantity_label">Suma y lleva el control de grandes cantidades como pasos o páginas</string>
+    <string name="add_habit_frecuency_label">Define cuántas veces realizas una acción al día</string>
 </resources>

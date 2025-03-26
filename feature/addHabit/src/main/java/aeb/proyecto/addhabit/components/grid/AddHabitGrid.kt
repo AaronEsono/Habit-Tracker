@@ -47,6 +47,7 @@ val height: Dp = (ROWS * itemSize) + ((ROWS - 1) * verticalSpacing) + (verticalP
 
 @Composable
 fun AddHabitGrid(
+    modifier:Modifier = Modifier,
     gridOption: GridOption,
     colorSelected: Color,
     contrastColor: Color = Color.Black,
@@ -55,7 +56,7 @@ fun AddHabitGrid(
 ){
 
     Column (
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ){
 
         ElevatedCard(

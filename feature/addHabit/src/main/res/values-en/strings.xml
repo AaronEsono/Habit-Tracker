@@ -49,4 +49,51 @@
     <string name="add_habit_oct">Oct</string>
     <string name="add_habit_nov">Nov</string>
     <string name="add_habit_dec">Dec</string>
+
+    <!-- Time -->
+    <string name="add_habit_seconds">Seconds</string>
+    <string name="add_habit_minutes">Minutes</string>
+    <string name="add_habit_hours">Hours</string>
+
+    <!-- Quantity -->
+    <string name="add_habit_steps">Steps</string>
+    <string name="add_habit_pages">Pages</string>
+    <string name="add_habit_calories">Calories</string>
+    <string name="add_habit_kilometers">Kilometers</string>
+    <string name="add_habit_exercises">Exercises</string>
+    <string name="add_habit_repetitions">Repetitions</string>
+
+    <!-- Frequency -->
+    <string name="add_habit_times">Times</string>
+    <string name="add_habit_sessions">Sessions</string>
+    <string name="add_habit_tasks">Tasks</string>
+    <string name="add_habit_attempts">Attempts</string>
+
+    <!-- Time -->
+    <string name="add_habit_second_singular">Second</string>
+    <string name="add_habit_minute_singular">Minute</string>
+    <string name="add_habit_hour_singular">Hour</string>
+
+    <!-- Quantity -->
+    <string name="add_habit_step_singular">Step</string>
+    <string name="add_habit_page_singular">Page</string>
+    <string name="add_habit_calorie_singular">Calorie</string>
+    <string name="add_habit_kilometer_singular">Kilometer</string>
+    <string name="add_habit_exercise_singular">Exercise</string>
+    <string name="add_habit_repetition_singular">Repetition</string>
+
+    <!-- Frequency -->
+    <string name="add_habit_time_singular">Time</string>
+    <string name="add_habit_session_singular">Session</string>
+    <string name="add_habit_task_singular">Task</string>
+    <string name="add_habit_attempt_singular">Attempt</string>
+
+    <string name="add_habit_time_title">Time</string>
+    <string name="add_habit_quantity_title">Quantity</string>
+    <string name="add_habit_frecuency_title">Frequency</string>
+
+    <string name="add_habit_time_label">Measure how much time you dedicate to your habit</string>
+    <string name="add_habit_quantity_label">Track and manage large amounts like steps or pages</string>
+    <string name="add_habit_frecuency_label">Define how many times you perform an action per day</string>
+
 </resources>
