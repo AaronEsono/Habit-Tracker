@@ -2,7 +2,9 @@ package aeb.proyecto.ui.textField
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.KeyboardActionHandler
+import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.OutlinedTextField
@@ -20,6 +22,7 @@ fun CustomTextField(
     textFieldState:TextFieldState,
     enabled:Boolean = true,
     isError:Boolean = false,
+    placeholder: @Composable (() -> Unit)? = null,
     shape: Shape =  OutlinedTextFieldDefaults.shape,
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.SingleLine,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -30,6 +33,8 @@ fun CustomTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
     labelPosition: TextFieldLabelPosition = TextFieldLabelPosition.Above(),
+    outputTransformation: OutputTransformation? = null,
+    inputTransformation: InputTransformation? = null,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ){
 
@@ -37,6 +42,7 @@ fun CustomTextField(
         modifier = modifier,
         state = textFieldState,
         label = label,
+        placeholder = placeholder,
         enabled = enabled,
         shape = shape,
         isError = isError,
@@ -46,6 +52,8 @@ fun CustomTextField(
         supportingText = supportingText,
         keyboardOptions = keyboardOptions,
         onKeyboardAction = onKeyboardActions,
+        outputTransformation = outputTransformation,
+        inputTransformation = inputTransformation,
         contentPadding = contentPadding,
         lineLimits = lineLimits,
         colors = colors,

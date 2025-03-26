@@ -8,6 +8,7 @@ import aeb.proyecto.addhabit.constants.listIcons
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import java.time.LocalDate
 
 data class DataAddHabit(
     var nameTextField:TextFieldState = TextFieldState(),
@@ -18,8 +19,11 @@ data class DataAddHabit(
 
     var icon:ImageVector = listIcons[0],
     var typeHabit:TypeHabit = TypeHabit.DAILY,
+
     var numberOfDaysWeek:Int = 1,
     var numberOfDaysMonth:Int = 1,
+    var dateRecurringStartDate:LocalDate = LocalDate.now(),
+    val intervalTextFieldState:TextFieldState = TextFieldState(initialText = "1"),
 
     var isColorSelected:Boolean = false,
     var isIconSelected:Boolean = false,

@@ -2,6 +2,7 @@ package aeb.proyecto.addhabit
 
 import aeb.proyecto.addhabit.components.card.AddHabitCard
 import aeb.proyecto.addhabit.components.card.AddHabitCardButton
+import aeb.proyecto.addhabit.components.dialog.DatePickerDialogHabit
 import aeb.proyecto.addhabit.components.dialog.PickTypeHabitDialog
 import aeb.proyecto.addhabit.components.grid.AddHabitGrid
 import aeb.proyecto.addhabit.components.textField.AddHabitTextField
@@ -10,6 +11,7 @@ import aeb.proyecto.addhabit.components.typeHabit.RecurringTypeHabit
 import aeb.proyecto.addhabit.components.typeHabit.WeeklyTypeHabit
 import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
+import aeb.proyecto.addhabit.constants.PICK_DATE
 import aeb.proyecto.addhabit.constants.PICK_TYPE_HABIT
 import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.model.DataAddHabit
@@ -18,7 +20,6 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
-import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -32,8 +33,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.EventNote
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import java.time.LocalDate
 
 @Composable
 fun AddHabitScreen(
@@ -59,7 +61,8 @@ fun AddHabitScreen(
         onDismissDialog = viewModel::closeDialog,
         onClickTypeHabit = viewModel::onClickTypeHabit,
         onClickWeekly = viewModel::onClickWeekly,
-        onMonthNumberSelected = viewModel::monthNumberSelected
+        onMonthNumberSelected = viewModel::monthNumberSelected,
+        onDateSelected = viewModel::onClickDate
     )
 
 }
@@ -73,7 +76,8 @@ internal fun AddHabitScreen(
     onDismissDialog: () -> Unit = {},
     onClickTypeHabit: (TypeHabit) -> Unit = {},
     onClickWeekly: (Int) -> Unit = {},
-    onMonthNumberSelected: (Int) -> Unit = {}
+    onMonthNumberSelected: (Int) -> Unit = {},
+    onDateSelected: (LocalDate) -> Unit = {}
 ){
 
     val focusManager = LocalFocusManager.current
@@ -87,7 +91,12 @@ internal fun AddHabitScreen(
         AddHabitTextField(
             textFieldState = dataAddHabit.nameTextField,
             label = stringResource(R.string.add_habit_name_label),
-            leadingIcon = Icons.AutoMirrored.Filled.EventNote,
+            leadingIcon = {
+                Icon(
+                    Icons.AutoMirrored.Filled.EventNote,
+                    contentDescription = "Leading icon TextField"
+                )
+            },
             focusManager = focusManager,
             imeAction = ImeAction.Done,
             keyboardType = KeyboardType.Text
@@ -98,7 +107,12 @@ internal fun AddHabitScreen(
         AddHabitTextField(
             textFieldState = dataAddHabit.descriptionTextField,
             label = stringResource(R.string.add_habit_description_label),
-            leadingIcon = Icons.Filled.Description,
+            leadingIcon = {
+                Icon(
+                    Icons.Filled.Description,
+                    contentDescription = "Leading icon TextField"
+                )
+            },
             focusManager = focusManager,
             imeAction = ImeAction.Done,
             keyboardType = KeyboardType.Text
@@ -142,7 +156,16 @@ internal fun AddHabitScreen(
                         onNumberSelected = onMonthNumberSelected)
                 }
                 TypeHabit.CYCLIC -> {
-                    RecurringTypeHabit()
+                    RecurringTypeHabit(
+                        intervalTextFieldState = dataAddHabit.intervalTextFieldState,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = spacing10),
+                        focusManager = focusManager,
+                        color = dataAddHabit.color,
+                        date = dataAddHabit.dateRecurringStartDate,
+                        onClick = {onClickDialog(PICK_DATE)}
+                    )
                 }
             }
         }
@@ -197,7 +220,7 @@ internal fun AddHabitScreen(
 
     }
 
-    //Unidades
+    //Unidades y veces
 
 
     //Dialog
@@ -206,6 +229,14 @@ internal fun AddHabitScreen(
             PICK_TYPE_HABIT -> PickTypeHabitDialog(
                 onDismissRequest = onDismissDialog,
                 onClickButton = onClickTypeHabit )
+
+            PICK_DATE ->{
+                DatePickerDialogHabit(
+                    onDismissRequest = onDismissDialog,
+                    colorSelected = dataAddHabit.color,
+                    contrastColor = dataAddHabit.contrastColor,
+                    onClickDate = onDateSelected)
+            }
 
             else -> {}
         }

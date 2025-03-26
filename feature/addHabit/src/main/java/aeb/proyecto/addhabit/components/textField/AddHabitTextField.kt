@@ -6,9 +6,11 @@ import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.textField.CustomTextField
 import aeb.proyecto.ui.textField.utils.clearFocusOnKeyboardDismiss
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -35,9 +37,12 @@ fun AddHabitTextField(
     textFieldState: TextFieldState = rememberTextFieldState(),
     label: String? = null,
     containerColor: Color = MaterialTheme.colorScheme.surfaceTint,
-    leadingIcon: ImageVector? = Icons.Filled.Email,
+    contentPadding: PaddingValues = OutlinedTextFieldDefaults.contentPadding(),
+    leadingIcon: @Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Email,
     imeAction: ImeAction = ImeAction.Next,
+    outPutTransformation: OutputTransformation? = null,
+    labelPosition: TextFieldLabelPosition = TextFieldLabelPosition.Attached(),
     focusManager: FocusManager,
 ){
 
@@ -49,14 +54,7 @@ fun AddHabitTextField(
         label = {
             label?.let { LabelLargeText(label, modifier = Modifier.background(Color.Transparent)) }
         },
-        leadingIcon = {
-            leadingIcon?.let {
-                Icon(
-                    leadingIcon,
-                    contentDescription = "Leading icon TextField"
-                )
-            }
-        },
+        leadingIcon = leadingIcon,
         trailingIcon = {
             when (textFieldState.text.toString()) {
                 "" -> {}
@@ -73,7 +71,9 @@ fun AddHabitTextField(
             }
         },
         shape = RoundedCornerShape(spacing8),
-        labelPosition = TextFieldLabelPosition.Attached(),
+        outputTransformation = outPutTransformation,
+        contentPadding = contentPadding,
+        labelPosition = labelPosition,
         colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = MaterialTheme.colorScheme.onSurface,
             unfocusedTextColor = MaterialTheme.colorScheme.onSurface,

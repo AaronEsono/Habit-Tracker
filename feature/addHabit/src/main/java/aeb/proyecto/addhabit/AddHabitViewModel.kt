@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -113,6 +114,14 @@ class AddHabitViewModel @Inject constructor(
         _dataAddHabit.update { currentState ->
             currentState.copy(
                 numberOfDaysMonth = numberDays
+            )
+        }
+    }
+
+    fun onClickDate(localDate:LocalDate){
+        _dataAddHabit.update { currentState->
+            currentState.copy(
+                dateRecurringStartDate = localDate
             )
         }
     }
