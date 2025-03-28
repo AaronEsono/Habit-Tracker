@@ -2,10 +2,13 @@ package aeb.proyecto.addhabit
 
 import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
+import aeb.proyecto.addhabit.constants.PICK_NOTIFICATION
 import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.Units
 import aeb.proyecto.addhabit.constants.getContrastColor
+import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.addhabit.model.DataAddHabit
+import aeb.proyecto.addhabit.model.TypeNotification
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
@@ -17,6 +20,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -131,6 +135,26 @@ class AddHabitViewModel @Inject constructor(
         _dataAddHabit.update { currentState ->
             currentState.copy(
                 unit = unit
+            )
+        }
+    }
+
+    fun onClickTypeNotification(typeNotification: TypeNotification){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                typeNotificationSelected = typeNotification,
+                showDialog = true,
+                typeDialog = PICK_NOTIFICATION
+            )
+        }
+    }
+
+    fun onTimeSelected(time:LocalTime){
+        val notification = AddHabitNotification(time = time,type = _dataAddHabit.value.typeNotificationSelected)
+
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                notifications = currentState.notifications + notification
             )
         }
     }

@@ -95,4 +95,27 @@
     <string name="add_habit_time_label">Mide cuánto tiempo dedicas a tu hábito</string>
     <string name="add_habit_quantity_label">Suma y lleva el control de grandes cantidades como pasos o páginas</string>
     <string name="add_habit_frecuency_label">Define cuántas veces realizas una acción al día</string>
+
+    <string name="add_habit_notifications_title">Establecer notificaciones</string>
+    <string name="add_habit_create_notification">Crear notificación</string>
+
+    <string name="add_habit_dialog_notification_title">Selecciona el tipo de notificación</string>
+
+    <string name="add_habit_daily_notification_title">Diaria</string>
+    <string name="add_habit_daily_notification_label">Define qué días específicos de la semana deseas recibir notificaciones</string>
+
+    <string name="add_habit_cyclic_notification_title">Cíclica</string>
+    <string name="add_habit_cyclic_notification_label">Define cada cuántos días quieres recibir notificaciones</string>
+
+    <string name="add_habit_mon">Lun</string>
+    <string name="add_habit_tue">Mar</string>
+    <string name="add_habit_wed">Mié</string>
+    <string name="add_habit_thu">Jue</string>
+    <string name="add_habit_fri">Vie</string>
+    <string name="add_habit_sat">Sáb</string>
+    <string name="add_habit_sun">Dom</string>
+
+    <string name="add_habit_notificacionWeek">Notificaciones semanales</string>
+    <string name="add_habit_notificacionRecurring">Notificaciones cíclicas</string>
+
 </resources>

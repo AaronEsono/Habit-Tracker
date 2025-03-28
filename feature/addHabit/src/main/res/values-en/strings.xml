@@ -27,7 +27,7 @@
     <string name="add_habit_recurring_date">%1$s, %2$s %3$s</string>
     <string name="add_habit_recurring_title_date">Select the date to start this habit and the interval of days</string>
 
-    <string name="add_habit_times_and_units">Establece el número de repeticiones por día y las unidades</string>
+    <string name="add_habit_times_and_units">Set the number of repetitions per day and the units</string>
 
     <string name="add_habit_monday">Monday</string>
     <string name="add_habit_tuesday">Tuesday</string>
@@ -96,4 +96,25 @@
     <string name="add_habit_quantity_label">Track and manage large amounts like steps or pages</string>
     <string name="add_habit_frecuency_label">Define how many times you perform an action per day</string>
 
+    <string name="add_habit_notifications_title">Set notifications</string>
+    <string name="add_habit_create_notification">Create notification</string>
+
+    <string name="add_habit_dialog_notification_title">Select the type of notification</string>
+
+    <string name="add_habit_daily_notification_title">Daily</string>
+    <string name="add_habit_daily_notification_label">Set which specific days of the week you want to receive notifications</string>
+
+    <string name="add_habit_cyclic_notification_title">Cyclic</string>
+    <string name="add_habit_cyclic_notification_label">Set the specific interval of days that you want to receive notifications</string>
+
+    <string name="add_habit_mon">Mon</string>
+    <string name="add_habit_tue">Tue</string>
+    <string name="add_habit_wed">Wed</string>
+    <string name="add_habit_thu">Thu</string>
+    <string name="add_habit_fri">Fri</string>
+    <string name="add_habit_sat">Sat</string>
+    <string name="add_habit_sun">Sun</string>
+
+    <string name="add_habit_notificacionWeek">Weekly notifications, select the days for each notification</string>
+    <string name="add_habit_notificacionRecurring">Recurring notifications, select the interval for each notification</string>
 </resources>

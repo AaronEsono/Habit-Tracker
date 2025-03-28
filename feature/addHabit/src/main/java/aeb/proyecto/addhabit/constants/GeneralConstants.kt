@@ -25,6 +25,7 @@ sealed class GridOptionResult(){
 const val PICK_TYPE_HABIT = 1
 const val PICK_DATE = 2
 const val PICK_UNIT = 3
-const val PICK_NOTIFICATION = 4
+const val PICK_TYPE_NOTIFICATION = 4
+const val PICK_NOTIFICATION = 5
 
 val onlyDigits = "-?[0-9]+(\\\\.[0-9]+)?".toRegex()

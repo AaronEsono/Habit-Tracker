@@ -32,5 +32,8 @@ data class DataAddHabit(
     var isIconSelected:Boolean = false,
 
     val showDialog:Boolean = false,
-    val typeDialog:Int = PICK_TYPE_HABIT
+    val typeDialog:Int = PICK_TYPE_HABIT,
+
+    val typeNotificationSelected:TypeNotification = TypeNotification.Daily(),
+    val notifications:List<AddHabitNotification> = listOf()
 )

@@ -91,7 +91,7 @@ fun PickUnitDialog(
             BodyMediumText(
                 stringResource(R.string.add_habit_frecuency_title),
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = spacing2)
+                modifier = Modifier.padding(bottom = spacing4)
             )
 
             LabelMediumText(stringResource(R.string.add_habit_frecuency_label))
@@ -107,7 +107,7 @@ fun PickUnitDialog(
 
             BodyMediumText(
                 stringResource(R.string.add_habit_quantity_title),
-                modifier = Modifier.padding(top = spacing4, bottom = spacing2),
+                modifier = Modifier.padding(top = spacing4, bottom = spacing4),
                 fontWeight = FontWeight.Bold
             )
 
@@ -124,7 +124,7 @@ fun PickUnitDialog(
 
             BodyMediumText(
                 stringResource(R.string.add_habit_time_title),
-                modifier = Modifier.padding(top = spacing4, bottom = spacing2),
+                modifier = Modifier.padding(top = spacing4, bottom = spacing4),
                 fontWeight = FontWeight.Bold
             )
 
@@ -182,7 +182,7 @@ fun FlowRowCards(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = spacing6, top = spacing8),
-        verticalArrangement = Arrangement.spacedBy(spacing6, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(spacing8, Alignment.CenterVertically),
         horizontalArrangement = Arrangement.spacedBy(spacing8)
     ) {
 
