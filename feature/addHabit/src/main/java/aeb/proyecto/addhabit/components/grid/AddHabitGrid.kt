@@ -4,25 +4,34 @@ import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
 import aeb.proyecto.addhabit.constants.listColors
 import aeb.proyecto.addhabit.constants.listIcons
+import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -31,7 +40,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -40,20 +51,21 @@ import androidx.compose.ui.unit.times
 const val ROWS = 3
 val itemSize = 30.dp
 
-val verticalPadding = spacing8
+val verticalPadding = spacing4
 val verticalSpacing = spacing8
 
-val height: Dp = (ROWS * itemSize) + ((ROWS - 1) * verticalSpacing) + (verticalPadding * 2)
+val height: Dp = ((ROWS - 0.5) * itemSize) + ((ROWS - 1) * verticalSpacing) + (verticalPadding * 2)
 
 @Composable
 fun AddHabitGrid(
     modifier:Modifier = Modifier,
     gridOption: GridOption,
     colorSelected: Color,
-    contrastColor: Color = Color.Black,
     iconSelected: ImageVector,
     onClickGridOption: (GridOptionResult) -> Unit = {}
 ){
+
+    val lazyGridState = rememberLazyGridState()
 
     Column (
         modifier = modifier.fillMaxWidth()
@@ -68,8 +80,9 @@ fun AddHabitGrid(
 
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(itemSize),
-                modifier = Modifier.wrapContentHeight(),
-                contentPadding = PaddingValues(vertical = verticalPadding, horizontal = spacing8),
+                state = lazyGridState,
+                modifier = Modifier.wrapContentHeight().padding(vertical = verticalPadding),
+                contentPadding = PaddingValues(horizontal = spacing8),
                 verticalArrangement = Arrangement.spacedBy(verticalSpacing),
                 horizontalArrangement = Arrangement.spacedBy(spacing6)
             ) {
@@ -81,7 +94,7 @@ fun AddHabitGrid(
                                 Canvas(
                                     modifier = Modifier
                                         .clip(CircleShape)
-                                        .border(colorSelected(color, colorSelected,contrastColor), CircleShape)
+                                        .border(colorSelected(color, colorSelected), CircleShape)
                                         .size(itemSize)
                                         .clickable {
                                             onClickGridOption(GridOptionResult.colorResult(color))
@@ -115,8 +128,8 @@ fun AddHabitGrid(
 }
 
 @Composable
-fun colorSelected(color: Color, colorSelected: Color, contrastColor: Color): BorderStroke {
-    return if (color == colorSelected) BorderStroke(2.dp, contrastColor)
+fun colorSelected(color: Color, colorSelected: Color): BorderStroke {
+    return if (color == colorSelected) BorderStroke(2.dp, MaterialTheme.colorScheme.onSurface)
     else BorderStroke(0.dp, Color.Transparent)
 }
 

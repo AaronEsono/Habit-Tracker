@@ -12,21 +12,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import java.time.LocalDate
 
 data class DataAddHabit(
-    var nameTextField:TextFieldState = TextFieldState(),
-    var descriptionTextField:TextFieldState = TextFieldState(),
-    var timesHabit:TextFieldState = TextFieldState(initialText = "1"),
-    val unit:Units = Units.TIMES,
+    var habitScreen: HabitScreen = HabitScreen(),
 
-    var color:Color = listColors[0],
     var contrastColor:Color = getContrastColor(listColors[0]),
-
-    var icon:ImageVector = listIcons[0],
-    var typeHabit:TypeHabit = TypeHabit.DAILY,
-
-    var numberOfDaysWeek:Int = 1,
-    var numberOfDaysMonth:Int = 1,
-    var dateRecurringStartDate:LocalDate = LocalDate.now(),
-    val intervalTextFieldState:TextFieldState = TextFieldState(initialText = "1"),
 
     var isColorSelected:Boolean = false,
     var isIconSelected:Boolean = false,
@@ -34,6 +22,6 @@ data class DataAddHabit(
     val showDialog:Boolean = false,
     val typeDialog:Int = PICK_TYPE_HABIT,
 
-    val typeNotificationSelected:TypeNotification = TypeNotification.Daily(),
-    val notifications:List<AddHabitNotification> = listOf()
+    val notificationSelected:AddHabitNotification = AddHabitNotification(),
+    val bottomSheetState: BottomSheetState = BottomSheetState()
 )

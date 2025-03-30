@@ -118,4 +118,9 @@
     <string name="add_habit_notificacionWeek">Notificaciones semanales</string>
     <string name="add_habit_notificacionRecurring">Notificaciones cíclicas</string>
 
+    <!-- Estados bottom sheet-->
+    <string name="add_habit_delete_notification_title">Borrar notificación</string>
+    <string name="add_habit_delete_notification_subtitle">¿Estás seguro de que quieres borrar esta notificación?</string>
+
+
 </resources>

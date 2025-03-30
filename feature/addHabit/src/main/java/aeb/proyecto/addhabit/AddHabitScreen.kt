@@ -1,5 +1,6 @@
 package aeb.proyecto.addhabit
 
+import aeb.proyecto.addhabit.components.bottomSheet.AddBottomSheet
 import aeb.proyecto.addhabit.components.card.AddHabitCard
 import aeb.proyecto.addhabit.components.card.AddHabitCardButton
 import aeb.proyecto.addhabit.components.card.CardLeadingIconButton
@@ -8,6 +9,7 @@ import aeb.proyecto.addhabit.components.dialog.PickTypeHabitDialog
 import aeb.proyecto.addhabit.components.dialog.PickTypeNotificationDialog
 import aeb.proyecto.addhabit.components.dialog.PickUnitDialog
 import aeb.proyecto.addhabit.components.dialog.TimePickerDialog
+import aeb.proyecto.addhabit.components.divider.CustomHorizontalDivider
 import aeb.proyecto.addhabit.components.grid.AddHabitGrid
 import aeb.proyecto.addhabit.components.notifications.NotificationComponent
 import aeb.proyecto.addhabit.components.textField.AddHabitTextField
@@ -30,6 +32,7 @@ import aeb.proyecto.addhabit.utils.IsOnlyDigit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
+import aeb.proyecto.ui.dimmens.Dimmens.spacing18
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing5
@@ -41,6 +44,7 @@ import android.content.pm.PackageManager
 import android.widget.Space
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -60,9 +64,11 @@ import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.NotificationAdd
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -99,8 +105,19 @@ fun AddHabitScreen(
         onDateSelected = viewModel::onClickDate,
         onPickUnit = viewModel::onPickUnit,
         onClickTypeNotification = viewModel::onClickTypeNotification,
-        onTimeSelected = viewModel::onTimeSelected
+        onTimeSelected = viewModel::onTimeSelected,
+        onClickDeleteNotification = viewModel::onClickDeleteNotification
     )
+
+    if(dataAddHabit.bottomSheetState.isVisible){
+        AddBottomSheet(
+            dataBottomSheet = dataAddHabit.bottomSheetState.dataBottomSheet,
+            onDismiss = viewModel::closeBottomSheet,
+            color = dataAddHabit.habitScreen.color,
+            contrastColor = dataAddHabit.contrastColor,
+            onAccept = viewModel::onAcceptBottomSheet
+        )
+    }
 
 }
 
@@ -117,16 +134,18 @@ internal fun AddHabitScreen(
     onDateSelected: (LocalDate) -> Unit = {},
     onPickUnit: (Units) -> Unit = {},
     onClickTypeNotification: (TypeNotification) -> Unit = {},
-    onTimeSelected: (LocalTime) -> Unit = {}
+    onTimeSelected: (LocalTime) -> Unit = {},
+    onClickDeleteNotification: (LocalTime) -> Unit = {}
 ){
 
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+    val habit = dataAddHabit.habitScreen
 
-    val notificationWeek = dataAddHabit.notifications.filter { it.type is TypeNotification.Daily }
-    val notificationRecurring = dataAddHabit.notifications.filter { it.type is TypeNotification.Recurring }
+    val notificationWeek = habit.notifications.filter { it.type is TypeNotification.Daily }
+    val notificationRecurring = habit.notifications.filter { it.type is TypeNotification.Recurring }
 
-    IsOnlyDigit(dataAddHabit.timesHabit)
+    IsOnlyDigit(habit.numberTimesTextField)
 
     Column (
         modifier = Modifier
@@ -136,8 +155,8 @@ internal fun AddHabitScreen(
     ){
         //TextField Nombre y descripción
         AddHabitTextField(
-            textFieldState = dataAddHabit.nameTextField,
-            label = stringResource(R.string.add_habit_name_label),
+            textFieldState = habit.nameTextField,
+            label = {LabelLargeText(stringResource(R.string.add_habit_name_label))},
             leadingIcon = {
                 Icon(
                     Icons.AutoMirrored.Filled.EventNote,
@@ -149,11 +168,10 @@ internal fun AddHabitScreen(
             keyboardType = KeyboardType.Text
         )
 
-        Spacer(modifier = Modifier.padding(vertical = spacing4))
-
         AddHabitTextField(
-            textFieldState = dataAddHabit.descriptionTextField,
-            label = stringResource(R.string.add_habit_description_label),
+            modifier = Modifier.padding(vertical = spacing4),
+            textFieldState = habit.descriptionTextField,
+            label = {LabelLargeText(stringResource(R.string.add_habit_description_label))},
             leadingIcon = {
                 Icon(
                     Icons.Filled.Description,
@@ -165,21 +183,20 @@ internal fun AddHabitScreen(
             keyboardType = KeyboardType.Text
         )
 
-        Spacer(modifier = Modifier.padding(vertical = spacing8))
+        CustomHorizontalDivider(modifier = Modifier.padding(top = spacing18, bottom = spacing8))
 
         // Tipo de hábito
-        LabelLargeText(stringResource(R.string.add_habit_pick_type_habit_title))
-
-        Spacer(modifier = Modifier.padding(vertical = spacing4))
+        LabelLargeText(stringResource(R.string.add_habit_pick_type_habit_title),
+            modifier = Modifier.padding(bottom = spacing12))
 
         AddHabitCardButton(
-            title = stringResource(dataAddHabit.typeHabit.title),
+            title = stringResource(habit.typeHabit.title),
             modifier = Modifier.fillMaxWidth(),
             onClick = { onClickDialog(PICK_TYPE_HABIT) }
         )
 
         AnimatedContent(
-            targetState = dataAddHabit.typeHabit
+            targetState = habit.typeHabit
         ) { typeHabit ->
             when (typeHabit) {
                 TypeHabit.DAILY -> Unit
@@ -187,8 +204,8 @@ internal fun AddHabitScreen(
                     WeeklyTypeHabit(modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = spacing10),
-                        numberSelected = dataAddHabit.numberOfDaysWeek,
-                        colorSelected = dataAddHabit.color,
+                        numberSelected = habit.numberOfDaysWeek,
+                        colorSelected = habit.color,
                         contrastColor = dataAddHabit.contrastColor,
                         onClickWeekly = onClickWeekly)
                 }
@@ -197,27 +214,27 @@ internal fun AddHabitScreen(
                     MonthlyTypeHabit(modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = spacing10),
-                        colorSelected = dataAddHabit.color,
+                        colorSelected = habit.color,
                         contrastColor = dataAddHabit.contrastColor,
-                        numberSelected = dataAddHabit.numberOfDaysMonth,
+                        numberSelected = habit.numberOfDaysMonth,
                         onNumberSelected = onMonthNumberSelected)
                 }
                 TypeHabit.CYCLIC -> {
                     RecurringTypeHabit(
-                        intervalTextFieldState = dataAddHabit.intervalTextFieldState,
+                        intervalTextFieldState = habit.intervalTextFieldState,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = spacing10),
                         focusManager = focusManager,
-                        color = dataAddHabit.color,
-                        date = dataAddHabit.dateRecurringStartDate,
+                        color = habit.color,
+                        date = habit.dateRecurringStartDate,
                         onClick = {onClickDialog(PICK_DATE)}
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.padding(vertical = spacing8))
+        CustomHorizontalDivider(modifier = Modifier.padding(top = spacing18, bottom = spacing16))
 
         //Colores e iconos
         Row (
@@ -229,30 +246,27 @@ internal fun AddHabitScreen(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.add_habit_color_label),
                 icon = Icons.Filled.ColorLens,
-                color = dataAddHabit.color,
+                color = habit.color,
                 onClick = { onClickCard(GridOption.COLORS) }
             )
 
             AddHabitCard(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.add_habit_icon_label),
-                icon = dataAddHabit.icon,
-                color = dataAddHabit.color,
+                icon = habit.icon,
+                color = habit.color,
                 onClick = { onClickCard(GridOption.ICONS) }
             )
         }
-
-        Spacer(modifier = Modifier.padding(vertical = spacing8))
 
         AnimatedVisibility(
             visible = dataAddHabit.isColorSelected
         ) {
             AddHabitGrid(gridOption = GridOption.COLORS,
-                colorSelected = dataAddHabit.color,
-                contrastColor = dataAddHabit.contrastColor,
-                iconSelected = dataAddHabit.icon,
+                colorSelected = habit.color,
+                iconSelected = habit.icon,
                 onClickGridOption = onClickGridOption,
-                modifier = Modifier.padding(bottom = spacing8)
+                modifier = Modifier.padding(top = spacing12)
             )
         }
 
@@ -260,12 +274,14 @@ internal fun AddHabitScreen(
             visible = dataAddHabit.isIconSelected
         ) {
             AddHabitGrid(gridOption = GridOption.ICONS,
-                colorSelected = dataAddHabit.color,
-                iconSelected = dataAddHabit.icon,
+                colorSelected = habit.color,
+                iconSelected = habit.icon,
                 onClickGridOption = onClickGridOption,
-                modifier = Modifier.padding(bottom = spacing8)
+                modifier = Modifier.padding(top = spacing12)
             )
         }
+
+        CustomHorizontalDivider(modifier = Modifier.padding(top = spacing16, bottom = spacing8))
 
         //Unidades y veces
         LabelLargeText(
@@ -275,26 +291,22 @@ internal fun AddHabitScreen(
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = spacing8),
+                .padding(top = spacing12),
         ){
             AddHabitTextField(
-                textFieldState = dataAddHabit.timesHabit,
-                modifier = Modifier
-                    .weight(1f)
-                    .height(51.dp),
+                textFieldState = habit.numberTimesTextField,
+                modifier = Modifier.weight(1f).height(45.dp).padding(top = spacing2),
                 focusManager = focusManager,
-                contentPadding = PaddingValues(start = spacing12),
                 imeAction = ImeAction.Done,
+                contentPadding = PaddingValues(start = spacing12),
                 keyboardType = KeyboardType.Number
             )
 
             Spacer(modifier = Modifier.padding(horizontal = spacing8))
 
             AddHabitCardButton(
-                title = getTextUnits(dataAddHabit.timesHabit, dataAddHabit.unit),
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(top = spacing4),
+                title = getTextUnits(habit.numberTimesTextField, habit.unit),
+                modifier = Modifier.weight(1f),
                 onClick = { onClickDialog(PICK_UNIT) }
             )
         }
@@ -303,17 +315,16 @@ internal fun AddHabitScreen(
         if(ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
             == PackageManager.PERMISSION_GRANTED){
 
-            LabelLargeText(
-                stringResource(R.string.add_habit_notifications_title),
-                modifier = Modifier.padding(top = spacing10)
-            )
+            CustomHorizontalDivider(modifier = Modifier.padding(top = spacing16, bottom = spacing8))
+
+            LabelLargeText(stringResource(R.string.add_habit_notifications_title))
 
             CardLeadingIconButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = spacing6),
+                    .padding(top = spacing8),
                 leadingIcon = Icons.Filled.NotificationAdd,
-                color = dataAddHabit.color,
+                color = habit.color,
                 title = stringResource(R.string.add_habit_create_notification),
                 onClick = { onClickDialog(PICK_TYPE_NOTIFICATION) }
             )
@@ -322,14 +333,13 @@ internal fun AddHabitScreen(
 
             if(notificationWeek.isNotEmpty()){
                 LabelLargeText(stringResource(R.string.add_habit_notificacionWeek),
-                    modifier = Modifier.padding(top = spacing10))
-
-                Spacer(modifier = Modifier.padding(vertical = spacing4))
+                    modifier = Modifier.padding(top = spacing10, bottom = spacing4))
 
                 notificationWeek.forEach {
                     NotificationComponent(
-                        notification = it, color = dataAddHabit.color,
+                        notification = it, color = habit.color,
                         contrastColor = dataAddHabit.contrastColor,
+                        onClickDelete = onClickDeleteNotification,
                         modifier = Modifier.padding(bottom = spacing8)
                     )
                 }
@@ -337,14 +347,13 @@ internal fun AddHabitScreen(
 
             if(notificationRecurring.isNotEmpty()){
                 LabelLargeText(stringResource(R.string.add_habit_notificacionRecurring),
-                    modifier = Modifier.padding(top = spacing10))
-
-                Spacer(modifier = Modifier.padding(vertical = spacing4))
+                    modifier = Modifier.padding(top = spacing10, bottom = spacing4))
 
                 notificationRecurring.forEach {
                     NotificationComponent(
-                        notification = it, color = dataAddHabit.color,
+                        notification = it, color = habit.color,
                         contrastColor = dataAddHabit.contrastColor,
+                        onClickDelete = onClickDeleteNotification,
                         modifier = Modifier.padding(bottom = spacing8)
                     )
                 }
@@ -371,7 +380,7 @@ internal fun AddHabitScreen(
             PICK_DATE ->{
                 DatePickerDialogHabit(
                     onDismissRequest = onDismissDialog,
-                    colorSelected = dataAddHabit.color,
+                    colorSelected = habit.color,
                     contrastColor = dataAddHabit.contrastColor,
                     onClickDate = onDateSelected)
             }
@@ -379,8 +388,8 @@ internal fun AddHabitScreen(
             PICK_UNIT -> {
                 PickUnitDialog(
                     onDismissRequest = onDismissDialog,
-                    unitSeleted = dataAddHabit.unit,
-                    colorSelected = dataAddHabit.color,
+                    unitSeleted = habit.unit,
+                    colorSelected = habit.color,
                     contrastColor = dataAddHabit.contrastColor,
                     onClickButton = onPickUnit
                 )
@@ -395,7 +404,7 @@ internal fun AddHabitScreen(
 
             PICK_NOTIFICATION -> {
                 TimePickerDialog(
-                    color = dataAddHabit.color,
+                    color = habit.color,
                     contrastColor = dataAddHabit.contrastColor,
                     onDismissRequest = onDismissDialog,
                     onConfirm = onTimeSelected

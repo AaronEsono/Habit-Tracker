@@ -66,8 +66,7 @@ fun RecurringTypeHabit(
 
             CardLeadingIconButton(
                 modifier = Modifier
-                    .fillMaxWidth(0.6f)
-                    .padding(top = spacing6),
+                    .fillMaxWidth(0.6f),
                 leadingIcon = Icons.Filled.DateRange,
                 color = color,
                 title = getDate(date),
@@ -80,8 +79,8 @@ fun RecurringTypeHabit(
                 textFieldState = intervalTextFieldState,
                 modifier = Modifier
                     .fillMaxWidth(0.75f)
-                    .height(51.dp)
-                    .padding(start = spacing10),
+                    .height(45.dp)
+                    .padding(top = spacing2),
                 focusManager = focusManager,
                 contentPadding = PaddingValues(start = spacing12),
                 imeAction = ImeAction.Done,

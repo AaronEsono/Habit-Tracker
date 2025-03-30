@@ -1,9 +1,5 @@
 package aeb.proyecto.addhabit.components.notifications
 
-import aeb.proyecto.addhabit.R
-import aeb.proyecto.addhabit.components.typeHabit.WeeklyButton
-import aeb.proyecto.addhabit.components.typeHabit.numberOfDaysWeek
-import aeb.proyecto.addhabit.components.typeHabit.numberSelected
 import aeb.proyecto.addhabit.constants.DaysWeekAvr
 import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.addhabit.model.TypeNotification
@@ -15,11 +11,13 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
-import aeb.proyecto.ui.text.LabelMediumText
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,9 +25,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -38,10 +37,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -50,15 +52,15 @@ fun NotificationComponent(
     notification: AddHabitNotification,
     color: Color,
     contrastColor:Color,
+    onClickDelete: (LocalTime) -> Unit = {},
     onClickEdit: () -> Unit = {},
-    onClickDelete: () -> Unit = {},
     onClickTypeNotification: () -> Unit = {}
 ){
 
     Column (
         modifier = modifier,
     ){
-        CustomRipple {
+        CustomRipple{
             ElevatedCard(
                 onClick = { },
                 colors = CardDefaults.elevatedCardColors(
@@ -74,7 +76,7 @@ fun NotificationComponent(
                         Icons.Filled.Notifications,
                         contentDescription = "Icon Leading",
                         tint = color,
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(28.dp)
                     )
 
                     LabelLargeText(
@@ -85,45 +87,86 @@ fun NotificationComponent(
 
                     Spacer(modifier = Modifier.weight(1f))
 
+                    if(notification.type is TypeNotification.Recurring){
+
+                        ArrowCyclicButton(icon = Icons.Filled.Remove,
+                            modifier = Modifier.padding(vertical = spacing8))
+
+                        Box(
+                            modifier = Modifier
+                                .padding(horizontal = spacing4)
+                                .height(40.dp).aspectRatio(1f)
+                                .clip(RoundedCornerShape(spacing8))
+                                .background(MaterialTheme.colorScheme.background)
+                        ){
+                            LabelLargeText(notification.type.interval.toString(),
+                                modifier = Modifier.align(Alignment.Center),
+                                fontSize = 18.sp)
+                        }
+
+                        ArrowCyclicButton(icon = Icons.Filled.Add,
+                            modifier = Modifier.padding(end = spacing12))
+                    }
+
                     CustomRipple {
                         IconButton(
-                            onClick = { }
+                            onClick = {onClickDelete(notification.time)}
                         ) {
                             Icon(
                                 Icons.Filled.Delete,
                                 contentDescription = "Delete icon",
                                 tint = color,
-                                modifier = Modifier.size(22.dp)
+                                modifier = Modifier.size(28.dp)
                             )
                         }
                     }
                 }
 
-                when(notification.type){
-                    is TypeNotification.Daily -> {
-
-                        Row (
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = spacing8, end = spacing8, bottom = spacing6)
-                        ) {
-                            DaysWeekAvr.entries.forEach { day ->
-                                NotificationDayButton(
-                                    title = day.string,
-                                    selected = isDaySelected(notification.type.days,day.id),
-                                    modifier = Modifier.weight(1f).padding(horizontal = spacing1),
-                                    colorSelected = color,
-                                    contrastColor = contrastColor,
-                                )
-                            }
+                if(notification.type is TypeNotification.Daily){
+                    Row (
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = spacing8,
+                                end = spacing8,
+                                bottom = spacing6,
+                                top = spacing4
+                            )
+                    ) {
+                        DaysWeekAvr.entries.forEach { day ->
+                            NotificationDayButton(
+                                title = day.string,
+                                selected = isDaySelected(notification.type.days,day.id),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(horizontal = spacing1),
+                                colorSelected = color,
+                                contrastColor = contrastColor,
+                            )
                         }
-                    }
-                    is TypeNotification.Recurring -> {
-
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ArrowCyclicButton(
+    modifier: Modifier = Modifier,
+    icon:ImageVector
+){
+    CustomRipple {
+        Icon(
+            icon,
+            contentDescription = "Icon Leading",
+            tint = MaterialTheme.colorScheme.onSurface,
+            modifier = modifier
+                .clip(RoundedCornerShape(spacing8))
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .size(40.dp)
+                .clickable {  }
+        )
     }
 }
 

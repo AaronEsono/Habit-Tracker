@@ -7,7 +7,9 @@ import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.Units
 import aeb.proyecto.addhabit.constants.getContrastColor
 import aeb.proyecto.addhabit.model.AddHabitNotification
+import aeb.proyecto.addhabit.model.BottomSheetState
 import aeb.proyecto.addhabit.model.DataAddHabit
+import aeb.proyecto.addhabit.model.DataBottomSheet
 import aeb.proyecto.addhabit.model.TypeNotification
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -48,7 +50,7 @@ class AddHabitViewModel @Inject constructor(
     private fun setColor(color:Color){
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                color = color,
+                habitScreen = currentState.habitScreen.copy(color = color),
                 contrastColor = getContrastColor(color),
                 isColorSelected = false
             )
@@ -58,7 +60,7 @@ class AddHabitViewModel @Inject constructor(
     private fun setIcon(icon: ImageVector){
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                icon = icon,
+                habitScreen = currentState.habitScreen.copy(icon = icon),
                 isIconSelected = false
             )
         }
@@ -102,7 +104,7 @@ class AddHabitViewModel @Inject constructor(
     fun onClickTypeHabit(typeHabit: TypeHabit){
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                typeHabit = typeHabit
+                habitScreen = currentState.habitScreen.copy(typeHabit = typeHabit)
             )
         }
     }
@@ -110,7 +112,7 @@ class AddHabitViewModel @Inject constructor(
     fun onClickWeekly(numberDays:Int){
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                numberOfDaysWeek = numberDays
+                habitScreen = currentState.habitScreen.copy(numberOfDaysWeek = numberDays)
             )
         }
     }
@@ -118,7 +120,7 @@ class AddHabitViewModel @Inject constructor(
     fun monthNumberSelected(numberDays:Int) = viewModelScope.launch(Dispatchers.IO){
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                numberOfDaysMonth = numberDays
+                habitScreen = currentState.habitScreen.copy(numberOfDaysMonth = numberDays)
             )
         }
     }
@@ -126,7 +128,7 @@ class AddHabitViewModel @Inject constructor(
     fun onClickDate(localDate:LocalDate){
         _dataAddHabit.update { currentState->
             currentState.copy(
-                dateRecurringStartDate = localDate
+                habitScreen = currentState.habitScreen.copy(dateRecurringStartDate = localDate)
             )
         }
     }
@@ -134,7 +136,7 @@ class AddHabitViewModel @Inject constructor(
     fun onPickUnit(unit:Units){
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                unit = unit
+                habitScreen = currentState.habitScreen.copy(unit = unit)
             )
         }
     }
@@ -142,7 +144,7 @@ class AddHabitViewModel @Inject constructor(
     fun onClickTypeNotification(typeNotification: TypeNotification){
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                typeNotificationSelected = typeNotification,
+                notificationSelected = AddHabitNotification(type = typeNotification),
                 showDialog = true,
                 typeDialog = PICK_NOTIFICATION
             )
@@ -150,13 +152,50 @@ class AddHabitViewModel @Inject constructor(
     }
 
     fun onTimeSelected(time:LocalTime){
-        val notification = AddHabitNotification(time = time,type = _dataAddHabit.value.typeNotificationSelected)
+        val notification = AddHabitNotification(time = time,type = _dataAddHabit.value.notificationSelected.type)
 
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                notifications = currentState.notifications + notification
+                habitScreen = currentState.habitScreen.copy(
+                    notifications = currentState.habitScreen.notifications + notification
+                )
             )
         }
     }
 
+    fun onClickDeleteNotification(time:LocalTime){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                notificationSelected = AddHabitNotification(time = time),
+                bottomSheetState = BottomSheetState(
+                    isVisible = true,
+                    dataBottomSheet = DataBottomSheet.DELETE_NOTIFICATION
+                )
+            )
+        }
+    }
+
+    fun closeBottomSheet(){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                bottomSheetState = currentState.bottomSheetState.copy(isVisible = false)
+            )
+        }
+    }
+
+    fun onAcceptBottomSheet(){
+        when(_dataAddHabit.value.bottomSheetState.dataBottomSheet){
+            DataBottomSheet.DELETE_NOTIFICATION -> {deleteNotification()}
+        }
+    }
+
+    private fun deleteNotification(){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                habitScreen = currentState.habitScreen.copy(
+                    notifications = currentState.habitScreen.notifications.filter { it.time != _dataAddHabit.value.notificationSelected.time }
+                )
+            )
+        }
+    }
 }

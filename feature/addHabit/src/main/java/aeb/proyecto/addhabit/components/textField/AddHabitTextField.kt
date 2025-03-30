@@ -22,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldLabelPosition
+import androidx.compose.material3.TextFieldLabelScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -35,7 +36,7 @@ import androidx.compose.ui.text.input.KeyboardType
 fun AddHabitTextField(
     modifier: Modifier = Modifier,
     textFieldState: TextFieldState = rememberTextFieldState(),
-    label: String? = null,
+    label: @Composable (TextFieldLabelScope.() -> Unit)? = null,
     containerColor: Color = MaterialTheme.colorScheme.surfaceTint,
     contentPadding: PaddingValues = OutlinedTextFieldDefaults.contentPadding(),
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -51,9 +52,7 @@ fun AddHabitTextField(
         modifier = modifier
             .fillMaxWidth()
             .clearFocusOnKeyboardDismiss(),
-        label = {
-            label?.let { LabelLargeText(label, modifier = Modifier.background(Color.Transparent)) }
-        },
+        label = label,
         leadingIcon = leadingIcon,
         trailingIcon = {
             when (textFieldState.text.toString()) {
