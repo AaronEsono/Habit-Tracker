@@ -68,7 +68,7 @@ fun AddHabitCard(
 
         Spacer(modifier = Modifier.padding(horizontal = spacing4))
 
-        BodyLargeText(title)
+        BodyMediumText(title)
     }
 
 }

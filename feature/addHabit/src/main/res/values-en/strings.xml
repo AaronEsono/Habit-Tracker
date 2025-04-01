@@ -17,7 +17,7 @@
     <string name="add_habit_type_habit_cyclic">Recurring</string>
 
     <string name="add_habit_type_habit_daily_label">Do this habit every day without exception.</string>
-    <string name="add_habit_type_habit_weekly_label">Set this habit for specific days of the week.</string>
+    <string name="add_habit_type_habit_weekly_label">Set this habit for specific number of days to the week.</string>
     <string name="add_habit_type_habit_monthly_label">Complete this habit on specific dates of the month.</string>
     <string name="add_habit_type_habit_cyclic_label">Repeat this habit at custom intervals according to your needs.</string>
 
@@ -96,7 +96,7 @@
     <string name="add_habit_quantity_label">Track and manage large amounts like steps or pages</string>
     <string name="add_habit_frecuency_label">Define how many times you perform an action per day</string>
 
-    <string name="add_habit_notifications_title">Set notifications</string>
+    <string name="add_habit_notifications_title">Remind me of</string>
     <string name="add_habit_create_notification">Create notification</string>
 
     <string name="add_habit_dialog_notification_title">Select the type of notification</string>

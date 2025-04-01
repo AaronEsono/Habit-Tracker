@@ -4,10 +4,15 @@ import aeb.proyecto.addhabit.R
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
+import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
+import androidx.compose.foundation.gestures.snapping.snapFlingBehavior
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -40,7 +45,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
-val height = 50.dp
+val height = 45.dp
 const val NUMBER_ELEMENTS = 7
 val days = (1..31).toList()
 
@@ -57,10 +62,10 @@ fun MonthlyTypeHabit(
         modifier = modifier,
     ){
 
-        LabelLargeText(stringResource(R.string.add_habit_monthly_type_title))
+        LabelMediumText(stringResource(R.string.add_habit_monthly_type_title))
 
         NumberPicker(
-            modifier = Modifier.padding(top = spacing10),
+            modifier = Modifier.padding(top = spacing8),
             colorSelected = colorSelected,
             contrastColor = contrastColor,
             numberSelected = numberSelected,
@@ -78,6 +83,7 @@ fun NumberPicker(
     numberSelected: Int,
     onNumberSelected: (Int) -> Unit = {}
 ) {
+
     BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
         val contentPadding = (maxWidth - height) / 2
         val offSet = maxWidth / NUMBER_ELEMENTS
@@ -103,10 +109,7 @@ fun NumberPicker(
         HorizontalPager(
             modifier = modifier,
             state = pagerState,
-            flingBehavior = PagerDefaults.flingBehavior(
-                state = pagerState,
-                pagerSnapDistance = PagerSnapDistance.atMost(0)
-            ),
+            flingBehavior = PagerDefaults.flingBehavior(state = pagerState),
             contentPadding = PaddingValues(horizontal = contentPadding),
             pageSpacing = itemSpacing,
         ) { page ->

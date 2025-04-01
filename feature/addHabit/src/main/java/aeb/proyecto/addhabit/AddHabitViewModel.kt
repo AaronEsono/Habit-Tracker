@@ -8,9 +8,12 @@ import aeb.proyecto.addhabit.constants.Units
 import aeb.proyecto.addhabit.constants.getContrastColor
 import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.addhabit.model.BottomSheetState
+import aeb.proyecto.addhabit.model.DEFAULT_TIME
 import aeb.proyecto.addhabit.model.DataAddHabit
 import aeb.proyecto.addhabit.model.DataBottomSheet
 import aeb.proyecto.addhabit.model.TypeNotification
+import aeb.proyecto.addhabit.model.TypeNotificationResult
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
@@ -144,7 +147,7 @@ class AddHabitViewModel @Inject constructor(
     fun onClickTypeNotification(typeNotification: TypeNotification){
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                notificationSelected = AddHabitNotification(type = typeNotification),
+                notificationSelected = DEFAULT_TIME.copy(type = typeNotification),
                 showDialog = true,
                 typeDialog = PICK_NOTIFICATION
             )
@@ -152,21 +155,39 @@ class AddHabitViewModel @Inject constructor(
     }
 
     fun onTimeSelected(time:LocalTime){
-        val notification = AddHabitNotification(time = time,type = _dataAddHabit.value.notificationSelected.type)
+        val idSelected = _dataAddHabit.value.notificationSelected.id
 
-        _dataAddHabit.update { currentState ->
-            currentState.copy(
-                habitScreen = currentState.habitScreen.copy(
-                    notifications = currentState.habitScreen.notifications + notification
+        //Notificacion nueva
+        if(idSelected == "-1"){
+            val notification = AddHabitNotification(time = time,type = _dataAddHabit.value.notificationSelected.type)
+
+            _dataAddHabit.update { currentState ->
+                currentState.copy(
+                    habitScreen = currentState.habitScreen.copy(
+                        notifications = currentState.habitScreen.notifications + notification
+                    )
                 )
-            )
+            }
+        }else{
+            //Editar notificacion existente
+            _dataAddHabit.update { currentState ->
+                currentState.copy(
+                    habitScreen = currentState.habitScreen.copy(
+                        notifications = currentState.habitScreen.notifications.map {
+                            if (it.id == idSelected) {
+                                it.copy(time = time)
+                            } else it
+                        }
+                    )
+                )
+            }
         }
     }
 
-    fun onClickDeleteNotification(time:LocalTime){
+    fun onClickDeleteNotification(id:String){
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                notificationSelected = AddHabitNotification(time = time),
+                notificationSelected = AddHabitNotification(id = id),
                 bottomSheetState = BottomSheetState(
                     isVisible = true,
                     dataBottomSheet = DataBottomSheet.DELETE_NOTIFICATION
@@ -193,8 +214,80 @@ class AddHabitViewModel @Inject constructor(
         _dataAddHabit.update { currentState ->
             currentState.copy(
                 habitScreen = currentState.habitScreen.copy(
-                    notifications = currentState.habitScreen.notifications.filter { it.time != _dataAddHabit.value.notificationSelected.time }
+                    notifications = currentState.habitScreen.notifications.filter { it.id != _dataAddHabit.value.notificationSelected.id }
                 )
+            )
+        }
+    }
+
+    fun onClickTypeNotificationResult(typeNotificationResult: TypeNotificationResult){
+        when(typeNotificationResult){
+            is TypeNotificationResult.Daily -> { editNotificationDaily(typeNotificationResult) }
+            is TypeNotificationResult.Recurring -> { editNotificationRecurring(typeNotificationResult)  }
+        }
+    }
+
+    private fun editNotificationDaily(editNotification: TypeNotificationResult.Daily) {
+        val notification = findNotification(editNotification.id)
+
+        if (notification.type is TypeNotification.Daily) {
+            val currentDays = notification.type.days
+
+            if (currentDays.size != 1 || !currentDays.contains(editNotification.day)){
+
+                val updatedDays = currentDays.toMutableList().apply {
+                    if (!remove(editNotification.day)) add(editNotification.day)
+                }
+
+                _dataAddHabit.update { currentState ->
+                    currentState.copy(
+                        habitScreen = currentState.habitScreen.copy(
+                            notifications = currentState.habitScreen.notifications.map {
+                                if (it.id == editNotification.id) {
+                                    it.copy(type = TypeNotification.Daily(updatedDays.toMutableList()))
+                                } else it
+                            }
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    private fun editNotificationRecurring(editNotification: TypeNotificationResult.Recurring) {
+        val notification = findNotification(editNotification.id)
+
+        if (notification.type is TypeNotification.Recurring) {
+            val intervalDays = notification.type.interval
+
+            if (editNotification.action || intervalDays != 1) {
+                val newInterval = intervalDays + if (editNotification.action) 1 else -1
+
+                _dataAddHabit.update { currentState ->
+                    currentState.copy(
+                        habitScreen = currentState.habitScreen.copy(
+                            notifications = currentState.habitScreen.notifications.map {
+                                if (it.id == editNotification.id) {
+                                    it.copy(type = TypeNotification.Recurring(newInterval))
+                                } else it
+                            }
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    private fun findNotification(id:String):AddHabitNotification{
+        return _dataAddHabit.value.habitScreen.notifications.find { it.id == id }!!
+    }
+
+    fun onEditNotification(id:String,time:LocalTime){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                notificationSelected = DEFAULT_TIME.copy(id = id,time = time),
+                showDialog = true,
+                typeDialog = PICK_NOTIFICATION
             )
         }
     }

@@ -1,5 +1,6 @@
 package aeb.proyecto.addhabit.components.button
 
+import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
@@ -32,15 +33,12 @@ fun PickTypeHabitButton(
             onClick = onClick,
             modifier = modifier,
             shape = RoundedCornerShape(spacing8),
-            border = BorderStroke(spacing2, MaterialTheme.colorScheme.onSurface)
+            border = BorderStroke(spacing2, MaterialTheme.colorScheme.surfaceContainer)
         ) {
             Column (
                 modifier = Modifier.fillMaxWidth()
             ){
                 BodyMediumText(title, fontWeight = FontWeight.Bold)
-
-                Spacer(modifier = Modifier.padding(vertical = spacing2))
-
                 LabelMediumText(subtitle)
             }
         }

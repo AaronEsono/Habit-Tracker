@@ -3,6 +3,7 @@ package aeb.proyecto.addhabit.components.notifications
 import aeb.proyecto.addhabit.constants.DaysWeekAvr
 import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.addhabit.model.TypeNotification
+import aeb.proyecto.addhabit.model.TypeNotificationResult
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
@@ -52,9 +53,9 @@ fun NotificationComponent(
     notification: AddHabitNotification,
     color: Color,
     contrastColor:Color,
-    onClickDelete: (LocalTime) -> Unit = {},
-    onClickEdit: () -> Unit = {},
-    onClickTypeNotification: () -> Unit = {}
+    onClickDelete: (String) -> Unit = {},
+    onClickEdit: (String,LocalTime) -> Unit = {_,_ -> },
+    onClickTypeNotification: (TypeNotificationResult) -> Unit = {}
 ){
 
     Column (
@@ -62,7 +63,7 @@ fun NotificationComponent(
     ){
         CustomRipple{
             ElevatedCard(
-                onClick = { },
+                onClick = {onClickEdit(notification.id,notification.time)},
                 colors = CardDefaults.elevatedCardColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
                 )
@@ -90,7 +91,12 @@ fun NotificationComponent(
                     if(notification.type is TypeNotification.Recurring){
 
                         ArrowCyclicButton(icon = Icons.Filled.Remove,
-                            modifier = Modifier.padding(vertical = spacing8))
+                            modifier = Modifier.padding(vertical = spacing8),
+                            onClick = {
+                                onClickTypeNotification(
+                                    TypeNotificationResult.Recurring(false, notification.id))
+                            }
+                        )
 
                         Box(
                             modifier = Modifier
@@ -105,12 +111,16 @@ fun NotificationComponent(
                         }
 
                         ArrowCyclicButton(icon = Icons.Filled.Add,
-                            modifier = Modifier.padding(end = spacing12))
+                            modifier = Modifier.padding(end = spacing12),
+                            onClick = {
+                                onClickTypeNotification(
+                                    TypeNotificationResult.Recurring(true, notification.id))
+                            })
                     }
 
                     CustomRipple {
                         IconButton(
-                            onClick = {onClickDelete(notification.time)}
+                            onClick = {onClickDelete(notification.id)}
                         ) {
                             Icon(
                                 Icons.Filled.Delete,
@@ -142,6 +152,11 @@ fun NotificationComponent(
                                     .padding(horizontal = spacing1),
                                 colorSelected = color,
                                 contrastColor = contrastColor,
+                                onClick = {
+                                    onClickTypeNotification(
+                                        TypeNotificationResult.Daily(day.id,notification.id)
+                                    )
+                                }
                             )
                         }
                     }
@@ -154,7 +169,8 @@ fun NotificationComponent(
 @Composable
 fun ArrowCyclicButton(
     modifier: Modifier = Modifier,
-    icon:ImageVector
+    icon:ImageVector,
+    onClick: () -> Unit = {}
 ){
     CustomRipple {
         Icon(
@@ -165,7 +181,7 @@ fun ArrowCyclicButton(
                 .clip(RoundedCornerShape(spacing8))
                 .background(MaterialTheme.colorScheme.primaryContainer)
                 .size(40.dp)
-                .clickable {  }
+                .clickable { onClick() }
         )
     }
 }

@@ -5,14 +5,16 @@ import androidx.annotation.StringRes
 import java.lang.reflect.Type
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.util.UUID
 
 data class AddHabitNotification(
+    val id:String = UUID.randomUUID().toString(),
     val time:LocalTime = LocalTime.now(),
     val type:TypeNotification = TypeNotification.Daily()
 )
 
 sealed class TypeNotification{
-    data class Daily(val days:List<Int> = listOf(1)):TypeNotification()
+    data class Daily(val days:MutableList<Int> = mutableListOf(1)):TypeNotification()
     data class Recurring(val interval:Int = 1):TypeNotification()
 }
 
@@ -32,3 +34,14 @@ enum class TypeNotifications(
         TypeNotification.Recurring()
     )
 }
+
+sealed class TypeNotificationResult{
+    data class Daily(val day:Int, val id:String):TypeNotificationResult()
+    data class Recurring(val action:Boolean, val id:String):TypeNotificationResult()
+}
+
+val DEFAULT_TIME = AddHabitNotification(
+    id = "-1",
+    time = LocalTime.now(),
+    type = TypeNotification.Daily()
+)

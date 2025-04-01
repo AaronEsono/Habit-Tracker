@@ -77,12 +77,13 @@ fun AddHabitTextField(
             focusedTextColor = MaterialTheme.colorScheme.onSurface,
             unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
             cursorColor = MaterialTheme.colorScheme.onSurface,
-            unfocusedBorderColor = MaterialTheme.colorScheme.onSurface,
-            focusedBorderColor = MaterialTheme.colorScheme.onSurface,
             focusedLeadingIconColor = MaterialTheme.colorScheme.onSurface,
             unfocusedLeadingIconColor = MaterialTheme.colorScheme.onSurface,
             focusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
             unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
+
+            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceContainer,
+            focusedBorderColor = MaterialTheme.colorScheme.surfaceContainer,
 
             focusedContainerColor = containerColor,
             unfocusedContainerColor = containerColor,

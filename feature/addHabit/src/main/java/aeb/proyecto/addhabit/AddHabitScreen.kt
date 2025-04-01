@@ -28,17 +28,23 @@ import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.Units
 import aeb.proyecto.addhabit.model.DataAddHabit
 import aeb.proyecto.addhabit.model.TypeNotification
+import aeb.proyecto.addhabit.model.TypeNotificationResult
 import aeb.proyecto.addhabit.utils.IsOnlyDigit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing18
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
+import aeb.proyecto.ui.dimmens.Dimmens.spacing20
+import aeb.proyecto.ui.dimmens.Dimmens.spacing22
+import aeb.proyecto.ui.dimmens.Dimmens.spacing24
+import aeb.proyecto.ui.dimmens.Dimmens.spacing28
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing5
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
 import android.Manifest
 import android.content.pm.PackageManager
 import android.widget.Space
@@ -66,6 +72,7 @@ import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.NotificationAdd
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -106,7 +113,9 @@ fun AddHabitScreen(
         onPickUnit = viewModel::onPickUnit,
         onClickTypeNotification = viewModel::onClickTypeNotification,
         onTimeSelected = viewModel::onTimeSelected,
-        onClickDeleteNotification = viewModel::onClickDeleteNotification
+        onClickDeleteNotification = viewModel::onClickDeleteNotification,
+        onClickTypeNotificationResult = viewModel::onClickTypeNotificationResult,
+        onClickEditNotification = viewModel::onEditNotification
     )
 
     if(dataAddHabit.bottomSheetState.isVisible){
@@ -135,7 +144,9 @@ internal fun AddHabitScreen(
     onPickUnit: (Units) -> Unit = {},
     onClickTypeNotification: (TypeNotification) -> Unit = {},
     onTimeSelected: (LocalTime) -> Unit = {},
-    onClickDeleteNotification: (LocalTime) -> Unit = {}
+    onClickDeleteNotification: (String) -> Unit = {},
+    onClickTypeNotificationResult: (TypeNotificationResult) -> Unit = {},
+    onClickEditNotification: (String,LocalTime) -> Unit = {_,_ ->}
 ){
 
     val focusManager = LocalFocusManager.current
@@ -156,85 +167,27 @@ internal fun AddHabitScreen(
         //TextField Nombre y descripción
         AddHabitTextField(
             textFieldState = habit.nameTextField,
-            label = {LabelLargeText(stringResource(R.string.add_habit_name_label))},
-            leadingIcon = {
-                Icon(
-                    Icons.AutoMirrored.Filled.EventNote,
-                    contentDescription = "Leading icon TextField"
-                )
-            },
+            modifier = Modifier.height(60.dp),
+            label = {LabelMediumText(stringResource(R.string.add_habit_name_label))},
+            labelPosition = TextFieldLabelPosition.Above(),
             focusManager = focusManager,
             imeAction = ImeAction.Done,
+            contentPadding = PaddingValues(start = spacing12),
             keyboardType = KeyboardType.Text
         )
 
         AddHabitTextField(
-            modifier = Modifier.padding(vertical = spacing4),
+            modifier = Modifier.padding(top = spacing10).height(60.dp),
             textFieldState = habit.descriptionTextField,
-            label = {LabelLargeText(stringResource(R.string.add_habit_description_label))},
-            leadingIcon = {
-                Icon(
-                    Icons.Filled.Description,
-                    contentDescription = "Leading icon TextField"
-                )
-            },
+            label = { LabelMediumText(stringResource(R.string.add_habit_description_label)) },
             focusManager = focusManager,
+            labelPosition = TextFieldLabelPosition.Above(),
             imeAction = ImeAction.Done,
+            contentPadding = PaddingValues(start = spacing12),
             keyboardType = KeyboardType.Text
         )
 
-        CustomHorizontalDivider(modifier = Modifier.padding(top = spacing18, bottom = spacing8))
-
-        // Tipo de hábito
-        LabelLargeText(stringResource(R.string.add_habit_pick_type_habit_title),
-            modifier = Modifier.padding(bottom = spacing12))
-
-        AddHabitCardButton(
-            title = stringResource(habit.typeHabit.title),
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { onClickDialog(PICK_TYPE_HABIT) }
-        )
-
-        AnimatedContent(
-            targetState = habit.typeHabit
-        ) { typeHabit ->
-            when (typeHabit) {
-                TypeHabit.DAILY -> Unit
-                TypeHabit.WEEKLY -> {
-                    WeeklyTypeHabit(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = spacing10),
-                        numberSelected = habit.numberOfDaysWeek,
-                        colorSelected = habit.color,
-                        contrastColor = dataAddHabit.contrastColor,
-                        onClickWeekly = onClickWeekly)
-                }
-
-                TypeHabit.MONTHLY -> {
-                    MonthlyTypeHabit(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = spacing10),
-                        colorSelected = habit.color,
-                        contrastColor = dataAddHabit.contrastColor,
-                        numberSelected = habit.numberOfDaysMonth,
-                        onNumberSelected = onMonthNumberSelected)
-                }
-                TypeHabit.CYCLIC -> {
-                    RecurringTypeHabit(
-                        intervalTextFieldState = habit.intervalTextFieldState,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = spacing10),
-                        focusManager = focusManager,
-                        color = habit.color,
-                        date = habit.dateRecurringStartDate,
-                        onClick = {onClickDialog(PICK_DATE)}
-                    )
-                }
-            }
-        }
-
-        CustomHorizontalDivider(modifier = Modifier.padding(top = spacing18, bottom = spacing16))
+        CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
         //Colores e iconos
         Row (
@@ -281,12 +234,61 @@ internal fun AddHabitScreen(
             )
         }
 
-        CustomHorizontalDivider(modifier = Modifier.padding(top = spacing16, bottom = spacing8))
+        CustomHorizontalDivider(modifier = Modifier.padding(top = spacing20, bottom = spacing16))
+
+        // Tipo de hábito
+        LabelLargeText(stringResource(R.string.add_habit_pick_type_habit_title),
+            modifier = Modifier.padding(bottom = spacing8))
+
+        AddHabitCardButton(
+            title = stringResource(habit.typeHabit.title),
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { onClickDialog(PICK_TYPE_HABIT) }
+        )
+
+        AnimatedContent(
+            targetState = habit.typeHabit
+        ) { typeHabit ->
+            when (typeHabit) {
+                TypeHabit.DAILY -> Unit
+                TypeHabit.WEEKLY -> {
+                    WeeklyTypeHabit(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = spacing10),
+                        numberSelected = habit.numberOfDaysWeek,
+                        colorSelected = habit.color,
+                        contrastColor = dataAddHabit.contrastColor,
+                        onClickWeekly = onClickWeekly)
+                }
+
+                TypeHabit.MONTHLY -> {
+                    MonthlyTypeHabit(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = spacing10),
+                        colorSelected = habit.color,
+                        contrastColor = dataAddHabit.contrastColor,
+                        numberSelected = habit.numberOfDaysMonth,
+                        onNumberSelected = onMonthNumberSelected)
+                }
+                TypeHabit.CYCLIC -> {
+                    RecurringTypeHabit(
+                        intervalTextFieldState = habit.intervalTextFieldState,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = spacing10),
+                        focusManager = focusManager,
+                        color = habit.color,
+                        date = habit.dateRecurringStartDate,
+                        onClick = {onClickDialog(PICK_DATE)}
+                    )
+                }
+            }
+        }
+
+        CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
         //Unidades y veces
-        LabelLargeText(
-            stringResource(R.string.add_habit_times_and_units)
-        )
+        LabelLargeText(stringResource(R.string.add_habit_times_and_units))
 
         Row (
             modifier = Modifier
@@ -315,7 +317,7 @@ internal fun AddHabitScreen(
         if(ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
             == PackageManager.PERMISSION_GRANTED){
 
-            CustomHorizontalDivider(modifier = Modifier.padding(top = spacing16, bottom = spacing8))
+            CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
             LabelLargeText(stringResource(R.string.add_habit_notifications_title))
 
@@ -332,7 +334,7 @@ internal fun AddHabitScreen(
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
             if(notificationWeek.isNotEmpty()){
-                LabelLargeText(stringResource(R.string.add_habit_notificacionWeek),
+                LabelMediumText(stringResource(R.string.add_habit_notificacionWeek),
                     modifier = Modifier.padding(top = spacing10, bottom = spacing4))
 
                 notificationWeek.forEach {
@@ -340,13 +342,15 @@ internal fun AddHabitScreen(
                         notification = it, color = habit.color,
                         contrastColor = dataAddHabit.contrastColor,
                         onClickDelete = onClickDeleteNotification,
+                        onClickTypeNotification = onClickTypeNotificationResult,
+                        onClickEdit = onClickEditNotification,
                         modifier = Modifier.padding(bottom = spacing8)
                     )
                 }
             }
 
             if(notificationRecurring.isNotEmpty()){
-                LabelLargeText(stringResource(R.string.add_habit_notificacionRecurring),
+                LabelMediumText(stringResource(R.string.add_habit_notificacionRecurring),
                     modifier = Modifier.padding(top = spacing10, bottom = spacing4))
 
                 notificationRecurring.forEach {
@@ -354,6 +358,8 @@ internal fun AddHabitScreen(
                         notification = it, color = habit.color,
                         contrastColor = dataAddHabit.contrastColor,
                         onClickDelete = onClickDeleteNotification,
+                        onClickTypeNotification = onClickTypeNotificationResult,
+                        onClickEdit = onClickEditNotification,
                         modifier = Modifier.padding(bottom = spacing8)
                     )
                 }
@@ -405,6 +411,7 @@ internal fun AddHabitScreen(
             PICK_NOTIFICATION -> {
                 TimePickerDialog(
                     color = habit.color,
+                    notification = dataAddHabit.notificationSelected,
                     contrastColor = dataAddHabit.contrastColor,
                     onDismissRequest = onDismissDialog,
                     onConfirm = onTimeSelected

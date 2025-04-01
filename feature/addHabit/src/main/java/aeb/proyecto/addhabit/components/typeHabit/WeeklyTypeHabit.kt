@@ -55,7 +55,7 @@ fun WeeklyTypeHabit(
         modifier = modifier,
     ){
 
-        LabelLargeText(stringResource(R.string.add_habit_weekly_type_title))
+        LabelMediumText(stringResource(R.string.add_habit_weekly_type_title))
 
         Row (
             modifier = modifier.fillMaxWidth(),

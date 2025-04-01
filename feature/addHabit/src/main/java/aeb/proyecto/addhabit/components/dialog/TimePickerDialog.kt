@@ -1,6 +1,7 @@
 package aeb.proyecto.addhabit.components.dialog
 
 import aeb.proyecto.addhabit.R
+import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.ui.dialog.CustomDialog
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
@@ -50,6 +51,7 @@ import java.util.Calendar
 @Composable
 fun TimePickerDialog(
     modifier:Modifier = Modifier,
+    notification: AddHabitNotification,
     color: Color,
     contrastColor: Color,
     onDismissRequest: () -> Unit = {},
@@ -57,8 +59,8 @@ fun TimePickerDialog(
 ){
 
     val timePickerState = rememberTimePickerState(is24Hour = true,
-        initialHour = LocalTime.now().hour,
-        initialMinute = LocalTime.now().minute)
+        initialHour = notification.time.hour,
+        initialMinute = notification.time.minute)
 
     var timeMode by rememberSaveable { mutableStateOf(true) }
     val icon = if (timeMode) Icons.Filled.Keyboard else Icons.Filled.AccessTime
@@ -141,7 +143,6 @@ fun timePickerColors(color: Color, contrastColor: Color): TimePickerColors {
         timeSelectorSelectedContainerColor = color,
         periodSelectorSelectedContainerColor = color.copy(alpha = 0.5f),
 
-        clockDialSelectedContentColor = MaterialTheme.colorScheme.onSurface,
         clockDialUnselectedContentColor = MaterialTheme.colorScheme.onSurface,
         periodSelectorUnselectedContainerColor = MaterialTheme.colorScheme.onSurface,
         timeSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSurface,
@@ -150,6 +151,7 @@ fun timePickerColors(color: Color, contrastColor: Color): TimePickerColors {
         periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
         timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
 
+        clockDialSelectedContentColor = contrastColor,
         timeSelectorSelectedContentColor = contrastColor,
         periodSelectorSelectedContentColor = contrastColor,
     )

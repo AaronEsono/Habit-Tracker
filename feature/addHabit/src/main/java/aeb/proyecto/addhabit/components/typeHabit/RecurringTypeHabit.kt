@@ -57,7 +57,7 @@ fun RecurringTypeHabit(
     Column(
         modifier = modifier
     ){
-        LabelLargeText(stringResource(R.string.add_habit_recurring_title_date),
+        LabelMediumText(stringResource(R.string.add_habit_recurring_title_date),
             modifier = Modifier.fillMaxWidth())
 
         Row(
@@ -78,7 +78,7 @@ fun RecurringTypeHabit(
             AddHabitTextField(
                 textFieldState = intervalTextFieldState,
                 modifier = Modifier
-                    .fillMaxWidth(0.75f)
+                    .fillMaxWidth()
                     .height(45.dp)
                     .padding(top = spacing2),
                 focusManager = focusManager,

@@ -17,7 +17,7 @@
     <string name="add_habit_type_habit_cyclic">Cíclico</string>
 
     <string name="add_habit_type_habit_daily_label">Realiza este hábito todos los días sin excepción.</string>
-    <string name="add_habit_type_habit_weekly_label">Establece este hábito para ciertos días de la semana.</string>
+    <string name="add_habit_type_habit_weekly_label">Establece este hábito para un cierto número de días a la semana.</string>
     <string name="add_habit_type_habit_monthly_label">Cumple con este hábito en fechas específicas del mes.</string>
     <string name="add_habit_type_habit_cyclic_label">Repite este hábito en intervalos personalizados según tu necesidad.</string>
 
@@ -96,7 +96,7 @@
     <string name="add_habit_quantity_label">Suma y lleva el control de grandes cantidades como pasos o páginas</string>
     <string name="add_habit_frecuency_label">Define cuántas veces realizas una acción al día</string>
 
-    <string name="add_habit_notifications_title">Establecer notificaciones</string>
+    <string name="add_habit_notifications_title">Recordarme a las</string>
     <string name="add_habit_create_notification">Crear notificación</string>
 
     <string name="add_habit_dialog_notification_title">Selecciona el tipo de notificación</string>
@@ -115,8 +115,8 @@
     <string name="add_habit_sat">Sáb</string>
     <string name="add_habit_sun">Dom</string>
 
-    <string name="add_habit_notificacionWeek">Notificaciones semanales</string>
-    <string name="add_habit_notificacionRecurring">Notificaciones cíclicas</string>
+    <string name="add_habit_notificacionWeek">Selecciona los días de la semana para cada notificación</string>
+    <string name="add_habit_notificacionRecurring">Selecciona el intervalo de días para cada notificación</string>
 
     <!-- Estados bottom sheet-->
     <string name="add_habit_delete_notification_title">Borrar notificación</string>
