@@ -7,6 +7,8 @@ import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetChoseStep
 import aeb.proyecto.habittracker.ui.components.bottomSheets.BottomSheetGeneral
 import aeb.proyecto.habittracker.ui.components.dialog.DialogHabit
 import aeb.proyecto.habittracker.ui.screens.habits.HabitsViewModel
+import aeb.proyecto.room.entities.habit.Habit
+import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
@@ -20,7 +22,7 @@ fun HabitScreenStates(
 
     if (uiState.showDialog) {
         DialogHabit(
-            habitWithDailyHabit = habitsViewModel.getHabit(),
+            habitWithDailyHabit = HabitWithDailyHabit(),
             onDismissRequest = { habitsViewModel.closeDialog() },
             onUnitClick = { habitsViewModel.choseStep(habitsViewModel.getId()) },
             onDeleteClick = { habitsViewModel.showGeneralDx() },
@@ -54,7 +56,7 @@ fun HabitScreenStates(
         BottomSheetCalendar(
             onDismiss = { habitsViewModel.closeCalendar() },
             color = habitsViewModel.getColor(),
-            habit = habitsViewModel.getHabit()
+            habit = HabitWithDailyHabit()
         ) { date ->
             habitsViewModel.choseStep(habitsViewModel.getId(), date)
         }

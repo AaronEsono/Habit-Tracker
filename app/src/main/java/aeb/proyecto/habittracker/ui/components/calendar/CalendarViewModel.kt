@@ -3,7 +3,7 @@ package aeb.proyecto.habittracker.ui.components.calendar
 import aeb.proyecto.habittracker.data.model.calendar.CalendarDataSource
 import aeb.proyecto.habittracker.data.model.calendar.CalendarUiState
 import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -95,7 +95,7 @@ class CalendarViewModel @Inject constructor(
             val findDate = dailyHabits.value.find { LocalDate.parse(it.date) == getDate && it.timesDone != 0 }
 
             findDate?.let {
-                color = if(it.timesDone == _habit.value.times)
+                color = if(it.timesDone == _habit.value.goal)
                     Color(_habit.value.color)
                 else
                     Color(_habit.value.color).copy(alpha = 0.2f)

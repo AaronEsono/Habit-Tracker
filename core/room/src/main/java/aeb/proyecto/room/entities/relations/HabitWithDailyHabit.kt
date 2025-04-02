@@ -1,7 +1,7 @@
 package aeb.proyecto.room.entities.relations
 
 import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import androidx.room.Embedded
 import androidx.room.Relation
 

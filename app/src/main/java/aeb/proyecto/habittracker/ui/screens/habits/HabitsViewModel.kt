@@ -5,7 +5,7 @@ import aeb.proyecto.habittracker.data.model.state.HabitsScreenState
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.SharedState
 import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
@@ -35,18 +35,6 @@ class HabitsViewModel @Inject constructor(
     private val sharedState: SharedState
 ) : ViewModel() {
 
-    init {
-        sharedState.setLoading()
-    }
-
-    val habits: StateFlow<List<HabitWithDailyHabit>> = habitWithDailyHabitRepo.getHabits()
-        .onEach { sharedState.setNeutral() }
-        .onStart { delay(150) }
-        .stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
-    )
 
     private val _habitSelected: MutableStateFlow<HabitWithDailyHabit?> = MutableStateFlow(null)
     val habitSelected: StateFlow<HabitWithDailyHabit?> = _habitSelected.asStateFlow()
@@ -81,7 +69,7 @@ class HabitsViewModel @Inject constructor(
     fun plusOneHabit(id: Long, date: LocalDate? = null, times: Int = 1, restart: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
             val currentDate = date ?: LocalDate.now()
             val daily = _habitSelected.value?.dailyHabits?.find { LocalDate.parse(it.date) == currentDate }
-            val maxTimes = _habitSelected.value?.habit?.times ?: 0
+            val maxTimes = _habitSelected.value?.habit?.goal ?: 0
 
             val updatedDaily = daily?.let {
 
@@ -129,12 +117,11 @@ class HabitsViewModel @Inject constructor(
         val daily = _habitSelected.value?.dailyHabits?.find {
             LocalDate.parse(it.date) == (date ?: LocalDate.now())
         }
-        return _habitSelected.value?.habit?.times!! - (daily?.timesDone ?: 0)
+        return _habitSelected.value?.habit?.goal!! - (daily?.timesDone ?: 0)
     }
 
-    fun getHabit(): HabitWithDailyHabit {
-        return habits.value.find { it.habit.id == habitSelected.value?.habit?.id }
-            ?: HabitWithDailyHabit()
+    fun getHabit() {
+
     }
 
     fun getId(): Long {
@@ -202,15 +189,14 @@ class HabitsViewModel @Inject constructor(
     }
 
     suspend fun setHabit(id: Long) {
-        _habitSelected.emit(habits.value.find { it.habit.id == id })
+
     }
 
     fun getUnit(habit: Habit?): Constans.Units {
-        return Constans.Units.entries.find { it.id == habit?.unit } ?: Constans.Units.TIMES
+        return Constans.Units.TIMES
     }
 
     fun getTitle(): Int {
-        return (Constans.Units.entries.find { it.id == _habitSelected.value?.habit?.unit }
-            ?: Constans.Units.TIMES).pluralTitle
+        return 1
     }
 }

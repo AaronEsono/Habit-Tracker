@@ -1,6 +1,6 @@
 package aeb.proyecto.room.dao
 
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.entities.Notification
 import aeb.proyecto.room.entities.relations.HabitWithNotification
 import aeb.proyecto.room.model.NotificationWithNameAndColor

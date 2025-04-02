@@ -2,7 +2,7 @@ package aeb.proyecto.room.repository
 
 import aeb.proyecto.room.dao.HabitWithDailyHabitDao
 import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

@@ -2,10 +2,8 @@ package aeb.proyecto.addhabit.components.dialog
 
 import aeb.proyecto.addhabit.R
 import aeb.proyecto.addhabit.components.button.PickTypeHabitButton
-import aeb.proyecto.addhabit.constants.TypeHabit
-import aeb.proyecto.addhabit.model.AddHabitNotification
-import aeb.proyecto.addhabit.model.TypeNotification
-import aeb.proyecto.addhabit.model.TypeNotifications
+import aeb.proyecto.addhabit.constants.TypeNotifications
+import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.ui.dialog.CustomDialog
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12

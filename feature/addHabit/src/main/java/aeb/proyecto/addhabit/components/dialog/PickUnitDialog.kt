@@ -1,10 +1,10 @@
 package aeb.proyecto.addhabit.components.dialog
 
 import aeb.proyecto.addhabit.R
-import aeb.proyecto.addhabit.constants.Units
-import aeb.proyecto.addhabit.constants.listFrequency
-import aeb.proyecto.addhabit.constants.listQuantity
-import aeb.proyecto.addhabit.constants.listTime
+import aeb.proyecto.room.model.classes.UnitHabit
+import aeb.proyecto.room.model.classes.listFrequency
+import aeb.proyecto.room.model.classes.listQuantity
+import aeb.proyecto.room.model.classes.listTime
 import aeb.proyecto.ui.dialog.CustomDialog
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing14
@@ -45,11 +45,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PickUnitDialog(
-    unitSeleted:Units,
+    unitSeleted: UnitHabit,
     colorSelected:Color,
     contrastColor:Color,
     onDismissRequest: () -> Unit = {},
-    onClickButton: (Units) -> Unit = {}
+    onClickButton: (UnitHabit) -> Unit = {}
 ){
 
     CustomDialog(
@@ -96,7 +96,8 @@ fun PickUnitDialog(
 
             LabelMediumText(stringResource(R.string.add_habit_frecuency_label))
 
-            FlowRowCards(listFrequency,
+            FlowRowCards(
+                listFrequency,
                 colorSelected = colorSelected,
                 contrastColor = contrastColor,
                 unitSelected = unitSeleted,
@@ -113,7 +114,8 @@ fun PickUnitDialog(
 
             LabelMediumText(stringResource(R.string.add_habit_quantity_label))
 
-            FlowRowCards(listQuantity,
+            FlowRowCards(
+                listQuantity,
                 colorSelected = colorSelected,
                 contrastColor = contrastColor,
                 unitSelected = unitSeleted,
@@ -130,7 +132,8 @@ fun PickUnitDialog(
 
             LabelMediumText(stringResource(R.string.add_habit_time_label))
 
-            FlowRowCards(listTime,
+            FlowRowCards(
+                listTime,
                 colorSelected = colorSelected,
                 contrastColor = contrastColor,
                 unitSelected = unitSeleted,
@@ -144,7 +147,7 @@ fun PickUnitDialog(
 
 @Composable
 fun UnitCard(
-    unit:Units,
+    unit: UnitHabit,
     colorSelected: Color,
     contrastColor: Color,
     onClick: () -> Unit = {}
@@ -175,8 +178,8 @@ fun UnitCard(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FlowRowCards(
-    list: List<Units>, onClickButton: (Units) -> Unit = {},
-    colorSelected: Color, contrastColor: Color, unitSelected: Units
+    list: List<UnitHabit>, onClickButton: (UnitHabit) -> Unit = {},
+    colorSelected: Color, contrastColor: Color, unitSelected: UnitHabit
 ) {
     FlowRow(
         modifier = Modifier
@@ -200,11 +203,11 @@ fun FlowRowCards(
 }
 
 @Composable
-fun colorSelected(unit: Units, unitSelected: Units, colorSelected: Color):Color{
+fun colorSelected(unit: UnitHabit, unitSelected: UnitHabit, colorSelected: Color):Color{
     return if(unit == unitSelected) colorSelected else MaterialTheme.colorScheme.background
 }
 
 @Composable
-fun contrastSelected(unit: Units, unitSelected: Units, contrastSelected: Color):Color{
+fun contrastSelected(unit: UnitHabit, unitSelected: UnitHabit, contrastSelected: Color):Color{
     return if(unit == unitSelected) contrastSelected else MaterialTheme.colorScheme.onSurface
 }

@@ -1,9 +1,9 @@
 package aeb.proyecto.addhabit.components.notifications
 
-import aeb.proyecto.addhabit.constants.DaysWeekAvr
+import aeb.proyecto.addhabit.constants.TypeNotificationResult
+import aeb.proyecto.ui.date.DaysWeekAvr
 import aeb.proyecto.addhabit.model.AddHabitNotification
-import aeb.proyecto.addhabit.model.TypeNotification
-import aeb.proyecto.addhabit.model.TypeNotificationResult
+import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2

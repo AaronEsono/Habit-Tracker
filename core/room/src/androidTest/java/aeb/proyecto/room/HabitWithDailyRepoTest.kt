@@ -2,8 +2,6 @@ package aeb.proyecto.room
 
 import aeb.proyecto.room.dao.HabitWithDailyHabitDao
 import aeb.proyecto.room.database.DatabaseHabitTracker
-import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
 import aeb.proyecto.room.utils.createDailyHabit
 import aeb.proyecto.room.utils.createHabit

@@ -1,7 +1,7 @@
 package aeb.proyecto.room.dao
 
 import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import androidx.room.Dao
 import androidx.room.Insert

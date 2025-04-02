@@ -4,7 +4,7 @@ import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.utils.Constans
 import aeb.proyecto.habittracker.utils.Constans.numberOfDays
 import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -14,7 +14,7 @@ import java.time.LocalDate
 fun getIcon(dates: List<DailyHabit>, habit: Habit): ImageVector {
     val daily = dates.find { (LocalDate.parse(it.date)) == LocalDate.now() }
 
-    return if (daily != null && daily.timesDone == habit.times) {
+    return if (daily != null && daily.timesDone == habit.goal) {
         Icons.Filled.Check
     } else
         Icons.Filled.Add
@@ -25,7 +25,7 @@ fun getProgress(dates: List<DailyHabit>, habit: Habit): Float {
     val dailyHabit = dates.find { (LocalDate.parse(it.date)) == LocalDate.now() }
 
     return if (dailyHabit != null) {
-        dailyHabit.timesDone / habit.times.toFloat()
+        dailyHabit.timesDone / habit.goal.toFloat()
     } else {
         0f
     }
@@ -36,7 +36,7 @@ fun getProgressDaily(daily: List<DailyHabit>, date:LocalDate, habit: Habit): Flo
     var progress:Float
 
     if (dailyHabit != null) {
-        progress = dailyHabit.timesDone.toFloat() / habit.times.toFloat()
+        progress = dailyHabit.timesDone.toFloat() / habit.goal.toFloat()
     } else {
         progress = 0f
     }

@@ -60,10 +60,9 @@ class AddHabitViewModel @Inject constructor(
         habitUpt.habit = habitUpt.habit.copy(
             name = name,
             description = if (description.isNullOrEmpty()) null else description,
-            times = times.toInt(),
-            unit = uiState.value.unitPicked.id,
+            goal = times.toInt(),
             color = uiState.value.color.toArgb(),
-            icon = uiState.value.icon.name.split(".")[1]
+            icon = uiState.value.icon
         )
 
         if (idHabit == -1L){
@@ -147,7 +146,7 @@ class AddHabitViewModel @Inject constructor(
     fun getHabit(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _habit.value = habitWithNotificationRepo.getHabitById(id)
-            _notifications.value = _habit.value.notifications
+            _notifications.value = listOf()
 
             _notificationsCancel.value = _notifications.value.map { it.id }
         }

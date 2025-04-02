@@ -5,7 +5,7 @@ import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -82,7 +82,7 @@ fun CardDailyHabitHeader(
                 verticalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    imageVector = iconByName(habit.icon),
+                    imageVector = habit.icon,
                     contentDescription = "Add",
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.size(dimensIcon)
@@ -115,7 +115,7 @@ fun CardDailyHabitHeader(
                 .padding(horizontal = spacing8), verticalArrangement = Arrangement.Center
         ) {
             LabelSmallText(
-                text = "${times.value}/${habit.times}",
+                text = "${times.value}/${habit.goal}",
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = Color(habit.color)

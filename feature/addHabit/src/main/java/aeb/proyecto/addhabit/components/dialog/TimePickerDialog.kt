@@ -57,14 +57,12 @@ fun TimePickerDialog(
     onDismissRequest: () -> Unit = {},
     onConfirm: (LocalTime) -> Unit = {},
 ){
-
     val timePickerState = rememberTimePickerState(is24Hour = true,
         initialHour = notification.time.hour,
         initialMinute = notification.time.minute)
 
     var timeMode by rememberSaveable { mutableStateOf(true) }
     val icon = if (timeMode) Icons.Filled.Keyboard else Icons.Filled.AccessTime
-
 
     CustomDialog(
         modifier = modifier,

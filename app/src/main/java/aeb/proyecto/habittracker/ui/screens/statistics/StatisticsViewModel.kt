@@ -3,7 +3,7 @@ package aeb.proyecto.habittracker.ui.screens.statistics
 import aeb.proyecto.habittracker.data.model.state.StatisticsState
 import aeb.proyecto.habittracker.utils.SharedState
 import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -81,13 +81,13 @@ class StatisticsViewModel @Inject constructor(
 
     private fun timesCompleted(): Int {
         findHabit()?.let {
-            return _dailyHabits.value.count { dailyHabit -> dailyHabit.timesDone == it.times }
+            return _dailyHabits.value.count { dailyHabit -> dailyHabit.timesDone == it.goal }
         }
         return 0
     }
 
     private fun findMaxTimes(): Int {
-        return findHabit()?.times ?: 0
+        return findHabit()?.goal ?: 0
     }
 
     private fun getStreak(): Int {

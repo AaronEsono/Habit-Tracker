@@ -1,7 +1,7 @@
 package aeb.proyecto.room.utils
 
 import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.entities.Notification
 import aeb.proyecto.room.entities.relations.EntireHabit
 import aeb.proyecto.room.model.habitCompressed.DailyHabitCompressed
@@ -16,34 +16,11 @@ import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 
 fun jsonCompressed(habits:List<EntireHabit>):String{
-
-    val filteredHabitsAndCompressed = habits.map { habit ->
-        EntireHabitCompressed(
-            habit = HabitCompressed(habit.habit.name, habit.habit.description, habit.habit.color, habit.habit.icon, habit.habit.times, habit.habit.unit),
-            dailyHabits = habit.dailyHabits.filter { it.timesDone != 0 }.map { DailyHabitCompressed(it.timesDone, it.date) },
-            notifications = habit.notifications.map { NotificationCompressed(it.hour, it.minute) }.toList()
-        )
-    }
-
-    val toJson = Gson().toJson(filteredHabitsAndCompressed)
-    return compressJson(toJson)
+    return ""
 }
 
 fun decompressJsonFirestore(compressed: String): List<EntireHabit> {
-    val decompressed = decompressJson(compressed)
-    val habits = Gson().fromJson(decompressed, Array<EntireHabitCompressed>::class.java).toList()
-
-    val habitsComplete = habits.map { habitCompressed ->
-        val description = if(habitCompressed.habit.description.isNullOrEmpty()) null else habitCompressed.habit.description
-
-        EntireHabit(
-            habit = Habit(name = habitCompressed.habit.name, description = description, color = habitCompressed.habit.color, icon = habitCompressed.habit.icon, times =  habitCompressed.habit.times, unit =  habitCompressed.habit.unit),
-            dailyHabits = habitCompressed.dailyHabits.map { DailyHabit(timesDone = it.timesDone, date =  it.date) }.toMutableList(),
-            notifications = habitCompressed.notifications.map { Notification(hour = it.hour, minute =  it.minute) }.toMutableList()
-        )
-    }
-
-    return habitsComplete
+    return listOf()
 }
 
 fun compressJson(json: String): String {

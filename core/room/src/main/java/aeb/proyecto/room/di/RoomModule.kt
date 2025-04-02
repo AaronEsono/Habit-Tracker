@@ -1,5 +1,6 @@
 package aeb.proyecto.room.di
 
+import aeb.proyecto.room.converters.TypeHabitConverter
 import aeb.proyecto.room.database.DatabaseHabitTracker
 import android.content.Context
 import androidx.room.Room

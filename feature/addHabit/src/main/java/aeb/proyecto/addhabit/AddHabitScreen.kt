@@ -16,7 +16,6 @@ import aeb.proyecto.addhabit.components.textField.AddHabitTextField
 import aeb.proyecto.addhabit.components.typeHabit.MonthlyTypeHabit
 import aeb.proyecto.addhabit.components.typeHabit.RecurringTypeHabit
 import aeb.proyecto.addhabit.components.typeHabit.WeeklyTypeHabit
-import aeb.proyecto.addhabit.components.typeHabit.getDate
 import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
 import aeb.proyecto.addhabit.constants.PICK_DATE
@@ -25,33 +24,25 @@ import aeb.proyecto.addhabit.constants.PICK_TYPE_HABIT
 import aeb.proyecto.addhabit.constants.PICK_TYPE_NOTIFICATION
 import aeb.proyecto.addhabit.constants.PICK_UNIT
 import aeb.proyecto.addhabit.constants.TypeHabit
-import aeb.proyecto.addhabit.constants.Units
-import aeb.proyecto.addhabit.model.DataAddHabit
-import aeb.proyecto.addhabit.model.TypeNotification
-import aeb.proyecto.addhabit.model.TypeNotificationResult
+import aeb.proyecto.addhabit.constants.TypeNotificationResult
+import aeb.proyecto.addhabit.model.DataAddHabitScreen
 import aeb.proyecto.addhabit.utils.IsOnlyDigit
+import aeb.proyecto.room.model.classes.TypeNotification
+import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
-import aeb.proyecto.ui.dimmens.Dimmens.spacing18
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
-import aeb.proyecto.ui.dimmens.Dimmens.spacing22
-import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing28
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
-import aeb.proyecto.ui.dimmens.Dimmens.spacing5
-import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import android.Manifest
 import android.content.pm.PackageManager
-import android.widget.Space
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -65,17 +56,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.EventNote
 import androidx.compose.material.icons.filled.ColorLens
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.NotificationAdd
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -132,7 +119,7 @@ fun AddHabitScreen(
 
 @Composable
 internal fun AddHabitScreen(
-    dataAddHabit: DataAddHabit,
+    dataAddHabit: DataAddHabitScreen,
     onClickCard: (GridOption) -> Unit,
     onClickGridOption: (GridOptionResult) -> Unit = {},
     onClickDialog: (Int) -> Unit = {},
@@ -141,7 +128,7 @@ internal fun AddHabitScreen(
     onClickWeekly: (Int) -> Unit = {},
     onMonthNumberSelected: (Int) -> Unit = {},
     onDateSelected: (LocalDate) -> Unit = {},
-    onPickUnit: (Units) -> Unit = {},
+    onPickUnit: (UnitHabit) -> Unit = {},
     onClickTypeNotification: (TypeNotification) -> Unit = {},
     onTimeSelected: (LocalTime) -> Unit = {},
     onClickDeleteNotification: (String) -> Unit = {},
@@ -425,7 +412,7 @@ internal fun AddHabitScreen(
 }
 
 @Composable
-fun getTextUnits(timeTextField:TextFieldState, typeUnit: Units):String{
+fun getTextUnits(timeTextField:TextFieldState, typeUnit: UnitHabit):String{
     return if(timeTextField.text.toString() == "1") stringResource(typeUnit.title)
     else stringResource(typeUnit.titlePlural)
 }

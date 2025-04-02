@@ -1,15 +1,14 @@
-package aeb.proyecto.addhabit.constants
+package aeb.proyecto.room.model.classes
 
-import aeb.proyecto.addhabit.R
+import aeb.proyecto.room.R
 import androidx.annotation.StringRes
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Assignment
 import androidx.compose.material.icons.automirrored.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.EventRepeat
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.HourglassEmpty
@@ -18,13 +17,12 @@ import androidx.compose.material.icons.filled.Numbers
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.TravelExplore
-import androidx.compose.ui.graphics.vector.ImageVector
 
-enum class Units(
+enum class UnitHabit(
     val icon:ImageVector,
     @StringRes val title:Int,
     @StringRes val titlePlural:Int,
-    val unitType:TIPO_UNIDAD
+    val unitType: TIPO_UNIDAD,
 ){
     // TIEMPO
     SECONDS(
@@ -118,23 +116,23 @@ enum class TIPO_UNIDAD{
 }
 
 val listTime = listOf(
-    Units.SECONDS,
-    Units.MINUTES,
-    Units.HOURS
+    UnitHabit.SECONDS,
+    UnitHabit.MINUTES,
+    UnitHabit.HOURS
 )
 
 val listQuantity = listOf(
-    Units.STEPS,
-    Units.PAGES,
-    Units.CALORIES,
-    Units.KILOMETERS,
-    Units.EXERCISES,
-    Units.REPETITIONS
+    UnitHabit.STEPS,
+    UnitHabit.PAGES,
+    UnitHabit.CALORIES,
+    UnitHabit.KILOMETERS,
+    UnitHabit.EXERCISES,
+    UnitHabit.REPETITIONS
 )
 
 val listFrequency = listOf(
-    Units.TIMES,
-    Units.SESSIONS,
-    Units.TASKS,
-    Units.ATTEMPTS
+    UnitHabit.TIMES,
+    UnitHabit.SESSIONS,
+    UnitHabit.TASKS,
+    UnitHabit.ATTEMPTS
 )

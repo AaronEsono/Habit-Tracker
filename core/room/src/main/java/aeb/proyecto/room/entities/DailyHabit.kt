@@ -1,9 +1,11 @@
 package aeb.proyecto.room.entities
 
+import aeb.proyecto.room.entities.habit.Habit
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import androidx.room.Relation
+import java.time.LocalDate
+import java.time.LocalTime
 
 @Entity(
     foreignKeys = [
@@ -22,5 +24,5 @@ data class DailyHabit(
     var idHabit:Long = 0,
     var timesDone:Int = 0,
     val date:String = "",
-    var hourFinishDate:String? = null
+    var hourFinishDate: String?= null
 )

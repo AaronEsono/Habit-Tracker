@@ -2,7 +2,7 @@ package aeb.proyecto.room
 
 import aeb.proyecto.room.dao.EntireHabitDao
 import aeb.proyecto.room.database.DatabaseHabitTracker
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.entities.relations.EntireHabit
 import aeb.proyecto.room.repository.EntireHabitRepo
 import aeb.proyecto.room.utils.createDailyHabit

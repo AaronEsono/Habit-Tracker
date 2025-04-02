@@ -4,16 +4,18 @@ import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
 import aeb.proyecto.addhabit.constants.PICK_NOTIFICATION
 import aeb.proyecto.addhabit.constants.TypeHabit
-import aeb.proyecto.addhabit.constants.Units
+import aeb.proyecto.addhabit.constants.TypeNotificationResult
 import aeb.proyecto.addhabit.constants.getContrastColor
+import aeb.proyecto.addhabit.converter.fromHabitScreen
+import aeb.proyecto.addhabit.model.AddHabit
 import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.addhabit.model.BottomSheetState
 import aeb.proyecto.addhabit.model.DEFAULT_TIME
-import aeb.proyecto.addhabit.model.DataAddHabit
+import aeb.proyecto.addhabit.model.DataAddHabitScreen
 import aeb.proyecto.addhabit.model.DataBottomSheet
-import aeb.proyecto.addhabit.model.TypeNotification
-import aeb.proyecto.addhabit.model.TypeNotificationResult
-import android.util.Log
+import aeb.proyecto.room.model.classes.TypeNotification
+import aeb.proyecto.room.model.classes.UnitHabit
+import aeb.proyecto.room.repository.HabitWithNotificacionRepo
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
@@ -30,10 +32,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddHabitViewModel @Inject constructor(
-
+    private val habitWithNotificacionRepo: HabitWithNotificacionRepo
 ):ViewModel() {
 
-    private val _dataAddHabit = MutableStateFlow(DataAddHabit())
+    private val _dataAddHabit = MutableStateFlow(DataAddHabitScreen())
     val dataAddHabit = _dataAddHabit.asStateFlow()
 
     fun onClickGridOption(gridOptionResult: GridOptionResult){
@@ -136,7 +138,7 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
-    fun onPickUnit(unit:Units){
+    fun onPickUnit(unit: UnitHabit){
         _dataAddHabit.update { currentState ->
             currentState.copy(
                 habitScreen = currentState.habitScreen.copy(unit = unit)
@@ -291,4 +293,16 @@ class AddHabitViewModel @Inject constructor(
             )
         }
     }
+
+    fun saveHabit() = viewModelScope.launch(Dispatchers.IO){
+        val habitWithNotifications = fromHabitScreen(_dataAddHabit.value.habitScreen)
+        habitWithNotificacionRepo.insertHabit(habitWithNotifications.habit, listOf())
+    }
+
+}
+
+sealed class AddHabitUIState{
+    data object Success: AddHabitUIState()
+    data object Loading: AddHabitUIState()
+    data object Error: AddHabitUIState()
 }

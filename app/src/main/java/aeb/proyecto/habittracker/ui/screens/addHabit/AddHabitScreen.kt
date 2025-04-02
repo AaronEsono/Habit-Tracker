@@ -105,9 +105,7 @@ fun AddHabitScreen(
         if (habit.habit.name.isNotEmpty()) {
             nameHabit.edit { replace(0, length, habit.habit.name) }
             descriptionHabit.edit { replace(0, length, habit.habit.description ?: "") }
-            timesHabit.edit { replace(0, length, habit.habit.times.toString()) }
-
-            addHabitViewModel.setData(habit.habit.color, habit.habit.icon, habit.habit.unit)
+            timesHabit.edit { replace(0, length, habit.habit.goal.toString()) }
         }
     }
 

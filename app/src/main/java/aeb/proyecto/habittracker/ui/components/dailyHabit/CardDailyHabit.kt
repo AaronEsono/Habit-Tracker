@@ -49,7 +49,6 @@ fun CardDailyHabit(
     val icon = rememberUpdatedState(getIcon(habitWithDailyHabit.dailyHabits, habitWithDailyHabit.habit))
     val getDays = rememberUpdatedState(getDaysOfWeek())
 
-    val unit = remember { mutableStateOf(Constans.Units.entries.find { it.id == habit.unit }?.pluralTitle) }
     val times = rememberUpdatedState(dailyHabits.find { LocalDate.parse(it.date) == LocalDate.now() }?.timesDone ?: 0)
 
     val targetProgress = getProgress(dailyHabits, habit)
@@ -72,15 +71,7 @@ fun CardDailyHabit(
             }
     ) {
         Column(modifier = Modifier.wrapContentSize().padding(horizontal = spacing8)) {
-            CardDailyHabitHeader(
-                isInDialog = isInDialog,
-                habit = habit,
-                times = times,
-                unit = unit,
-                targetProgress = targetProgress,
-                icon = icon,
-                onClick = onClick,
-            )
+
 
             CardDailyHabitDays(
                 color = Color(habit.color),

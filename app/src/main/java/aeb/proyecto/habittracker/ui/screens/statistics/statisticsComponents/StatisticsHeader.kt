@@ -5,7 +5,7 @@ import aeb.proyecto.habittracker.ui.components.text.LabelLargeText
 import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.utils.Dimmens.spacing12
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
-import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.habit.Habit
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun StatisticsHeader(habit: Habit) {
     val habitColor = remember { Color(habit.color).copy(alpha = 0.3f) }
-    val icon = remember { iconByName(habit.icon) }
+    val icon = remember { habit.icon }
 
     Card(
         modifier = Modifier
