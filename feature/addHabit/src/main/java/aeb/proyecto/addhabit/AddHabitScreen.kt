@@ -11,6 +11,7 @@ import aeb.proyecto.addhabit.components.dialog.PickUnitDialog
 import aeb.proyecto.addhabit.components.dialog.TimePickerDialog
 import aeb.proyecto.addhabit.components.divider.CustomHorizontalDivider
 import aeb.proyecto.addhabit.components.grid.AddHabitGrid
+import aeb.proyecto.addhabit.components.loading.AddHabitLoading
 import aeb.proyecto.addhabit.components.notifications.NotificationComponent
 import aeb.proyecto.addhabit.components.textField.AddHabitTextField
 import aeb.proyecto.addhabit.components.typeHabit.MonthlyTypeHabit
@@ -29,6 +30,7 @@ import aeb.proyecto.addhabit.model.DataAddHabitScreen
 import aeb.proyecto.addhabit.utils.IsOnlyDigit
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
+import aeb.proyecto.ui.navigationIcon.NavigationIcon
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
@@ -39,6 +41,9 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarNavigationIcon
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.compose.animation.AnimatedContent
@@ -58,10 +63,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.NotificationAdd
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -69,6 +74,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -80,15 +86,46 @@ import java.time.LocalTime
 
 @Composable
 fun AddHabitScreen(
-    habitIt:Long?,
+    habitIt:Long,
     navigateToHabit: () -> Unit,
     viewModel: AddHabitViewModel = hiltViewModel()
 ){
 
     val dataAddHabit = viewModel.dataAddHabit.collectAsStateWithLifecycle().value
+    val uiState = viewModel.addHabitUIState.collectAsStateWithLifecycle().value
+
+    LaunchedEffect (Unit){
+        viewModel.getData(3)
+    }
+
+    ProvideAppBarTitle {
+        val title = if (habitIt == -1L) stringResource(R.string.add_habit_topbar_title_add)
+        else stringResource(R.string.add_habit_topbar_title_edit)
+
+        LabelLargeText(title, fontSize = 20.sp)
+    }
+
+    ProvideAppBarActions {
+        if(uiState == AddHabitUIState.Success){
+            TextButton(
+                onClick = viewModel::saveHabit
+            ) {
+                LabelLargeText(
+                    stringResource(R.string.add_habit_save),
+                    modifier = Modifier.padding(end = spacing8),
+                    fontSize = 18.sp
+                )
+            }
+        }
+    }
+
+    ProvideAppBarNavigationIcon {
+        NavigationIcon()
+    }
 
     AddHabitScreen(
         dataAddHabit = dataAddHabit,
+        uiState = uiState,
         onClickCard = viewModel::onClickCard,
         onClickGridOption = viewModel::onClickGridOption,
         onClickDialog = viewModel::setDialog,
@@ -120,6 +157,7 @@ fun AddHabitScreen(
 @Composable
 internal fun AddHabitScreen(
     dataAddHabit: DataAddHabitScreen,
+    uiState: AddHabitUIState,
     onClickCard: (GridOption) -> Unit,
     onClickGridOption: (GridOptionResult) -> Unit = {},
     onClickDialog: (Int) -> Unit = {},
@@ -145,6 +183,11 @@ internal fun AddHabitScreen(
 
     IsOnlyDigit(habit.numberTimesTextField)
 
+    when(uiState){
+        AddHabitUIState.Error, AddHabitUIState.Success -> Unit
+        AddHabitUIState.Loading -> {AddHabitLoading()}
+    }
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -164,7 +207,9 @@ internal fun AddHabitScreen(
         )
 
         AddHabitTextField(
-            modifier = Modifier.padding(top = spacing10).height(60.dp),
+            modifier = Modifier
+                .padding(top = spacing10)
+                .height(60.dp),
             textFieldState = habit.descriptionTextField,
             label = { LabelMediumText(stringResource(R.string.add_habit_description_label)) },
             focusManager = focusManager,
@@ -284,7 +329,10 @@ internal fun AddHabitScreen(
         ){
             AddHabitTextField(
                 textFieldState = habit.numberTimesTextField,
-                modifier = Modifier.weight(1f).height(45.dp).padding(top = spacing2),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(45.dp)
+                    .padding(top = spacing2),
                 focusManager = focusManager,
                 imeAction = ImeAction.Done,
                 contentPadding = PaddingValues(start = spacing12),

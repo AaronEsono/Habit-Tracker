@@ -7,6 +7,8 @@ import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.TypeNotificationResult
 import aeb.proyecto.addhabit.constants.getContrastColor
 import aeb.proyecto.addhabit.converter.fromHabitScreen
+import aeb.proyecto.addhabit.converter.fromNotificationScreen
+import aeb.proyecto.addhabit.converter.toHabitScreen
 import aeb.proyecto.addhabit.model.AddHabit
 import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.addhabit.model.BottomSheetState
@@ -16,12 +18,14 @@ import aeb.proyecto.addhabit.model.DataBottomSheet
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -37,6 +41,11 @@ class AddHabitViewModel @Inject constructor(
 
     private val _dataAddHabit = MutableStateFlow(DataAddHabitScreen())
     val dataAddHabit = _dataAddHabit.asStateFlow()
+
+    private val _addHabitUIState = MutableStateFlow<AddHabitUIState>(AddHabitUIState.Success)
+    val addHabitUIState = _addHabitUIState.asStateFlow()
+
+    private val _dataSearched = MutableStateFlow(false)
 
     fun onClickGridOption(gridOptionResult: GridOptionResult){
         when(gridOptionResult){
@@ -297,6 +306,24 @@ class AddHabitViewModel @Inject constructor(
     fun saveHabit() = viewModelScope.launch(Dispatchers.IO){
         val habitWithNotifications = fromHabitScreen(_dataAddHabit.value.habitScreen)
         habitWithNotificacionRepo.insertHabit(habitWithNotifications.habit, listOf())
+    }
+
+    fun getData(id:Long){
+        if(!_dataSearched.value && id != -1L){
+            viewModelScope.launch (Dispatchers.IO){
+                _addHabitUIState.update { AddHabitUIState.Loading }
+
+                val habit = habitWithNotificacionRepo.getHabitById(id)
+
+                _dataAddHabit.update { currentState ->
+                    currentState.copy(
+                        habitScreen = toHabitScreen(habit),
+                    )
+                }
+
+                _addHabitUIState.update { AddHabitUIState.Success }
+            }
+        }
     }
 
 }

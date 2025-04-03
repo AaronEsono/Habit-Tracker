@@ -1,4 +1,5 @@
 <resources>
+    <string name="login_topbar_title">Import habits</string>
 
     <string name="login_title">Sign in</string>
     <string name="login_subtitle">Sign in to save your habits to the cloud</string>

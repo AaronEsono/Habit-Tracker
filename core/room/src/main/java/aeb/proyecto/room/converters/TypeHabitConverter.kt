@@ -55,7 +55,7 @@ class TypeHabitAdapter : JsonSerializer<TypeHabit>, JsonDeserializer<TypeHabit> 
 
     override fun serialize(src: TypeHabit?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
         val jsonObject = JsonObject()
-        jsonObject.addProperty("type", src?.tag)
+        jsonObject.addProperty("tag", src?.tag)
 
         when (src) {
             is TypeHabit.Daily -> {}
@@ -76,7 +76,7 @@ class TypeHabitAdapter : JsonSerializer<TypeHabit>, JsonDeserializer<TypeHabit> 
 
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): TypeHabit {
         val jsonObject = json?.asJsonObject
-        val type = jsonObject?.get("type")?.asString
+        val type = jsonObject?.get("tag")?.asString
 
         return when (type) {
             DAILY -> TypeHabit.Daily

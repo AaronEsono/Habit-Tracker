@@ -13,6 +13,7 @@ import aeb.proyecto.save.navigation.Save
 import aeb.proyecto.save.navigation.navigateToSave
 import aeb.proyecto.save.navigation.saveScreen
 import aeb.proyecto.settings.navigation.settingsScreen
+import aeb.proyecto.ui.controllerProvider.LocalNavController
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -26,11 +27,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 @Composable
-fun NavigationWrapper(navController: NavHostController){
+fun NavigationWrapper(){
+    val navController = LocalNavController.current
 
     NavHost(navController = navController, startDestination = Habits){
         composable<Habits>{
-            HabitsScreen(){ id ->
+            HabitsScreen(
+                navController = navController,
+            ){ id ->
                 navController.navigateToAddHabit(id)
             }
         }

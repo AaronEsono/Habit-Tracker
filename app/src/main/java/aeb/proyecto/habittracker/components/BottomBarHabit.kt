@@ -2,6 +2,7 @@ package aeb.proyecto.habittracker.components
 
 import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
 import aeb.proyecto.habittracker.ui.navigation.menuItems
+import aeb.proyecto.ui.controllerProvider.LocalNavController
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +20,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
-fun BottomNavigationHabit(navController: NavHostController) {
+fun BottomNavigationHabit() {
+    val navController = LocalNavController.current
 
     val menuItems = remember { menuItems() }
 

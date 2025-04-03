@@ -35,6 +35,7 @@ fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
 
 fun toHabitScreen(habitWithNotification: HabitWithNotification): AddHabit {
     return AddHabit(
+        id = habitWithNotification.habit.id,
         nameTextField = TextFieldState(initialText = habitWithNotification.habit.name),
         descriptionTextField = TextFieldState(initialText = habitWithNotification.habit.description ?: ""),
         numberTimesTextField = TextFieldState(initialText = habitWithNotification.habit.goal.toString()),

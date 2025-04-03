@@ -1,4 +1,5 @@
 <resources>
+    <string name="login_topbar_title">Importar hábitos</string>
 
     <string name="login_title">Iniciar sesión</string>
     <string name="login_subtitle">Inicia sesión para poder guardar tus hábitos en la nube</string>

@@ -18,6 +18,6 @@ fun NavGraphBuilder.addHabitScreen(onHabitScreen: () -> Unit) {
     composable<AddHabit> {backStackEntry ->
         val idHabit = backStackEntry.arguments?.getLong("id")
 
-        AddHabitScreen(idHabit, onHabitScreen)
+        AddHabitScreen(idHabit ?: -1L, onHabitScreen)
     }
 }

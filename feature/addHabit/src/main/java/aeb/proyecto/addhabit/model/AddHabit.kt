@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import java.time.LocalDate
 
 data class AddHabit(
+    var id:Long? = null,
     var nameTextField:TextFieldState = TextFieldState(),
     var descriptionTextField:TextFieldState = TextFieldState(),
     var numberTimesTextField:TextFieldState = TextFieldState(initialText = "1"),

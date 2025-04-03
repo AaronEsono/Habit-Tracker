@@ -1,5 +1,7 @@
 <resources>
 
+    <string name="save_topbar_title">Guardar hábitos</string>
+
     <string name="save_email">Hola, %s</string>
     <string name="save_label">Sube a la nube tus hábitos para poder recuperarlos en otro teléfono.</string>
 

@@ -6,12 +6,16 @@ import aeb.proyecto.save.components.card.CardSave
 import aeb.proyecto.save.components.loading.SaveScreenLoading
 import aeb.proyecto.save.model.DataBottomSheet
 import aeb.proyecto.save.model.DataSaveScreen
+import aeb.proyecto.ui.navigationIcon.NavigationIcon
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.BodyMediumText
+import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.TitleLargeText
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarNavigationIcon
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,18 +23,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import java.time.LocalDateTime
 
 // Testing
 
@@ -42,6 +42,14 @@ fun SaveScreen(
     val bottomSheetState = viewModel.bottomSheetState.collectAsStateWithLifecycle().value
     val saveUIState = viewModel.saveUIState.collectAsStateWithLifecycle().value
     val dataSaveScreen = viewModel.dataSaveScreen.collectAsStateWithLifecycle().value
+
+    ProvideAppBarTitle {
+        LabelLargeText(stringResource(R.string.save_topbar_title),fontSize = 20.sp)
+    }
+
+    ProvideAppBarNavigationIcon {
+        NavigationIcon()
+    }
 
     LaunchedEffect (Unit){
         viewModel.getDataUser()

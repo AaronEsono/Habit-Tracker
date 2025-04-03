@@ -1,5 +1,8 @@
 <resources>
 
+    <string name="add_habit_topbar_title_add">Añadir hábito</string>
+    <string name="add_habit_topbar_title_edit">Editar hábito</string>
+
     <string name="add_habit_name_label">Nombre</string>
     <string name="add_habit_description_label">Descripción</string>
 
@@ -55,5 +58,6 @@
     <string name="add_habit_delete_notification_title">Borrar notificación</string>
     <string name="add_habit_delete_notification_subtitle">¿Estás seguro de que quieres borrar esta notificación?</string>
 
+    <string name="add_habit_save">Guardar</string>
 
 </resources>

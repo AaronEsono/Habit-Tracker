@@ -8,20 +8,19 @@ import aeb.proyecto.login.components.textField.LoginSecureTextField
 import aeb.proyecto.login.components.textField.LoginTextField
 import aeb.proyecto.login.model.DataLoginBottomSheet
 import aeb.proyecto.login.model.DataLoginScreen
+import aeb.proyecto.ui.navigationIcon.NavigationIcon
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
-import aeb.proyecto.ui.dimmens.Dimmens.spacing64
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleLargeText
-import aeb.proyecto.ui.text.TitleMediumText
 import aeb.proyecto.ui.text.TitleSmallText
-import android.annotation.SuppressLint
-import android.icu.text.CaseMap.Title
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarNavigationIcon
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
 import android.util.Patterns
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
@@ -36,16 +35,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -55,10 +49,9 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlin.math.sin
 
 @Composable
 fun LoginScreen(
@@ -69,6 +62,14 @@ fun LoginScreen(
     val dataLoginScreen = viewModel.dataLoginScreen.collectAsStateWithLifecycle().value
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     val bottomSheetState = viewModel.dataBottomSheet.collectAsStateWithLifecycle().value
+
+    ProvideAppBarTitle {
+        LabelLargeText(stringResource(R.string.login_topbar_title),fontSize = 20.sp)
+    }
+
+    ProvideAppBarNavigationIcon {
+        NavigationIcon()
+    }
 
     LaunchedEffect(Unit){
         viewModel.getSaveCredentials()

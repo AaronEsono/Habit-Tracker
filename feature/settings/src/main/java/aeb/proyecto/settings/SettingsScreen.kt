@@ -10,8 +10,10 @@ import aeb.proyecto.settings.utils.sendEmail
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
+import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleMediumText
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -40,6 +43,10 @@ fun SettingsScreen(
     val settingsDialogState = viewModel.settingDialogState.collectAsStateWithLifecycle().value
     val themeSelected = viewModel.themeSelected.collectAsStateWithLifecycle().value
     val languageSelected = viewModel.languageSelected.collectAsStateWithLifecycle().value
+
+    ProvideAppBarTitle {
+        LabelLargeText(stringResource(R.string.settings_configuration),fontSize = 20.sp)
+    }
 
     SettingsScreen(
         onClickTheme = { viewModel.setDataDialogMode(DataDialog.THEME) },
