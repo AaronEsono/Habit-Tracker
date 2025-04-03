@@ -5,10 +5,15 @@ import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.screens.statistics.statisticsComponents.StatisticsContent
 import aeb.proyecto.habittracker.utils.AppState
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Label
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -16,12 +21,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun StatisticsScreen(statisticsViewModel: StatisticsViewModel = hiltViewModel()) {
+
+    ProvideAppBarTitle {
+        aeb.proyecto.ui.text.LabelMediumText("Estadísticass")
+    }
 
     LaunchedEffect(true) {
         statisticsViewModel.getHabits()

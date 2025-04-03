@@ -1,12 +1,17 @@
 package aeb.proyecto.room.converters
 
+import aeb.proyecto.room.model.classes.DAILY
+import aeb.proyecto.room.model.classes.MONTHLY
+import aeb.proyecto.room.model.classes.RECURRING
 import aeb.proyecto.room.model.classes.TypeHabit
+import aeb.proyecto.room.model.classes.WEEKLY
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
@@ -18,6 +23,7 @@ import java.time.format.DateTimeFormatter
 class TypeHabitConverter {
     private val gson: Gson = GsonBuilder()
         .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter()) // Register LocalDate Adapter
+        .registerTypeAdapter(TypeHabit::class.java, TypeHabitAdapter()) // Register TypeHabit Adapter
         .create()
 
     @TypeConverter
@@ -41,5 +47,50 @@ class LocalDateAdapter : JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> 
 
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): LocalDate {
         return LocalDate.parse(json?.asString, formatter)
+    }
+}
+
+
+class TypeHabitAdapter : JsonSerializer<TypeHabit>, JsonDeserializer<TypeHabit> {
+
+    override fun serialize(src: TypeHabit?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("type", src?.tag)
+
+        when (src) {
+            is TypeHabit.Daily -> {}
+            is TypeHabit.Weekly -> {
+                jsonObject.addProperty("numberDays", src.numberDays)
+            }
+            is TypeHabit.Monthly -> {
+                jsonObject.addProperty("numberTimes", src.numberTimes)
+            }
+            is TypeHabit.Recurring -> {
+                jsonObject.addProperty("date", src.date.toString())
+                jsonObject.addProperty("interval", src.interval)
+            }
+            null -> TypeHabit.Daily
+        }
+        return jsonObject
+    }
+
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): TypeHabit {
+        val jsonObject = json?.asJsonObject
+        val type = jsonObject?.get("type")?.asString
+
+        return when (type) {
+            DAILY -> TypeHabit.Daily
+            WEEKLY -> TypeHabit.Weekly(
+                numberDays = jsonObject.get("numberDays")?.asInt ?: 1
+            )
+            MONTHLY -> TypeHabit.Monthly(
+                numberTimes = jsonObject.get("numberTimes")?.asInt ?: 1
+            )
+            RECURRING -> TypeHabit.Recurring(
+                date = LocalDate.parse(jsonObject.get("date")?.asString),
+                interval = jsonObject.get("interval")?.asInt ?: 1
+            )
+            else -> TypeHabit.Daily
+        }
     }
 }

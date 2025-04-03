@@ -148,7 +148,7 @@ class StatisticsViewModel @Inject constructor(
         return streak
     }
 
-    private fun setLoading(){
+    fun setLoading(){
         sharedState.setLoading()
     }
 

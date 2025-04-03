@@ -1,6 +1,5 @@
 package aeb.proyecto.room.model.classes
 
-import androidx.room.Relation
 import java.time.LocalDate
 
 sealed class TypeHabit(val tag: String) {

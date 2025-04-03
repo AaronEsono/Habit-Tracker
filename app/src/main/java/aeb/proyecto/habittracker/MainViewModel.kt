@@ -12,7 +12,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val sharedState: SharedState,
     private val datastoreInterface: DatastoreInterface
 ) : ViewModel(){
 
@@ -21,13 +20,4 @@ class MainViewModel @Inject constructor(
         initialValue = 0,
         started = SharingStarted.WhileSubscribed(5000)
     )
-
-    fun getState():SharedState{
-        return sharedState
-    }
-
-    fun setNeutral(){
-        sharedState.setNeutral()
-    }
-
 }

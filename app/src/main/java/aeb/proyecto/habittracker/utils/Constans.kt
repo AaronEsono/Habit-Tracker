@@ -173,8 +173,6 @@ object Constans {
         )
     }
 
-    val permissions = android.Manifest.permission.POST_NOTIFICATIONS
-
     const val ERROR_UPDATE_PROFILE = "ERROR_UPDATE_PROFILE"
     const val ERROR_EMAIL_SEND = "ERROR_EMAIL_SEND"
     const val ERROR_UNVERIFIED_EMAIL = "ERROR_UNVERIFIED_EMAIL"

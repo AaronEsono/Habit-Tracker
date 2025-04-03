@@ -6,6 +6,7 @@ import aeb.proyecto.habittracker.ui.components.text.LabelMediumText
 import aeb.proyecto.habittracker.ui.screens.habits.habitsComponents.HabitScreenStates
 import aeb.proyecto.habittracker.utils.AppState
 import aeb.proyecto.habittracker.utils.Dimmens.spacing8
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,10 @@ fun HabitsScreen(
     habitsViewModel: HabitsViewModel = hiltViewModel(),
     onEditClick: (Long) -> Unit = {}
 ) {
+
+    ProvideAppBarTitle {
+        aeb.proyecto.ui.text.LabelMediumText("Hábitos")
+    }
 
     val uiState = habitsViewModel.uiState.collectAsState().value
 
