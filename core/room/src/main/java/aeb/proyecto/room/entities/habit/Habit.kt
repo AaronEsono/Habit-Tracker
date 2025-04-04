@@ -15,7 +15,7 @@ import androidx.room.TypeConverters
 @Entity
 data class Habit(
     @PrimaryKey(autoGenerate = true)
-    val id:Long = 0,
+    var id:Long = 0,
     var name:String = "",
     var description:String? = "",
 

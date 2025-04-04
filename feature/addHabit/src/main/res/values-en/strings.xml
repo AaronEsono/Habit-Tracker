@@ -58,5 +58,12 @@
     <string name="add_habit_delete_notification_title">Delete Notification</string>
     <string name="add_habit_delete_notification_subtitle">Are you sure you want to delete this notification?</string>
 
+    <string name="add_habit_error_general_title">Attention</string>
+    <string name="add_habit_error_general_subtite">An unexpected error occurred, please try again.</string>
+
+    <string name="add_habit_error_no_name_subtite">You need to give the habit a name and set a number of times to save it.</string>
+
+    <string name="add_habit_error_interval_days_subtite">If it\'s a recurring habit, you need to set an interval of days.</string>
+
     <string name="add_habit_save">Save</string>
 </resources>

@@ -38,6 +38,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
 import aeb.proyecto.ui.dimmens.Dimmens.spacing28
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
+import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
@@ -95,7 +96,7 @@ fun AddHabitScreen(
     val uiState = viewModel.addHabitUIState.collectAsStateWithLifecycle().value
 
     LaunchedEffect (Unit){
-        viewModel.getData(3)
+        viewModel.getData(habitIt)
     }
 
     ProvideAppBarTitle {
@@ -108,11 +109,11 @@ fun AddHabitScreen(
     ProvideAppBarActions {
         if(uiState == AddHabitUIState.Success){
             TextButton(
-                onClick = viewModel::saveHabit
+                onClick = viewModel::saveData
             ) {
                 LabelLargeText(
                     stringResource(R.string.add_habit_save),
-                    modifier = Modifier.padding(end = spacing8),
+                    modifier = Modifier.padding(end = spacing6),
                     fontSize = 18.sp
                 )
             }
@@ -126,6 +127,7 @@ fun AddHabitScreen(
     AddHabitScreen(
         dataAddHabit = dataAddHabit,
         uiState = uiState,
+        navigateToHabit = navigateToHabit,
         onClickCard = viewModel::onClickCard,
         onClickGridOption = viewModel::onClickGridOption,
         onClickDialog = viewModel::setDialog,
@@ -158,6 +160,7 @@ fun AddHabitScreen(
 internal fun AddHabitScreen(
     dataAddHabit: DataAddHabitScreen,
     uiState: AddHabitUIState,
+    navigateToHabit: () -> Unit,
     onClickCard: (GridOption) -> Unit,
     onClickGridOption: (GridOptionResult) -> Unit = {},
     onClickDialog: (Int) -> Unit = {},
@@ -186,6 +189,11 @@ internal fun AddHabitScreen(
     when(uiState){
         AddHabitUIState.Error, AddHabitUIState.Success -> Unit
         AddHabitUIState.Loading -> {AddHabitLoading()}
+        AddHabitUIState.ToHabit -> {
+            LaunchedEffect (Unit){
+                navigateToHabit()
+            }
+        }
     }
 
     Column (

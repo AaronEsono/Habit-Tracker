@@ -89,25 +89,32 @@ fun AddBottomSheet(
             )
 
             Row (
-                modifier = Modifier.fillMaxWidth().padding(bottom = spacing8, top = spacing12),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = spacing8, top = spacing12),
             ){
 
-                CustomRipple {
-                    OutlinedButton(
-                        onClick = {
-                            scope.launch {
-                                sheetState.hide()
-                                onDismiss()
+                when(dataBottomSheet){
+                    DataBottomSheet.DELETE_NOTIFICATION -> {
+                        CustomRipple {
+                            OutlinedButton(
+                                onClick = {
+                                    scope.launch {
+                                        sheetState.hide()
+                                        onDismiss()
+                                    }
+                                },
+                                shape = RoundedCornerShape(spacing8),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                LabelLargeText(stringResource(R.string.add_habit_cancel))
                             }
-                        },
-                        shape = RoundedCornerShape(spacing8),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        LabelLargeText(stringResource(R.string.add_habit_cancel))
-                    }
-                }
+                        }
 
-                Spacer(modifier = Modifier.padding(horizontal = spacing8))
+                        Spacer(modifier = Modifier.padding(horizontal = spacing8))
+                    }
+                    DataBottomSheet.ERROR_NAME_UNIT, DataBottomSheet.ERROR_INTERVAL_UNIT, DataBottomSheet.GENERAL_ERROR -> Unit
+                }
 
                 CustomRipple {
                     Button(
@@ -131,5 +138,4 @@ fun AddBottomSheet(
             }
         }
     }
-
 }

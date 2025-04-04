@@ -66,10 +66,10 @@ class AddHabitViewModel @Inject constructor(
         )
 
         if (idHabit == -1L){
-            id = habitWithNotificationRepo.insertHabit(habitUpt.habit, notifications.value)
+
         }
         else {
-            habitWithNotificationRepo.updateHabit(habitUpt.habit, notifications.value)
+
         }
 
         val notificationsWithId = habitWithNotificationRepo.getAllNotificationsWithId(id)

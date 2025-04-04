@@ -2,6 +2,7 @@ package aeb.proyecto.room.dao
 
 import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.entities.Notification
+import aeb.proyecto.room.entities.notification.HabitNotification
 import aeb.proyecto.room.entities.relations.HabitWithNotification
 import aeb.proyecto.room.model.NotificationWithNameAndColor
 import androidx.room.Dao
@@ -13,7 +14,7 @@ import androidx.room.Update
 @Dao
 interface HabitWithNotificationDao {
     @Insert
-    fun insertNotifications(notification: List<Notification>)
+    fun insertNotifications(notification: List<HabitNotification>)
 
     @Insert
     fun insertHabit(habit: Habit):Long
@@ -22,7 +23,7 @@ interface HabitWithNotificationDao {
     fun updateHabit(habit: Habit)
 
     @Update
-    fun updateNotification(notification: List<Notification>)
+    fun updateNotification(notification: List<HabitNotification>)
 
     @Query("""
         SELECT Notification.id AS id, Notification.hour AS hour, Notification.minute AS minute, Habit.name AS name, Habit.color AS color
@@ -32,7 +33,7 @@ interface HabitWithNotificationDao {
     """)
     fun getAllNotificationswithId(id:Long):List<NotificationWithNameAndColor>
 
-    @Query("DELETE FROM NOTIFICATION WHERE habitId = :id")
+    @Query("DELETE FROM HABITNOTIFICATION WHERE habitId = :id")
     fun deleteNotifications(id:Long)
 
     @Query("SELECT * FROM Notification where habitId = :id")
@@ -43,24 +44,27 @@ interface HabitWithNotificationDao {
     fun getHabitById(habitId: Long): HabitWithNotification
 
     @Transaction
-    fun insertHabitAndNotifications(habit: Habit, notifications: List<Notification>):Long{
-        val habitInserted = insertHabit(habit)
+    fun saveHabit(habitWithNotification: HabitWithNotification):Long{
+        val id = insertHabit(habitWithNotification.habit)
 
-        if (notifications.isNotEmpty()) {
-            insertNotifications(notifications.map { it.copy(habitId = habitInserted) })
+        if (habitWithNotification.notifications.isNotEmpty()) {
+            insertNotifications(habitWithNotification.notifications.map { it.copy(habitId = id) })
         }
 
-        return habitInserted
+        return id
     }
 
     @Transaction
-    fun updateHabit(habit: Habit, notifications: List<Notification>){
-        updateHabit(habit)
+    fun updateHabit(habitWithNotification: HabitWithNotification):Long{
+        val id = habitWithNotification.habit.id
+        updateHabit(habitWithNotification.habit)
 
-        deleteNotifications(habit.id)
+        deleteNotifications(habitWithNotification.habit.id)
 
-        if (notifications.isNotEmpty()) {
-            insertNotifications(notifications.map { it.copy(habitId = habit.id) })
+        if (habitWithNotification.notifications.isNotEmpty()) {
+            insertNotifications(habitWithNotification.notifications.map { it.copy(habitId = id) })
         }
+
+        return id
     }
 }

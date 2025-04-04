@@ -13,12 +13,12 @@ class HabitWithNotificacionRepo @Inject constructor(
     private val habitWithNotificationDao: HabitWithNotificationDao
 ) {
 
-    fun insertHabit(habit: Habit, notifications: List<Notification>):Long{
-        return habitWithNotificationDao.insertHabitAndNotifications(habit,notifications)
+    fun insertHabit(habitWithNotification: HabitWithNotification):Long{
+        return habitWithNotificationDao.saveHabit(habitWithNotification)
     }
 
-    fun updateHabit(habit: Habit, notifications: List<Notification>){
-        habitWithNotificationDao.updateHabit(habit,notifications)
+    fun updateHabit(habitWithNotification: HabitWithNotification):Long{
+        return habitWithNotificationDao.updateHabit(habitWithNotification)
     }
 
     fun getHabitById(id:Long): HabitWithNotification {

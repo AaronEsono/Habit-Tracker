@@ -7,9 +7,7 @@ import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.TypeNotificationResult
 import aeb.proyecto.addhabit.constants.getContrastColor
 import aeb.proyecto.addhabit.converter.fromHabitScreen
-import aeb.proyecto.addhabit.converter.fromNotificationScreen
 import aeb.proyecto.addhabit.converter.toHabitScreen
-import aeb.proyecto.addhabit.model.AddHabit
 import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.addhabit.model.BottomSheetState
 import aeb.proyecto.addhabit.model.DEFAULT_TIME
@@ -18,14 +16,12 @@ import aeb.proyecto.addhabit.model.DataBottomSheet
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -213,11 +209,20 @@ class AddHabitViewModel @Inject constructor(
                 bottomSheetState = currentState.bottomSheetState.copy(isVisible = false)
             )
         }
+        when(_dataAddHabit.value.bottomSheetState.dataBottomSheet){
+            DataBottomSheet.GENERAL_ERROR,DataBottomSheet.ERROR_NAME_UNIT,DataBottomSheet.ERROR_INTERVAL_UNIT -> {
+                _addHabitUIState.update { AddHabitUIState.Success }
+            }
+            DataBottomSheet.DELETE_NOTIFICATION -> Unit
+        }
     }
 
     fun onAcceptBottomSheet(){
         when(_dataAddHabit.value.bottomSheetState.dataBottomSheet){
             DataBottomSheet.DELETE_NOTIFICATION -> {deleteNotification()}
+            DataBottomSheet.ERROR_NAME_UNIT,DataBottomSheet.ERROR_INTERVAL_UNIT,DataBottomSheet.GENERAL_ERROR -> {
+                _addHabitUIState.update { AddHabitUIState.Success }
+            }
         }
     }
 
@@ -303,9 +308,60 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
-    fun saveHabit() = viewModelScope.launch(Dispatchers.IO){
-        val habitWithNotifications = fromHabitScreen(_dataAddHabit.value.habitScreen)
-        habitWithNotificacionRepo.insertHabit(habitWithNotifications.habit, listOf())
+    fun saveData(){
+        //Preguntamos si la data esta bien metida
+        if(dataNameUnitIsCorrect()){
+            // Si es ciclico, comprobar
+            if(cyclicDataIsCorrect()){
+                //Ver si es actualizacion o creacion
+                if(_dataAddHabit.value.habitScreen.id == null || _dataAddHabit.value.habitScreen.id == -1L){
+                    //Creacion
+                    saveHabit()
+                }else{
+                    //Actualizacion
+                    updateHabit()
+                }
+            }else{
+                setBottomSheetError(DataBottomSheet.ERROR_INTERVAL_UNIT)
+            }
+        }else{
+            setBottomSheetError(DataBottomSheet.ERROR_NAME_UNIT)
+        }
+    }
+
+    private fun saveHabit() = viewModelScope.launch(Dispatchers.IO){
+        try {
+            _addHabitUIState.update { AddHabitUIState.Loading }
+            val habitWithNotifications = fromHabitScreen(_dataAddHabit.value.habitScreen)
+
+            habitWithNotificacionRepo.insertHabit(habitWithNotifications)
+
+            //Faltarian las notificaciones
+
+            _addHabitUIState.update { AddHabitUIState.ToHabit }
+        }catch (e:Exception){
+            _addHabitUIState.update { AddHabitUIState.Error }
+            setBottomSheetError(DataBottomSheet.GENERAL_ERROR)
+        }
+    }
+
+    private fun updateHabit() = viewModelScope.launch(Dispatchers.IO){
+        try {
+            _addHabitUIState.update { AddHabitUIState.Loading }
+            val habitWithNotifications = fromHabitScreen(_dataAddHabit.value.habitScreen)
+            habitWithNotifications.habit.id = _dataAddHabit.value.habitScreen.id ?: 0L
+
+            //Pillar notificaciones antiguas
+
+            habitWithNotificacionRepo.updateHabit(habitWithNotifications)
+
+            //Faltarian las notificaciones
+
+            _addHabitUIState.update { AddHabitUIState.ToHabit }
+        }catch (e:Exception){
+            _addHabitUIState.update { AddHabitUIState.Error }
+            setBottomSheetError(DataBottomSheet.GENERAL_ERROR)
+        }
     }
 
     fun getData(id:Long){
@@ -326,10 +382,31 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
+    fun setBottomSheetError(dataBottomSheet: DataBottomSheet){
+        _addHabitUIState.update { AddHabitUIState.Error }
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                bottomSheetState = BottomSheetState(
+                    isVisible = true,
+                    dataBottomSheet = dataBottomSheet)
+            )
+        }
+    }
+
+    private fun dataNameUnitIsCorrect():Boolean{
+        return _dataAddHabit.value.habitScreen.nameTextField.text.toString().isNotEmpty()
+                && _dataAddHabit.value.habitScreen.numberTimesTextField.text.toString().isNotEmpty()
+    }
+
+    private fun cyclicDataIsCorrect():Boolean{
+        return _dataAddHabit.value.habitScreen.intervalTextFieldState.text.toString().isNotEmpty()
+    }
+
 }
 
 sealed class AddHabitUIState{
     data object Success: AddHabitUIState()
     data object Loading: AddHabitUIState()
     data object Error: AddHabitUIState()
+    data object ToHabit: AddHabitUIState()
 }
