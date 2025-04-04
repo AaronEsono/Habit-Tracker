@@ -13,9 +13,12 @@ import aeb.proyecto.addhabit.model.BottomSheetState
 import aeb.proyecto.addhabit.model.DEFAULT_TIME
 import aeb.proyecto.addhabit.model.DataAddHabitScreen
 import aeb.proyecto.addhabit.model.DataBottomSheet
+import aeb.proyecto.alarmmanager.NotificationUtils
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
+import android.app.NotificationManager
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
@@ -32,7 +35,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddHabitViewModel @Inject constructor(
-    private val habitWithNotificacionRepo: HabitWithNotificacionRepo
+    private val habitWithNotificacionRepo: HabitWithNotificacionRepo,
+    private val notificationUtils: NotificationUtils
 ):ViewModel() {
 
     private val _dataAddHabit = MutableStateFlow(DataAddHabitScreen())
@@ -154,7 +158,7 @@ class AddHabitViewModel @Inject constructor(
     fun onClickTypeNotification(typeNotification: TypeNotification){
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                notificationSelected = DEFAULT_TIME.copy(type = typeNotification),
+                notificationSelected = DEFAULT_TIME.copy(type = typeNotification, time = LocalTime.now()),
                 showDialog = true,
                 typeDialog = PICK_NOTIFICATION
             )
@@ -334,9 +338,9 @@ class AddHabitViewModel @Inject constructor(
             _addHabitUIState.update { AddHabitUIState.Loading }
             val habitWithNotifications = fromHabitScreen(_dataAddHabit.value.habitScreen)
 
-            habitWithNotificacionRepo.insertHabit(habitWithNotifications)
+            val id = habitWithNotificacionRepo.insertHabit(habitWithNotifications)
 
-            //Faltarian las notificaciones
+            setNotifications(id)
 
             _addHabitUIState.update { AddHabitUIState.ToHabit }
         }catch (e:Exception){
@@ -351,11 +355,11 @@ class AddHabitViewModel @Inject constructor(
             val habitWithNotifications = fromHabitScreen(_dataAddHabit.value.habitScreen)
             habitWithNotifications.habit.id = _dataAddHabit.value.habitScreen.id ?: 0L
 
-            //Pillar notificaciones antiguas
+            cancelNotifications(habitWithNotifications.habit.id)
 
-            habitWithNotificacionRepo.updateHabit(habitWithNotifications)
+            val id = habitWithNotificacionRepo.updateHabit(habitWithNotifications)
 
-            //Faltarian las notificaciones
+            setNotifications(id)
 
             _addHabitUIState.update { AddHabitUIState.ToHabit }
         }catch (e:Exception){
@@ -382,7 +386,7 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
-    fun setBottomSheetError(dataBottomSheet: DataBottomSheet){
+    private fun setBottomSheetError(dataBottomSheet: DataBottomSheet){
         _addHabitUIState.update { AddHabitUIState.Error }
         _dataAddHabit.update { currentState ->
             currentState.copy(
@@ -402,6 +406,23 @@ class AddHabitViewModel @Inject constructor(
         return _dataAddHabit.value.habitScreen.intervalTextFieldState.text.toString().isNotEmpty()
     }
 
+    private fun setNotifications(id:Long){
+        val notifications = habitWithNotificacionRepo.getAllNotificationsWithId(id)
+
+        Log.d("Notifications",notifications.toString())
+
+        notifications.forEach { notification ->
+            notificationUtils.setUpAlarm(notification)
+        }
+    }
+
+    private fun cancelNotifications(id:Long){
+        val notifications = habitWithNotificacionRepo.getNotificationById(id)
+
+        notifications.forEach { notification ->
+            notificationUtils.cancelAlarm(notification.id)
+        }
+    }
 }
 
 sealed class AddHabitUIState{

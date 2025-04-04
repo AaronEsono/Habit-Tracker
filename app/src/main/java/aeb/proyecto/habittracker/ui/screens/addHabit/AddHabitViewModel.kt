@@ -79,7 +79,7 @@ class AddHabitViewModel @Inject constructor(
         }
 
         notificationsWithId.forEach {
-            notificationUtils.setUpAlarm(it,false)
+            notificationUtils.setUpAlarm(it)
         }
 
         withContext(Dispatchers.Main){done()}

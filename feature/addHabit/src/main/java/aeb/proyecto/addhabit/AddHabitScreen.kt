@@ -96,7 +96,7 @@ fun AddHabitScreen(
     val uiState = viewModel.addHabitUIState.collectAsStateWithLifecycle().value
 
     LaunchedEffect (Unit){
-        viewModel.getData(habitIt)
+        viewModel.getData(18)
     }
 
     ProvideAppBarTitle {
@@ -410,6 +410,9 @@ internal fun AddHabitScreen(
 
         }else{
 
+            CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
+
+            LabelMediumText(stringResource(R.string.add_habit_no_permissions))
         }
 
 

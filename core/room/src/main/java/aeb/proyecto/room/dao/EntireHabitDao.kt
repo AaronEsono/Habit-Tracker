@@ -26,13 +26,6 @@ interface EntireHabitDao {
     @Query("DELETE FROM Habit")
     fun deleteHabits()
 
-    @Query("""
-        SELECT Notification.id AS id, Notification.hour AS hour, Notification.minute AS minute, Habit.name AS name, Habit.color AS color
-        FROM Notification
-        INNER JOIN Habit ON Notification.habitId = Habit.id
-    """)
-    fun getAllNotifications():List<NotificationWithNameAndColor>
-
     @Transaction
     @Query("SELECT * FROM Habit")
     fun getAll():List<EntireHabit>
@@ -58,6 +51,6 @@ interface EntireHabitDao {
         }
 
         //Devolvemos las notificaciones para el alarmManager con su id, nombre y color
-        return getAllNotifications()
+        return listOf()
     }
 }

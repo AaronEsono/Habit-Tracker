@@ -4,7 +4,13 @@ import aeb.proyecto.alarmmanager.NotificationUtils
 import aeb.proyecto.alarmmanager.R
 import aeb.proyecto.alarmmanager.REMINDER
 import aeb.proyecto.alarmmanager.constants.CHANNEL
+import aeb.proyecto.alarmmanager.converters.LocalTimeAdapter
+import aeb.proyecto.alarmmanager.converters.TypeNotificationAdapter
+import aeb.proyecto.room.converters.DateConverter
+import aeb.proyecto.room.converters.IconConverter
+import aeb.proyecto.room.converters.TypeNotificationConverter
 import aeb.proyecto.room.model.NotificationWithNameAndColor
+import aeb.proyecto.room.model.classes.TypeNotification
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -12,12 +18,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import javax.inject.Inject
+import androidx.core.net.toUri
+import com.google.android.libraries.places.api.model.LocalTime
+import com.google.gson.GsonBuilder
 
 
 class AlarmService : BroadcastReceiver() {
@@ -32,12 +42,19 @@ class AlarmService : BroadcastReceiver() {
     private fun createNotification(context: Context, intent2: Intent){
         notificationUtils = NotificationUtils(context)
 
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("app://main")).apply {
+        val intent = Intent(Intent.ACTION_VIEW, "app://main".toUri()).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
         val notificationWithName = intent2.getStringExtra(REMINDER)
-        val data = Gson().fromJson(notificationWithName, NotificationWithNameAndColor::class.java)
+
+        val gson = GsonBuilder()
+            .registerTypeAdapter(LocalTime::class.java, LocalTimeAdapter())
+            .registerTypeAdapter(TypeNotification::class.java, TypeNotificationAdapter())
+            .create()
+
+        val data = gson
+            .fromJson(notificationWithName, NotificationWithNameAndColor::class.java)
 
         if (ContextCompat.checkSelfPermission(
                 context,
@@ -62,6 +79,6 @@ class AlarmService : BroadcastReceiver() {
             manager.notify(data.id.toInt(),notification)
         }
 
-        notificationUtils.setUpAlarm(data,true)
+        notificationUtils.setRepeatedAlarm(data)
     }
 }

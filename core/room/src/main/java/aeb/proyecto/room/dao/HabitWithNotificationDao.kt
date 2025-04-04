@@ -26,9 +26,10 @@ interface HabitWithNotificationDao {
     fun updateNotification(notification: List<HabitNotification>)
 
     @Query("""
-        SELECT Notification.id AS id, Notification.hour AS hour, Notification.minute AS minute, Habit.name AS name, Habit.color AS color
-        FROM Notification
-        INNER JOIN Habit ON Notification.habitId = Habit.id
+        SELECT HABITNOTIFICATION.id AS id, HABITNOTIFICATION.time AS time, Habit.name AS name, Habit.color AS color,
+        HABITNOTIFICATION.type AS typeNotification
+        FROM HABITNOTIFICATION
+        INNER JOIN Habit ON HABITNOTIFICATION.habitId = Habit.id
         WHERE Habit.id = :id
     """)
     fun getAllNotificationswithId(id:Long):List<NotificationWithNameAndColor>
@@ -36,8 +37,8 @@ interface HabitWithNotificationDao {
     @Query("DELETE FROM HABITNOTIFICATION WHERE habitId = :id")
     fun deleteNotifications(id:Long)
 
-    @Query("SELECT * FROM Notification where habitId = :id")
-    fun getNotificationById(id:Long):List<Notification>
+    @Query("SELECT * FROM HABITNOTIFICATION where habitId = :id")
+    fun getNotificationById(id:Long):List<HabitNotification>
 
     @Transaction
     @Query("SELECT * FROM Habit WHERE id = :habitId")
