@@ -28,6 +28,8 @@ import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.TypeNotificationResult
 import aeb.proyecto.addhabit.model.DataAddHabitScreen
 import aeb.proyecto.addhabit.utils.IsOnlyDigit
+import aeb.proyecto.addhabit.utils.goToAppSettings
+import aeb.proyecto.addhabit.utils.onChangePermissions
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.ui.navigationIcon.NavigationIcon
@@ -59,15 +61,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ColorLens
+import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.NotificationAdd
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -184,6 +194,16 @@ internal fun AddHabitScreen(
     val notificationWeek = habit.notifications.filter { it.type is TypeNotification.Daily }
     val notificationRecurring = habit.notifications.filter { it.type is TypeNotification.Recurring }
 
+    val isPermissionGranted = remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    onChangePermissions(isPermissionGranted,context)
     IsOnlyDigit(habit.numberTimesTextField)
 
     when(uiState){
@@ -357,8 +377,7 @@ internal fun AddHabitScreen(
         }
 
         //Notificaciones
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
-            == PackageManager.PERMISSION_GRANTED){
+        if(isPermissionGranted.value){
 
             CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
@@ -413,6 +432,33 @@ internal fun AddHabitScreen(
             CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
             LabelMediumText(stringResource(R.string.add_habit_no_permissions))
+
+            Button(onClick = {
+                goToAppSettings(context)
+            },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = spacing12),
+                shape = RoundedCornerShape(spacing8),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = habit.color
+                )){
+                Row (
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Icon(
+                        Icons.Filled.Key,
+                        contentDescription = "button settings",
+                        tint = dataAddHabit.contrastColor
+                    )
+
+                    LabelMediumText(
+                        stringResource(R.string.add_habit_no_permissions_button),
+                        modifier = Modifier.padding(start = spacing8),
+                        color = dataAddHabit.contrastColor
+                    )
+                }
+            }
         }
 
 
