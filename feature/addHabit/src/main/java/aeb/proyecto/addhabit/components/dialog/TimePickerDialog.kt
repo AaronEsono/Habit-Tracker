@@ -4,11 +4,15 @@ import aeb.proyecto.addhabit.R
 import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.ui.dialog.CustomDialog
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
+import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
+import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +28,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
@@ -31,7 +37,10 @@ import androidx.compose.material3.TimePickerColors
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -57,9 +66,17 @@ fun TimePickerDialog(
     onDismissRequest: () -> Unit = {},
     onConfirm: (LocalTime) -> Unit = {},
 ){
-    val timePickerState = rememberTimePickerState(is24Hour = true,
-        initialHour = notification.time.hour,
-        initialMinute = notification.time.minute)
+    val is24hoursMode = remember { mutableStateOf(true) }
+    val selectedHour = remember { mutableIntStateOf(notification.time.hour) }
+    val selectedMinute = remember { mutableIntStateOf(notification.time.minute) }
+
+    val timePickerState = key(is24hoursMode.value) {
+        rememberTimePickerState(
+            is24Hour = is24hoursMode.value,
+            initialHour = selectedHour.intValue,
+            initialMinute = selectedMinute.intValue
+        )
+    }
 
     var timeMode by rememberSaveable { mutableStateOf(true) }
     val icon = if (timeMode) Icons.Filled.Keyboard else Icons.Filled.AccessTime
@@ -80,6 +97,28 @@ fun TimePickerDialog(
             }else{
                 TimeInput(state = timePickerState,
                     colors = timePickerColors(color, contrastColor))
+            }
+
+            Row (
+                modifier = Modifier.fillMaxWidth().padding(start = spacing8, bottom = spacing8),
+                verticalAlignment = Alignment.CenterVertically,
+            ){
+                Switch(
+                    checked = is24hoursMode.value,
+                    onCheckedChange = {
+                        selectedHour.intValue = timePickerState.hour
+                        selectedMinute.intValue = timePickerState.minute
+                        is24hoursMode.value = it
+                    },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = color,
+                        checkedBorderColor = color
+                    )
+                )
+
+                LabelLargeText(stringResource(R.string.add_habit_switch_mode),
+                    modifier = Modifier.padding(start = spacing8),
+                    fontSize = 16.sp)
             }
 
             Row (
@@ -139,18 +178,22 @@ fun timePickerColors(color: Color, contrastColor: Color): TimePickerColors {
     return TimePickerDefaults.colors(
         selectorColor = color.copy(alpha = 0.8f),
         timeSelectorSelectedContainerColor = color,
-        periodSelectorSelectedContainerColor = color.copy(alpha = 0.5f),
 
         clockDialUnselectedContentColor = MaterialTheme.colorScheme.onSurface,
-        periodSelectorUnselectedContainerColor = MaterialTheme.colorScheme.onSurface,
         timeSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSurface,
 
         clockDialColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
-        periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
         timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
 
         clockDialSelectedContentColor = contrastColor,
         timeSelectorSelectedContentColor = contrastColor,
+
+        periodSelectorSelectedContainerColor = color,
         periodSelectorSelectedContentColor = contrastColor,
+
+        periodSelectorUnselectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSurface,
+
+        periodSelectorBorderColor = MaterialTheme.colorScheme.outline,
     )
 }

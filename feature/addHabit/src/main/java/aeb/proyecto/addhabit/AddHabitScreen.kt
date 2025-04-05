@@ -95,9 +95,6 @@ import java.time.LocalTime
 //Habits entre dias personalizables
 // Decimales
 // Dia de comienzo de la semana personalizable
-// Modo 12 horas y 24 horas
-// Icono en la notificacion
-// Refactorizar modulo dao y alarmManager entero y entender typeAdapters
 
 @Composable
 fun AddHabitScreen(

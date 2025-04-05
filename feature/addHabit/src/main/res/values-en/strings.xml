@@ -70,4 +70,5 @@
     <string name="add_habit_no_permissions">In order to create notifications, you must grant permissions to the app. Tap this button to go to the app settings.</string>
     <string name="add_habit_no_permissions_button">Go to settings</string>
 
+    <string name="add_habit_switch_mode">24 hours mode</string>
 </resources>
