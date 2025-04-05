@@ -409,8 +409,6 @@ class AddHabitViewModel @Inject constructor(
     private fun setNotifications(id:Long){
         val notifications = habitWithNotificacionRepo.getAllNotificationsWithId(id)
 
-        Log.d("Notifications",notifications.toString())
-
         notifications.forEach { notification ->
             notificationUtils.setUpAlarm(notification)
         }

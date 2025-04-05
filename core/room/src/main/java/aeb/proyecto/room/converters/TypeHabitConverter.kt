@@ -22,8 +22,8 @@ import java.time.format.DateTimeFormatter
 
 class TypeHabitConverter {
     private val gson: Gson = GsonBuilder()
-        .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter()) // Register LocalDate Adapter
-        .registerTypeAdapter(TypeHabit::class.java, TypeHabitAdapter()) // Register TypeHabit Adapter
+        .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+        .registerTypeAdapter(TypeHabit::class.java, TypeHabitAdapter())
         .create()
 
     @TypeConverter

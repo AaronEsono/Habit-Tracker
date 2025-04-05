@@ -6,6 +6,7 @@ import aeb.proyecto.alarmmanager.REMINDER
 import aeb.proyecto.alarmmanager.constants.CHANNEL
 import aeb.proyecto.alarmmanager.converters.LocalTimeAdapter
 import aeb.proyecto.alarmmanager.converters.TypeNotificationAdapter
+import aeb.proyecto.alarmmanager.gsonProvider.GsonProvider
 import aeb.proyecto.room.converters.DateConverter
 import aeb.proyecto.room.converters.IconConverter
 import aeb.proyecto.room.converters.TypeNotificationConverter
@@ -48,12 +49,7 @@ class AlarmService : BroadcastReceiver() {
 
         val notificationWithName = intent2.getStringExtra(REMINDER)
 
-        val gson = GsonBuilder()
-            .registerTypeAdapter(LocalTime::class.java, LocalTimeAdapter())
-            .registerTypeAdapter(TypeNotification::class.java, TypeNotificationAdapter())
-            .create()
-
-        val data = gson
+        val data = GsonProvider.gson
             .fromJson(notificationWithName, NotificationWithNameAndColor::class.java)
 
         if (ContextCompat.checkSelfPermission(

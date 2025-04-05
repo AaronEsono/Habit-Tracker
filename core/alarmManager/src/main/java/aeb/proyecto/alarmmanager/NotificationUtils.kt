@@ -1,5 +1,6 @@
 package aeb.proyecto.alarmmanager
 
+import aeb.proyecto.alarmmanager.gsonProvider.GsonProvider
 import aeb.proyecto.alarmmanager.service.AlarmService
 import aeb.proyecto.room.model.NotificationWithNameAndColor
 import aeb.proyecto.room.model.classes.TypeNotification
@@ -58,6 +59,7 @@ class NotificationUtils @Inject constructor(
                 }
 
             }
+
             is TypeNotification.Recurring -> {
 
                 val intervalDays = (alarmItem.typeNotification as TypeNotification.Recurring).interval
@@ -73,7 +75,7 @@ class NotificationUtils @Inject constructor(
         }
 
         val intent = Intent(context, AlarmService::class.java).apply {
-            putExtra(REMINDER, Gson().toJson(alarmItem))
+            putExtra(REMINDER, GsonProvider.gson.toJson(alarmItem))
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -114,7 +116,7 @@ class NotificationUtils @Inject constructor(
         }.timeInMillis + (interval * intervalDays)
 
         val intent = Intent(context, AlarmService::class.java).apply {
-            putExtra(REMINDER, Gson().toJson(alarmItem))
+            putExtra(REMINDER, GsonProvider.gson.toJson(alarmItem))
         }
 
         val pendingIntent = PendingIntent.getBroadcast(

@@ -24,7 +24,7 @@ fun goToAppSettings(context: Context) {
 }
 
 @Composable
-fun onChangePermissions(isPermissionGranted: MutableState<Boolean>, context: Context){
+fun OnChangePermissions(isPermissionGranted: MutableState<Boolean>, context: Context){
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState = remember { mutableStateOf(Lifecycle.Event.ON_ANY) }
 

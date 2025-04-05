@@ -31,7 +31,7 @@ class HabitWithNotificacionRepo @Inject constructor(
     }
 
     fun getAllNotificationsWithId(id:Long):List<NotificationWithNameAndColor>{
-        return habitWithNotificationDao.getAllNotificationswithId(id)
+        return habitWithNotificationDao.getAllNotificationsWithId(id)
     }
 
 }

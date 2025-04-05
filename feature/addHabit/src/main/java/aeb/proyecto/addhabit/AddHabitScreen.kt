@@ -28,11 +28,10 @@ import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.TypeNotificationResult
 import aeb.proyecto.addhabit.model.DataAddHabitScreen
 import aeb.proyecto.addhabit.utils.IsOnlyDigit
+import aeb.proyecto.addhabit.utils.OnChangePermissions
 import aeb.proyecto.addhabit.utils.goToAppSettings
-import aeb.proyecto.addhabit.utils.onChangePermissions
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
-import aeb.proyecto.ui.navigationIcon.NavigationIcon
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
@@ -42,6 +41,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing28
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import aeb.proyecto.ui.navigationIcon.NavigationIcon
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
@@ -92,8 +92,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import java.time.LocalDate
 import java.time.LocalTime
 
-//Habits entre dias personalizables?
+//Habits entre dias personalizables
 // Decimales
+// Dia de comienzo de la semana personalizable
+// Modo 12 horas y 24 horas
+// Icono en la notificacion
+// Refactorizar modulo dao y alarmManager entero y entender typeAdapters
 
 @Composable
 fun AddHabitScreen(
@@ -106,7 +110,7 @@ fun AddHabitScreen(
     val uiState = viewModel.addHabitUIState.collectAsStateWithLifecycle().value
 
     LaunchedEffect (Unit){
-        viewModel.getData(18)
+        viewModel.getData(habitIt)
     }
 
     ProvideAppBarTitle {
@@ -203,7 +207,7 @@ internal fun AddHabitScreen(
         )
     }
 
-    onChangePermissions(isPermissionGranted,context)
+    OnChangePermissions(isPermissionGranted,context)
     IsOnlyDigit(habit.numberTimesTextField)
 
     when(uiState){
@@ -460,10 +464,7 @@ internal fun AddHabitScreen(
                 }
             }
         }
-
-
     }
-
 
     //Dialog
     if (dataAddHabit.showDialog) {
@@ -513,7 +514,6 @@ internal fun AddHabitScreen(
             else -> {}
         }
     }
-
 }
 
 @Composable

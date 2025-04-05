@@ -29,7 +29,7 @@ class TypeNotificationConverter {
                 val days: List<Int> = try {
                     gson.fromJson(json, listType) ?: emptyList()
                 } catch (e: Exception) {
-                    emptyList() // Handle JSON parsing errors gracefully
+                    emptyList()
                 }
                 TypeNotification.Daily(days)
             }

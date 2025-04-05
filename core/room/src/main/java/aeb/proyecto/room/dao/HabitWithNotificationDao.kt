@@ -32,7 +32,7 @@ interface HabitWithNotificationDao {
         INNER JOIN Habit ON HABITNOTIFICATION.habitId = Habit.id
         WHERE Habit.id = :id
     """)
-    fun getAllNotificationswithId(id:Long):List<NotificationWithNameAndColor>
+    fun getAllNotificationsWithId(id:Long):List<NotificationWithNameAndColor>
 
     @Query("DELETE FROM HABITNOTIFICATION WHERE habitId = :id")
     fun deleteNotifications(id:Long)
