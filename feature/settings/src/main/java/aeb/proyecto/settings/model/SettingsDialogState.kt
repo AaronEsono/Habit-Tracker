@@ -5,5 +5,5 @@ import androidx.annotation.StringRes
 
 data class SettingsDialogState(
     val showDialog:Boolean = false,
-    val dataDialog: DataDialog = DataDialog.THEME
+    val dataDialog: TypeDialog = TypeDialog.PickThemeLanguage(DataDialog.THEME)
 )

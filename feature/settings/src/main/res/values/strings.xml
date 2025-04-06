@@ -2,6 +2,8 @@
     <string name="settings_configuration">Configuración</string>
     <string name="settings_about">Acerca de</string>
 
+    <string name="settings_general_title">Opciones generales</string>
+
     <string name="settings_theme">Tema</string>
     <string name="settings_export_import">Exportar e importar hábitos</string>
     <string name="settings_language">Idioma</string>

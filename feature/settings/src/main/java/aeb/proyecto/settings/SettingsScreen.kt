@@ -1,10 +1,12 @@
 package aeb.proyecto.settings
 
 import aeb.proyecto.settings.components.button.ButtonSettings
+import aeb.proyecto.settings.components.dialog.DialogGeneralSettings
 import aeb.proyecto.settings.components.dialog.DialogSettings
 import aeb.proyecto.settings.components.divider.CustomHorizontalDivider
 import aeb.proyecto.settings.constants.SettingsConstants
 import aeb.proyecto.settings.model.DataDialog
+import aeb.proyecto.settings.model.TypeDialog
 import aeb.proyecto.settings.utils.openLink
 import aeb.proyecto.settings.utils.sendEmail
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
@@ -21,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -43,14 +46,20 @@ fun SettingsScreen(
     val settingsDialogState = viewModel.settingDialogState.collectAsStateWithLifecycle().value
     val themeSelected = viewModel.themeSelected.collectAsStateWithLifecycle().value
     val languageSelected = viewModel.languageSelected.collectAsStateWithLifecycle().value
+    val generalOptionsData = viewModel.generalOptionsData.collectAsStateWithLifecycle().value
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.settings_configuration),fontSize = 20.sp)
     }
 
+    LaunchedEffect(Unit){
+        viewModel.getGeneralOptionsData()
+    }
+
     SettingsScreen(
-        onClickTheme = { viewModel.setDataDialogMode(DataDialog.THEME) },
-        onClickLanguage = { viewModel.setDataDialogMode(DataDialog.LANGUAGE) },
+        onClickTheme = { viewModel.setDataDialogMode(TypeDialog.PickThemeLanguage(DataDialog.THEME)) },
+        onClickLanguage = { viewModel.setDataDialogMode(TypeDialog.PickThemeLanguage(DataDialog.LANGUAGE)) },
+        onClickGeneralSettings = { viewModel.setDataDialogMode(TypeDialog.GeneralSettings) },
         onClickExport = { (if (viewModel.getCurrentUser()) onSaveScreen else onImportScreen)() },
         onClickEmail = { sendEmail(context) },
         onClickGithub = { uri -> openLink(context, uri) },
@@ -58,13 +67,23 @@ fun SettingsScreen(
     )
 
     if (settingsDialogState.showDialog) {
-        DialogSettings(
-            dataDialog = settingsDialogState.dataDialog,
-            themeSelected = themeSelected,
-            languageSelected = languageSelected,
-            onDismissRequest = { viewModel.setStateDialog(false) },
-            onClickButton = { dataResult -> viewModel.treatResultDialog(dataResult) }
-        )
+        when(settingsDialogState.dataDialog){
+            TypeDialog.GeneralSettings -> {
+                DialogGeneralSettings(
+                    generalOptionsData = generalOptionsData,
+                    onDismissRequest = { viewModel.setStateDialog(false) }
+                )
+            }
+            is TypeDialog.PickThemeLanguage -> {
+                DialogSettings(
+                    dataDialog = settingsDialogState.dataDialog.dataDialog,
+                    themeSelected = themeSelected,
+                    languageSelected = languageSelected,
+                    onDismissRequest = { viewModel.setStateDialog(false) },
+                    onClickButton = { dataResult -> viewModel.treatResultDialog(dataResult) }
+                )
+            }
+        }
     }
 }
 
@@ -73,6 +92,7 @@ fun SettingsScreen(
 internal fun SettingsScreen(
     onClickTheme: () -> Unit,
     onClickLanguage: () -> Unit,
+    onClickGeneralSettings: () -> Unit,
     onClickExport: () -> Unit,
     onClickEmail: () -> Unit,
     onClickGithub: (String) -> Unit,
@@ -105,6 +125,14 @@ internal fun SettingsScreen(
             title = R.string.settings_language,
             leadingIcon = R.drawable.ic_language,
             onClick = onClickLanguage
+        )
+
+        CustomHorizontalDivider()
+
+        ButtonSettings(
+            title = R.string.settings_general_title,
+            leadingIcon = R.drawable.ic_settings,
+            onClick = onClickGeneralSettings
         )
 
         CustomHorizontalDivider()

@@ -28,3 +28,8 @@ sealed class DialogElements {
     data class DialogTheme(val theme:List<EnumTheme>):DialogElements()
     data class DialogLanguage(val language: List<EnumLanguage>):DialogElements()
 }
+
+sealed class TypeDialog{
+    data class PickThemeLanguage(val dataDialog: DataDialog):TypeDialog()
+    data object GeneralSettings:TypeDialog()
+}
