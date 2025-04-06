@@ -8,7 +8,6 @@ import aeb.proyecto.settings.model.DataDialog
 import aeb.proyecto.settings.model.DataResult
 import aeb.proyecto.settings.model.GeneralOptionsData
 import aeb.proyecto.settings.model.SettingsDialogState
-import aeb.proyecto.settings.model.TypeDialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,9 +31,6 @@ class SettingsViewModel @Inject constructor(
     private val _settingDialogState:MutableStateFlow<SettingsDialogState> = MutableStateFlow(SettingsDialogState())
     val settingDialogState:StateFlow<SettingsDialogState> = _settingDialogState.asStateFlow()
 
-    private val _generalOptionsData:MutableStateFlow<GeneralOptionsData> = MutableStateFlow(GeneralOptionsData())
-    val generalOptionsData:StateFlow<GeneralOptionsData> = _generalOptionsData.asStateFlow()
-
     private val _dataSearched:MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     val themeSelected = datastoreInterface.themeMode.stateIn(
@@ -47,6 +43,12 @@ class SettingsViewModel @Inject constructor(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = "en"
+    )
+
+    val dayOfWeek = datastoreInterface.dayOfWeek.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = "MONDAY"
     )
 
     private fun setTheme(themeMode:Int) = viewModelScope.launch{
@@ -70,29 +72,22 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun setDataDialogMode(typeDialog: TypeDialog) {
+    fun setDataDialogMode(dataDialog: DataDialog) {
         _settingDialogState.update { currentState ->
-            currentState.copy(dataDialog = typeDialog, showDialog = true)
+            currentState.copy(dataDialog = dataDialog, showDialog = true)
         }
+    }
+
+    private fun setDaySelected(dayOfWeek: DayOfWeek) = viewModelScope.launch{
+        setStateDialog(false)
+        datastoreInterface.setDayStartWeek(dayOfWeek.name)
     }
 
     fun treatResultDialog(dataResult: DataResult){
         when(dataResult){
             is DataResult.LanguageResult -> {setLanguage(dataResult.language)}
             is DataResult.ThemeResult -> {setTheme(dataResult.theme)}
+            is DataResult.DayOfWeekResult -> {setDaySelected(dataResult.dayOfWeek)}
         }
     }
-
-    fun getGeneralOptionsData() = viewModelScope.launch{
-        if(!_dataSearched.value){
-            _generalOptionsData.update { currentState ->
-                currentState.copy(
-                    firstDayOfWeek = DayOfWeek.valueOf(datastoreInterface.getDayStartWeek() ?: "MONDAY")
-                )
-            }
-
-            _dataSearched.value = true
-        }
-    }
-
 }

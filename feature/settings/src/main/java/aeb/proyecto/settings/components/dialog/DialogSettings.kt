@@ -36,12 +36,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import java.time.DayOfWeek
 
 @Composable
 fun DialogSettings(
     dataDialog: DataDialog,
     themeSelected:Int,
     languageSelected:String,
+    daySelected:String,
     onDismissRequest: () -> Unit,
     onClickButton: (DataResult) -> Unit
 ) {
@@ -88,7 +90,7 @@ fun DialogSettings(
                 stringResource(dataDialog.title),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = spacing6),
+                    .padding(top = spacing6, start = spacing8, end = spacing8),
                 textAlign = TextAlign.Center
             )
 
@@ -130,6 +132,18 @@ fun DialogSettings(
                         }
                     }
                 }
+
+                is DialogElements.DialogDayWeek -> {
+                    dataDialog.dialogComponent.dayWeek.forEach { dayOfWeek ->
+                        ButtonDialog(
+                            modifier = Modifier.padding(vertical = spacing3),
+                            containerColor = setContainerColorButton(dayOfWeek.id, daySelected),
+                            onClick = { onClickButton(DataResult.DayOfWeekResult(dayOfWeek.id)) }
+                        ){
+                            BodyMediumTextButtonDialog(text = stringResource(dayOfWeek.string))
+                        }
+                    }
+                }
             }
         }
     }
@@ -143,4 +157,9 @@ fun setContainerColorButton(theme: Int, themeSelected: Int): Color {
 @Composable
 fun setContainerColorButton(language: String, languageSelected: String): Color {
     return if (language == languageSelected) MaterialTheme.colorScheme.surfaceContainer else MaterialTheme.colorScheme.background
+}
+
+@Composable
+fun setContainerColorButton(day:DayOfWeek, daySelected: String): Color {
+    return if (day.toString() == daySelected) MaterialTheme.colorScheme.surfaceContainer else MaterialTheme.colorScheme.background
 }

@@ -2,7 +2,7 @@
     <string name="settings_configuration">Configuración</string>
     <string name="settings_about">Acerca de</string>
 
-    <string name="settings_general_title">Opciones generales</string>
+    <string name="settings_day_title">Comienzo de la semana</string>
 
     <string name="settings_theme">Tema</string>
     <string name="settings_export_import">Exportar e importar hábitos</string>
@@ -15,8 +15,12 @@
 
     <string name="settings_theme_pick">Elija un tema</string>
     <string name="settings_language_pick">Elija un idioma</string>
+    <string name="settings_day_pick">Seleccione el día de comienzo de semana</string>
 
     <string name="settings_version">Versión %s</string>
+
+    <string name="settings_start_day">Comienzo de la semana</string>
+    <string name="settings_start_label">Día</string>
 
     <string name="settings_message">
     Por favor, escriba su solicitud aquí \n👇\n\n\n\n\n👆\n

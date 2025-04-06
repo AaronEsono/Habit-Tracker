@@ -28,6 +28,10 @@ fun getDay(dayOfWeek:Int):Int{
     return DaysWeek.entries[dayOfWeek].string
 }
 
+fun getDay(dayOfWeek:DayOfWeek):Int{
+    return DaysWeek.entries.find { it.id == dayOfWeek }?.string ?: DaysWeek.LUNES.string
+}
+
 fun getOrderedDays(startDay: DayOfWeek): List<DaysWeekAvr> {
     val allDays = DaysWeekAvr.entries
     val startIndex = allDays.indexOfFirst { it.id == startDay }

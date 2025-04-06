@@ -17,12 +17,19 @@ class DatastoreRepository @Inject constructor(
     override val language: Flow<String>
         get() = dataStoreManager.languageMode
 
+    override val dayOfWeek: Flow<String>
+        get() = dataStoreManager.dayOfWeek
+
     override suspend fun getEmailAndPassword(): EmailPassword {
         return dataStoreManager.getEmailPassword()
     }
 
     override suspend fun getLastSearched(): LastSearched {
         return dataStoreManager.getLastSearched()
+    }
+
+    override suspend fun getLanguage(): String? {
+        return dataStoreManager.getLanguage()
     }
 
     override suspend fun getDayStartWeek(): String? {

@@ -40,6 +40,10 @@ class DataStoreManager @Inject constructor(
         preferences[LANGUAGE]?: ""
     }
 
+    val dayOfWeek: Flow<String> = dataStore.data.map { preferences ->
+        preferences[DAY_START_WEEK] ?: ""
+    }
+
     suspend fun getEmailPassword() = dataStore.data.map { preferences ->
         EmailPassword(
             email = preferences[EMAIL] ?: "",
@@ -58,6 +62,10 @@ class DataStoreManager @Inject constructor(
 
     suspend fun getDayStartWeek() = dataStore.data.map { preferences ->
         preferences[DAY_START_WEEK]
+    }.firstOrNull()
+
+    suspend fun getLanguage() = dataStore.data.map { preferences ->
+        preferences[LANGUAGE]
     }.firstOrNull()
 
     suspend fun setDayStartWeek(day:String){

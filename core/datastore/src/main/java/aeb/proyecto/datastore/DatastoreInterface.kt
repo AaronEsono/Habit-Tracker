@@ -11,11 +11,15 @@ interface DatastoreInterface {
 
     val language:Flow<String>
 
+    val dayOfWeek:Flow<String>
+
     suspend fun getEmailAndPassword():EmailPassword
 
     suspend fun getLastSearched():LastSearched
 
     suspend fun getDayStartWeek():String?
+
+    suspend fun getLanguage():String?
 
     suspend fun setDayStartWeek(day:String)
 

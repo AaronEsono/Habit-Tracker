@@ -1,12 +1,10 @@
 package aeb.proyecto.settings
 
 import aeb.proyecto.settings.components.button.ButtonSettings
-import aeb.proyecto.settings.components.dialog.DialogGeneralSettings
 import aeb.proyecto.settings.components.dialog.DialogSettings
 import aeb.proyecto.settings.components.divider.CustomHorizontalDivider
 import aeb.proyecto.settings.constants.SettingsConstants
 import aeb.proyecto.settings.model.DataDialog
-import aeb.proyecto.settings.model.TypeDialog
 import aeb.proyecto.settings.utils.openLink
 import aeb.proyecto.settings.utils.sendEmail
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
@@ -21,7 +19,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -46,20 +46,16 @@ fun SettingsScreen(
     val settingsDialogState = viewModel.settingDialogState.collectAsStateWithLifecycle().value
     val themeSelected = viewModel.themeSelected.collectAsStateWithLifecycle().value
     val languageSelected = viewModel.languageSelected.collectAsStateWithLifecycle().value
-    val generalOptionsData = viewModel.generalOptionsData.collectAsStateWithLifecycle().value
+    val dayOfWeek = viewModel.dayOfWeek.collectAsStateWithLifecycle().value
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.settings_configuration),fontSize = 20.sp)
     }
 
-    LaunchedEffect(Unit){
-        viewModel.getGeneralOptionsData()
-    }
-
     SettingsScreen(
-        onClickTheme = { viewModel.setDataDialogMode(TypeDialog.PickThemeLanguage(DataDialog.THEME)) },
-        onClickLanguage = { viewModel.setDataDialogMode(TypeDialog.PickThemeLanguage(DataDialog.LANGUAGE)) },
-        onClickGeneralSettings = { viewModel.setDataDialogMode(TypeDialog.GeneralSettings) },
+        onClickTheme = { viewModel.setDataDialogMode(DataDialog.THEME) },
+        onClickLanguage = { viewModel.setDataDialogMode(DataDialog.LANGUAGE) },
+        onClickGeneralSettings = { viewModel.setDataDialogMode(DataDialog.DAY_WEEK) },
         onClickExport = { (if (viewModel.getCurrentUser()) onSaveScreen else onImportScreen)() },
         onClickEmail = { sendEmail(context) },
         onClickGithub = { uri -> openLink(context, uri) },
@@ -67,23 +63,14 @@ fun SettingsScreen(
     )
 
     if (settingsDialogState.showDialog) {
-        when(settingsDialogState.dataDialog){
-            TypeDialog.GeneralSettings -> {
-                DialogGeneralSettings(
-                    generalOptionsData = generalOptionsData,
-                    onDismissRequest = { viewModel.setStateDialog(false) }
-                )
-            }
-            is TypeDialog.PickThemeLanguage -> {
-                DialogSettings(
-                    dataDialog = settingsDialogState.dataDialog.dataDialog,
-                    themeSelected = themeSelected,
-                    languageSelected = languageSelected,
-                    onDismissRequest = { viewModel.setStateDialog(false) },
-                    onClickButton = { dataResult -> viewModel.treatResultDialog(dataResult) }
-                )
-            }
-        }
+        DialogSettings(
+            dataDialog = settingsDialogState.dataDialog,
+            themeSelected = themeSelected,
+            languageSelected = languageSelected,
+            daySelected = dayOfWeek,
+            onDismissRequest = { viewModel.setStateDialog(false) },
+            onClickButton = { dataResult -> viewModel.treatResultDialog(dataResult) }
+        )
     }
 }
 
@@ -102,6 +89,7 @@ internal fun SettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(top = spacing24, start = spacing16, end = spacing16)
     ) {
 
@@ -130,8 +118,8 @@ internal fun SettingsScreen(
         CustomHorizontalDivider()
 
         ButtonSettings(
-            title = R.string.settings_general_title,
-            leadingIcon = R.drawable.ic_settings,
+            title = R.string.settings_day_title,
+            leadingIcon = R.drawable.ic_calendar_day,
             onClick = onClickGeneralSettings
         )
 
