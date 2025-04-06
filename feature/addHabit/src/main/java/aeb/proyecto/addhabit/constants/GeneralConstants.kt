@@ -5,6 +5,7 @@ import aeb.proyecto.room.model.classes.TypeNotification
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import java.time.DayOfWeek
 
 const val PICK_TYPE_HABIT = 1
 const val PICK_DATE = 2
@@ -49,6 +50,6 @@ sealed class GridOptionResult(){
 }
 
 sealed class TypeNotificationResult{
-    data class Daily(val day:Int, val id:String):TypeNotificationResult()
+    data class Daily(val day:DayOfWeek, val id:String):TypeNotificationResult()
     data class Recurring(val action:Boolean, val id:String):TypeNotificationResult()
 }

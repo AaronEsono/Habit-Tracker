@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -221,6 +222,6 @@ fun NotificationDayButton(
     }
 }
 
-@Composable fun isDaySelected(list:List<Int>,day:Int):Boolean{
+@Composable fun isDaySelected(list:List<DayOfWeek>,day:DayOfWeek):Boolean{
     return list.contains(day)
 }

@@ -95,6 +95,7 @@ import java.time.LocalTime
 //Habits entre dias personalizables
 // Decimales
 // Dia de comienzo de la semana personalizable
+// Exportar schema
 
 @Composable
 fun AddHabitScreen(

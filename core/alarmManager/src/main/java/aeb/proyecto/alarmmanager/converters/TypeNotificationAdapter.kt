@@ -6,12 +6,10 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParseException
-import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import java.lang.reflect.Type
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+import java.time.DayOfWeek
 
 class TypeNotificationAdapter : JsonSerializer<TypeNotification>, JsonDeserializer<TypeNotification> {
     override fun serialize(src: TypeNotification?, typeOfSrc: Type?, context: JsonSerializationContext): JsonElement {
@@ -19,8 +17,13 @@ class TypeNotificationAdapter : JsonSerializer<TypeNotification>, JsonDeserializ
         jsonObject.addProperty("tag", src?.tag)
 
         when (src) {
-            is TypeNotification.Daily -> jsonObject.add("days", context.serialize(src.days))
-            is TypeNotification.Recurring -> jsonObject.addProperty("interval", src.interval)
+            is TypeNotification.Daily -> {
+                val days = src.days.map { it.name }
+                jsonObject.add("days", context.serialize(days))
+            }
+            is TypeNotification.Recurring -> {
+                jsonObject.addProperty("interval", src.interval)
+            }
             else -> {}
         }
 
@@ -32,9 +35,13 @@ class TypeNotificationAdapter : JsonSerializer<TypeNotification>, JsonDeserializ
         val type = jsonObject.get("tag")?.asString ?: throw JsonParseException("Missing 'tag' field")
 
         return when (type) {
-            "DAILY" -> TypeNotification.Daily(jsonObject.getAsJsonArray("days")?.map { it.asInt } ?: listOf(1))
+            "DAILY" -> {
+                val daysArray = jsonObject.getAsJsonArray("days")
+                val days = daysArray?.map { DayOfWeek.valueOf(it.asString) } ?: listOf(DayOfWeek.MONDAY)
+                TypeNotification.Daily(days)
+            }
             "RECURRING" -> TypeNotification.Recurring(jsonObject.get("interval")?.asInt ?: 1)
-            else -> TypeNotification.Daily(listOf(1))
+            else -> TypeNotification.Daily(listOf(DayOfWeek.MONDAY))
         }
     }
 }

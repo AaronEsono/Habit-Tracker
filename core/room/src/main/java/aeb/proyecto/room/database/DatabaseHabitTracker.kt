@@ -19,8 +19,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [Habit::class,HabitDay::class,
-        DailyHabit::class,HabitNotification::class,Notification::class],
+    entities = [Habit::class,HabitDay::class, DailyHabit::class,HabitNotification::class,Notification::class],
     version = 1,
     exportSchema = false
 )

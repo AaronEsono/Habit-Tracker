@@ -11,6 +11,8 @@ import android.content.Intent
 import android.util.Log
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.time.DayOfWeek
+import java.time.LocalDate
 import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,9 +34,8 @@ class NotificationUtils @Inject constructor(
                 val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
                 val currentMinute = Calendar.getInstance().get(Calendar.MINUTE)
 
-                val isTodayValid = (alarmItem.typeNotification as TypeNotification.Daily).days.contains(
-                    getAdjustedDayOfWeek()
-                )
+                val isTodayValid = (alarmItem.typeNotification as TypeNotification.Daily)
+                    .days.contains(LocalDate.now().dayOfWeek)
 
                 val isTimeValid = (alarmItem.time.hour > currentHour) ||
                         (alarmItem.time.hour == currentHour && alarmItem.time.minute > currentMinute)
@@ -48,7 +49,7 @@ class NotificationUtils @Inject constructor(
                 } else {
                     val nextDay = getNextDay(
                         (alarmItem.typeNotification as TypeNotification.Daily).days,
-                        getAdjustedDayOfWeek()
+                        LocalDate.now().dayOfWeek
                     )
 
                     timeInMillis = Calendar.getInstance().apply {
@@ -100,7 +101,7 @@ class NotificationUtils @Inject constructor(
             is TypeNotification.Daily -> {
                 getNextDay(
                     (alarmItem.typeNotification as TypeNotification.Daily).days,
-                    getAdjustedDayOfWeek()
+                    LocalDate.now().dayOfWeek
                 )
             }
 
@@ -150,22 +151,13 @@ class NotificationUtils @Inject constructor(
     }
 }
 
-fun getNextDay(list:List<Int>, dayOfTheWeek:Int):Int{
-    // Ordenamos la lista de días de la semana
-    val sortedList = list.sorted()
-
-    // Buscamos el siguiente día más cercano
-    for (day in sortedList) {
-        if (day > dayOfTheWeek) {
-            return day - dayOfTheWeek
+fun getNextDay(list: List<DayOfWeek>, today: DayOfWeek): Int {
+    val sorted = list.sortedBy { it.value }
+    for (day in sorted) {
+        if (day.value > today.value) {
+            return day.value - today.value
         }
     }
-
-    // Si no hay un día mayor, tomamos el primero de la lista y contamos los días hasta la próxima semana
-    return (7 - dayOfTheWeek) + sortedList.first()
-}
-
-fun getAdjustedDayOfWeek(): Int {
-    val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-    return if (day == Calendar.SUNDAY) 7 else day - 1
+    // Si no hay uno mayor, volvemos al primero la siguiente semana
+    return (7 - today.value) + sorted.first().value
 }
