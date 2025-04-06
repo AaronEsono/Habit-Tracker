@@ -15,6 +15,10 @@ interface DatastoreInterface {
 
     suspend fun getLastSearched():LastSearched
 
+    suspend fun getDayStartWeek():String?
+
+    suspend fun setDayStartWeek(day:String)
+
     suspend fun setLanguage(language:String)
 
     suspend fun setModeTheme(themeMode:Int)
@@ -27,4 +31,5 @@ interface DatastoreInterface {
 
     suspend fun clearUser()
 
+    suspend fun saveFirstDayOfWeek()
 }

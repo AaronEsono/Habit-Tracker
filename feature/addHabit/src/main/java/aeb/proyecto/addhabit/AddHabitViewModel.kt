@@ -14,6 +14,7 @@ import aeb.proyecto.addhabit.model.DEFAULT_TIME
 import aeb.proyecto.addhabit.model.DataAddHabitScreen
 import aeb.proyecto.addhabit.model.DataBottomSheet
 import aeb.proyecto.alarmmanager.NotificationUtils
+import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
@@ -29,6 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
@@ -36,7 +38,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddHabitViewModel @Inject constructor(
     private val habitWithNotificacionRepo: HabitWithNotificacionRepo,
-    private val notificationUtils: NotificationUtils
+    private val notificationUtils: NotificationUtils,
+    private val datastoreInterface: DatastoreInterface
 ):ViewModel() {
 
     private val _dataAddHabit = MutableStateFlow(DataAddHabitScreen())
@@ -368,21 +371,26 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
-    fun getData(id:Long){
-        if(!_dataSearched.value && id != -1L){
-            viewModelScope.launch (Dispatchers.IO){
-                _addHabitUIState.update { AddHabitUIState.Loading }
+    fun getData(id: Long) = viewModelScope.launch(Dispatchers.IO) {
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                dayStartWeek = DayOfWeek.valueOf(datastoreInterface.getDayStartWeek() ?: "Monday")
+            )
+        }
 
-                val habit = habitWithNotificacionRepo.getHabitById(id)
+        if (!_dataSearched.value && id != -1L) {
+            _addHabitUIState.update { AddHabitUIState.Loading }
 
-                _dataAddHabit.update { currentState ->
-                    currentState.copy(
-                        habitScreen = toHabitScreen(habit),
-                    )
-                }
+            val habit = habitWithNotificacionRepo.getHabitById(id)
 
-                _addHabitUIState.update { AddHabitUIState.Success }
+            _dataAddHabit.update { currentState ->
+                currentState.copy(
+                    habitScreen = toHabitScreen(habit),
+                )
             }
+
+            _dataSearched.update { true }
+            _addHabitUIState.update { AddHabitUIState.Success }
         }
     }
 
@@ -421,6 +429,7 @@ class AddHabitViewModel @Inject constructor(
             notificationUtils.cancelAlarm(notification.id)
         }
     }
+
 }
 
 sealed class AddHabitUIState{

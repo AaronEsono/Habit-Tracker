@@ -11,6 +11,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import java.time.temporal.WeekFields
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,6 +26,7 @@ class DataStoreManager @Inject constructor(
         private val LANGUAGE = stringPreferencesKey("language")
         private val EMAIL = stringPreferencesKey("email")
         private val PASSWORD = stringPreferencesKey("password")
+        private val DAY_START_WEEK = stringPreferencesKey("dayStartWeek")
         private val CURRENT_ID = stringPreferencesKey("currentId")
         private val DATE  = stringPreferencesKey("date")
         private val SEARCHED = booleanPreferencesKey("searched")
@@ -52,6 +55,16 @@ class DataStoreManager @Inject constructor(
                 searched = preferences[SEARCHED] ?: false
             )
         }.firstOrNull() ?: LastSearched()
+
+    suspend fun getDayStartWeek() = dataStore.data.map { preferences ->
+        preferences[DAY_START_WEEK]
+    }.firstOrNull()
+
+    suspend fun setDayStartWeek(day:String){
+        dataStore.edit { preferences ->
+            preferences[DAY_START_WEEK] = day
+        }
+    }
 
     suspend fun setLanguage(language:String){
         dataStore.edit { preferences ->
@@ -89,6 +102,13 @@ class DataStoreManager @Inject constructor(
         dataStore.edit { preferences ->
             preferences[EMAIL] = ""
             preferences[PASSWORD] = ""
+        }
+    }
+
+    suspend fun saveFirstDayOfWeek(){
+        val firstDay = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+        dataStore.edit { preferences ->
+            preferences[DAY_START_WEEK] = firstDay.name
         }
     }
 }

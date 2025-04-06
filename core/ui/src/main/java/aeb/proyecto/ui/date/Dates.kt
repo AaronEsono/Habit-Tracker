@@ -27,3 +27,14 @@ enum class DaysWeekAvr(@StringRes val string:Int, val id:DayOfWeek){
 fun getDay(dayOfWeek:Int):Int{
     return DaysWeek.entries[dayOfWeek].string
 }
+
+fun getOrderedDays(startDay: DayOfWeek): List<DaysWeekAvr> {
+    val allDays = DaysWeekAvr.entries
+    val startIndex = allDays.indexOfFirst { it.id == startDay }
+
+    return if (startIndex != -1) {
+        allDays.drop(startIndex) + allDays.take(startIndex)
+    } else {
+        allDays
+    }
+}

@@ -4,6 +4,7 @@ import aeb.proyecto.addhabit.constants.TypeNotificationResult
 import aeb.proyecto.ui.date.DaysWeekAvr
 import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.room.model.classes.TypeNotification
+import aeb.proyecto.ui.date.getOrderedDays
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
@@ -36,6 +37,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,12 +54,17 @@ import java.time.format.DateTimeFormatter
 fun NotificationComponent(
     modifier: Modifier = Modifier,
     notification: AddHabitNotification,
+    startDayOfWeek: DayOfWeek = DayOfWeek.MONDAY,
     color: Color,
     contrastColor:Color,
     onClickDelete: (String) -> Unit = {},
     onClickEdit: (String,LocalTime) -> Unit = {_,_ -> },
     onClickTypeNotification: (TypeNotificationResult) -> Unit = {}
 ){
+
+    val orderedDays = remember(startDayOfWeek) {
+        getOrderedDays(startDayOfWeek)
+    }
 
     Column (
         modifier = modifier,
@@ -144,7 +151,7 @@ fun NotificationComponent(
                                 top = spacing4
                             )
                     ) {
-                        DaysWeekAvr.entries.forEach { day ->
+                        orderedDays.forEach { day ->
                             NotificationDayButton(
                                 title = day.string,
                                 selected = isDaySelected(notification.type.days,day.id),

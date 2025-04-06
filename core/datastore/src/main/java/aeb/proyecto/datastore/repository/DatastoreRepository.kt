@@ -25,6 +25,14 @@ class DatastoreRepository @Inject constructor(
         return dataStoreManager.getLastSearched()
     }
 
+    override suspend fun getDayStartWeek(): String? {
+        return dataStoreManager.getDayStartWeek()
+    }
+
+    override suspend fun setDayStartWeek(day: String) {
+        dataStoreManager.setDayStartWeek(day)
+    }
+
     override suspend fun setLanguage(language: String) {
         dataStoreManager.setLanguage(language)
     }
@@ -47,5 +55,9 @@ class DatastoreRepository @Inject constructor(
 
     override suspend fun clearUser() {
         dataStoreManager.clearDataUser()
+    }
+
+    override suspend fun saveFirstDayOfWeek() {
+        dataStoreManager.saveFirstDayOfWeek()
     }
 }

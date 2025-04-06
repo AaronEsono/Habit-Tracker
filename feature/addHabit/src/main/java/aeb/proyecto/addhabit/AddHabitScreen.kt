@@ -94,7 +94,6 @@ import java.time.LocalTime
 
 //Habits entre dias personalizables
 // Decimales
-// Dia de comienzo de la semana personalizable
 // Exportar schema
 
 @Composable
@@ -405,6 +404,7 @@ internal fun AddHabitScreen(
                     NotificationComponent(
                         notification = it, color = habit.color,
                         contrastColor = dataAddHabit.contrastColor,
+                        startDayOfWeek = dataAddHabit.dayStartWeek,
                         onClickDelete = onClickDeleteNotification,
                         onClickTypeNotification = onClickTypeNotificationResult,
                         onClickEdit = onClickEditNotification,

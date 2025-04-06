@@ -30,6 +30,7 @@ class NotificationUtils @Inject constructor(
         var timeInMillis:Long
 
         when(alarmItem.typeNotification){
+            //Si es diaria, comprobamos si tenemos que setear alarma para hoy mismo
             is TypeNotification.Daily -> {
                 val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
                 val currentMinute = Calendar.getInstance().get(Calendar.MINUTE)
@@ -40,6 +41,7 @@ class NotificationUtils @Inject constructor(
                 val isTimeValid = (alarmItem.time.hour > currentHour) ||
                         (alarmItem.time.hour == currentHour && alarmItem.time.minute > currentMinute)
 
+                // Si el dia esta en la lista y si no ha pasado la hora
                 if (isTodayValid && isTimeValid) {
                     timeInMillis = Calendar.getInstance().apply {
                         set(Calendar.HOUR_OF_DAY, alarmItem.time.hour)
@@ -47,6 +49,7 @@ class NotificationUtils @Inject constructor(
                         set(Calendar.SECOND, 0)
                     }.timeInMillis
                 } else {
+                    //Si no, buscamos el siguiente dia que sea valido
                     val nextDay = getNextDay(
                         (alarmItem.typeNotification as TypeNotification.Daily).days,
                         LocalDate.now().dayOfWeek

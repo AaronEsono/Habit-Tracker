@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +37,10 @@ class MainActivity : ComponentActivity() {
             val mainViewModel: MainViewModel = hiltViewModel()
             val themeMode = mainViewModel.themeMode.collectAsState().value
             val navController = rememberNavController()
+
+            LaunchedEffect(Unit){
+                mainViewModel.setData()
+            }
 
             HabitTrackerTheme(themeMode){
                 RequestPermissions()
