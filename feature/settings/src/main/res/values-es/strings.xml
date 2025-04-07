@@ -1,0 +1,32 @@
+<resources>
+    <string name="settings_configuration">Configuración</string>
+    <string name="settings_about">Acerca de</string>
+
+    <string name="settings_day_title">Comienzo de la semana</string>
+
+    <string name="settings_theme">Tema</string>
+    <string name="settings_export_import">Exportar e importar hábitos</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_email">Reporta un problema</string>
+    <string name="settings_github">Código de la aplicación</string>
+    <string name="settings_link">Sígueme en mis redes sociales</string>
+
+    <string name="settings_email_title">Mejoras de la aplicación</string>
+
+    <string name="settings_theme_pick">Elija un tema</string>
+    <string name="settings_language_pick">Elija un idioma</string>
+    <string name="settings_day_pick">Seleccione el día de comienzo de semana</string>
+
+    <string name="settings_version">Versión %s</string>
+
+    <string name="settings_start_day">Comienzo de la semana</string>
+    <string name="settings_start_label">Día</string>
+
+    <string name="settings_message">
+    Por favor, escriba su solicitud aquí \n👇\n\n\n\n\n👆\n
+    ------------------------------\n
+    Dispositivo: %s\n
+    Fecha: %s\n
+    Versión: %s
+    </string>
+</resources>

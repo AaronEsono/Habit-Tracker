@@ -1,0 +1,74 @@
+<resources>
+
+    <string name="add_habit_topbar_title_add">Añadir hábito</string>
+    <string name="add_habit_topbar_title_edit">Editar hábito</string>
+
+    <string name="add_habit_name_label">Nombre</string>
+    <string name="add_habit_description_label">Descripción</string>
+
+    <string name="add_habit_color_label">Color</string>
+    <string name="add_habit_icon_label">Icono</string>
+
+    <string name="add_habit_accept">Aceptar</string>
+    <string name="add_habit_cancel">Cancelar</string>
+
+    <string name="add_habit_pick_type_habit_title">Seleccione el tipo de hábito</string>
+
+    <string name="add_habit_type_habit_daily">Diario</string>
+    <string name="add_habit_type_habit_weekly">Semanal</string>
+    <string name="add_habit_type_habit_monthly">Mensual</string>
+    <string name="add_habit_type_habit_cyclic">Cíclico</string>
+
+    <string name="add_habit_type_habit_daily_label">Realiza este hábito todos los días sin excepción.</string>
+    <string name="add_habit_type_habit_weekly_label">Establece este hábito para un cierto número de días a la semana.</string>
+    <string name="add_habit_type_habit_monthly_label">Cumple con este hábito en fechas específicas del mes.</string>
+    <string name="add_habit_type_habit_cyclic_label">Repite este hábito en intervalos personalizados según tu necesidad.</string>
+
+    <string name="add_habit_weekly_type_title">Selecciona el número de días a completar a la semana</string>
+    <string name="add_habit_monthly_type_title">Selecciona el número de días a completar al mes</string>
+
+    <string name="add_habit_recurring_date">%1$s, %2$s %3$s</string>
+    <string name="add_habit_recurring_title_date">Selecciona la fecha para comenzar este hábito y el intervalo de días</string>
+
+    <string name="add_habit_times_and_units">Establece el número de repeticiones por día y las unidades</string>
+
+    <string name="add_habit_time_title">Tiempo</string>
+    <string name="add_habit_quantity_title">Cantidad</string>
+    <string name="add_habit_frecuency_title">Frecuencia</string>
+
+    <string name="add_habit_time_label">Mide cuánto tiempo dedicas a tu hábito</string>
+    <string name="add_habit_quantity_label">Suma y lleva el control de grandes cantidades como pasos o páginas</string>
+    <string name="add_habit_frecuency_label">Define cuántas veces realizas una acción al día</string>
+
+    <string name="add_habit_notifications_title">Recordarme a las</string>
+    <string name="add_habit_create_notification">Crear notificación</string>
+
+    <string name="add_habit_dialog_notification_title">Selecciona el tipo de notificación</string>
+
+    <string name="add_habit_daily_notification_title">Diaria</string>
+    <string name="add_habit_daily_notification_label">Define qué días específicos de la semana deseas recibir notificaciones</string>
+
+    <string name="add_habit_cyclic_notification_title">Cíclica</string>
+    <string name="add_habit_cyclic_notification_label">Define cada cuántos días quieres recibir notificaciones</string>
+
+    <string name="add_habit_notificacionWeek">Selecciona los días de la semana para cada notificación</string>
+    <string name="add_habit_notificacionRecurring">Selecciona el intervalo de días para cada notificación</string>
+
+    <!-- Estados bottom sheet-->
+    <string name="add_habit_delete_notification_title">Borrar notificación</string>
+    <string name="add_habit_delete_notification_subtitle">¿Estás seguro de que quieres borrar esta notificación?</string>
+
+    <string name="add_habit_error_general_title">Atención</string>
+    <string name="add_habit_error_general_subtite">Ha ocurrido un error inesperado, vuelve a intentarlo.</string>
+
+    <string name="add_habit_error_no_name_subtite">Tienes que darle un nombre al hábito y un número de veces para guardarlo</string>
+
+    <string name="add_habit_error_interval_days_subtite">Si es un hábito cíclico tienes que establecer un intervalo de días</string>
+
+    <string name="add_habit_save">Guardar</string>
+
+    <string name="add_habit_no_permissions">Para poder crear notificaciones, debes otorgar permisos a la aplicación, pulsa este botón para ir a la configuración de la aplicación</string>
+    <string name="add_habit_no_permissions_button">Ir a configuración</string>
+
+    <string name="add_habit_switch_mode">Modo 24 horas</string>
+</resources>

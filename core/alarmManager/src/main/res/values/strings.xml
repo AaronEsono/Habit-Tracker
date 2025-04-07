@@ -1,6 +1,6 @@
 <resources>
 
     <!-- Notification -->
-    <string name="notification_subtitle">Es hora de hacer el hábito %1$s</string>
+    <string name="notification_subtitle">It\'s time to do the habit %1$s</string>
 
 </resources>

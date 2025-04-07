@@ -1,0 +1,20 @@
+<resources>
+    <string name="error_firestore_aborted">La operación fue abortada, generalmente debido a un problema de concurrencia.</string>
+    <string name="error_firestore_already_exists">El documento que intentamos crear ya existe.</string>
+    <string name="error_firestore_cancelled">La operación fue cancelada.</string>
+    <string name="error_firestore_data_loss">Pérdida de datos irrecuperable o corrupción.</string>
+    <string name="error_firestore_deadline_exceeded">El tiempo límite expiró antes de que la operación pudiera completarse.</string>
+    <string name="error_firestore_failed_precondition">La operación fue rechazada porque el sistema no está en el estado requerido.</string>
+    <string name="error_firestore_internal">Error interno en el servidor.</string>
+    <string name="error_firestore_invalid_argument">Se especificó un argumento no válido en la solicitud.</string>
+    <string name="error_firestore_not_found">No se encontró el documento solicitado.</string>
+    <string name="error_firestore_ok">La operación se completó con éxito.</string>
+    <string name="error_firestore_out_of_range">Se intentó realizar una operación fuera del rango permitido.</string>
+    <string name="error_firestore_permission_denied">No tienes permisos para ejecutar esta operación.</string>
+    <string name="error_firestore_resource_exhausted">Se ha agotado algún recurso, como la cuota por usuario o el espacio en el sistema.</string>
+    <string name="error_firestore_unauthenticated">La solicitud no tiene credenciales de autenticación válidas.</string>
+    <string name="error_firestore_unavailable">El servicio no está disponible en este momento.</string>
+    <string name="error_firestore_unimplemented">La operación no está implementada o no es compatible.</string>
+    <string name="error_firestore_unknown">Se produjo un error desconocido.</string>
+    <string name="error_firestore_default">Se ha producido un error inesperado. Por favor, inténtalo de nuevo más tarde.</string>
+</resources>

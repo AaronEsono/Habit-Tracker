@@ -1,48 +1,48 @@
 <resources>
 
-    <string name="save_topbar_title">Guardar hábitos</string>
+    <string name="save_topbar_title">Save habits</string>
 
-    <string name="save_email">Hola, %s</string>
-    <string name="save_label">Sube a la nube tus hábitos para poder recuperarlos en otro teléfono.</string>
+    <string name="save_email">Hi, %s</string>
+    <string name="save_label">Upload your habits to the cloud so you can retrieve them on another phone.</string>
 
-    <string name="save_no_data">No hay datos guardados.</string>
+    <string name="save_no_data">No data saved.</string>
 
-    <string name="save_data"> Datos guardados</string>
-    <string name="save_date_data">Fecha de guardado: %1$s de %2$s de %3$s</string>
-    <string name="save_time_data">Hora de guardado: %1$s:%2$s</string>
+    <string name="save_data">Data saved</string>
+    <string name="save_date_data">Save date: %2$s of %1$s, %3$s</string>
+    <string name="save_time_data">Save time: %1$s:%2$s</string>
 
-    <string name="save_save_habit">Guardar hábitos</string>
-    <string name="save_restore_habit">Restaurar Hábitos</string>
-    <string name="save_delete_habit">Borrar hábitos</string>
-    <string name="save_log_out">Cerrar sesión</string>
+    <string name="save_save_habit">Save habits</string>
+    <string name="save_restore_habit">Restore habits</string>
+    <string name="save_delete_habit">Delete habits</string>
+    <string name="save_log_out">Log out</string>
 
-    <string name="save_bottom_sheet_acept">Aceptar</string>
-    <string name="save_bottom_sheet_cancel">Cancelar</string>
+    <string name="save_bottom_sheet_acept">Accept</string>
+    <string name="save_bottom_sheet_cancel">Cancel</string>
 
-    <string name="data_bottomSheet_save_title">Guardar hábitos</string>
-    <string name="data_bottomSheet_save_label">¿Estás seguro de que quieres guardar tus hábitos en la nube? Los antiguos datos guardados se perderán.</string>
+    <string name="data_bottomSheet_save_title">Save habits</string>
+    <string name="data_bottomSheet_save_label">Are you sure you want to save your habits to the cloud? Your previously saved data will be lost.</string>
 
-    <string name="data_bottomSheet_restore_title">Recuperar hábitos</string>
-    <string name="data_bottomSheet_restore_label">¿Deseas recuperar los hábitos guardados en la nube? Tus datos actuales se perderán.</string>
+    <string name="data_bottomSheet_restore_title">Restore Habits</string>
+    <string name="data_bottomSheet_restore_label">Do you want to restore the habits saved in the cloud? Your current data will be lost.</string>
 
-    <string name="data_bottomSheet_delete_title">Borrar hábitos</string>
-    <string name="data_bottomSheet_delete_label">¿Estás seguro de que quieres borrar los datos guardados de la nube?.</string>
 
-    <string name="data_bottomSheet_logOut_title">Cerrar sesión</string>
-    <string name="data_bottomSheet_logOut_label">¿Deseas cerrar sesión?</string>
+    <string name="data_bottomSheet_delete_title">Delete habits</string>
+    <string name="data_bottomSheet_delete_label">Are you sure you want to delete your saved data from the cloud?</string>
 
-    <string name="data_bottomSheet_error_title">Atención</string>
-    <string name="data_bottomSheet_error_label">Ha ocurrido un error inesperado. Vuelva a intentarlo de nuevo.</string>
+    <string name="data_bottomSheet_logOut_title">Log Out</string>
+    <string name="data_bottomSheet_logOut_label">Do you want to log out?</string>
 
-    <string name="data_bottomSheet_savedData_title">Hábitos guardados</string>
-    <string name="data_bottomSheet_savedData_label">Los hábitos se han guardado en la nube.</string>
+    <string name="data_bottomSheet_error_title">Attention</string>
+    <string name="data_bottomSheet_error_label">An unexpected error has occurred. Please try again.</string>
 
-    <string name="data_bottomSheet_restoredData_title">Hábitos recuperados</string>
-    <string name="data_bottomSheet_restoredData_label">Los hábitos se han se han recuperado correctamente.</string>
+    <string name="data_bottomSheet_savedData_title">Habits Saved</string>
+    <string name="data_bottomSheet_savedData_label">The habits have been saved to the cloud.</string>
 
-    <string name="data_bottomSheet_deleteData_title">Hábitos borrados</string>
-    <string name="data_bottomSheet_deleteData_label">Los hábitos se han borrado correctamente.</string>
+    <string name="data_bottomSheet_restoredData_title">Habits Restored</string>
+    <string name="data_bottomSheet_restoredData_label">The habits have been restored successfully.</string>
 
-    <string name="save_error_generic">Ha ocurrido un error. Por favor, inténtelo más tarde.</string>
+    <string name="data_bottomSheet_deleteData_title">Habits Deleted</string>
+    <string name="data_bottomSheet_deleteData_label">The habits have been deleted successfully.</string>
 
+    <string name="save_error_generic">An error has occurred. Please try again later.</string>
 </resources>

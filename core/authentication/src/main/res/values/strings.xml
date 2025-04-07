@@ -1,32 +1,32 @@
 <resources>
-    <!-- Errores de autenticación generales -->
-    <string name="error_auth_default">Ha ocurrido un error desconocido. Por favor, inténtalo de nuevo más tarde.</string>
+    <!-- General authentication errors -->
+    <string name="error_auth_default">An unknown error has occurred. Please try again later.</string>
 
-    <!-- Errores relacionados con la cuenta del usuario -->
-    <string name="error_auth_no_user_found">No se encontró ninguna cuenta asociada a este correo electrónico. Por favor, verifica que la dirección ingresada sea correcta o regístrate.</string>
-    <string name="error_auth_user_disabled">Tu cuenta ha sido deshabilitada. Si crees que esto es un error, contacta con el soporte técnico.</string>
-    <string name="error_auth_unverified_email">Tu dirección de correo electrónico no ha sido verificada. Por favor, revisa tu bandeja de entrada y sigue el enlace de verificación.</string>
+    <!-- User account-related errors -->
+    <string name="error_auth_no_user_found">No account found associated with this email address. Please check that the email is correct or sign up.</string>
+    <string name="error_auth_user_disabled">Your account has been disabled. If you believe this is a mistake, please contact support.</string>
+    <string name="error_auth_unverified_email">Your email address has not been verified. Please check your inbox and follow the verification link.</string>
 
-    <!-- Errores de credenciales y contraseñas -->
-    <string name="error_auth_invalid_email">El formato del correo electrónico ingresado no es válido. Asegúrate de escribir una dirección de correo válida.</string>
-    <string name="error_auth_email_exists">Esta dirección de correo ya está en uso. Si ya tienes una cuenta, intenta iniciar sesión o restablecer tu contraseña.</string>
-    <string name="error_auth_invalid_password">La contraseña ingresada es incorrecta o el email no está registrado. Verifica e inténtalo nuevamente.</string>
-    <string name="error_auth_weak_password">La contraseña es demasiado débil. Debe contener al menos 6 caracteres.</string>
-    <string name="error_auth_credential_too_old_login_again">Por razones de seguridad, necesitas iniciar sesión nuevamente para completar esta acción.</string>
+    <!-- Credentials and password errors -->
+    <string name="error_auth_invalid_email">The email format is invalid. Please enter a valid email address.</string>
+    <string name="error_auth_email_exists">This email address is already in use. If you already have an account, try signing in or resetting your password.</string>
+    <string name="error_auth_invalid_password">The password entered is incorrect or the email is not registered. Please check and try again.</string>
+    <string name="error_auth_weak_password">The password is too weak. It must be at least 6 characters long.</string>
+    <string name="error_auth_credential_too_old_login_again">For security reasons, you need to sign in again to complete this action.</string>
 
-    <!-- Errores de conexión y red -->
-    <string name="error_auth_network_request_failed">Se ha producido un error de conexión. Verifica tu conexión a Internet e inténtalo nuevamente.</string>
-    <string name="error_auth_too_many_attempts_try_later">Has intentado iniciar sesión demasiadas veces en poco tiempo. Por favor, espera unos minutos antes de intentarlo de nuevo.</string>
+    <!-- Network and connection errors -->
+    <string name="error_auth_network_request_failed">A connection error has occurred. Please check your internet connection and try again.</string>
+    <string name="error_auth_too_many_attempts_try_later">You have attempted to sign in too many times in a short period. Please wait a few minutes before trying again.</string>
 
-    <!-- Errores de autenticación multifactor -->
-    <string name="error_auth_mfa_required">Se requiere autenticación en dos pasos. Completa el proceso de verificación para continuar.</string>
+    <!-- Multi-factor authentication errors -->
+    <string name="error_auth_mfa_required">Two-step authentication is required. Complete the verification process to continue.</string>
 
-    <!-- Errores relacionados con el inicio de sesión -->
-    <string name="error_auth_operation_not_allowed">Este método de autenticación no está habilitado en este momento. Contacta con el administrador.</string>
-    <string name="error_auth_invalid_oob_code">El código de verificación es inválido o ha expirado. Solicita un nuevo código e inténtalo nuevamente.</string>
-    <string name="error_auth_send_email">No se pudo enviar el correo electrónico. Verifica tu conexión a Internet e inténtalo de nuevo.</string>
+    <!-- Sign-in related errors -->
+    <string name="error_auth_operation_not_allowed">This authentication method is not enabled at the moment. Please contact the administrator.</string>
+    <string name="error_auth_invalid_oob_code">The verification code is invalid or has expired. Request a new code and try again.</string>
+    <string name="error_auth_send_email">The email could not be sent. Please check your internet connection and try again.</string>
 
-    <!-- Errores relacionados con el almacenamiento web -->
-    <string name="error_auth_web_storage_unsupported">Tu navegador no admite almacenamiento web, lo que podría afectar la autenticación. Intenta usar un navegador diferente.</string>
+    <!-- Web storage-related errors -->
+    <string name="error_auth_web_storage_unsupported">Your browser does not support web storage, which may affect authentication. Try using a different browser.</string>
 
 </resources>

@@ -1,50 +1,49 @@
 <resources>
 
-    <string name="ui_theme_dark">Oscuro</string>
-    <string name="ui_theme_dark_alt">Oscuro alt.</string>
-    <string name="ui_theme_light">Claro</string>
-    <string name="ui_theme_light_alt">Claro alt.</string>
+    <string name="ui_theme_dark">Dark</string>
+    <string name="ui_theme_dark_alt">Dark alt.</string>
+    <string name="ui_theme_light">Light</string>
+    <string name="ui_theme_light_alt">Light alt.</string>
 
-    <string name="month_1">Enero</string>
-    <string name="month_2">Febrero</string>
-    <string name="month_3">Marzo</string>
-    <string name="month_4">Abril</string>
-    <string name="month_5">Mayo</string>
-    <string name="month_6">Junio</string>
-    <string name="month_7">Julio</string>
-    <string name="month_8">Agosto</string>
-    <string name="month_9">Septiembre</string>
-    <string name="month_10">Octubre</string>
-    <string name="month_11">Noviembre</string>
-    <string name="month_12">Diciembre</string>
+    <string name="month_1">January</string>
+    <string name="month_2">February</string>
+    <string name="month_3">March</string>
+    <string name="month_4">April</string>
+    <string name="month_5">May</string>
+    <string name="month_6">June</string>
+    <string name="month_7">July</string>
+    <string name="month_8">August</string>
+    <string name="month_9">September</string>
+    <string name="month_10">October</string>
+    <string name="month_11">November</string>
+    <string name="month_12">December</string>
 
-    <string name="add_habit_monday">Lunes</string>
-    <string name="add_habit_tuesday">Martes</string>
-    <string name="add_habit_wednesday">Miércoles</string>
-    <string name="add_habit_thursday">Jueves</string>
-    <string name="add_habit_friday">Viernes</string>
-    <string name="add_habit_saturday">Sábado</string>
-    <string name="add_habit_sunday">Domingo</string>
+    <string name="add_habit_monday">Monday</string>
+    <string name="add_habit_tuesday">Tuesday</string>
+    <string name="add_habit_wednesday">Wednesday</string>
+    <string name="add_habit_thursday">Thursday</string>
+    <string name="add_habit_friday">Friday</string>
+    <string name="add_habit_saturday">Saturday</string>
+    <string name="add_habit_sunday">Sunday</string>
 
-    <string name="add_habit_jan">Ene</string>
+    <string name="add_habit_jan">Jan</string>
     <string name="add_habit_feb">Feb</string>
     <string name="add_habit_mar">Mar</string>
-    <string name="add_habit_apr">Abr</string>
+    <string name="add_habit_apr">Apr</string>
     <string name="add_habit_may">May</string>
     <string name="add_habit_jun">Jun</string>
     <string name="add_habit_jul">Jul</string>
-    <string name="add_habit_aug">Ago</string>
+    <string name="add_habit_aug">Aug</string>
     <string name="add_habit_sep">Sep</string>
     <string name="add_habit_oct">Oct</string>
     <string name="add_habit_nov">Nov</string>
-    <string name="add_habit_dec">Dic</string>
+    <string name="add_habit_dec">Dec</string>
 
-    <string name="add_habit_mon">Lun</string>
-    <string name="add_habit_tue">Mar</string>
-    <string name="add_habit_wed">Mié</string>
-    <string name="add_habit_thu">Jue</string>
-    <string name="add_habit_fri">Vie</string>
-    <string name="add_habit_sat">Sáb</string>
-    <string name="add_habit_sun">Dom</string>
-
+    <string name="add_habit_mon">Mon</string>
+    <string name="add_habit_tue">Tue</string>
+    <string name="add_habit_wed">Wed</string>
+    <string name="add_habit_thu">Thu</string>
+    <string name="add_habit_fri">Fri</string>
+    <string name="add_habit_sat">Sat</string>
+    <string name="add_habit_sun">Sun</string>
 </resources>

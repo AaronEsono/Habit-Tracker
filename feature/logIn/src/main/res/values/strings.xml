@@ -1,55 +1,57 @@
 <resources>
-    <string name="login_topbar_title">Importar hábitos</string>
+    <string name="login_topbar_title">Import habits</string>
 
-    <string name="login_title">Iniciar sesión</string>
-    <string name="login_subtitle">Inicia sesión para poder guardar tus hábitos en la nube</string>
+    <string name="login_title">Sign in</string>
+    <string name="login_subtitle">Sign in to save your habits to the cloud</string>
 
-    <string name="login_title_register">Regístrate</string>
-    <string name="login_subtitle_register">Crea una cuenta para poder guardar tus hábitos en la nube</string>
+    <string name="login_title_register">Sign up</string>
+    <string name="login_subtitle_register">Create an account to save your habits in the cloud</string>
 
-    <string name="login_remember">Recordar credenciales</string>
+
+    <string name="login_remember">Remember me</string>
 
     <string name="login_textField_email_label">Email</string>
-    <string name="login_textField_email_error">El email no es válido</string>
+    <string name="login_textField_email_error">Invalid email address</string>
 
-    <string name="login_textField_password_label">Contraseña</string>
-    <string name="login_textField_password_error">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="login_textField_password_label">Password</string>
+    <string name="login_textField_password_error">The password must be at least 6 characters long.</string>
 
-    <string name="login_textField_remember_password_label">Repetir contraseña</string>
-    <string name="login_textField_remember_password_error">Las contraseñas deben ser iguales</string>
+    <string name="login_textField_remember_password_label">Repeat password</string>
+    <string name="login_textField_remember_password_error">Passwords must match</string>
 
-    <string name="login_accept">Aceptar</string>
+    <string name="login_accept">Accept</string>
     <string name="login_cancel">Cancelar</string>
 
-    <string name="login_no_account">¿No tienes cuenta?&#160;</string>
-    <string name="login_register">Regístrate </string>
+    <string name="login_no_account">Don\'t have an account?&#160;</string>
+    <string name="login_register">Sign up</string>
 
-    <string name="login_account">¿Ya tienes cuenta?&#160;</string>
-    <string name="login_signIn">Inicia sesión</string>
+    <string name="login_account">Already have an account?&#160;</string>
+    <string name="login_signIn">Log in</string>
 
-    <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login_forgot_password">Forgot your password?</string>
 
-    <string name="login_continue">------ O continúa con ------</string>
+    <string name="login_continue">------ Or continue with ------</string>
 
-    <string name="login_google">Continuar con Google</string>
+    <string name="login_google">Continue with Google</string>
 
-    <string name="login_error_title">Atención</string>
-    <string name="login_error_default">Ha ocurrido un error, inténtalo de nuevo más tarde</string>
+    <string name="login_error_title">Attention</string>
+    <string name="login_error_default">An error occurred, please try again later.</string>
 
-    <string name="login_unverified_title">Cuenta no verificada</string>
-    <string name="login_unverified_subtitle">No se puede acceder a tu cuenta porque no has verificado el email con el correo enviado. Si necesitas generar otro correo, pulse el botón para reenviar.</string>
+    <string name="login_unverified_title">Unverified Account</string>
+    <string name="login_unverified_subtitle">You cannot access your account because your email has not been verified. If you need us to send you another verification email, press the button below to request it.</string>
 
-    <string name="login_account_created_title">Cuenta creada</string>
-    <string name="login_account_created_subtitle">Has creado tu cuenta correctamente, para acceder a ella, porfavor, verifica el correo electrónico mandado a tu bandeja de entrada</string>
+    <string name="login_account_created_title">Account Created</string>
+    <string name="login_account_created_subtitle">Your account has been successfully created. To access it, please verify the email sent to your inbox.</string>
 
-    <string name="login_resent_email">Enviar email</string>
+    <string name="login_resent_email">Send email</string>
 
-    <string name="login_email_sent_title">Correo enviado</string>
-    <string name="login_email_sent_subtitle">El correo ha sido enviado correctamente, revisa tu bandeja de entrada para verificar tu cuenta</string>
+    <string name="login_email_sent_title">Email Sent</string>
+    <string name="login_email_sent_subtitle">The email has been sent successfully. Check your inbox to verify your account.</string>
 
-    <string name="login_forgot_password_title">Contraseña olvidada</string>
-    <string name="login_forgot_password_subtitle">Escriba el email para recibir un enlace donde podrá restablecer su cuenta</string>
+    <string name="login_forgot_password_title">Forgot Password</string>
+    <string name="login_forgot_password_subtitle">Enter your email to receive a link to reset your password.</string>
 
-    <string name="login_forgot_password_sent_title">Enlace enviado</string>
-    <string name="login_forgot_password_sent_subtitle">El enlace para enviar la contraseña ha sido enviado correctamente, revisa tu bandeja de entrada para reestrablecer tu cuenta</string>
+    <string name="login_forgot_password_sent_title">Link sent</string>
+    <string name="login_forgot_password_sent_subtitle">The link to reset your password has been sent successfully. Check your inbox to restore your account.</string>
+
 </resources>

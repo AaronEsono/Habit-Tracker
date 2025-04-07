@@ -2,217 +2,215 @@
     <string name="app_name">Habit Tracker</string>
 
     <!-- TopBar-->
-    <string name="topbar_habit">Hábitos</string>
-    <string name="topbar_stadistics">Estadísticas</string>
-    <string name="topbar_achievements">Logros</string>
-    <string name="topbar_settings">Opciones</string>
-    <string name="topbar_add_habit">Añadir hábito</string>
-    <string name="topbar_import_habit">Importar hábitos</string>
-    <string name="topbar_save_habit">Guardar hábitos</string>
-    <string name="topbar_description">Descripcion icono</string>
-    <string name="tobbar_add_habit_true">Editar hábito</string>
+    <string name="topbar_habit">Habits</string>
+    <string name="topbar_stadistics">Statistics</string>
+    <string name="topbar_achievements">Achievements</string>
+    <string name="topbar_settings">Settings</string>
+    <string name="topbar_import_habit">Import habits</string>
+    <string name="topbar_save_habit">Save habits</string>
+    <string name="topbar_add_habit">Add Habit</string>
+    <string name="topbar_description">Icon Description</string>
+    <string name="tobbar_add_habit_true">Edit Habit</string>
 
     <!-- BottomBar -->
-    <string name="bottombar_habit">Hábitos</string>
-    <string name="bottombar_stadistics">Estadísticas</string>
-    <string name="bottombar_achievements">Logros</string>
-    <string name="bottombar_settins">Opciones</string>
+    <string name="bottombar_habit">Habits</string>
+    <string name="bottombar_stadistics">Statistics</string>
+    <string name="bottombar_achievements">Achievements</string>
+    <string name="bottombar_settins">Settings</string>
 
     <!-- Habits screen -->
-    <string name="habits_screen_no_habit">De momento no tienes ningún hábito registrado. Pulsa en el botón de arriba para crear uno.</string>
+    <string name="habits_screen_no_habit">You currently have no habits registered. Tap the button above to create one.</string>
 
     <!-- Add habit screen-->
-    <string name="add_habit_screen_name">Nombre</string>
-    <string name="add_habit_screen_description">Descripción</string>
+    <string name="add_habit_screen_name">Name</string>
+    <string name="add_habit_screen_description">Description</string>
 
-    <string name="add_habit_screen_no_name">Tienes que añadir un nombre.</string>
-    <string name="add_habit_screen_no_units">Tienes que seleccionar un número de unidades.</string>
+    <string name="add_habit_screen_no_name">You need to add a name.</string>
+    <string name="add_habit_screen_no_units">You need to select a number of units.</string>
 
-    <string name="add_habit_screen_placeholder">Nombre</string>
+    <string name="add_habit_screen_placeholder">Name</string>
 
     <string name="add_habit_screen_color">Color</string>
-    <string name="add_habit_screen_icon">Icono</string>
+    <string name="add_habit_screen_icon">Icon</string>
 
-    <string name="add_habit_pick_unit">Seleccione el número de repeticiones</string>
-    <string name="add_habit_pick_date">Recordarme a las</string>
-    <string name="add_habit_add_hour">Añadir hora</string>
+    <string name="add_habit_pick_unit">Select the number of repetitions</string>
+    <string name="add_habit_pick_date">Remind me at</string>
+    <string name="add_habit_add_hour">Add Time</string>
 
     <string name="add_habit_pick_time">%1$s : %2$s</string>
-    <string name="add_habit_permissions">Para poder activar las notificaciones, ve a la parte de notificaciones y habilita los permisos.</string>
-
+    <string name="add_habit_permissions">To enable notifications, go to the notifications section and grant permissions.</string>
 
     <!-- Statistics screen -->
-    <string name="statistics_screen_no_habit">No tienes  ningún hábito registrado. Para ver la estadísticas, crea una en la pantalla de hábitos</string>
+    <string name="statistics_screen_no_habit">You have no habits registered. To view statistics, create one on the habits screen.</string>
 
-    <string name="statistics_screen_times_completed">Dias completados</string>
-    <string name="statistics_screen_streak">Racha actual</string>
-    <string name="statistics_screen_best_streak">Mejor racha</string>
-    <string name="statistics_screen_days"> %1$s días</string>
+    <string name="statistics_screen_times_completed">Days Completed</string>
+    <string name="statistics_screen_streak">Current Streak</string>
+    <string name="statistics_screen_best_streak">Best Streak</string>
+    <string name="statistics_screen_days">%1$s days</string>
 
     <!-- Add habit screen Bottom Sheet-->
-    <string name="add_habit_bottom_sheet_add_habit_title">Categoría</string>
-    <string name="add_habit_bottom_sheet_add_habit_subtitle">Elija la unidad de medida para el hábito</string>
+    <string name="add_habit_bottom_sheet_add_habit_title">Category</string>
+    <string name="add_habit_bottom_sheet_add_habit_subtitle">Choose the unit of measure for the habit</string>
 
     <!-- Add habit screen questions -->
-    <string name="add_habit_question_1">Establece el número de repeticiones</string>
-    <string name="add_habit_question_2">¿Cuántos pasos va a realizar al día?</string>
-    <string name="add_habit_question_3">¿Cuántas páginas va a leer al día?</string>
-    <string name="add_habit_question_4">¿Cuántos km va a recorrer al día?</string>
-    <string name="add_habit_question_5">¿Cuántos minutos al día?</string>
-    <string name="add_habit_question_6">¿Cuántas calorías al día?</string>
-    <string name="add_habit_question_7">¿Cuántos vasos al día?</string>
-    <string name="add_habit_question_8">¿Cuántas ejercicios al día?</string>
+    <string name="add_habit_question_1">Set the number of repetitions</string>
+    <string name="add_habit_question_2">How many steps will you take daily?</string>
+    <string name="add_habit_question_3">How many pages will you read daily?</string>
+    <string name="add_habit_question_4">How many km will you walk daily?</string>
+    <string name="add_habit_question_5">How many minutes per day?</string>
+    <string name="add_habit_question_6">How many calories per day?</string>
+    <string name="add_habit_question_7">How many glasses per day?</string>
+    <string name="add_habit_question_8">How many exercises per day?</string>
 
     <!-- Add habit unit singular-->
-    <string name="add_habit_unit_1">Vez</string>
-    <string name="add_habit_unit_2">Paso</string>
-    <string name="add_habit_unit_3">Página</string>
+    <string name="add_habit_unit_1">Time</string>
+    <string name="add_habit_unit_2">Step</string>
+    <string name="add_habit_unit_3">Page</string>
     <string name="add_habit_unit_4">Km</string>
-    <string name="add_habit_unit_5">Minuto</string>
-    <string name="add_habit_unit_6">Caloría</string>
-    <string name="add_habit_unit_7">Vaso</string>
-    <string name="add_habit_unit_8">Ejercicio</string>
+    <string name="add_habit_unit_5">Minute</string>
+    <string name="add_habit_unit_6">Calorie</string>
+    <string name="add_habit_unit_7">Glass</string>
+    <string name="add_habit_unit_8">Exercise</string>
 
     <!-- Add habit unit plural-->
-    <string name="add_habit_unit_pl_1">Veces</string>
-    <string name="add_habit_unit_pl_2">Pasos</string>
-    <string name="add_habit_unit_pl_3">Páginas</string>
+    <string name="add_habit_unit_pl_1">Times</string>
+    <string name="add_habit_unit_pl_2">Steps</string>
+    <string name="add_habit_unit_pl_3">Pages</string>
     <string name="add_habit_unit_pl_4">Km</string>
-    <string name="add_habit_unit_pl_5">Minutos</string>
-    <string name="add_habit_unit_pl_6">Calorías</string>
-    <string name="add_habit_unit_pl_7">Vasos</string>
-    <string name="add_habit_unit_pl_8">Ejercicios</string>
+    <string name="add_habit_unit_pl_5">Minutes</string>
+    <string name="add_habit_unit_pl_6">Calories</string>
+    <string name="add_habit_unit_pl_7">Glasses</string>
+    <string name="add_habit_unit_pl_8">Exercises</string>
 
     <!-- Buttons-->
-    <string name="buttons_accept">Aceptar</string>
-    <string name="buttons_save">Guardar</string>
-    <string name="buttons_edit">Editar</string>
-    <string name="buttons_cancel">Cancelar</string>
-    <string name="buttons_go_settings">Ir a ajustes</string>
+    <string name="buttons_accept">Accept</string>
+    <string name="buttons_save">Save</string>
+    <string name="buttons_edit">Edit</string>
+    <string name="buttons_cancel">Cancel</string>
+    <string name="buttons_go_settings">Go to Settings</string>
 
     <!-- General dx -->
-    <string name="general_dx_attention">Atención</string>
-    <string name="general_dx_attention_subtitile_time_picker">La hora ya está seleccionada</string>
-    <string name="general_dx_attention_fill_data">Tienes que marcar un nombre y un número de repeticiones</string>
+    <string name="general_dx_attention">Attention</string>
+    <string name="general_dx_attention_subtitile_time_picker">Time is already selected</string>
+    <string name="general_dx_attention_fill_data">You need to specify a name and a number of repetitions</string>
 
-    <string name="general_dx_subtitle_delete">¿Desea borrar el hábito?</string>
-    <string name="general_dx_subtitle_restart">¿Desea reiniciar el dia?</string>
+    <string name="general_dx_subtitle_delete">Do you want to delete the habit?</string>
+    <string name="general_dx_subtitle_restart">Do you want to restart the day?</string>
 
-    <string name="general_dx_create_account">Cuenta creada</string>
+    <string name="general_dx_create_account">Account created</string>
+    <!-- Calendar dx -->
+    <string name="calendar_dx_title">Select a date to mark the habit for that day.</string>
 
-    <!-- calendar dx-->
-    <string name="calendar_dx_title">Selecciona en alguna fecha para marcar el hábito de ese día.</string>
-
-    <!-- Chose step bottomSheet -->
-    <string name="chose_step_bottom_sheet_title">Selecciona el número de %1$s para este día</string>
-    <string name="chose_step_bottom_sheet_toast">El número no puede sobrepasar el número diario total.</string>
+    <!-- Choose step bottomSheet -->
+    <string name="chose_step_bottom_sheet_title">Select the number of %1$s for this day</string>
+    <string name="chose_step_bottom_sheet_toast">The number cannot exceed the daily total.</string>
 
     <!-- Settings Screen -->
-    <string name="settings_screen_theme">Tema</string>
-    <string name="settings_screen_save">Importar/Exportar hábitos</string>
-    <string name="settings_screen_contact">Contacta conmigo</string>
-    <string name="settings_screen_code">Código de la aplicación</string>
-    <string name="settings_screen_linkedn">Sígueme en mis redes sociales</string>
+    <string name="settings_screen_theme">Theme</string>
+    <string name="settings_screen_save">Import/Export Habits</string>
+    <string name="settings_screen_contact">Contact with me</string>
+    <string name="settings_screen_code">App Code</string>
+    <string name="settings_screen_linkedn">Follow me on social media</string>
 
-    <string name="settings_screen_app">Configuración</string>
-    <string name="settings_screen_about">Acerca de</string>
-    <string name="settings_screen_version">Versión %1$s</string>
+    <string name="settings_screen_app">Settings</string>
+    <string name="settings_screen_about">About</string>
+    <string name="settings_screen_version">Version %1$s</string>
 
     <!-- import habits -->
-    <string name="import_habit_screen_google">Continuar con Google</string>
+    <string name="import_habit_screen_google">Continue with Google</string>
     <string name="import_habit_screen_email">Email</string>
-    <string name="import_habit_screen_password">Contraseña</string>
-    <string name="import_habit_screen_remember_password">Repetir contraseña</string>
-    <string name="import_habit_screen_email_error">El campo del email es obligatorio</string>
-    <string name="import_habit_screen_password_error">El campo de la contraseña es obligatorio</string>
+    <string name="import_habit_screen_password">Password</string>
+    <string name="import_habit_screen_remember_password">Repeat password</string>
+    <string name="import_habit_screen_email_error">Email field is required</string>
+    <string name="import_habit_screen_password_error">Password field is required</string>
 
-    <string name="import_habit_screen_login">Iniciar sesión</string>
-    <string name="import_habit_screen_register">Registrarse</string>
-    <string name="import_habit_screen_subtitle_login">Inicia sesión para poder guardar tu progeso</string>
-    <string name="import_habit_screen_subtitle_register">Regístrate para poder guardar tu progeso</string>
+    <string name="import_habit_screen_login">Login</string>
+    <string name="import_habit_screen_register">Register</string>
+    <string name="import_habit_screen_subtitle_login">Log in to save your progress</string>
+    <string name="import_habit_screen_subtitle_register">Register to save your progress</string>
 
-    <string name="import_habit_screen_remember">Recordar credenciales</string>
+    <string name="import_habit_screen_remember">Remember credentials</string>
 
-    <string name="import_habit_screen_continue">---- O continúa con ----</string>
-    <string name="import_habit_screen_no_account">¿No tienes cuenta?</string>
-    <string name="import_habit_screen_sign_up">Regístrate</string>
+    <string name="import_habit_screen_continue">---- Or continue with ----</string>
 
-    <string name="import_habit_screen_yes_account">¿Ya tienes cuenta?</string>
-    <string name="import_habit_screen_sign_in">Inicia sesión</string>
+    <string name="import_habit_screen_no_account">Don\'t have an account?</string>
+    <string name="import_habit_screen_sign_up">Sign up</string>
 
-    <string name="import_habit_create_account">Se ha creado la cuenta, para poder entrar verifique su cuenta en su correo electrónico.</string>
+    <string name="import_habit_screen_yes_account">Already have an account?</string>
+    <string name="import_habit_screen_sign_in">Sign in</string>
 
-    <string name="import_habit_resend_email">Volver a enviar el email</string>
-    <string name="import_habit_toast">Email enviado.</string>
-    <string name="import_habit_verify_email">Email no verificado</string>
+    <string name="import_habit_create_account">The account has been created, to be able to enter, please verify your account in your email.</string>
+    <string name="import_habit_resend_email">Resend the email</string>
+    <string name="import_habit_toast">Email sent.</string>
+    <string name="import_habit_verify_email">Email unverified</string>
 
-    <string name="import_habit_forgot_password">¿Olvidaste la contraseña?</string>
-    <string name="import_habit_forgot_title_dx">Cambio de contraseña</string>
-    <string name="import_habit_forgot_subtitle_dx">Introduce el email donde se enviará la contraseña</string>
+    <string name="import_habit_forgot_password">¿Forgor the password?</string>
+    <string name="import_habit_forgot_title_dx">Password Change</string>
+    <string name="import_habit_forgot_subtitle_dx">Enter the email where the password will be sent</string>
 
     <!-- Save habit -->
-    <string name="save_habit_title">Hola, %1$s</string>
-    <string name="save_habit_log_out">Cerrar sesión</string>
-    <string name="save_habit_change_email">Cambiar email cuenta</string>
-    <string name="save_habit_add_habit">Subir hábitos</string>
-    <string name="save_habit_change_habit">Cambiar hábitos</string>
-    <string name="save_habit_subtitle">Sube aquí tus hábitos para recuperarlos o para poder pasarlos a otro teléfono</string>
+    <string name="save_habit_title">Hi, %1$s</string>
+    <string name="save_habit_log_out">Log out</string>
+    <string name="save_habit_change_email">Change account email</string>
+    <string name="save_habit_add_habit">Upload habits</string>
+    <string name="save_habit_change_habit">Change habits</string>
+    <string name="save_habit_subtitle">Upload your habits here to be able to recover them or transfer them to another phone</string>
 
-    <string name="save_habit_data_restore">Recuperar hábitos</string>
-    <string name="save_habit_data_delete">Borrar hábitos</string>
+    <string name="save_habit_data_restore">Restore habits</string>
+    <string name="save_habit_data_delete">Delete habits</string>
 
-    <string name="save_habit_no_data">No hay datos</string>
-    <string name="save_habit_data">Hábitos guardados</string>
-    <string name="save_habit_data_date">Fecha de guardado: %1$s</string>
+    <string name="save_habit_no_data">No data available</string>
+    <string name="save_habit_data">Saved habits</string>
+    <string name="save_habit_data_date">Saved date: %1$s</string>
 
-    <string name="save_habit_close_session">¿Desea cerrar la sesión?</string>
-    <string name="save_habit_delete_data">¿Desea borrar los datos en la nube?</string>
-    <string name="save_habit_restore_data">¿Desea recuperar los datos de la nube y borrar los actuales? Los datos actuales se borrarán</string>
-    <string name="save_habit_restore_upload_data">¿Desea subir sus hábitos actuales a la nube?</string>
+    <string name="save_habit_close_session">Do you want to log out?</string>
+    <string name="save_habit_delete_data">Do you want to delete the data in the cloud?</string>
+    <string name="save_habit_restore_data">Do you want to restore the data from the cloud and delete the current ones? The current data will be deleted.</string>
+    <string name="save_habit_restore_upload_data">Do you want to upload your current habits to the cloud?</string>
 
-    <string name="save_habit_delete_data_success">Los hábitos se han borrado correctamente</string>
-    <string name="save_habit_restore_data_success">los hábitos se han recuperado correctamente</string>
-    <string name="save_habit_restore_upload_data_success">Los hábitos se han subido correctamente</string>
+    <string name="save_habit_delete_data_success">The habits have been deleted successfully</string>
+    <string name="save_habit_restore_data_success">The habits have been restored successfully</string>
+    <string name="save_habit_restore_upload_data_success">The habits have been uploaded successfully</string>
 
     <!-- Settings Card -->
-    <string name="settings_screen_card_title">Selecciona el tema</string>
-    <string name="settings_screen_card_dark">Oscuro</string>
-    <string name="settings_screen_card_light">Claro</string>
-    <string name="settings_screen_card_dark_alt">Azul oscuro</string>
-    <string name="settings_screen_card_light_alt">Crema claro</string>
+    <string name="settings_screen_card_title">Chose the theme</string>
+    <string name="settings_screen_card_dark">Dark</string>
+    <string name="settings_screen_card_light">Light</string>
+    <string name="settings_screen_card_dark_alt">Dark Blue</string>
+    <string name="settings_screen_card_light_alt">Light Cream</string>
 
     <!-- Days -->
-    <string name="day_1">Lun</string>
-    <string name="day_2">Mar</string>
-    <string name="day_3">Mié</string>
-    <string name="day_4">Jue</string>
-    <string name="day_5">Vie</string>
-    <string name="day_6">Sáb</string>
-    <string name="day_7">Dom</string>
+    <string name="day_1">Mon</string>
+    <string name="day_2">Tue</string>
+    <string name="day_3">Wed</string>
+    <string name="day_4">Thu</string>
+    <string name="day_5">Fri</string>
+    <string name="day_6">Sat</string>
+    <string name="day_7">Sun</string>
 
     <!-- Months -->
-    <string name="month_1">Enero</string>
-    <string name="month_2">Febrero</string>
-    <string name="month_3">Marzo</string>
-    <string name="month_4">Abril</string>
-    <string name="month_5">Mayo</string>
-    <string name="month_6">Junio</string>
-    <string name="month_7">Julio</string>
-    <string name="month_8">Agosto</string>
-    <string name="month_9">Septiembre</string>
-    <string name="month_10">Octubre</string>
-    <string name="month_11">Noviembre</string>
-    <string name="month_12">Diciembre</string>
+    <string name="month_1">January</string>
+    <string name="month_2">February</string>
+    <string name="month_3">March</string>
+    <string name="month_4">April</string>
+    <string name="month_5">May</string>
+    <string name="month_6">June</string>
+    <string name="month_7">July</string>
+    <string name="month_8">August</string>
+    <string name="month_9">September</string>
+    <string name="month_10">October</string>
+    <string name="month_11">November</string>
+    <string name="month_12">December</string>
 
     <!-- Errors Firebase -->
-    <string name="error_invalid_email">El email introducido no es válido</string>
-    <string name="error_invalid_credential">El email es incorrecto o la contraseña es incorrecta. Inténtelo de nuevo</string>
-    <string name="error_weak_passoword">La contraseña tiene que tener al menos 6 caracteres</string>
-    <string name="error_update_profile">Algo ha fallado al actualizar el perfil, inténtelo de nuevo.</string>
-    <string name="error_email_already_in_use">El email introducido ya está en uso</string>
-    <string name="error_email_send">Error al mandar el email</string>
-    <string name="error_unverified_email">El email introducido no está verificado. Verificalo a través del enlace que te hemos enviado a tu correo.</string>
+    <string name="error_invalid_email">The provided value for the email user property is invalid. It must be a string email address.</string>
+    <string name="error_invalid_credential">The email is incorrect or the password is incorrect. Please try again.</string>
+    <string name="error_weak_passoword">The password must be at least 6 characters long</string>
+    <string name="error_update_profile">Something went wrong while updating your profile, please try again.</string>
+    <string name="error_email_already_in_use">The email entered is already in use</string>
+    <string name="error_email_send">Error to send the email</string>
+    <string name="error_unverified_email">The email you entered is not verified. Please verify it using the link we have sent to your email.</string>
 
-    <string name="error_invalid_default">Algo ha fallado, vuelva a intentarlo</string>
+    <string name="error_invalid_default">Something went wrong, please try again.</string>
 
 </resources>

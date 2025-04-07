@@ -1,42 +1,39 @@
 <resources>
+    <!-- Time -->
+    <string name="add_habit_seconds">Seconds</string>
+    <string name="add_habit_minutes">Minutes</string>
+    <string name="add_habit_hours">Hours</string>
 
+    <!-- Quantity -->
+    <string name="add_habit_steps">Steps</string>
+    <string name="add_habit_pages">Pages</string>
+    <string name="add_habit_calories">Calories</string>
+    <string name="add_habit_kilometers">Kilometers</string>
+    <string name="add_habit_exercises">Exercises</string>
+    <string name="add_habit_repetitions">Repetitions</string>
 
-    <!-- Tiempo -->
-    <string name="add_habit_seconds">Segundos</string>
-    <string name="add_habit_minutes">Minutos</string>
-    <string name="add_habit_hours">Horas</string>
+    <!-- Frequency -->
+    <string name="add_habit_times">Times</string>
+    <string name="add_habit_sessions">Sessions</string>
+    <string name="add_habit_tasks">Tasks</string>
+    <string name="add_habit_attempts">Attempts</string>
 
-    <!-- Cantidad -->
-    <string name="add_habit_steps">Pasos</string>
-    <string name="add_habit_pages">Páginas</string>
-    <string name="add_habit_calories">Calorías</string>
-    <string name="add_habit_kilometers">Kilómetros</string>
-    <string name="add_habit_exercises">Ejercicios</string>
-    <string name="add_habit_repetitions">Repeticiones</string>
+    <!-- Time -->
+    <string name="add_habit_second_singular">Second</string>
+    <string name="add_habit_minute_singular">Minute</string>
+    <string name="add_habit_hour_singular">Hour</string>
 
-    <!-- Frecuencia -->
-    <string name="add_habit_times">Veces</string>
-    <string name="add_habit_sessions">Sesiones</string>
-    <string name="add_habit_tasks">Tareas</string>
-    <string name="add_habit_attempts">Intentos</string>
+    <!-- Quantity -->
+    <string name="add_habit_step_singular">Step</string>
+    <string name="add_habit_page_singular">Page</string>
+    <string name="add_habit_calorie_singular">Calorie</string>
+    <string name="add_habit_kilometer_singular">Kilometer</string>
+    <string name="add_habit_exercise_singular">Exercise</string>
+    <string name="add_habit_repetition_singular">Repetition</string>
 
-    <!-- Singular -->
-    <!-- Tiempo -->
-    <string name="add_habit_second_singular">Segundo</string>
-    <string name="add_habit_minute_singular">Minuto</string>
-    <string name="add_habit_hour_singular">Hora</string>
-
-    <!-- Cantidad -->
-    <string name="add_habit_step_singular">Paso</string>
-    <string name="add_habit_page_singular">Página</string>
-    <string name="add_habit_calorie_singular">Caloría</string>
-    <string name="add_habit_kilometer_singular">Kilómetro</string>
-    <string name="add_habit_exercise_singular">Ejercicio</string>
-    <string name="add_habit_repetition_singular">Repetición</string>
-
-    <!-- Frecuencia -->
-    <string name="add_habit_time_singular">Vez</string>
-    <string name="add_habit_session_singular">Sesión</string>
-    <string name="add_habit_task_singular">Tarea</string>
-    <string name="add_habit_attempt_singular">Intento</string>
+    <!-- Frequency -->
+    <string name="add_habit_time_singular">Time</string>
+    <string name="add_habit_session_singular">Session</string>
+    <string name="add_habit_task_singular">Task</string>
+    <string name="add_habit_attempt_singular">Attempt</string>
 </resources>
