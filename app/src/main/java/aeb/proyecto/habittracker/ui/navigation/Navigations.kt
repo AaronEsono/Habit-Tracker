@@ -1,5 +1,6 @@
 package aeb.proyecto.habittracker.ui.navigation
 
+import aeb.proyecto.habit.navigation.Habit
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.settings.navigation.Settings
 import androidx.annotation.DrawableRes
@@ -8,15 +9,12 @@ import androidx.compose.runtime.remember
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Habits
-
-@Serializable
 object Statistics
 
 @Serializable
 sealed class BottomBarScreens<T>(@StringRes val label:Int, @DrawableRes val icon:Int, val route:T){
     @Serializable
-    data object HabitsBottom:BottomBarScreens<Habits>(R.string.bottombar_habit, R.drawable.ic_calendar, Habits)
+    data object HabitsBottom:BottomBarScreens<Habit>(R.string.bottombar_habit, R.drawable.ic_calendar, Habit)
 
     @Serializable
     data object StatisticsBottom:BottomBarScreens<Statistics>(R.string.bottombar_stadistics, R.drawable.ic_statistics, Statistics)

@@ -2,6 +2,9 @@ package aeb.proyecto.habittracker.ui.navigation
 
 import aeb.proyecto.addhabit.navigation.addHabitScreen
 import aeb.proyecto.addhabit.navigation.navigateToAddHabit
+import aeb.proyecto.habit.navigation.Habit
+import aeb.proyecto.habit.navigation.habitScreen
+import aeb.proyecto.habit.navigation.navigateToHabit
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.action.TopbarSetUp
 import aeb.proyecto.habittracker.ui.screens.habits.HabitsScreen
@@ -30,14 +33,11 @@ import androidx.navigation.compose.composable
 fun NavigationWrapper(){
     val navController = LocalNavController.current
 
-    NavHost(navController = navController, startDestination = Habits){
-        composable<Habits>{
-            HabitsScreen(
-                navController = navController,
-            ){ id ->
-                navController.navigateToAddHabit(id)
-            }
+    NavHost(navController = navController, startDestination = Habit){
+        habitScreen { id ->
+            navController.navigateToAddHabit(id)
         }
+
         composable<Statistics>{
             StatisticsScreen()
         }
@@ -48,7 +48,7 @@ fun NavigationWrapper(){
         )
 
         addHabitScreen {
-            navController.navigate(Habits){
+            navController.navigateToHabit{
                 popUpTo(navController.graph.findStartDestination().id) {
                     inclusive = true
                 }
