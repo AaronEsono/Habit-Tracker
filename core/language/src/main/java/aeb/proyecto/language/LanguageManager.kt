@@ -21,25 +21,6 @@ class LanguageManager @Inject constructor(
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             context.getSystemService(LocaleManager::class.java).applicationLocales =
                 LocaleList.forLanguageTags(language)
-        }else{
-            // Establece el idioma local
-            val locale = Locale(language)
-            Locale.setDefault(locale)
-            val resources = context.resources
-
-            // Modifica la configuración de recursos
-            val config = resources.configuration
-            config.setLocale(locale)
-            resources.updateConfiguration(config, resources.displayMetrics)
-
-            // Reinicia la actividad para aplicar el cambio
-            val intent = Intent(Intent.ACTION_VIEW, "app://main".toUri()).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-
-            // Inicia la nueva actividad y cierra la actual para aplicar el idioma
-            context.startActivity(intent)
-            (context as Activity).finish()
         }
     }
 

@@ -8,3 +8,7 @@ enum class EnumTheme(val theme: Int, val title: Int) {
     LIGHT(2, R.string.ui_theme_light),
     CREME_LIGHT(3, R.string.ui_theme_light_alt)
 }
+
+fun getTitle(value:Int):Int{
+    return EnumTheme.entries.find { it.theme == value }?.title ?: EnumTheme.DARK.title
+}

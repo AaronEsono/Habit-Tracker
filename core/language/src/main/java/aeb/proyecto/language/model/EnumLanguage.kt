@@ -11,3 +11,7 @@ enum class EnumLanguage(val title:Int, val value:String,@DrawableRes val image:I
 fun findLanguage(language:String):EnumLanguage?{
     return EnumLanguage.entries.find { it.value == language }
 }
+
+fun returnStringValue(language: String):Int{
+    return EnumLanguage.entries.find { it.value == language }?.title ?: EnumLanguage.ENGLISH.title
+}

@@ -1,5 +1,6 @@
 package aeb.proyecto.settings
 
+import aeb.proyecto.language.model.returnStringValue
 import aeb.proyecto.settings.components.button.ButtonSettings
 import aeb.proyecto.settings.components.dialog.DialogSettings
 import aeb.proyecto.settings.components.divider.CustomHorizontalDivider
@@ -7,13 +8,16 @@ import aeb.proyecto.settings.constants.SettingsConstants
 import aeb.proyecto.settings.model.DataDialog
 import aeb.proyecto.settings.utils.openLink
 import aeb.proyecto.settings.utils.sendEmail
+import aeb.proyecto.ui.date.getDay
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleMediumText
+import aeb.proyecto.ui.theme.getTitle
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
+import android.os.Build
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,6 +57,9 @@ fun SettingsScreen(
     }
 
     SettingsScreen(
+        themeSelected = themeSelected,
+        languageSelected = languageSelected,
+        daySelected = dayOfWeek,
         onClickTheme = { viewModel.setDataDialogMode(DataDialog.THEME) },
         onClickLanguage = { viewModel.setDataDialogMode(DataDialog.LANGUAGE) },
         onClickGeneralSettings = { viewModel.setDataDialogMode(DataDialog.DAY_WEEK) },
@@ -77,6 +84,9 @@ fun SettingsScreen(
 
 @Composable
 internal fun SettingsScreen(
+    themeSelected:Int,
+    languageSelected:String,
+    daySelected:String,
     onClickTheme: () -> Unit,
     onClickLanguage: () -> Unit,
     onClickGeneralSettings: () -> Unit,
@@ -102,6 +112,7 @@ internal fun SettingsScreen(
         ButtonSettings(
             modifier = Modifier.padding(top = spacing6),
             title = R.string.settings_theme,
+            label = getTitle(themeSelected),
             leadingIcon = R.drawable.ic_palette,
             shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
             onClick = onClickTheme
@@ -109,16 +120,20 @@ internal fun SettingsScreen(
 
         CustomHorizontalDivider()
 
-        ButtonSettings(
-            title = R.string.settings_language,
-            leadingIcon = R.drawable.ic_language,
-            onClick = onClickLanguage
-        )
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            ButtonSettings(
+                title = R.string.settings_language,
+                leadingIcon = R.drawable.ic_language,
+                label = returnStringValue(languageSelected),
+                onClick = onClickLanguage
+            )
 
-        CustomHorizontalDivider()
+            CustomHorizontalDivider()
+        }
 
         ButtonSettings(
             title = R.string.settings_day_title,
+            label = getDay(daySelected),
             leadingIcon = R.drawable.ic_calendar_day,
             onClick = onClickGeneralSettings
         )

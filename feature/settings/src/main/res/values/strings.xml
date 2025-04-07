@@ -2,9 +2,10 @@
     <string name="settings_configuration">Settings</string>
     <string name="settings_about">About</string>
 
-    <string name="settings_day_title">Start day of the week</string>
+    <string name="settings_day_title">Start of week</string>
 
     <string name="settings_theme">Appearance</string>
+
     <string name="settings_export_import">Import &amp; Export Habits</string>
     <string name="settings_language">Language</string>
     <string name="settings_email">Report a Problem</string>

@@ -3,10 +3,13 @@ package aeb.proyecto.settings.components.button
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.ripple.CustomRipple
+import aeb.proyecto.ui.text.LabelSmallText
 import aeb.proyecto.ui.text.TitleSmallText
 import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +37,7 @@ fun ButtonSettings(
     shape: Shape = RectangleShape,
     @DrawableRes leadingIcon: Int,
     @StringRes title: Int,
+    @StringRes label:Int? = null,
     onClick: () -> Unit
 ) {
 
@@ -60,12 +64,17 @@ fun ButtonSettings(
                     modifier = Modifier.size(25.dp)
                 )
 
-                TitleSmallText(
-                    stringResource(title),
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = spacing10)
-                )
+                Column (
+                    modifier = Modifier.weight(1f).padding(start = spacing10),
+                    verticalArrangement = Arrangement.Center
+                ){
+                    TitleSmallText(stringResource(title))
+
+                    label?.let {
+                        LabelSmallText(stringResource(label),
+                            modifier = Modifier.padding(end = spacing10))
+                    }
+                }
 
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowRight,
