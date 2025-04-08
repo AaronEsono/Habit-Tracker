@@ -4,11 +4,11 @@ import aeb.proyecto.addhabit.R
 import aeb.proyecto.addhabit.components.card.CardLeadingIconButton
 import aeb.proyecto.addhabit.components.textField.AddHabitTextField
 import aeb.proyecto.ui.date.getDay
-import aeb.proyecto.addhabit.utils.IsOnlyDigit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.month.getMonth
+import aeb.proyecto.ui.regexTextField.IsOnlyDigit
 import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues

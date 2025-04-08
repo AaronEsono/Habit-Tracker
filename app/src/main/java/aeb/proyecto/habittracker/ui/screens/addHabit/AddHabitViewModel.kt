@@ -60,7 +60,7 @@ class AddHabitViewModel @Inject constructor(
         habitUpt.habit = habitUpt.habit.copy(
             name = name,
             description = if (description.isNullOrEmpty()) null else description,
-            goal = times.toInt(),
+            goal = times.toFloat(),
             color = uiState.value.color.toArgb(),
             icon = uiState.value.icon
         )

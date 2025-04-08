@@ -41,7 +41,7 @@ enum class UnitHabit(
         icon = Icons.Filled.HourglassEmpty,
         title = R.string.add_habit_hour_singular,
         titlePlural = R.string.add_habit_hours,
-        unitType = TIPO_UNIDAD.TIEMPO
+        unitType = TIPO_UNIDAD.TIEMPO,
     ),
 
     // CANTIDAD
@@ -67,7 +67,7 @@ enum class UnitHabit(
         icon = Icons.Filled.TravelExplore,
         title = R.string.add_habit_kilometer_singular,
         titlePlural = R.string.add_habit_kilometers,
-        unitType = TIPO_UNIDAD.CANTIDAD
+        unitType = TIPO_UNIDAD.CANTIDAD,
     ),
     EXERCISES(
         icon = Icons.Filled.FitnessCenter,

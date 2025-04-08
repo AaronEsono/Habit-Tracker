@@ -23,7 +23,7 @@ data class Habit(
     @TypeConverters(IconConverter::class)
     var icon:ImageVector = Icons.Filled.Fax,
 
-    var goal:Int = 0,
+    var goal:Float = 0f,
 
     @TypeConverters(UnitHabitConverter::class)
     var unit:UnitHabit = UnitHabit.TIMES,

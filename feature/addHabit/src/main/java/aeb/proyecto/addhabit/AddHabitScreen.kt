@@ -27,7 +27,6 @@ import aeb.proyecto.addhabit.constants.PICK_UNIT
 import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.TypeNotificationResult
 import aeb.proyecto.addhabit.model.DataAddHabitScreen
-import aeb.proyecto.addhabit.utils.IsOnlyDigit
 import aeb.proyecto.addhabit.utils.OnChangePermissions
 import aeb.proyecto.addhabit.utils.goToAppSettings
 import aeb.proyecto.room.model.classes.TypeNotification
@@ -42,6 +41,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.navigationIcon.NavigationIcon
+import aeb.proyecto.ui.regexTextField.IsOnlyDigit
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
@@ -205,7 +205,7 @@ internal fun AddHabitScreen(
     }
 
     OnChangePermissions(isPermissionGranted,context)
-    IsOnlyDigit(habit.numberTimesTextField)
+    IsOnlyDigit(habit.numberTimesTextField,habit.unit)
 
     when(uiState){
         AddHabitUIState.Error, AddHabitUIState.Success -> Unit

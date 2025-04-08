@@ -13,8 +13,6 @@ const val PICK_UNIT = 3
 const val PICK_TYPE_NOTIFICATION = 4
 const val PICK_NOTIFICATION = 5
 
-val onlyDigits = "-?[0-9]+(\\\\.[0-9]+)?".toRegex()
-
 enum class TypeNotifications(
     @StringRes val title: Int,
     @StringRes val label: Int,

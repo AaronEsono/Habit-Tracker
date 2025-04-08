@@ -14,7 +14,7 @@ import java.time.LocalDate
 fun getIcon(dates: List<DailyHabit>, habit: Habit): ImageVector {
     val daily = dates.find { (LocalDate.parse(it.date)) == LocalDate.now() }
 
-    return if (daily != null && daily.timesDone == habit.goal) {
+    return if (daily != null && daily.timesDone == habit.goal.toInt()) {
         Icons.Filled.Check
     } else
         Icons.Filled.Add

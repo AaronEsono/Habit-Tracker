@@ -81,13 +81,13 @@ class StatisticsViewModel @Inject constructor(
 
     private fun timesCompleted(): Int {
         findHabit()?.let {
-            return _dailyHabits.value.count { dailyHabit -> dailyHabit.timesDone == it.goal }
+            return 1
         }
         return 0
     }
 
     private fun findMaxTimes(): Int {
-        return findHabit()?.goal ?: 0
+        return findHabit()?.goal?.toInt() ?: 0
     }
 
     private fun getStreak(): Int {

@@ -95,7 +95,7 @@ class CalendarViewModel @Inject constructor(
             val findDate = dailyHabits.value.find { LocalDate.parse(it.date) == getDate && it.timesDone != 0 }
 
             findDate?.let {
-                color = if(it.timesDone == _habit.value.goal)
+                color = if(it.timesDone == _habit.value.goal.toInt())
                     Color(_habit.value.color)
                 else
                     Color(_habit.value.color).copy(alpha = 0.2f)

@@ -14,14 +14,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -73,14 +68,14 @@ class HabitsViewModel @Inject constructor(
 
             val updatedDaily = daily?.let {
 
-                val updatedTimesDone = if (restart || it.timesDone + times > maxTimes) 0 else it.timesDone + times
+                val updatedTimesDone = if (restart || it.timesDone + times > maxTimes.toInt()) 0 else it.timesDone + times
                 val finishDate = if (updatedTimesDone == maxTimes) LocalDateTime.now().toString() else null
                 it.copy(timesDone = updatedTimesDone, hourFinishDate = finishDate)
 
             } ?: DailyHabit(
                 idHabit = id,
                 date = currentDate.toString(),
-                timesDone = times.coerceAtMost(maxTimes),
+                timesDone = times.coerceAtMost(maxTimes.toInt()),
                 hourFinishDate = null
             ).apply {
                 if (timesDone == maxTimes) hourFinishDate = LocalDateTime.now().toString()
@@ -117,7 +112,7 @@ class HabitsViewModel @Inject constructor(
         val daily = _habitSelected.value?.dailyHabits?.find {
             LocalDate.parse(it.date) == (date ?: LocalDate.now())
         }
-        return _habitSelected.value?.habit?.goal!! - (daily?.timesDone ?: 0)
+        return 1
     }
 
     fun getHabit() {

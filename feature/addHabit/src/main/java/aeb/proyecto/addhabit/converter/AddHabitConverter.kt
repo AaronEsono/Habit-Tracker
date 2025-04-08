@@ -18,7 +18,7 @@ fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
             description = habitScreen.descriptionTextField.text.toString(),
             color = habitScreen.color.toArgb(),
             icon = habitScreen.icon,
-            goal = habitScreen.numberTimesTextField.text.toString().toInt(),
+            goal = habitScreen.numberTimesTextField.text.toString().toFloat(),
             unit = habitScreen.unit,
             typeHabit = when(habitScreen.typeHabit){
                 aeb.proyecto.addhabit.constants.TypeHabit.DAILY -> { TypeHabit.Daily }

@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 data object Habit
 
 fun NavController.navigateToHabit(optionsBuilder: NavOptionsBuilder.() -> Unit = {}){
-    navigate(optionsBuilder)
+    navigate(Habit,optionsBuilder)
 }
 
 fun NavGraphBuilder.habitScreen(onAddHabit: (Long) -> Unit) {
