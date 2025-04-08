@@ -15,11 +15,13 @@ import aeb.proyecto.addhabit.model.DataAddHabitScreen
 import aeb.proyecto.addhabit.model.DataBottomSheet
 import aeb.proyecto.alarmmanager.NotificationUtils
 import aeb.proyecto.datastore.DatastoreInterface
+import aeb.proyecto.room.model.classes.TIPO_UNIDAD
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
 import android.app.NotificationManager
 import android.util.Log
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
@@ -151,6 +153,20 @@ class AddHabitViewModel @Inject constructor(
     }
 
     fun onPickUnit(unit: UnitHabit){
+        //Si es una unidad de tiempo, quitamos los decimales
+        if(unit.unitType == TIPO_UNIDAD.TIEMPO){
+            val text = _dataAddHabit.value.habitScreen.numberTimesTextField.text.toString()
+            val integerPart = text.substringBefore(".")
+
+            _dataAddHabit.update { currentState ->
+                currentState.copy(
+                    habitScreen = currentState.habitScreen.copy(
+                        numberTimesTextField = TextFieldState(initialText = integerPart)
+                    )
+                )
+            }
+        }
+
         _dataAddHabit.update { currentState ->
             currentState.copy(
                 habitScreen = currentState.habitScreen.copy(unit = unit)
