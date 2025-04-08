@@ -1,5 +1,6 @@
 package aeb.proyecto.room.database
 
+import aeb.proyecto.room.converters.BigDecimalConverter
 import aeb.proyecto.room.converters.DateConverter
 import aeb.proyecto.room.converters.IconConverter
 import aeb.proyecto.room.converters.TimeConverter
@@ -26,6 +27,7 @@ import androidx.room.TypeConverters
 @TypeConverters(DateConverter::class,
     TimeConverter::class,
     IconConverter::class,
+    BigDecimalConverter::class,
     TypeHabitConverter::class,
     UnitHabitConverter::class,
     TypeNotificationConverter::class)

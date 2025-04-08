@@ -1,5 +1,6 @@
 package aeb.proyecto.room.entities.habit
 
+import aeb.proyecto.room.converters.BigDecimalConverter
 import aeb.proyecto.room.converters.IconConverter
 import aeb.proyecto.room.converters.TypeHabitConverter
 import aeb.proyecto.room.converters.UnitHabitConverter
@@ -11,6 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import java.math.BigDecimal
 
 @Entity
 data class Habit(
@@ -23,7 +25,8 @@ data class Habit(
     @TypeConverters(IconConverter::class)
     var icon:ImageVector = Icons.Filled.Fax,
 
-    var goal:Float = 0f,
+    @TypeConverters(BigDecimalConverter::class)
+    var goal:BigDecimal = BigDecimal(0),
 
     @TypeConverters(UnitHabitConverter::class)
     var unit:UnitHabit = UnitHabit.TIMES,

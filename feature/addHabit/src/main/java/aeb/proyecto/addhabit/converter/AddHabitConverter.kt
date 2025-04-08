@@ -9,7 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import java.math.RoundingMode
 import java.time.LocalDate
+import java.util.Locale
 
 fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
     return HabitWithNotification(
@@ -18,7 +20,7 @@ fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
             description = habitScreen.descriptionTextField.text.toString(),
             color = habitScreen.color.toArgb(),
             icon = habitScreen.icon,
-            goal = habitScreen.numberTimesTextField.text.toString().toFloat(),
+            goal = habitScreen.numberTimesTextField.text.toString().toBigDecimal().setScale(3, RoundingMode.HALF_UP).stripTrailingZeros(),
             unit = habitScreen.unit,
             typeHabit = when(habitScreen.typeHabit){
                 aeb.proyecto.addhabit.constants.TypeHabit.DAILY -> { TypeHabit.Daily }

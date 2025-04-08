@@ -17,14 +17,9 @@ fun IsOnlyDigit(textFieldState: TextFieldState, unit: UnitHabit){
         TIPO_UNIDAD.TIEMPO -> {onlyDigits}
     }
 
-    LaunchedEffect(textFieldState.text) {
-        if (!textFieldState.text.toString().matches(regex)
-            && textFieldState.text.toString().isNotEmpty()) {
-
-            textFieldState.edit {
-                delete(textFieldState.text.length - 1, textFieldState.text.length)
-            }
-        }
+    when(regex){
+        onlyDecimal -> IsOnlyDecimal(textFieldState)
+        onlyDigits -> IsOnlyDigit(textFieldState)
     }
 }
 
@@ -36,6 +31,26 @@ fun IsOnlyDigit(textFieldState: TextFieldState){
 
             textFieldState.edit {
                 delete(textFieldState.text.length - 1, textFieldState.text.length)
+            }
+        }
+    }
+}
+
+@Composable
+fun IsOnlyDecimal(textFieldState: TextFieldState) {
+    LaunchedEffect(textFieldState.text) {
+        val text = textFieldState.text.toString()
+
+        when {
+            text == "." -> {
+                textFieldState.edit {
+                    replace(0, text.length, "0.")
+                }
+            }
+            !text.matches(onlyDecimal) && text.isNotEmpty() -> {
+                textFieldState.edit {
+                    delete(text.length - 1, text.length)
+                }
             }
         }
     }

@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,7 +61,7 @@ class AddHabitViewModel @Inject constructor(
         habitUpt.habit = habitUpt.habit.copy(
             name = name,
             description = if (description.isNullOrEmpty()) null else description,
-            goal = times.toFloat(),
+            goal = BigDecimal(1),
             color = uiState.value.color.toArgb(),
             icon = uiState.value.icon
         )
