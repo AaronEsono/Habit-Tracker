@@ -93,7 +93,6 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 //Habits entre dias personalizables
-// Decimales
 // Exportar schema
 
 @Composable
