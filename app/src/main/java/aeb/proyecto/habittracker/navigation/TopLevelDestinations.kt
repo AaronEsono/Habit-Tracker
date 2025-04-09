@@ -3,24 +3,29 @@ package aeb.proyecto.habittracker.navigation
 import aeb.proyecto.habit.navigation.Habit
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.settings.navigation.Settings
+import aeb.proyecto.statistics.navigation.Statistics
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import kotlinx.serialization.Serializable
+import java.io.Serial
 import kotlin.reflect.KClass
 
+@Serializable
+sealed class TopLevelDestinations<T>(@StringRes val title:Int, @DrawableRes val icon:Int, val route:T){
+    @Serializable
+    data object HabitsBottom:TopLevelDestinations<Habit>(R.string.bottombar_habit, R.drawable.ic_calendar, Habit)
 
-enum class TopLevelDestinations (
-    @StringRes val titleTextId: Int,
-    @DrawableRes val iconTextId: Int,
-    val route: KClass<*>
-){
-    Habits(
-        titleTextId = R.string.bottombar_habit,
-        iconTextId = R.drawable.ic_calendar,
-        route = Habit::class
-    ),
-    SETTINGS(
-        titleTextId = R.string.bottombar_settins,
-        iconTextId = R.drawable.ic_settings,
-        route = Settings::class
+    @Serializable
+    data object StatisticsBottom:TopLevelDestinations<Statistics>(R.string.bottombar_stadistics, R.drawable.ic_statistics, Statistics)
+
+    @Serializable
+    data object SettingsBottom:TopLevelDestinations<Settings>(R.string.bottombar_settins, R.drawable.ic_settings, Settings)
+}
+
+val menuItems = {
+    listOf(
+        TopLevelDestinations.HabitsBottom,
+        TopLevelDestinations.StatisticsBottom,
+        TopLevelDestinations.SettingsBottom,
     )
 }

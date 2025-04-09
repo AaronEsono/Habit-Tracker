@@ -2,8 +2,8 @@ package aeb.proyecto.habittracker
 
 import aeb.proyecto.habittracker.components.BottomNavigationHabit
 import aeb.proyecto.habittracker.components.TopBarHabit
+import aeb.proyecto.habittracker.navigation.NavigationHabit
 import aeb.proyecto.habittracker.permissions.RequestPermissions
-import aeb.proyecto.habittracker.ui.navigation.NavigationWrapper
 import aeb.proyecto.ui.controllerProvider.LocalNavController
 import aeb.proyecto.ui.theme.HabitTrackerTheme
 import android.os.Bundle
@@ -62,7 +62,7 @@ fun AppContent(navController: NavHostController) {
                     .padding(innerPadding)
                     .fillMaxSize()
             ) {
-                NavigationWrapper()
+                NavigationHabit()
             }
         }
     }

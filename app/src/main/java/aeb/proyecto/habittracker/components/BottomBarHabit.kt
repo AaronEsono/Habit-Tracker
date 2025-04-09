@@ -1,8 +1,9 @@
 package aeb.proyecto.habittracker.components
 
-import aeb.proyecto.habittracker.ui.components.text.LabelSmallText
-import aeb.proyecto.habittracker.ui.navigation.menuItems
+import aeb.proyecto.habittracker.navigation.TopLevelDestinations
+import aeb.proyecto.habittracker.navigation.menuItems
 import aeb.proyecto.ui.controllerProvider.LocalNavController
+import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -16,14 +17,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomNavigationHabit() {
     val navController = LocalNavController.current
 
-    val menuItems = remember { menuItems() }
+    val menuItems = remember { menuItems()}
 
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
     val showBottomBar = currentDestination?.route in menuItems.map { it.route::class.qualifiedName }
@@ -49,12 +49,12 @@ fun BottomNavigationHabit() {
                     icon = {
                         Icon(
                             painter = painterResource(menuItem.icon),
-                            contentDescription = stringResource(menuItem.label),
+                            contentDescription = "bottom bar icon",
                             modifier = Modifier.size(24.dp)
                         )
                     },
                     label = {
-                        LabelSmallText(stringResource(menuItem.label))
+                        LabelSmallText(stringResource(menuItem.title))
                     },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,

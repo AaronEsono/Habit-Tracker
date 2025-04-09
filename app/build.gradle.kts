@@ -83,6 +83,7 @@ dependencies {
     implementation(projects.feature.logIn)
     implementation(projects.feature.addHabit)
     implementation(projects.feature.habit)
+    implementation(projects.feature.statistics)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)

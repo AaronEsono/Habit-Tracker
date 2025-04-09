@@ -41,6 +41,7 @@
             <option value="$PROJECT_DIR$/feature/logIn" />
             <option value="$PROJECT_DIR$/feature/save" />
             <option value="$PROJECT_DIR$/feature/settings" />
+            <option value="$PROJECT_DIR$/feature/statistics" />
           </set>
         </option>
       </GradleProjectSettings>
