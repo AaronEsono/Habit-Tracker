@@ -9,3 +9,9 @@ class HabitViewModel @Inject constructor(
 
 ):ViewModel() {
 }
+
+sealed class HabitUIState(){
+    data object Success:HabitUIState()
+    data object Error:HabitUIState()
+    data object Loading:HabitUIState()
+}

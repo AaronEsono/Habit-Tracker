@@ -2,7 +2,6 @@ package aeb.proyecto.habittracker.utils
 
 import aeb.proyecto.habittracker.R
 import aeb.proyecto.habittracker.data.model.errors.ErrorsFirebase
-import aeb.proyecto.habittracker.data.model.theme.ThemeMode
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
