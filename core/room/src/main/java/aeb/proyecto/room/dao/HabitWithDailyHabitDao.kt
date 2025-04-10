@@ -3,6 +3,7 @@ package aeb.proyecto.room.dao
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
+import aeb.proyecto.room.model.classes.TypeHabit
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -38,4 +39,7 @@ interface HabitWithDailyHabitDao {
     @Transaction
     @Query("SELECT * FROM HABIT")
     fun getHabits(): Flow<List<HabitWithDailyHabit>>
+
+    @Query("SELECT DISTINCT typeHabit FROM Habit")
+    fun getExistingTypesHabit():Flow<List<TypeHabit>>
 }

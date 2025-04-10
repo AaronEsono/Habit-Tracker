@@ -4,7 +4,10 @@ import aeb.proyecto.room.dao.HabitWithDailyHabitDao
 import aeb.proyecto.room.entities.DailyHabit
 import aeb.proyecto.room.entities.habit.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
+import aeb.proyecto.room.model.classes.TypeHabit
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class HabitWithDailyHabitRepo @Inject constructor(
@@ -41,5 +44,14 @@ class HabitWithDailyHabitRepo @Inject constructor(
 
     fun getHabits(): Flow<List<HabitWithDailyHabit>> {
         return habitWithDailyHabitDao.getHabits()
+    }
+
+    fun getExistingTypesHabit():Flow<List<String>>{
+        return habitWithDailyHabitDao.getExistingTypesHabit()
+            .map { types ->
+                types
+                    .distinctBy { it::class }
+                    .map { it.tag }
+            }
     }
 }
