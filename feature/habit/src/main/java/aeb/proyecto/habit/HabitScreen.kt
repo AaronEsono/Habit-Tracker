@@ -29,8 +29,8 @@ fun HabitScreen(
     navigateToAddHabit: (Long) -> Unit
 ){
 
-    val pagerElements = viewModel.availableTypes.collectAsStateWithLifecycle().value
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    val typeUIState = viewModel.typeUIState.collectAsStateWithLifecycle().value
+    val selectedType = viewModel.selectedType.collectAsStateWithLifecycle().value
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.habit_topbar), fontSize = 20.sp)
@@ -49,28 +49,31 @@ fun HabitScreen(
     }
 
     HabitScreen(
-        uiState = uiState,
-        availableTypes = pagerElements
+        typeUIState = typeUIState,
+        selectedType = selectedType,
+        onClickTab = viewModel::onClickTab
     )
 }
 
 @Composable
 internal fun HabitScreen(
-    uiState: HabitUIState,
-    availableTypes: List<PagerElement>
+    typeUIState: TypeUIState,
+    selectedType: Int,
+    onClickTab: (Int) -> Unit = {}
 ) {
-    when (uiState) {
-        HabitUIState.Error -> Unit
-        HabitUIState.Loading -> {
+    when (typeUIState) {
+        TypeUIState.Error -> Unit
+        TypeUIState.Loading -> {
             HabitLoading()
         }
-        HabitUIState.Success -> {
-            if (availableTypes.isEmpty()) {
+        is TypeUIState.Success -> {
+            if (typeUIState.availableTypes.isEmpty()) {
                 NoHabitScreen()
             } else {
                 PagerElementScreen(
-                    uiState = uiState,
-                    pagerElements = availableTypes
+                    pagerElements = typeUIState.availableTypes,
+                    selectedType = selectedType,
+                    onClickTab = onClickTab
                 )
             }
         }

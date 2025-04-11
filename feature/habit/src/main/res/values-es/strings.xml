@@ -6,8 +6,8 @@
 
     <string name="habit_no_habit">Todavía no tienes hábitos registrados. Para crear uno, pulsa sobre el botón de arriba a la derecha.</string>
 
-    <string name="pager_element_daily">Diario</string>
-    <string name="pager_element_weekly">Semanal</string>
-    <string name="pager_element_monthly">Mensual</string>
-    <string name="pager_element_recurring">Cíclico</string>
+    <string name="pager_element_daily">Diarios</string>
+    <string name="pager_element_weekly">Semanales</string>
+    <string name="pager_element_monthly">Mensuales</string>
+    <string name="pager_element_recurring">Cíclicos</string>
 </resources>

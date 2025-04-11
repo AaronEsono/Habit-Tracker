@@ -1,4 +1,4 @@
-package aeb.proyecto.room.entities.habit
+package aeb.proyecto.room.entities
 
 import aeb.proyecto.room.converters.BigDecimalConverter
 import aeb.proyecto.room.converters.IconConverter

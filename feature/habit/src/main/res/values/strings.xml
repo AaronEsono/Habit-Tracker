@@ -6,9 +6,9 @@
 
     <string name="habit_no_habit">You haven’t added any habits yet. Tap the button in the top right to create one.</string>
 
-    <string name="pager_element_daily">Daily</string>
-    <string name="pager_element_weekly">Weekly</string>
-    <string name="pager_element_monthly">Monthly</string>
+    <string name="pager_element_daily">Dailies</string>
+    <string name="pager_element_weekly">Weeklies</string>
+    <string name="pager_element_monthly">Monthlies</string>
     <string name="pager_element_recurring">Recurring</string>
 
 </resources>

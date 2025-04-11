@@ -1,9 +1,9 @@
 package aeb.proyecto.addhabit.converter
 
 import aeb.proyecto.addhabit.model.AddHabitNotification
-import aeb.proyecto.room.entities.notification.HabitNotification
+import aeb.proyecto.room.entities.HabitNotification
 
-fun fromNotificationScreen(notificationScreen: AddHabitNotification): HabitNotification{
+fun fromNotificationScreen(notificationScreen: AddHabitNotification): HabitNotification {
     return HabitNotification(
         time = notificationScreen.time,
         type = notificationScreen.type

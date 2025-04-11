@@ -1,11 +1,9 @@
 package aeb.proyecto.room.repository
 
 import aeb.proyecto.room.dao.HabitWithDailyHabitDao
-import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.habit.Habit
+import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
-import aeb.proyecto.room.model.classes.TypeHabit
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -18,7 +16,7 @@ class HabitWithDailyHabitRepo @Inject constructor(
         return habitWithDailyHabitDao.insertHabit(habit)
     }
 
-    fun insertDailyHabit(dailyHabit: DailyHabit): Long {
+    fun insertDailyHabit(dailyHabit: HabitDay): Long {
         return habitWithDailyHabitDao.insertDailyHabit(dailyHabit)
     }
 
@@ -26,7 +24,7 @@ class HabitWithDailyHabitRepo @Inject constructor(
         habitWithDailyHabitDao.updateHabit(habit)
     }
 
-    fun updateDailyHabit(dailyHabit: DailyHabit) {
+    fun updateDailyHabit(dailyHabit: HabitDay) {
         habitWithDailyHabitDao.updateDailyHabit(dailyHabit)
     }
 
@@ -34,7 +32,7 @@ class HabitWithDailyHabitRepo @Inject constructor(
         habitWithDailyHabitDao.deleteHabit(habitId)
     }
 
-    fun getDailyHabits(id: Long): List<DailyHabit> {
+    fun getDailyHabits(id: Long): List<HabitDay> {
         return habitWithDailyHabitDao.getDailyHabits(id)
     }
 

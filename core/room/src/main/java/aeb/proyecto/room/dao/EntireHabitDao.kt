@@ -1,8 +1,8 @@
 package aeb.proyecto.room.dao
 
-import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.habit.Habit
-import aeb.proyecto.room.entities.Notification
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.room.entities.HabitNotification
 import aeb.proyecto.room.entities.relations.EntireHabit
 import aeb.proyecto.room.model.NotificationWithNameAndColor
 import androidx.room.Dao
@@ -18,10 +18,18 @@ interface EntireHabitDao {
     fun insertHabit(habit: Habit):Long
 
     @Insert
-    fun insertDailyHabits(dailyHabit: List<DailyHabit>)
+    fun insertDailyHabits(dailyHabit: List<HabitDay>)
 
     @Insert
-    fun insertNotification(notification: List<Notification>)
+    fun insertNotification(notification: List<HabitNotification>)
+
+    @Query("""
+        SELECT HABITNOTIFICATION.id AS id, HABITNOTIFICATION.time AS time, Habit.name AS name, Habit.color AS color,
+        HABITNOTIFICATION.type AS typeNotification
+        FROM HABITNOTIFICATION
+        INNER JOIN Habit ON HABITNOTIFICATION.habitId = Habit.id
+    """)
+    fun getAllNotifications():List<NotificationWithNameAndColor>
 
     @Query("DELETE FROM Habit")
     fun deleteHabits()
@@ -51,6 +59,6 @@ interface EntireHabitDao {
         }
 
         //Devolvemos las notificaciones para el alarmManager con su id, nombre y color
-        return listOf()
+        return getAllNotifications()
     }
 }

@@ -1,17 +1,14 @@
 package aeb.proyecto.addhabit.converter
 
 import aeb.proyecto.addhabit.model.AddHabit
-import aeb.proyecto.room.entities.habit.Habit
+import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.relations.HabitWithNotification
 import aeb.proyecto.room.model.classes.TypeHabit
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import java.math.RoundingMode
 import java.time.LocalDate
-import java.util.Locale
 
 fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
     return HabitWithNotification(

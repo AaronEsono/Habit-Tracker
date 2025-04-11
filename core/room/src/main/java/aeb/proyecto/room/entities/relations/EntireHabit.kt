@@ -1,8 +1,8 @@
 package aeb.proyecto.room.entities.relations
 
-import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.habit.Habit
-import aeb.proyecto.room.entities.Notification
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.room.entities.HabitNotification
 import androidx.room.Embedded
 import androidx.room.Relation
 
@@ -12,10 +12,10 @@ data class EntireHabit(
         parentColumn = "id",
         entityColumn = "idHabit"
     )
-    val dailyHabits: MutableList<DailyHabit> = mutableListOf(),
+    val dailyHabits: MutableList<HabitDay> = mutableListOf(),
     @Relation(
         parentColumn = "id",
         entityColumn = "habitId"
     )
-    var notifications: MutableList<Notification> = mutableListOf()
+    var notifications: MutableList<HabitNotification> = mutableListOf()
 )

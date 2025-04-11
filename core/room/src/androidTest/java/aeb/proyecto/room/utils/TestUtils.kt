@@ -1,8 +1,6 @@
 package aeb.proyecto.room.utils
 
-import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.habit.Habit
-import aeb.proyecto.room.entities.Notification
+import aeb.proyecto.room.entities.Habit
 
 fun createDailyHabit(idHabit: Long = 0, timesDone: Int = 0, date: String = "prueba"): DailyHabit {
     return DailyHabit(

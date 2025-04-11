@@ -10,17 +10,15 @@ import aeb.proyecto.room.converters.UnitHabitConverter
 import aeb.proyecto.room.dao.EntireHabitDao
 import aeb.proyecto.room.dao.HabitWithDailyHabitDao
 import aeb.proyecto.room.dao.HabitWithNotificationDao
-import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.Notification
-import aeb.proyecto.room.entities.dayHabit.HabitDay
-import aeb.proyecto.room.entities.habit.Habit
-import aeb.proyecto.room.entities.notification.HabitNotification
+import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.HabitNotification
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [Habit::class,HabitDay::class, DailyHabit::class,HabitNotification::class,Notification::class],
+    entities = [Habit::class, HabitDay::class,HabitNotification::class],
     version = 1,
     exportSchema = false
 )

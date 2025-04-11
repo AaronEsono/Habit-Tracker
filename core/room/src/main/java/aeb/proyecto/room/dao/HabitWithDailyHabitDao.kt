@@ -1,7 +1,7 @@
 package aeb.proyecto.room.dao
 
-import aeb.proyecto.room.entities.DailyHabit
-import aeb.proyecto.room.entities.habit.Habit
+import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.TypeHabit
 import androidx.room.Dao
@@ -18,10 +18,10 @@ interface HabitWithDailyHabitDao {
     fun insertHabit(habit: Habit):Long
 
     @Insert
-    fun insertDailyHabit(dailyHabit: DailyHabit):Long
+    fun insertDailyHabit(dailyHabit: HabitDay):Long
 
     @Update
-    fun updateDailyHabit(dailyHabit: DailyHabit)
+    fun updateDailyHabit(dailyHabit: HabitDay)
 
     @Update
     fun updateHabit(habit: Habit)
@@ -29,8 +29,8 @@ interface HabitWithDailyHabitDao {
     @Query("SELECT * FROM Habit")
     fun getAllHabits():List<Habit>
 
-    @Query("SELECT * FROM DailyHabit WHERE idHabit = :id")
-    fun getDailyHabits(id:Long):List<DailyHabit>
+    @Query("SELECT * FROM HabitDay WHERE idHabit = :id")
+    fun getDailyHabits(id:Long):List<HabitDay>
 
     @Transaction
     @Query("DELETE FROM Habit WHERE id = :habitId")

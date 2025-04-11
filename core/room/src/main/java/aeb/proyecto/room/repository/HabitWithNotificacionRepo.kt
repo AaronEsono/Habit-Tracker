@@ -1,9 +1,7 @@
 package aeb.proyecto.room.repository
 
 import aeb.proyecto.room.dao.HabitWithNotificationDao
-import aeb.proyecto.room.entities.habit.Habit
-import aeb.proyecto.room.entities.Notification
-import aeb.proyecto.room.entities.notification.HabitNotification
+import aeb.proyecto.room.entities.HabitNotification
 import aeb.proyecto.room.entities.relations.HabitWithNotification
 import aeb.proyecto.room.model.NotificationWithNameAndColor
 import javax.inject.Inject
