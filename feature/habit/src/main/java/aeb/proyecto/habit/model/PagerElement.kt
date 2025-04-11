@@ -29,6 +29,10 @@ fun findPagerElement(tag:String):PagerElement {
     return PagerElement.entries.find { it.tag == tag } ?: PagerElement.DAILY
 }
 
+fun findPossiblePagerElement(tag:String):PagerElement? {
+    return PagerElement.entries.find { it.tag == tag }
+}
+
 val orderPagerElements = listOf(
     PagerElement.DAILY,
     PagerElement.WEEKLY,

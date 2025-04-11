@@ -10,6 +10,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 @Dao
 interface HabitWithDailyHabitDao {
@@ -27,7 +28,7 @@ interface HabitWithDailyHabitDao {
     fun updateHabit(habit: Habit)
 
     @Query("SELECT * FROM Habit")
-    fun getAllHabits():List<Habit>
+    fun getAllHabits():Flow<List<Habit>>
 
     @Query("SELECT * FROM HabitDay WHERE idHabit = :id")
     fun getDailyHabits(id:Long):List<HabitDay>
@@ -42,4 +43,7 @@ interface HabitWithDailyHabitDao {
 
     @Query("SELECT DISTINCT typeHabit FROM Habit")
     fun getExistingTypesHabit():Flow<List<TypeHabit>>
+
+    @Query("SELECT * FROM HabitDay WHERE date BETWEEN :startDate AND :endDate")
+    fun getDailyHabitsByDateRange(startDate: LocalDate, endDate: LocalDate): Flow<List<HabitDay>>
 }

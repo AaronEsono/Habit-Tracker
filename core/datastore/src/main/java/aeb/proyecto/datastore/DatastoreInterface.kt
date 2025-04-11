@@ -21,6 +21,10 @@ interface DatastoreInterface {
 
     suspend fun getLanguage():String?
 
+    suspend fun getTypeSelected():String?
+
+    suspend fun setTypeSelectedDate(type:String)
+
     suspend fun setDayStartWeek(day:String)
 
     suspend fun setLanguage(language:String)

@@ -27,6 +27,7 @@ class DataStoreManager @Inject constructor(
         private val EMAIL = stringPreferencesKey("email")
         private val PASSWORD = stringPreferencesKey("password")
         private val DAY_START_WEEK = stringPreferencesKey("dayStartWeek")
+        private val TYPE_SELECTED = stringPreferencesKey("typeSelected")
         private val CURRENT_ID = stringPreferencesKey("currentId")
         private val DATE  = stringPreferencesKey("date")
         private val SEARCHED = booleanPreferencesKey("searched")
@@ -67,6 +68,16 @@ class DataStoreManager @Inject constructor(
     suspend fun getLanguage() = dataStore.data.map { preferences ->
         preferences[LANGUAGE]
     }.firstOrNull()
+
+    suspend fun getTypeSeleted() = dataStore.data.map { preferences ->
+        preferences[TYPE_SELECTED]
+    }.firstOrNull()
+
+    suspend fun setTypeSelectedDate(type:String){
+        dataStore.edit { preferences ->
+            preferences[TYPE_SELECTED] = type
+        }
+    }
 
     suspend fun setDayStartWeek(day:String){
         dataStore.edit { preferences ->

@@ -4,6 +4,7 @@ import aeb.proyecto.habit.components.loading.HabitLoading
 import aeb.proyecto.habit.components.screen.NoHabitScreen
 import aeb.proyecto.habit.components.screen.PagerElementScreen
 import aeb.proyecto.habit.model.PagerElement
+import aeb.proyecto.habit.model.PagerSelected
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import java.time.LocalDate
 
 //Iconos de flaticon y svgRepo
 
@@ -31,6 +33,8 @@ fun HabitScreen(
 
     val typeUIState = viewModel.typeUIState.collectAsStateWithLifecycle().value
     val selectedType = viewModel.selectedType.collectAsStateWithLifecycle().value
+    val habitUIState = viewModel.habitUIState.collectAsStateWithLifecycle().value
+    val dateSelected = viewModel.dateSelected.collectAsStateWithLifecycle().value
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.habit_topbar), fontSize = 20.sp)
@@ -50,7 +54,9 @@ fun HabitScreen(
 
     HabitScreen(
         typeUIState = typeUIState,
-        selectedType = selectedType,
+        habitsUIState = habitUIState,
+        pagerSelected = selectedType,
+        dateSelected = dateSelected,
         onClickTab = viewModel::onClickTab
     )
 }
@@ -58,8 +64,10 @@ fun HabitScreen(
 @Composable
 internal fun HabitScreen(
     typeUIState: TypeUIState,
-    selectedType: Int,
-    onClickTab: (Int) -> Unit = {}
+    habitsUIState : HabitsUIState,
+    pagerSelected: SelectedTypeState,
+    dateSelected: LocalDate = LocalDate.now(),
+    onClickTab: (PagerElement) -> Unit = {}
 ) {
     when (typeUIState) {
         TypeUIState.Error -> Unit
@@ -72,7 +80,8 @@ internal fun HabitScreen(
             } else {
                 PagerElementScreen(
                     pagerElements = typeUIState.availableTypes,
-                    selectedType = selectedType,
+                    habitsUIState = habitsUIState,
+                    pagerSelected = pagerSelected,
                     onClickTab = onClickTab
                 )
             }

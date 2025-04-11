@@ -1,8 +1,15 @@
 package aeb.proyecto.habit.components.screen
 
+import aeb.proyecto.habit.HabitsUIState
+import aeb.proyecto.habit.SelectedTypeState
 import aeb.proyecto.habit.TypeUIState
+import aeb.proyecto.habit.components.loading.HabitLoading
+import aeb.proyecto.habit.components.screen.typeHabits.DailyHabitsScreen
+import aeb.proyecto.habit.components.screen.typeHabits.MonthlyHabitsScreen
 import aeb.proyecto.habit.model.PagerElement
+import aeb.proyecto.habit.model.PagerSelected
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,23 +27,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PagerElementScreen(
     pagerElements: List<PagerElement>,
-    selectedType: Int,
-    onClickTab: (Int) -> Unit = {}
+    habitsUIState: HabitsUIState,
+    pagerSelected: SelectedTypeState,
+    dateSelected: LocalDate = LocalDate.now(),
+    onClickTab: (PagerElement) -> Unit = {}
 ){
+
+    val selectedTabIndex = when (pagerSelected) {
+        is SelectedTypeState.Selected -> pagerSelected.pagerSelected.index
+        else -> 0 // O un índice predeterminado si no está inicializado
+    }
 
     Column (
         modifier = Modifier.fillMaxSize()
     ){
 
-        PrimaryTabRow(selectedTabIndex = selectedType,
+        PrimaryTabRow(selectedTabIndex = selectedTabIndex,
             indicator = {
                 TabRowDefaults.PrimaryIndicator(
-                    modifier = Modifier.tabIndicatorOffset(selectedType, matchContentSize = true),
+                    modifier = Modifier.tabIndicatorOffset(selectedTabIndex, matchContentSize = true),
                     width = Dp.Unspecified,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -48,8 +63,8 @@ fun PagerElementScreen(
         ) {
             pagerElements.forEachIndexed { index, pagerElement ->
                 Tab(
-                    selected = selectedType == index,
-                    onClick = { onClickTab(index) },
+                    selected = selectedTabIndex == index,
+                    onClick = { onClickTab(pagerElement) },
                     text = {
                         LabelLargeText(
                             stringResource(pagerElement.title),
@@ -60,7 +75,26 @@ fun PagerElementScreen(
             }
         }
 
-        //Content
+        // Content
+        when (habitsUIState) {
+            is HabitsUIState.Loading, is HabitsUIState.Error, is HabitsUIState.Empty -> {
+                HabitLoading()
+            }
+            is HabitsUIState.Success -> {
+                if (pagerSelected is SelectedTypeState.Selected) {
+                    when (pagerSelected.pagerSelected.pagerElement) {
+                        PagerElement.DAILY -> {
+                            DailyHabitsScreen()
+                        }
+                        PagerElement.WEEKLY -> {}
+                        PagerElement.MONTHLY -> {
+                            MonthlyHabitsScreen()
+                        }
+                        PagerElement.RECURRING -> {}
+                    }
+                }
+            }
+        }
 
     }
 }

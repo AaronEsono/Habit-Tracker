@@ -1,11 +1,13 @@
 package aeb.proyecto.room.repository
 
 import aeb.proyecto.room.dao.HabitWithDailyHabitDao
-import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 import javax.inject.Inject
 
 class HabitWithDailyHabitRepo @Inject constructor(
@@ -36,10 +38,6 @@ class HabitWithDailyHabitRepo @Inject constructor(
         return habitWithDailyHabitDao.getDailyHabits(id)
     }
 
-    fun getAllHabits(): List<Habit> {
-        return habitWithDailyHabitDao.getAllHabits()
-    }
-
     fun getHabits(): Flow<List<HabitWithDailyHabit>> {
         return habitWithDailyHabitDao.getHabits()
     }
@@ -52,4 +50,19 @@ class HabitWithDailyHabitRepo @Inject constructor(
                     .map { it.tag }
             }
     }
+
+    fun getHabitWithDailyHabitsByDateAndType(startDate: LocalDate, endDate: LocalDate, tag:String): Flow<List<HabitWithDailyHabit>> {
+        return combine(
+            habitWithDailyHabitDao.getAllHabits(),
+            habitWithDailyHabitDao.getDailyHabitsByDateRange(startDate, endDate)
+        ) { habits, filteredDays ->
+            habits
+                .filter { it.typeHabit.tag == tag }
+                .map { habit ->
+                    val daysForHabit = filteredDays.filter { it.idHabit == habit.id }
+                    HabitWithDailyHabit(habit = habit, dailyHabits = daysForHabit.toMutableList())
+                }
+        }
+    }
 }
+

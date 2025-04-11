@@ -36,6 +36,14 @@ class DatastoreRepository @Inject constructor(
         return dataStoreManager.getDayStartWeek()
     }
 
+    override suspend fun getTypeSelected(): String? {
+        return dataStoreManager.getTypeSeleted()
+    }
+
+    override suspend fun setTypeSelectedDate(type: String) {
+        dataStoreManager.setTypeSelectedDate(type)
+    }
+
     override suspend fun setDayStartWeek(day: String) {
         dataStoreManager.setDayStartWeek(day)
     }
