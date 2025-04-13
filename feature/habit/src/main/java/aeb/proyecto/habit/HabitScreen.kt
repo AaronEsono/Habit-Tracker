@@ -36,48 +36,48 @@ fun HabitScreen(
     navigateToAddHabit: (Long) -> Unit
 ){
 
-    val typeUIState = viewModel.typeUIState.collectAsStateWithLifecycle().value
-    val selectedType = viewModel.selectedType.collectAsStateWithLifecycle().value
-    val habitUIState = viewModel.habitUIState.collectAsStateWithLifecycle().value
-    val dateSelected = viewModel.dateSelected.collectAsStateWithLifecycle().value
+    val pagerTypesUIState = viewModel.availablePagerTypesUiState.collectAsStateWithLifecycle().value
+    val currentPagerSelected = viewModel.currentPagerType.collectAsStateWithLifecycle().value
+    val filteredHabitsUiState = viewModel.habitsForSelectedTimeUiState.collectAsStateWithLifecycle().value
+    val selectedDate = viewModel.selectedDate.collectAsStateWithLifecycle().value
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.habit_topbar), fontSize = 20.sp)
     }
 
     HabitScreen(
-        typeUIState = typeUIState,
-        habitsUIState = habitUIState,
-        pagerSelected = selectedType,
-        dateSelected = dateSelected,
+        pagerTypesUIState = pagerTypesUIState,
+        filteredHabitsUiState = filteredHabitsUiState,
+        currentPagerSelected = currentPagerSelected,
+        dateSelected = selectedDate,
         navigateToAddHabit = navigateToAddHabit,
-        onClickTab = viewModel::onClickTab
+        onClickTab = viewModel::onPagerTypeSelected
     )
 }
 
 @Composable
 internal fun HabitScreen(
-    typeUIState: TypeUIState,
-    habitsUIState : HabitsUIState,
-    pagerSelected: SelectedTypeState,
+    pagerTypesUIState: PagerTypesUiState,
+    filteredHabitsUiState: FilteredHabitsUiState,
+    currentPagerSelected: CurrentPagerSelection,
     dateSelected: LocalDate = LocalDate.now(),
     navigateToAddHabit: (Long) -> Unit = {},
     onClickTab: (PagerElement) -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize()){
-        when (typeUIState) {
-            TypeUIState.Error -> Unit
-            TypeUIState.Loading -> {
+        when (pagerTypesUIState) {
+            PagerTypesUiState.Error -> Unit
+            PagerTypesUiState.Loading -> {
                 HabitLoading()
             }
-            is TypeUIState.Success -> {
-                if (typeUIState.availableTypes.isEmpty()) {
+            is PagerTypesUiState.Success -> {
+                if (pagerTypesUIState.availableTypes.isEmpty()) {
                     NoHabitScreen()
                 } else {
                     PagerElementScreen(
-                        pagerElements = typeUIState.availableTypes,
-                        habitsUIState = habitsUIState,
-                        pagerSelected = pagerSelected,
+                        pagerElements = pagerTypesUIState.availableTypes,
+                        filteredHabitsUIState = filteredHabitsUiState,
+                        currentPagerSelected = currentPagerSelected,
                         onClickTab = onClickTab
                     )
                 }

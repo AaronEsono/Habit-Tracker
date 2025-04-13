@@ -11,6 +11,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import javax.inject.Inject
 
+/** Use case para obtener los hábitos de un tipo en un rango de tiempo */
 class GetDailyHabitUseCase @Inject constructor(
     private val habitWithDailyHabitRepo: HabitWithDailyHabitRepo
 ){

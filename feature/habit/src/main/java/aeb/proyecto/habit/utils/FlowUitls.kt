@@ -1,21 +1,24 @@
 package aeb.proyecto.habit.utils
 
 import aeb.proyecto.datastore.DatastoreInterface
-import aeb.proyecto.habit.SelectedTypeState
+import aeb.proyecto.habit.CurrentPagerSelection
 import aeb.proyecto.habit.model.PagerElement
 import aeb.proyecto.habit.model.PagerSelected
 import kotlinx.coroutines.flow.StateFlow
-import java.time.DayOfWeek
-import java.time.LocalDate
 
+/*
+    Funcion que inicializa el tipo de hábito seleccionado por el usuario
+
+    pilla del datastore el ultimo valor, sino, pilla el primero de la lista
+ */
 suspend fun initializeSelectedTypeIfNeeded(
     sortedTypes: List<PagerElement>,
-    selectedType: StateFlow<SelectedTypeState>,
+    selectedType: StateFlow<CurrentPagerSelection>,
     datastore: DatastoreInterface,
-    updateSelected: (SelectedTypeState) -> Unit,
+    updateSelected: (CurrentPagerSelection) -> Unit,
 ): Boolean {
     return try {
-        if (selectedType.value is SelectedTypeState.Uninitialized) {
+        if (selectedType.value is CurrentPagerSelection.Uninitialized) {
             val savedTag = datastore.getTypeSelected() ?: "Daily"
             var pageElement = sortedTypes.find { it.tag == savedTag }
 
@@ -26,7 +29,7 @@ suspend fun initializeSelectedTypeIfNeeded(
 
             pageElement?.let {
                 updateSelected(
-                    SelectedTypeState.Selected(
+                    CurrentPagerSelection.Selected(
                         PagerSelected(
                             pagerElement = it,
                             index = sortedTypes.indexOf(it)

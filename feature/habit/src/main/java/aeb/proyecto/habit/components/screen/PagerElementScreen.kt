@@ -1,7 +1,7 @@
 package aeb.proyecto.habit.components.screen
 
-import aeb.proyecto.habit.HabitsUIState
-import aeb.proyecto.habit.SelectedTypeState
+import aeb.proyecto.habit.CurrentPagerSelection
+import aeb.proyecto.habit.FilteredHabitsUiState
 import aeb.proyecto.habit.components.loading.HabitLoading
 import aeb.proyecto.habit.components.screen.typeHabits.DailyHabitsScreen
 import aeb.proyecto.habit.components.screen.typeHabits.MonthlyHabitsScreen
@@ -26,14 +26,14 @@ import java.time.LocalDate
 @Composable
 fun PagerElementScreen(
     pagerElements: List<PagerElement>,
-    habitsUIState: HabitsUIState,
-    pagerSelected: SelectedTypeState,
-    dateSelected: LocalDate = LocalDate.now(),
+    filteredHabitsUIState: FilteredHabitsUiState,
+    currentPagerSelected: CurrentPagerSelection,
+    selectedDate: LocalDate = LocalDate.now(),
     onClickTab: (PagerElement) -> Unit = {}
 ){
 
-    val selectedTabIndex = when (pagerSelected) {
-        is SelectedTypeState.Selected -> pagerSelected.pagerSelected.index
+    val selectedTabIndex = when (currentPagerSelected) {
+        is CurrentPagerSelection.Selected -> currentPagerSelected.pagerSelected.index
         else -> 0 // O un índice predeterminado si no está inicializado
     }
 
@@ -69,13 +69,13 @@ fun PagerElementScreen(
         }
 
         // Content
-        when (habitsUIState) {
-            is HabitsUIState.Loading, is HabitsUIState.Error, is HabitsUIState.Empty -> {
+        when (filteredHabitsUIState) {
+            is FilteredHabitsUiState.Loading, is FilteredHabitsUiState.Error, is FilteredHabitsUiState.Empty -> {
                 HabitLoading()
             }
-            is HabitsUIState.Success -> {
-                if (pagerSelected is SelectedTypeState.Selected) {
-                    when (pagerSelected.pagerSelected.pagerElement) {
+            is FilteredHabitsUiState.Success -> {
+                if (currentPagerSelected is CurrentPagerSelection.Selected) {
+                    when (currentPagerSelected.pagerSelected.pagerElement) {
                         PagerElement.DAILY -> {
                             DailyHabitsScreen()
                         }

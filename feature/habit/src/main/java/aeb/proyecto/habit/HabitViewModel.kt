@@ -2,6 +2,8 @@ package aeb.proyecto.habit
 
 import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.domain.usecase.habit.GetDailyHabitUseCase
+import aeb.proyecto.habit.constants.rangeDays
+import aeb.proyecto.habit.constants.stopTimeOutMillis
 import aeb.proyecto.habit.model.PagerElement
 import aeb.proyecto.habit.model.PagerSelected
 import aeb.proyecto.habit.model.findPagerElement
@@ -44,24 +46,31 @@ class HabitViewModel @Inject constructor(
     private val datastoreInterface: DatastoreInterface
 ):ViewModel() {
 
-    private val _dateSelected = MutableStateFlow(LocalDate.now())
-    val dateSelected:StateFlow<LocalDate> = _dateSelected.asStateFlow()
+    /** Fecha seleccionada actual por el usuario. */
+    private val _selectedDate = MutableStateFlow(LocalDate.now())
+    val selectedDate:StateFlow<LocalDate> = _selectedDate.asStateFlow()
 
-    private val _selectedType = MutableStateFlow<SelectedTypeState>(SelectedTypeState.Uninitialized)
-    val selectedType: StateFlow<SelectedTypeState> = _selectedType.asStateFlow()
+    /** Tipo de hábito seleccionado por el usuario, reflejado en la pantalla con un tabRow. */
+    private val _currentPagerType  = MutableStateFlow<CurrentPagerSelection>(CurrentPagerSelection.Uninitialized)
+    val currentPagerType : StateFlow<CurrentPagerSelection> = _currentPagerType.asStateFlow()
 
+    /** Día de inicio de la semana seleccionado por el usuario. */
     private val _startDayOfWeek:StateFlow<DayOfWeek?> = datastoreInterface.dayOfWeek
         .map { dayOfWeek ->
             DayOfWeek.valueOf(dayOfWeek)
         }
         .stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
+        started = SharingStarted.WhileSubscribed(stopTimeOutMillis),
         initialValue = null
     )
 
+    /**
+     * Reúne los distintos tipos de hábitos que tiene el usuario.
+     * Filtra y ordena los tipos para luego mostrarlos en pantalla.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
-    val typeUIState: StateFlow<TypeUIState> = habitWithDailyHabitRepo.getExistingTypesHabit()
+    val availablePagerTypesUiState: StateFlow<PagerTypesUiState> = habitWithDailyHabitRepo.getExistingTypesHabit()
         .map { types ->
             types.map { findPagerElement(it) }
                 .sortedBy { orderPagerElements.indexOf(it) }
@@ -70,127 +79,140 @@ class HabitViewModel @Inject constructor(
             flow {
                 val initialized = initializeSelectedTypeIfNeeded(
                     sortedTypes = sortedTypes,
-                    selectedType = selectedType,
-                    updateSelected = { _selectedType.value = it },
+                    selectedType = _currentPagerType,
+                    updateSelected = { _currentPagerType.value = it },
                     datastore = datastoreInterface,
                 )
 
                 emit(
-                    if (initialized) TypeUIState.Success(sortedTypes)
-                    else TypeUIState.Error
+                    if (initialized) PagerTypesUiState.Success(sortedTypes)
+                    else PagerTypesUiState.Error
                 )
             }
         }
         .catch {
-            emit(TypeUIState.Error)
+            emit(PagerTypesUiState.Error)
         }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = TypeUIState.Loading
+            started = SharingStarted.WhileSubscribed(stopTimeOutMillis),
+            initialValue = PagerTypesUiState.Loading
         )
 
-    private val timeSelectedUIState: StateFlow<TimeSelectedUiState> =
-        combine(_dateSelected, _selectedType,_startDayOfWeek){ date, selected,dayOfWeek ->
+    /**
+     * Calcula el rango de fechas que se debe mostrar, en función del tipo de hábito seleccionado.
+     * Por ejemplo: días para hábitos diarios, semanas para semanales, etc.
+     */
+    val selectedTimeRangeUiState: StateFlow<TimeRangeUiState> =
+        combine(_selectedDate, _currentPagerType,_startDayOfWeek){ date, selected,dayOfWeek ->
             val tag = selected.getTag()
             when(tag){
                 DAILY_TAG ->{
-                    val days = (-150..50).map { date.plusDays(it.toLong()) }
-                    TimeSelectedUiState.Daily(days, date)
+                    val days = rangeDays.map { date.plusDays(it.toLong()) }
+                    TimeRangeUiState.Daily(days, date)
                 }
                 RECURRING_TAG ->{
-                    val days = (-150..50).map { date.plusDays(it.toLong()) }
-                    TimeSelectedUiState.Recurring(days, date)
+                    val days = rangeDays.map { date.plusDays(it.toLong()) }
+                    TimeRangeUiState.Recurring(days, date)
                 }
                 WEEKLY_TAG ->{
-                    if (dayOfWeek == null) return@combine TimeSelectedUiState.Empty
+                    if (dayOfWeek == null) return@combine TimeRangeUiState.Empty
 
                     val startOfWeek = date.with(TemporalAdjusters.previousOrSame(dayOfWeek))
                     val endOfWeek = startOfWeek.plusDays(6)
-                    TimeSelectedUiState.Weekly(startOfWeek, endOfWeek)
+                    TimeRangeUiState.Weekly(startOfWeek, endOfWeek)
                 }
                 MONTHLY_TAG ->{
                     val start = date.withDayOfMonth(1)
                     val end = date.withDayOfMonth(date.lengthOfMonth())
-                    TimeSelectedUiState.Monthly(start, end)
+                    TimeRangeUiState.Monthly(start, end)
                 }
-                else -> TimeSelectedUiState.Empty
+                else -> TimeRangeUiState.Empty
             }
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = TimeSelectedUiState.Empty
+        started = SharingStarted.WhileSubscribed(stopTimeOutMillis),
+        initialValue = TimeRangeUiState.Empty
     )
 
+    /**
+     * Habitos filtrados según el rango temporal y el tipo de hábito.
+     * Pilla tanto el hábito como sus registros (dailyHabits).
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
-    val habitUIState: StateFlow<HabitsUIState> = timeSelectedUIState
+    val habitsForSelectedTimeUiState: StateFlow<FilteredHabitsUiState> = selectedTimeRangeUiState
         .flatMapLatest { timeState ->
             when (timeState) {
-                is TimeSelectedUiState.Daily -> {
+                is TimeRangeUiState.Daily -> {
                     getDailyHabitUseCase(timeState.selected,timeState.selected, DAILY_TAG) // O usa el tag real
-                        .map<List<HabitWithDailyHabit>, HabitsUIState> { HabitsUIState.Success(it) }
-                        .catch { emit(HabitsUIState.Error) }
+                        .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> { FilteredHabitsUiState.Success(it) }
+                        .catch { emit(FilteredHabitsUiState.Error) }
                 }
-                is TimeSelectedUiState.Recurring -> {
+                is TimeRangeUiState.Recurring -> {
                     getDailyHabitUseCase(timeState.selected,timeState.selected, RECURRING_TAG) // O usa el tag real
-                        .map<List<HabitWithDailyHabit>, HabitsUIState> { HabitsUIState.Success(it) }
-                        .catch { emit(HabitsUIState.Error) }
+                        .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> { FilteredHabitsUiState.Success(it) }
+                        .catch { emit(FilteredHabitsUiState.Error) }
                 }
-                is TimeSelectedUiState.Weekly -> {
+                is TimeRangeUiState.Weekly -> {
                     getDailyHabitUseCase(timeState.startOfWeek, timeState.endOfWeek, WEEKLY_TAG)
-                        .map<List<HabitWithDailyHabit>, HabitsUIState> { HabitsUIState.Success(it) }
-                        .catch { emit(HabitsUIState.Error) }
+                        .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> { FilteredHabitsUiState.Success(it) }
+                        .catch { emit(FilteredHabitsUiState.Error) }
                 }
-                is TimeSelectedUiState.Monthly -> {
+                is TimeRangeUiState.Monthly -> {
                     getDailyHabitUseCase(timeState.startOfMonth, timeState.endOfMonth, MONTHLY_TAG)
-                        .map<List<HabitWithDailyHabit>, HabitsUIState> { HabitsUIState.Success(it) }
-                        .catch { emit(HabitsUIState.Error) }
+                        .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> { FilteredHabitsUiState.Success(it) }
+                        .catch { emit(FilteredHabitsUiState.Error) }
                 }
-                else -> flowOf(HabitsUIState.Empty)
+                else -> flowOf(FilteredHabitsUiState.Empty)
             }
         }
         .stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            HabitsUIState.Loading
+            SharingStarted.WhileSubscribed(stopTimeOutMillis),
+            FilteredHabitsUiState.Loading
         )
 
-    fun onClickTab(pagerElement: PagerElement) = viewModelScope.launch{
-        (typeUIState.value as? TypeUIState.Success)?.availableTypes
+    /**
+     * Cambia el tipo de hábito seleccionado.
+     *
+     * @param pagerElement Elemento seleccionado del TabRow.
+     */
+    fun onPagerTypeSelected(pagerElement: PagerElement) = viewModelScope.launch{
+        (availablePagerTypesUiState.value as? PagerTypesUiState.Success)?.availableTypes
             ?.indexOfFirst { it == pagerElement }
             ?.takeIf { it >= 0 }
             ?.let { index ->
-                _selectedType.value = SelectedTypeState.Selected(PagerSelected(index, pagerElement))
+                _currentPagerType.value = CurrentPagerSelection.Selected(PagerSelected(index, pagerElement))
                 datastoreInterface.setTypeSelectedDate(pagerElement.tag)
             }
     }
 
 }
 
-sealed class TypeUIState(){
-    data class Success(val availableTypes:List<PagerElement>):TypeUIState()
-    data object Error:TypeUIState()
-    data object Loading:TypeUIState()
+sealed class PagerTypesUiState(){
+    data class Success(val availableTypes:List<PagerElement>):PagerTypesUiState()
+    data object Error:PagerTypesUiState()
+    data object Loading:PagerTypesUiState()
 }
 
-sealed class HabitsUIState(){
-    data class Success(val habits:List<HabitWithDailyHabit>):HabitsUIState()
-    data object Error:HabitsUIState()
-    data object Loading:HabitsUIState()
-    data object Empty:HabitsUIState()
+sealed class FilteredHabitsUiState(){
+    data class Success(val habits:List<HabitWithDailyHabit>):FilteredHabitsUiState()
+    data object Error:FilteredHabitsUiState()
+    data object Loading:FilteredHabitsUiState()
+    data object Empty:FilteredHabitsUiState()
 }
 
-sealed class SelectedTypeState {
-    data object Uninitialized : SelectedTypeState()
-    data class Selected(val pagerSelected: PagerSelected) : SelectedTypeState()
+sealed class CurrentPagerSelection {
+    data object Uninitialized : CurrentPagerSelection()
+    data class Selected(val pagerSelected: PagerSelected) : CurrentPagerSelection()
 
     fun getTag(): String? = (this as? Selected)?.pagerSelected?.pagerElement?.tag
 }
 
-sealed class TimeSelectedUiState {
-    data object Empty : TimeSelectedUiState()
-    data class Daily(val days: List<LocalDate>, val selected: LocalDate) : TimeSelectedUiState()
-    data class Recurring(val days: List<LocalDate>, val selected: LocalDate) : TimeSelectedUiState()
-    data class Weekly(val startOfWeek: LocalDate, val endOfWeek: LocalDate) : TimeSelectedUiState()
-    data class Monthly(val startOfMonth: LocalDate, val endOfMonth: LocalDate) : TimeSelectedUiState()
+sealed class TimeRangeUiState {
+    data object Empty : TimeRangeUiState()
+    data class Daily(val days: List<LocalDate>, val selected: LocalDate) : TimeRangeUiState()
+    data class Recurring(val days: List<LocalDate>, val selected: LocalDate) : TimeRangeUiState()
+    data class Weekly(val startOfWeek: LocalDate, val endOfWeek: LocalDate) : TimeRangeUiState()
+    data class Monthly(val startOfMonth: LocalDate, val endOfMonth: LocalDate) : TimeRangeUiState()
 }
