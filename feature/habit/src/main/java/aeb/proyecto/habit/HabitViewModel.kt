@@ -2,6 +2,8 @@ package aeb.proyecto.habit
 
 import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.domain.usecase.habit.GetDailyHabitUseCase
+import aeb.proyecto.domain.usecase.habit.GetTypesOfHabitUseCase
+import aeb.proyecto.domain.usecase.habit.HabitDatastoreUseCase
 import aeb.proyecto.habit.constants.rangeDays
 import aeb.proyecto.habit.constants.stopTimeOutMillis
 import aeb.proyecto.habit.model.PagerElement
@@ -41,9 +43,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HabitViewModel @Inject constructor(
-    private val habitWithDailyHabitRepo: HabitWithDailyHabitRepo,
+    private val getTypesOfHabitUseCase: GetTypesOfHabitUseCase,
     private val getDailyHabitUseCase: GetDailyHabitUseCase,
-    private val datastoreInterface: DatastoreInterface
+    private val habitDatastoreUseCase: HabitDatastoreUseCase
 ):ViewModel() {
 
     /** Fecha seleccionada actual por el usuario. */
@@ -55,10 +57,7 @@ class HabitViewModel @Inject constructor(
     val currentPagerType : StateFlow<CurrentPagerSelection> = _currentPagerType.asStateFlow()
 
     /** Día de inicio de la semana seleccionado por el usuario. */
-    private val _startDayOfWeek:StateFlow<DayOfWeek?> = datastoreInterface.dayOfWeek
-        .map { dayOfWeek ->
-            DayOfWeek.valueOf(dayOfWeek)
-        }
+    private val _startDayOfWeek:StateFlow<DayOfWeek?> = habitDatastoreUseCase.startDayOfWeek
         .stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeOutMillis),
@@ -70,7 +69,7 @@ class HabitViewModel @Inject constructor(
      * Filtra y ordena los tipos para luego mostrarlos en pantalla.
      */
     @OptIn(ExperimentalCoroutinesApi::class)
-    val availablePagerTypesUiState: StateFlow<PagerTypesUiState> = habitWithDailyHabitRepo.getExistingTypesHabit()
+    val availablePagerTypesUiState: StateFlow<PagerTypesUiState> = getTypesOfHabitUseCase()
         .map { types ->
             types.map { findPagerElement(it) }
                 .sortedBy { orderPagerElements.indexOf(it) }
@@ -81,7 +80,7 @@ class HabitViewModel @Inject constructor(
                     sortedTypes = sortedTypes,
                     selectedType = _currentPagerType,
                     updateSelected = { _currentPagerType.value = it },
-                    datastore = datastoreInterface,
+                    habitDatastoreUseCase = habitDatastoreUseCase,
                 )
 
                 emit(
@@ -183,7 +182,7 @@ class HabitViewModel @Inject constructor(
             ?.takeIf { it >= 0 }
             ?.let { index ->
                 _currentPagerType.value = CurrentPagerSelection.Selected(PagerSelected(index, pagerElement))
-                datastoreInterface.setTypeSelectedDate(pagerElement.tag)
+                habitDatastoreUseCase.setSelectedHabitType(pagerElement.tag)
             }
     }
 

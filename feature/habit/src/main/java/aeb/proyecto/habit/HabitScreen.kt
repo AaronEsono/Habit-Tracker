@@ -28,8 +28,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import java.time.LocalDate
 
-//Iconos de flaticon y svgRepo
+// NOTA: Iconos de flaticon y svgRepo
 
+/** Pantalla para mostrar los hábitos e intercactuar con ellos,
+ * como añadir nuevos dailyHabits, borrar hábitos o editarlos.*/
 @Composable
 fun HabitScreen(
     viewModel: HabitViewModel = hiltViewModel(),
