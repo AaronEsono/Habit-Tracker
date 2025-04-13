@@ -40,20 +40,3 @@ suspend fun initializeSelectedTypeIfNeeded(
         false
     }
 }
-
-fun getDateRangeByTag(tag: String, selectedDate: LocalDate): Pair<LocalDate, LocalDate> {
-    return when (tag.uppercase()) {
-        "DAILY", "RECURRING" -> selectedDate to selectedDate
-        "WEEKLY" -> {
-            val start = selectedDate.with(DayOfWeek.MONDAY)
-            val end = selectedDate.with(DayOfWeek.SUNDAY)
-            start to end
-        }
-        "MONTHLY" -> {
-            val start = selectedDate.withDayOfMonth(1)
-            val end = selectedDate.withDayOfMonth(selectedDate.lengthOfMonth())
-            start to end
-        }
-        else -> selectedDate to selectedDate
-    }
-}

@@ -1,10 +1,10 @@
 package aeb.proyecto.room.converters
 
-import aeb.proyecto.room.model.classes.DAILY
-import aeb.proyecto.room.model.classes.MONTHLY
-import aeb.proyecto.room.model.classes.RECURRING
+import aeb.proyecto.room.model.classes.DAILY_TAG
+import aeb.proyecto.room.model.classes.MONTHLY_TAG
+import aeb.proyecto.room.model.classes.RECURRING_TAG
 import aeb.proyecto.room.model.classes.TypeHabit
-import aeb.proyecto.room.model.classes.WEEKLY
+import aeb.proyecto.room.model.classes.WEEKLY_TAG
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -79,14 +79,14 @@ class TypeHabitAdapter : JsonSerializer<TypeHabit>, JsonDeserializer<TypeHabit> 
         val type = jsonObject?.get("tag")?.asString
 
         return when (type) {
-            DAILY -> TypeHabit.Daily
-            WEEKLY -> TypeHabit.Weekly(
+            DAILY_TAG -> TypeHabit.Daily
+            WEEKLY_TAG -> TypeHabit.Weekly(
                 numberDays = jsonObject.get("numberDays")?.asInt ?: 1
             )
-            MONTHLY -> TypeHabit.Monthly(
+            MONTHLY_TAG -> TypeHabit.Monthly(
                 numberTimes = jsonObject.get("numberTimes")?.asInt ?: 1
             )
-            RECURRING -> TypeHabit.Recurring(
+            RECURRING_TAG -> TypeHabit.Recurring(
                 date = LocalDate.parse(jsonObject.get("date")?.asString),
                 interval = jsonObject.get("interval")?.asInt ?: 1
             )

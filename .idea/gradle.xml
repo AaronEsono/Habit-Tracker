@@ -31,6 +31,7 @@
             <option value="$PROJECT_DIR$/core/analytics" />
             <option value="$PROJECT_DIR$/core/authentication" />
             <option value="$PROJECT_DIR$/core/datastore" />
+            <option value="$PROJECT_DIR$/core/domain" />
             <option value="$PROJECT_DIR$/core/firestore" />
             <option value="$PROJECT_DIR$/core/language" />
             <option value="$PROJECT_DIR$/core/room" />

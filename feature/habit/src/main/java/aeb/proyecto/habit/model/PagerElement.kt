@@ -1,6 +1,10 @@
 package aeb.proyecto.habit.model
 
 import aeb.proyecto.habit.R
+import aeb.proyecto.room.model.classes.DAILY_TAG
+import aeb.proyecto.room.model.classes.MONTHLY_TAG
+import aeb.proyecto.room.model.classes.RECURRING_TAG
+import aeb.proyecto.room.model.classes.WEEKLY_TAG
 import androidx.annotation.StringRes
 
 enum class PagerElement(
@@ -8,29 +12,25 @@ enum class PagerElement(
     @StringRes val title:Int,
 ){
     DAILY(
-        tag = "DAILY",
+        tag = DAILY_TAG,
         title = R.string.pager_element_daily
     ),
     WEEKLY(
-        tag = "WEEKLY",
+        tag = WEEKLY_TAG,
         title = R.string.pager_element_weekly
     ),
     MONTHLY(
-        tag = "MONTHLY",
+        tag = MONTHLY_TAG,
         title = R.string.pager_element_monthly
     ),
     RECURRING(
-        tag = "RECURRING",
+        tag = RECURRING_TAG,
         title = R.string.pager_element_recurring
     )
 }
 
 fun findPagerElement(tag:String):PagerElement {
     return PagerElement.entries.find { it.tag == tag } ?: PagerElement.DAILY
-}
-
-fun findPossiblePagerElement(tag:String):PagerElement? {
-    return PagerElement.entries.find { it.tag == tag }
 }
 
 val orderPagerElements = listOf(

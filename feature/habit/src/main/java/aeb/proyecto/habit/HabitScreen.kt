@@ -4,12 +4,17 @@ import aeb.proyecto.habit.components.loading.HabitLoading
 import aeb.proyecto.habit.components.screen.NoHabitScreen
 import aeb.proyecto.habit.components.screen.PagerElementScreen
 import aeb.proyecto.habit.model.PagerElement
-import aeb.proyecto.habit.model.PagerSelected
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.dimmens.Dimmens.spacing16
+import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,23 +45,12 @@ fun HabitScreen(
         LabelLargeText(stringResource(R.string.habit_topbar), fontSize = 20.sp)
     }
 
-    ProvideAppBarActions {
-        IconButton(
-            onClick = {navigateToAddHabit(-1L)}
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_add),
-                contentDescription = "action button habit",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-        }
-    }
-
     HabitScreen(
         typeUIState = typeUIState,
         habitsUIState = habitUIState,
         pagerSelected = selectedType,
         dateSelected = dateSelected,
+        navigateToAddHabit = navigateToAddHabit,
         onClickTab = viewModel::onClickTab
     )
 }
@@ -67,23 +61,37 @@ internal fun HabitScreen(
     habitsUIState : HabitsUIState,
     pagerSelected: SelectedTypeState,
     dateSelected: LocalDate = LocalDate.now(),
+    navigateToAddHabit: (Long) -> Unit = {},
     onClickTab: (PagerElement) -> Unit = {}
 ) {
-    when (typeUIState) {
-        TypeUIState.Error -> Unit
-        TypeUIState.Loading -> {
-            HabitLoading()
+    Box(modifier = Modifier.fillMaxSize()){
+        when (typeUIState) {
+            TypeUIState.Error -> Unit
+            TypeUIState.Loading -> {
+                HabitLoading()
+            }
+            is TypeUIState.Success -> {
+                if (typeUIState.availableTypes.isEmpty()) {
+                    NoHabitScreen()
+                } else {
+                    PagerElementScreen(
+                        pagerElements = typeUIState.availableTypes,
+                        habitsUIState = habitsUIState,
+                        pagerSelected = pagerSelected,
+                        onClickTab = onClickTab
+                    )
+                }
+            }
         }
-        is TypeUIState.Success -> {
-            if (typeUIState.availableTypes.isEmpty()) {
-                NoHabitScreen()
-            } else {
-                PagerElementScreen(
-                    pagerElements = typeUIState.availableTypes,
-                    habitsUIState = habitsUIState,
-                    pagerSelected = pagerSelected,
-                    onClickTab = onClickTab
-                )
+
+        CustomRipple {
+            FloatingActionButton(
+                onClick = { navigateToAddHabit(-1) },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(spacing16)
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = "Floating action button")
             }
         }
     }
