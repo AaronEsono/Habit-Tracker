@@ -20,6 +20,8 @@ val surfaceContainerDark = Color(0xFF848484)
 val surfaceTintDark = Color(0xFF191718)
 val surfaceContainerHighestDark = Color(0xFF131212)
 val scrimDark = Color(0xFFBABABA)
+val onBackgroundDark = Color(0xFFD1D2D4)
+val onSurfaceVariantDark = Color(0xFFA5A4A1)
 
 //Colores tema claro
 val backgroundLight = Color(0xFFFAF9F7)

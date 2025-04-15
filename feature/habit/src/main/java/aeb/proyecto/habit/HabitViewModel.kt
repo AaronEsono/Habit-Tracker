@@ -1,6 +1,5 @@
 package aeb.proyecto.habit
 
-import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.domain.usecase.habit.GetDailyHabitUseCase
 import aeb.proyecto.domain.usecase.habit.GetTypesOfHabitUseCase
 import aeb.proyecto.domain.usecase.habit.HabitDatastoreUseCase
@@ -16,25 +15,23 @@ import aeb.proyecto.room.model.classes.DAILY_TAG
 import aeb.proyecto.room.model.classes.MONTHLY_TAG
 import aeb.proyecto.room.model.classes.RECURRING_TAG
 import aeb.proyecto.room.model.classes.WEEKLY_TAG
-import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -103,52 +100,71 @@ class HabitViewModel @Inject constructor(
      * Por ejemplo: días para hábitos diarios, semanas para semanales, etc.
      */
     val selectedTimeRangeUiState: StateFlow<TimeRangeUiState> =
-        combine(_selectedDate, _currentPagerType,_startDayOfWeek){ date, selected,dayOfWeek ->
-            val tag = selected.getTag()
-            when(tag){
-                DAILY_TAG ->{
-                    val days = rangeDays.map { date.plusDays(it.toLong()) }
-                    TimeRangeUiState.Daily(days, date)
+        combine(_selectedDate, _currentPagerType, _startDayOfWeek) { date, selected, dayOfWeek ->
+            Triple(date, selected.getTag(), dayOfWeek)
+        }.scan<Triple<LocalDate, String?, DayOfWeek?>, TimeRangeUiState>(TimeRangeUiState.Empty) { previousState, (date, tag, dayOfWeek) ->
+
+            when (tag) {
+                DAILY_TAG-> {
+                    val prevRange = (previousState as? TimeRangeUiState.Daily)?.days.orEmpty()
+                    if (date in prevRange) {
+                        previousState // No actualizar el rango
+                    } else {
+                        val newDays = rangeDays.map { date.plusDays(it.toLong()) }
+                        TimeRangeUiState.Daily(newDays)
+                    }
                 }
-                RECURRING_TAG ->{
-                    val days = rangeDays.map { date.plusDays(it.toLong()) }
-                    TimeRangeUiState.Recurring(days, date)
+
+                RECURRING_TAG-> {
+                    val prevRange = (previousState as? TimeRangeUiState.Recurring)?.days.orEmpty()
+                    if (date in prevRange) {
+                        previousState // No actualizar el rango
+                    } else {
+                        val newDays = rangeDays.map { date.plusDays(it.toLong()) }
+                        TimeRangeUiState.Recurring(newDays)
+                    }
                 }
-                WEEKLY_TAG ->{
-                    if (dayOfWeek == null) return@combine TimeRangeUiState.Empty
+
+                WEEKLY_TAG -> {
+                    if (dayOfWeek == null) return@scan TimeRangeUiState.Empty
 
                     val startOfWeek = date.with(TemporalAdjusters.previousOrSame(dayOfWeek))
                     val endOfWeek = startOfWeek.plusDays(6)
                     TimeRangeUiState.Weekly(startOfWeek, endOfWeek)
                 }
-                MONTHLY_TAG ->{
+
+                MONTHLY_TAG -> {
                     val start = date.withDayOfMonth(1)
                     val end = date.withDayOfMonth(date.lengthOfMonth())
                     TimeRangeUiState.Monthly(start, end)
                 }
+
                 else -> TimeRangeUiState.Empty
             }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(stopTimeOutMillis),
-        initialValue = TimeRangeUiState.Empty
-    )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeOutMillis),
+            initialValue = TimeRangeUiState.Empty
+        )
 
     /**
      * Habitos filtrados según el rango temporal y el tipo de hábito.
      * Pilla tanto el hábito como sus registros (dailyHabits).
      */
     @OptIn(ExperimentalCoroutinesApi::class)
-    val habitsForSelectedTimeUiState: StateFlow<FilteredHabitsUiState> = selectedTimeRangeUiState
-        .flatMapLatest { timeState ->
+    val habitsForSelectedTimeUiState: StateFlow<FilteredHabitsUiState> = combine(
+        selectedTimeRangeUiState,
+        selectedDate
+    ){timeState,date -> Pair(timeState,date) }
+        .flatMapLatest { (timeState,date) ->
             when (timeState) {
                 is TimeRangeUiState.Daily -> {
-                    getDailyHabitUseCase(timeState.selected,timeState.selected, DAILY_TAG) // O usa el tag real
+                    getDailyHabitUseCase(date,date, DAILY_TAG) // O usa el tag real
                         .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> { FilteredHabitsUiState.Success(it) }
                         .catch { emit(FilteredHabitsUiState.Error) }
                 }
                 is TimeRangeUiState.Recurring -> {
-                    getDailyHabitUseCase(timeState.selected,timeState.selected, RECURRING_TAG) // O usa el tag real
+                    getDailyHabitUseCase(date,date, RECURRING_TAG) // O usa el tag real
                         .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> { FilteredHabitsUiState.Success(it) }
                         .catch { emit(FilteredHabitsUiState.Error) }
                 }
@@ -186,6 +202,13 @@ class HabitViewModel @Inject constructor(
             }
     }
 
+    /**
+     * Cambia la fecha seleccionada.
+     */
+    fun onClickTimeRange(date:LocalDate){
+        _selectedDate.update { date }
+    }
+
 }
 
 sealed class PagerTypesUiState(){
@@ -210,8 +233,8 @@ sealed class CurrentPagerSelection {
 
 sealed class TimeRangeUiState {
     data object Empty : TimeRangeUiState()
-    data class Daily(val days: List<LocalDate>, val selected: LocalDate) : TimeRangeUiState()
-    data class Recurring(val days: List<LocalDate>, val selected: LocalDate) : TimeRangeUiState()
+    data class Daily(val days: List<LocalDate>) : TimeRangeUiState()
+    data class Recurring(val days: List<LocalDate>) : TimeRangeUiState()
     data class Weekly(val startOfWeek: LocalDate, val endOfWeek: LocalDate) : TimeRangeUiState()
     data class Monthly(val startOfMonth: LocalDate, val endOfMonth: LocalDate) : TimeRangeUiState()
 }

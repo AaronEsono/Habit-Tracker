@@ -4,10 +4,13 @@
 
     <string name="habit_loading">Cargado...</string>
 
-    <string name="habit_no_habit">Todavía no tienes hábitos registrados. Para crear uno, pulsa sobre el botón de arriba a la derecha.</string>
+    <string name="habit_no_habit">Todavía no tienes hábitos registrados. Para crear uno, pulsa sobre el botón de abajo a la derecha.</string>
 
     <string name="pager_element_daily">Diarios</string>
     <string name="pager_element_weekly">Semanales</string>
     <string name="pager_element_monthly">Mensuales</string>
     <string name="pager_element_recurring">Cíclicos</string>
+
+    <string name="habit_day_weekly">%1$s, %2$s de %3$s  -  %4$s, %5$s de %6$s</string>
+    <string name="habit_day_monthly">%1$s %2$s</string>
 </resources>

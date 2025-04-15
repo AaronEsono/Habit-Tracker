@@ -42,3 +42,7 @@ fun getOrderedDays(startDay: DayOfWeek): List<DaysWeekAvr> {
         allDays
     }
 }
+
+fun getAvr(day:DayOfWeek):Int{
+    return DaysWeekAvr.entries.find { it.id == day }?.string ?: DaysWeekAvr.LUNES.string
+}

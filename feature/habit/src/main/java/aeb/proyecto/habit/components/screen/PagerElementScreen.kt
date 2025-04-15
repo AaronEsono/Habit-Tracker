@@ -2,13 +2,22 @@ package aeb.proyecto.habit.components.screen
 
 import aeb.proyecto.habit.CurrentPagerSelection
 import aeb.proyecto.habit.FilteredHabitsUiState
+import aeb.proyecto.habit.TimeRangeUiState
 import aeb.proyecto.habit.components.loading.HabitLoading
+import aeb.proyecto.habit.components.timeRange.DailyTimeRange
 import aeb.proyecto.habit.components.screen.typeHabits.DailyHabitsScreen
 import aeb.proyecto.habit.components.screen.typeHabits.MonthlyHabitsScreen
+import aeb.proyecto.habit.components.timeRange.MonthlyTimeRange
+import aeb.proyecto.habit.components.timeRange.WeeklyTimeRange
 import aeb.proyecto.habit.model.PagerElement
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -16,20 +25,27 @@ import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 
+/**
+ *  Pantalla para mostrar los hábitos de un tipo en específico.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PagerElementScreen(
     pagerElements: List<PagerElement>,
     filteredHabitsUIState: FilteredHabitsUiState,
     currentPagerSelected: CurrentPagerSelection,
+    selectedTimeRangeUiState: TimeRangeUiState,
     selectedDate: LocalDate = LocalDate.now(),
-    onClickTab: (PagerElement) -> Unit = {}
+    onClickTab: (PagerElement) -> Unit = {},
+    onClickTimeRange: (LocalDate) -> Unit = {},
 ){
 
     val selectedTabIndex = when (currentPagerSelected) {
@@ -41,6 +57,7 @@ fun PagerElementScreen(
         modifier = Modifier.fillMaxSize()
     ){
 
+        //Mostramos los tipos de hábitos en la tabRow
         PrimaryTabRow(selectedTabIndex = selectedTabIndex,
             indicator = {
                 TabRowDefaults.PrimaryIndicator(
@@ -68,7 +85,35 @@ fun PagerElementScreen(
             }
         }
 
-        // Content
+        //Aqui mostramos los rangos de las fechas
+        AnimatedContent(
+            targetState = selectedTimeRangeUiState::class
+        ) { timeRangeClass ->
+            when (timeRangeClass) {
+                TimeRangeUiState.Empty::class -> Unit
+                TimeRangeUiState.Daily::class -> {
+                    val daily = selectedTimeRangeUiState as? TimeRangeUiState.Daily ?: return@AnimatedContent
+                    DailyTimeRange(selectedDate, daily.days, onClick = onClickTimeRange)
+                }
+                TimeRangeUiState.Weekly::class -> {
+                    val weekly = selectedTimeRangeUiState as? TimeRangeUiState.Weekly ?: return@AnimatedContent
+                    WeeklyTimeRange(weekly.startOfWeek, weekly.endOfWeek, onClick = onClickTimeRange)
+                }
+                TimeRangeUiState.Monthly::class -> {
+                    val monthly = selectedTimeRangeUiState as? TimeRangeUiState.Monthly ?: return@AnimatedContent
+                    MonthlyTimeRange(monthly.startOfMonth, monthly.endOfMonth, onClick = onClickTimeRange)
+                }
+                TimeRangeUiState.Recurring::class -> {
+                    val recurring = selectedTimeRangeUiState as? TimeRangeUiState.Recurring ?: return@AnimatedContent
+                    DailyTimeRange(selectedDate, recurring.days, onClick = onClickTimeRange)
+                }
+                else -> Unit
+            }
+        }
+
+        HorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
+
+        // Contenido de los hábitos
         when (filteredHabitsUIState) {
             is FilteredHabitsUiState.Loading, is FilteredHabitsUiState.Error, is FilteredHabitsUiState.Empty -> {
                 HabitLoading()
@@ -88,6 +133,5 @@ fun PagerElementScreen(
                 }
             }
         }
-
     }
 }

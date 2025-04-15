@@ -9,6 +9,7 @@ import aeb.proyecto.ui.color.inverseSurfaceDark
 import aeb.proyecto.ui.color.inverseSurfaceDarkAlt
 import aeb.proyecto.ui.color.inverseSurfaceLight
 import aeb.proyecto.ui.color.inverseSurfaceLightAlt
+import aeb.proyecto.ui.color.onBackgroundDark
 import aeb.proyecto.ui.color.onPrimaryContainerDark
 import aeb.proyecto.ui.color.onPrimaryContainerDarkAlt
 import aeb.proyecto.ui.color.onPrimaryContainerLight
@@ -17,6 +18,7 @@ import aeb.proyecto.ui.color.onSurfaceDark
 import aeb.proyecto.ui.color.onSurfaceDarkAlt
 import aeb.proyecto.ui.color.onSurfaceLight
 import aeb.proyecto.ui.color.onSurfaceLightAlt
+import aeb.proyecto.ui.color.onSurfaceVariantDark
 import aeb.proyecto.ui.color.outLineDark
 import aeb.proyecto.ui.color.outLineDarkAlt
 import aeb.proyecto.ui.color.outLineLight
@@ -73,7 +75,9 @@ val Dark = darkColorScheme(
     surfaceContainer = surfaceContainerDark,
     surfaceTint = surfaceTintDark,
     surfaceContainerHighest = surfaceContainerHighestDark,
-    scrim = scrimDark
+    scrim = scrimDark,
+    onBackground = onBackgroundDark,
+    onSurfaceVariant = onSurfaceVariantDark
 )
 
 val Light = lightColorScheme(

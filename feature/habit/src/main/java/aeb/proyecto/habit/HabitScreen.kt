@@ -40,6 +40,7 @@ fun HabitScreen(
 
     val pagerTypesUIState = viewModel.availablePagerTypesUiState.collectAsStateWithLifecycle().value
     val currentPagerSelected = viewModel.currentPagerType.collectAsStateWithLifecycle().value
+    val selectedTimeRange = viewModel.selectedTimeRangeUiState.collectAsStateWithLifecycle().value
     val filteredHabitsUiState = viewModel.habitsForSelectedTimeUiState.collectAsStateWithLifecycle().value
     val selectedDate = viewModel.selectedDate.collectAsStateWithLifecycle().value
 
@@ -51,9 +52,11 @@ fun HabitScreen(
         pagerTypesUIState = pagerTypesUIState,
         filteredHabitsUiState = filteredHabitsUiState,
         currentPagerSelected = currentPagerSelected,
+        selectedTimeRangeUiState = selectedTimeRange,
         dateSelected = selectedDate,
         navigateToAddHabit = navigateToAddHabit,
-        onClickTab = viewModel::onPagerTypeSelected
+        onClickTab = viewModel::onPagerTypeSelected,
+        onClickTimeRange = viewModel::onClickTimeRange
     )
 }
 
@@ -62,9 +65,11 @@ internal fun HabitScreen(
     pagerTypesUIState: PagerTypesUiState,
     filteredHabitsUiState: FilteredHabitsUiState,
     currentPagerSelected: CurrentPagerSelection,
+    selectedTimeRangeUiState: TimeRangeUiState,
     dateSelected: LocalDate = LocalDate.now(),
     navigateToAddHabit: (Long) -> Unit = {},
-    onClickTab: (PagerElement) -> Unit = {}
+    onClickTab: (PagerElement) -> Unit = {},
+    onClickTimeRange: (LocalDate) -> Unit = {},
 ) {
     Box(modifier = Modifier.fillMaxSize()){
         when (pagerTypesUIState) {
@@ -80,7 +85,10 @@ internal fun HabitScreen(
                         pagerElements = pagerTypesUIState.availableTypes,
                         filteredHabitsUIState = filteredHabitsUiState,
                         currentPagerSelected = currentPagerSelected,
-                        onClickTab = onClickTab
+                        selectedTimeRangeUiState = selectedTimeRangeUiState,
+                        selectedDate = dateSelected,
+                        onClickTab = onClickTab,
+                        onClickTimeRange = onClickTimeRange
                     )
                 }
             }

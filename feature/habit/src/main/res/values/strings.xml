@@ -4,11 +4,13 @@
 
     <string name="habit_loading">Loading...</string>
 
-    <string name="habit_no_habit">You haven’t added any habits yet. Tap the button in the top right to create one.</string>
+    <string name="habit_no_habit">You haven’t added any habits yet. Tap the button in the bottom right to create one.</string>
 
     <string name="pager_element_daily">Dailies</string>
     <string name="pager_element_weekly">Weeklies</string>
     <string name="pager_element_monthly">Monthlies</string>
     <string name="pager_element_recurring">Recurring</string>
 
+    <string name="habit_day_weekly">%1$s, %3$s %2$s  -  %4$s, %6$s %5$s</string>
+    <string name="habit_day_monthly">%1$s %2$s</string>
 </resources>

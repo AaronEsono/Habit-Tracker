@@ -25,6 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 
+/**
+ * Pantalla por defecto de carga de hábitos.
+ */
 @Composable
 fun HabitLoading(){
     val infiniteTransition = rememberInfiniteTransition(label = "habit loading")

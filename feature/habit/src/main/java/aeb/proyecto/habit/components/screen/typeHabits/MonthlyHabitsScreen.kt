@@ -5,5 +5,4 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun MonthlyHabitsScreen(){
-    LabelLargeText(text = "JIJIIJA Habits")
 }

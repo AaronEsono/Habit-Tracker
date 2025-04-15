@@ -81,7 +81,7 @@ fun RecurringTypeHabit(
 
 @Composable
 fun getDate(localDate: LocalDate):String{
-    val day = localDate.dayOfWeek.value
+    val day = localDate.dayOfWeek.name
     val month = localDate.month.value
     val dayMonth = localDate.dayOfMonth
 
