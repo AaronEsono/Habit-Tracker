@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.temporal.WeekFields
 import java.util.Locale
 import javax.inject.Inject
 
@@ -40,7 +41,7 @@ class MainViewModel @Inject constructor(
     //Seteamos el primer dia se la semana si no está
     private suspend fun setDayWeek(){
         val day = datastoreInterface.getDayStartWeek()
-        day ?: datastoreInterface.saveFirstDayOfWeek()
+        day ?: datastoreInterface.setFirstDayOfWeek()
     }
 
     //Seteamos el idioma si no esta

@@ -72,7 +72,7 @@ class DatastoreRepository @Inject constructor(
         dataStoreManager.clearDataUser()
     }
 
-    override suspend fun saveFirstDayOfWeek() {
-        dataStoreManager.saveFirstDayOfWeek()
+    override suspend fun setFirstDayOfWeek(){
+        dataStoreManager.setFirstDayOfWeek()
     }
 }

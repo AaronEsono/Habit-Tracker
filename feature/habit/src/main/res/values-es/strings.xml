@@ -11,6 +11,7 @@
     <string name="pager_element_monthly">Mensuales</string>
     <string name="pager_element_recurring">Cíclicos</string>
 
-    <string name="habit_day_weekly">%1$s, %2$s de %3$s  -  %4$s, %5$s de %6$s</string>
+    <string name="habit_day_weekly">%1$s, %2$s %3$s  -  %4$s, %5$s %6$s</string>
     <string name="habit_day_monthly">%1$s %2$s</string>
+    <string name="habit_action_icon">%1$s %2$s %3$s</string>
 </resources>

@@ -10,6 +10,7 @@ import aeb.proyecto.ui.month.getMonth
 import aeb.proyecto.ui.text.LabelLargeText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -36,6 +38,8 @@ fun MonthlyTimeRange(
     onClick: (LocalDate) -> Unit
 ){
 
+    val interactionSource = remember { MutableInteractionSource() }
+
     Row (
         modifier = Modifier.fillMaxWidth().padding(vertical = spacing12),
         verticalAlignment = Alignment.CenterVertically
@@ -47,7 +51,10 @@ fun MonthlyTimeRange(
             modifier = Modifier
                 .padding(start = spacing20, end = spacing8)
                 .size(25.dp)
-                .clickable { onClick(startOfMonth.minusMonths(1))}
+                .clickable (
+                    interactionSource = interactionSource,
+                    indication = null
+                ){ onClick(startOfMonth.minusMonths(1))}
         )
 
         Column (
@@ -74,7 +81,10 @@ fun MonthlyTimeRange(
             modifier = Modifier
                 .padding(end = spacing20, start = spacing8)
                 .size(25.dp)
-                .clickable { onClick(endOfMonth.plusMonths(1))}
+                .clickable (
+                    interactionSource = interactionSource,
+                    indication = null
+                ){ onClick(endOfMonth.plusMonths(1))}
         )
     }
 

@@ -82,7 +82,7 @@ fun Modifier.boxBackgroundSelected(
     isSelected: Boolean
 ): Modifier {
     val targetColor = if (isSelected) {
-        MaterialTheme.colorScheme.onBackground
+        MaterialTheme.colorScheme.onSurface
     } else {
         MaterialTheme.colorScheme.primary
     }
@@ -94,7 +94,7 @@ fun Modifier.backgroundTextSelected(
     isSelected: Boolean
 ): Modifier {
     val targetColor = if (isSelected) {
-        MaterialTheme.colorScheme.onSurfaceVariant
+        MaterialTheme.colorScheme.onBackground
     } else {
         MaterialTheme.colorScheme.secondaryContainer
     }

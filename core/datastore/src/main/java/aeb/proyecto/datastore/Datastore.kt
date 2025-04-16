@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import java.time.DayOfWeek
 import java.time.temporal.WeekFields
 import java.util.Locale
 import javax.inject.Inject
@@ -42,7 +43,7 @@ class DataStoreManager @Inject constructor(
     }
 
     val dayOfWeek: Flow<String> = dataStore.data.map { preferences ->
-        preferences[DAY_START_WEEK] ?: ""
+        preferences[DAY_START_WEEK] ?: DayOfWeek.MONDAY.name
     }
 
     suspend fun getEmailPassword() = dataStore.data.map { preferences ->
@@ -124,10 +125,10 @@ class DataStoreManager @Inject constructor(
         }
     }
 
-    suspend fun saveFirstDayOfWeek(){
-        val firstDay = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+    suspend fun setFirstDayOfWeek(){
+        val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek.name
         dataStore.edit { preferences ->
-            preferences[DAY_START_WEEK] = firstDay.name
+            preferences[DAY_START_WEEK] = firstDayOfWeek
         }
     }
 }

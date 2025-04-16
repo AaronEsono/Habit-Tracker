@@ -39,5 +39,5 @@ interface DatastoreInterface {
 
     suspend fun clearUser()
 
-    suspend fun saveFirstDayOfWeek()
+    suspend fun setFirstDayOfWeek()
 }

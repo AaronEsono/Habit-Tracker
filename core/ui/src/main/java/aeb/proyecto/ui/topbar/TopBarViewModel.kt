@@ -15,5 +15,4 @@ class TopBarViewModel : ViewModel() {
     var navigationIcon by mutableStateOf<@Composable () -> Unit>({ }, referentialEqualityPolicy())
 
     var actions by mutableStateOf<@Composable RowScope.() -> Unit>({ }, referentialEqualityPolicy())
-
 }
