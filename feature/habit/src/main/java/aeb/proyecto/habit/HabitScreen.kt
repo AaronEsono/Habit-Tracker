@@ -1,28 +1,34 @@
 package aeb.proyecto.habit
 
+import aeb.proyecto.habit.components.bottomSheet.selectDate.BottomSheetSelectDate
 import aeb.proyecto.habit.components.loading.HabitLoading
 import aeb.proyecto.habit.components.navigationIcon.ActionIconHabitScreen
-import aeb.proyecto.habit.components.navigationIcon.DateActionIcon
 import aeb.proyecto.habit.components.screen.NoHabitScreen
 import aeb.proyecto.habit.components.screen.PagerElementScreen
-import aeb.proyecto.habit.model.PagerElement
+import aeb.proyecto.habit.model.BottomSheetType
+import aeb.proyecto.habit.model.pager.PagerElement
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
+import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
-import aeb.proyecto.ui.topbar.providers.ProvideAppBarNavigationIcon
+import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,6 +49,7 @@ fun HabitScreen(
     val selectedTimeRange = viewModel.selectedTimeRangeUiState.collectAsStateWithLifecycle().value
     val filteredHabitsUiState = viewModel.habitsForSelectedTimeUiState.collectAsStateWithLifecycle().value
     val selectedDate = viewModel.selectedDate.collectAsStateWithLifecycle().value
+    val dataHabitUIState = viewModel.dataHabitUIState.collectAsStateWithLifecycle().value
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.habit_topbar), fontSize = 20.sp)
@@ -61,8 +68,21 @@ fun HabitScreen(
         dateSelected = selectedDate,
         navigateToAddHabit = navigateToAddHabit,
         onClickTab = viewModel::onPagerTypeSelected,
-        onClickTimeRange = viewModel::onClickTimeRange
+        onClickTimeRange = viewModel::onClickTimeRange,
+        onBottomSheetSelected = viewModel::onBottomSheetSelected
     )
+
+    if(dataHabitUIState.bottomSheetState.isExpanded){
+        when(dataHabitUIState.bottomSheetState.type){
+            BottomSheetType.SELECT_DATE -> {
+                BottomSheetSelectDate(
+                    onDismiss = viewModel::onDismissBottomSheet,
+                    onClick = viewModel::onClickTimeRange
+                )
+            }
+        }
+    }
+
 }
 
 @Composable
@@ -75,6 +95,7 @@ internal fun HabitScreen(
     navigateToAddHabit: (Long) -> Unit = {},
     onClickTab: (PagerElement) -> Unit = {},
     onClickTimeRange: (LocalDate) -> Unit = {},
+    onBottomSheetSelected: (BottomSheetType) -> Unit = {},
 ) {
     Box(modifier = Modifier.fillMaxSize()){
         when (pagerTypesUIState) {
@@ -95,6 +116,17 @@ internal fun HabitScreen(
                         onClickTab = onClickTab,
                         onClickTimeRange = onClickTimeRange
                     )
+
+                    ProvideAppBarActions {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_find_date),
+                            contentDescription = "calendar icon",
+                            tint = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(end = spacing6)
+                                .size(25.dp)
+                                .clickable {onBottomSheetSelected(BottomSheetType.SELECT_DATE)}
+                        )
+                    }
                 }
             }
         }

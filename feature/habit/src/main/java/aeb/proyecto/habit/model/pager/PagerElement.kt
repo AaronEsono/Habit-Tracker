@@ -1,4 +1,4 @@
-package aeb.proyecto.habit.model
+package aeb.proyecto.habit.model.pager
 
 import aeb.proyecto.habit.R
 import aeb.proyecto.room.model.classes.DAILY_TAG
@@ -29,7 +29,7 @@ enum class PagerElement(
     )
 }
 
-fun findPagerElement(tag:String):PagerElement {
+fun findPagerElement(tag:String): PagerElement {
     return PagerElement.entries.find { it.tag == tag } ?: PagerElement.DAILY
 }
 

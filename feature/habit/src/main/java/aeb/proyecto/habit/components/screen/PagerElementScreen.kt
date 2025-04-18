@@ -9,18 +9,11 @@ import aeb.proyecto.habit.components.screen.typeHabits.MonthlyHabitsScreen
 import aeb.proyecto.habit.components.timeRange.DailyTimeRange
 import aeb.proyecto.habit.components.timeRange.MonthlyTimeRange
 import aeb.proyecto.habit.components.timeRange.WeeklyTimeRange
-import aeb.proyecto.habit.model.PagerElement
-import aeb.proyecto.ui.dimmens.Dimmens.spacing6
-import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import aeb.proyecto.habit.model.pager.PagerElement
 import aeb.proyecto.ui.text.LabelLargeText
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -29,12 +22,9 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 
 /**

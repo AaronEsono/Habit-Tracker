@@ -1,4 +1,4 @@
-package aeb.proyecto.habit.model
+package aeb.proyecto.habit.model.pager
 
 data class PagerSelected(
     val index:Int = 0,

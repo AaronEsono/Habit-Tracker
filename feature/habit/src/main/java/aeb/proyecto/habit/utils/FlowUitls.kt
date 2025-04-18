@@ -1,10 +1,9 @@
 package aeb.proyecto.habit.utils
 
-import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.domain.usecase.habit.HabitDatastoreUseCase
 import aeb.proyecto.habit.CurrentPagerSelection
-import aeb.proyecto.habit.model.PagerElement
-import aeb.proyecto.habit.model.PagerSelected
+import aeb.proyecto.habit.model.pager.PagerElement
+import aeb.proyecto.habit.model.pager.PagerSelected
 import kotlinx.coroutines.flow.StateFlow
 
 /**

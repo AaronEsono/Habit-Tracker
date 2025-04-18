@@ -5,10 +5,12 @@ import aeb.proyecto.domain.usecase.habit.GetTypesOfHabitUseCase
 import aeb.proyecto.domain.usecase.habit.HabitDatastoreUseCase
 import aeb.proyecto.habit.constants.rangeDays
 import aeb.proyecto.habit.constants.stopTimeOutMillis
-import aeb.proyecto.habit.model.PagerElement
-import aeb.proyecto.habit.model.PagerSelected
-import aeb.proyecto.habit.model.findPagerElement
-import aeb.proyecto.habit.model.orderPagerElements
+import aeb.proyecto.habit.model.BottomSheetType
+import aeb.proyecto.habit.model.DataHabit
+import aeb.proyecto.habit.model.pager.PagerElement
+import aeb.proyecto.habit.model.pager.PagerSelected
+import aeb.proyecto.habit.model.pager.findPagerElement
+import aeb.proyecto.habit.model.pager.orderPagerElements
 import aeb.proyecto.habit.utils.initializeSelectedTypeIfNeeded
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.DAILY_TAG
@@ -52,6 +54,10 @@ class HabitViewModel @Inject constructor(
     /** Tipo de hábito seleccionado por el usuario, reflejado en la pantalla con un tabRow. */
     private val _currentPagerType  = MutableStateFlow<CurrentPagerSelection>(CurrentPagerSelection.Uninitialized)
     val currentPagerType : StateFlow<CurrentPagerSelection> = _currentPagerType.asStateFlow()
+
+    /** Controla los estados de los dialogos y de las hojas inferiores*/
+    private val _dataHabitUIState = MutableStateFlow(DataHabit())
+    val dataHabitUIState:StateFlow<DataHabit> = _dataHabitUIState.asStateFlow()
 
     /** Día de inicio de la semana seleccionado por el usuario. */
     private val _startDayOfWeek:StateFlow<DayOfWeek?> = habitDatastoreUseCase.startDayOfWeek
@@ -207,6 +213,35 @@ class HabitViewModel @Inject constructor(
      */
     fun onClickTimeRange(date:LocalDate){
         _selectedDate.update { date }
+    }
+
+    /**
+     * Cambia el bottomSheet seleccionado
+     */
+    fun onBottomSheetSelected(bottomSheetType: BottomSheetType) {
+        _dataHabitUIState.update { currentState ->
+            currentState.copy(
+                bottomSheetState = currentState
+                    .bottomSheetState.copy(
+                        type = bottomSheetType,
+                        isExpanded = true
+                    )
+            )
+        }
+    }
+
+    /**
+     * Cierra el bottomSheet seleccionado
+     */
+    fun onDismissBottomSheet(){
+        _dataHabitUIState.update { currentState ->
+            currentState.copy(
+                bottomSheetState = currentState
+                    .bottomSheetState.copy(
+                        isExpanded = false
+                    )
+            )
+        }
     }
 
 }
