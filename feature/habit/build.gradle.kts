@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.core.alarmManager)
     implementation(projects.core.datastore)
     implementation(projects.core.domain)
+    implementation(projects.core.language)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

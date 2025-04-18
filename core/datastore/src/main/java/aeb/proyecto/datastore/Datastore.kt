@@ -2,6 +2,7 @@ package aeb.proyecto.datastore
 
 import aeb.proyecto.datastore.model.EmailPassword
 import aeb.proyecto.datastore.model.LastSearched
+import aeb.proyecto.language.model.getFirstDayOfWeekByLocale
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -126,7 +127,7 @@ class DataStoreManager @Inject constructor(
     }
 
     suspend fun setFirstDayOfWeek(){
-        val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek.name
+        val firstDayOfWeek = getFirstDayOfWeekByLocale().name
         dataStore.edit { preferences ->
             preferences[DAY_START_WEEK] = firstDayOfWeek
         }

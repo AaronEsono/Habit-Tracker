@@ -3,6 +3,8 @@ package aeb.proyecto.ui.date
 import aeb.proyecto.ui.R
 import androidx.annotation.StringRes
 import java.time.DayOfWeek
+import java.time.temporal.WeekFields
+import java.util.Locale
 
 enum class DaysWeek(@StringRes val string:Int, val id:DayOfWeek){
     LUNES(R.string.add_habit_monday,DayOfWeek.MONDAY),

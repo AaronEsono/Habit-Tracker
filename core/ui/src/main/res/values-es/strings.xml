@@ -46,6 +46,4 @@
     <string name="add_habit_fri">Vie</string>
     <string name="add_habit_sat">Sáb</string>
     <string name="add_habit_sun">Dom</string>
-
-    <string name="text_calendar_header">%1$s %2$s</string>
 </resources>

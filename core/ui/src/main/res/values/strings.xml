@@ -46,6 +46,4 @@
     <string name="add_habit_fri">Fri</string>
     <string name="add_habit_sat">Sat</string>
     <string name="add_habit_sun">Sun</string>
-
-    <string name="text_calendar_header">%1$s %2$s</string>
 </resources>

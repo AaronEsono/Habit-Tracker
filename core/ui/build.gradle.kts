@@ -11,6 +11,7 @@ android {
 
 dependencies {
     implementation(projects.core.room)
+    implementation(projects.core.language)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

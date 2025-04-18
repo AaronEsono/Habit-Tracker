@@ -35,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import java.time.LocalDate
 
 // NOTA: Iconos de flaticon y svgRepo
+// PONER NOSOTROS DIRECTAMENTE EL PRIMER DIA DE LA SEMANA
 
 /** Pantalla para mostrar los hábitos e intercactuar con ellos,
  * como añadir nuevos dailyHabits, borrar hábitos o editarlos.*/

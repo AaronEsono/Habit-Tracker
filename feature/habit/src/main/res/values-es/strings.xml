@@ -14,4 +14,9 @@
     <string name="habit_day_weekly">%1$s, %2$s %3$s  -  %4$s, %5$s %6$s</string>
     <string name="habit_day_monthly">%1$s %2$s</string>
     <string name="habit_action_icon">%1$s %2$s %3$s</string>
+
+    <string name="habit_cancel">Cancelar</string>
+    <string name="habit_today">Hoy</string>
+
+    <string name="habit_day_select">Selecciona el día de la semana que quieres consular</string>
 </resources>

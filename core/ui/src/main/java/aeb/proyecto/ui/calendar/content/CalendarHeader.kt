@@ -3,7 +3,10 @@ package aeb.proyecto.ui.calendar.content
 import aeb.proyecto.ui.R
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,13 +41,15 @@ fun CalendarHeader(
                 .padding(start = spacing16)
         )
 
-        LabelLargeText(
-            stringResource(R.string.text_calendar_header,
-                yearMonth.month.toString(),
-                yearMonth.year.toString()),
+
+        Column (
             modifier = Modifier.weight(1f),
-            textAlign = TextAlign.Center
-        )
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ){
+            LabelLargeText(yearMonth.month.toString())
+            LabelMediumText(yearMonth.year.toString())
+        }
 
         Icon(
             Icons.AutoMirrored.Filled.ArrowForwardIos,
