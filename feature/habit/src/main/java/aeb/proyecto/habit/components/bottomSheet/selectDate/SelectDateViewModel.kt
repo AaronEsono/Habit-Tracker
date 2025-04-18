@@ -1,5 +1,6 @@
 package aeb.proyecto.habit.components.bottomSheet.selectDate
 
+import aeb.proyecto.language.model.FirstDayOfWeekByRegion
 import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.calendar.source.CalendarDataSource
 import android.view.View
@@ -23,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectDateViewModel @Inject constructor(
-    private val calendarDataSource: CalendarDataSource
+    private val calendarDataSource: CalendarDataSource,
+    private val firstDayOfWeekByRegion: FirstDayOfWeekByRegion
 ):ViewModel(){
 
     private val _yearMonth:MutableStateFlow<YearMonth> = MutableStateFlow(YearMonth.now())
@@ -33,7 +35,11 @@ class SelectDateViewModel @Inject constructor(
     val calendarUIState: StateFlow<CalendarUIState<Unit>> = _yearMonth
         .flatMapLatest { yearMonth ->
             flow {
-                val dates = calendarDataSource.getDates(yearMonth,::getDataSelectDate)
+                val dates = calendarDataSource.getDates(
+                    firstDayOfWeekByRegion.getFirstDayOfWeekByLocale(),
+                    yearMonth,
+                    ::getDataSelectDate
+                )
                 emit(CalendarUIState(dates))
             }
         }.stateIn(
@@ -44,6 +50,10 @@ class SelectDateViewModel @Inject constructor(
 
     fun onMonthButtonClicked(yearMonth: YearMonth){
         _yearMonth.update {yearMonth}
+    }
+
+    fun initMonth(){
+        _yearMonth.update { YearMonth.now() }
     }
 }
 

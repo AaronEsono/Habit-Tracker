@@ -1,13 +1,54 @@
 package aeb.proyecto.language.model
 
+import android.content.Context
+import android.telephony.TelephonyManager
+import android.util.Log
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.DayOfWeek
 import java.util.Locale
+import javax.inject.Inject
 
-fun getFirstDayOfWeekByLocale(): DayOfWeek {
-    return when (Locale.getDefault().country.uppercase()) {
 
-        // 🌞 Países donde la semana comienza el DOMINGO
-        // América, partes de Asia y África
+class FirstDayOfWeekByRegion @Inject constructor(
+    @ApplicationContext val context: Context
+){
+    fun getFirstDayOfWeekByLocale(): DayOfWeek {
+
+        val telephonyCountry = getCountryFromNetwork(context)
+        Log.d("TAGssdsds", "telephonyCountry: $telephonyCountry")
+        val localeCountry = context.resources.configuration.locales[0].country.uppercase()
+        val country = telephonyCountry ?: localeCountry
+
+        return when (country) {
+            // DOMINGO
+            "AG", "AR", "AS", "AU", "BD", "BH", "BM", "BN", "BR", "BS", "BT", "BW", "BZ",
+            "CA", "CH", "CL", "CN", "CO", "CR", "DM", "DO", "EC", "EG", "ET", "FJ", "FM",
+            "GD", "GT", "GU", "HK", "HN", "ID", "IL", "IN", "JM", "JO", "JP", "KE", "KH",
+            "KR", "KW", "LA", "LB", "LK", "MH", "MM", "MO", "MP", "MT", "MU", "MX", "MY",
+            "MZ", "NA", "NI", "NP", "NZ", "OM", "PA", "PE", "PH", "PK", "PR", "PT", "PY",
+            "QA", "SA", "SG", "SV", "SY", "TH", "TT", "TW", "TZ", "UG", "US", "UY", "VE",
+            "VI", "VN", "WS", "YE", "ZA", "ZW" -> DayOfWeek.SUNDAY
+
+            // SÁBADO
+            "AF", "DZ", "IR", "IQ", "LY", "SD", "SO" -> DayOfWeek.SATURDAY
+
+            // VIERNES
+            "MV" -> DayOfWeek.FRIDAY
+
+            // Por defecto, LUNES
+            else -> DayOfWeek.MONDAY
+        }
+    }
+}
+
+fun getFirstDayOfWeekByLocale(context: Context): DayOfWeek {
+
+    val telephonyCountry = getCountryFromNetwork(context)
+    val localeCountry = context.resources.configuration.locales[0].country.uppercase()
+    val country = telephonyCountry ?: localeCountry
+
+    return when (country) {
+        // DOMINGO
         "AG", "AR", "AS", "AU", "BD", "BH", "BM", "BN", "BR", "BS", "BT", "BW", "BZ",
         "CA", "CH", "CL", "CN", "CO", "CR", "DM", "DO", "EC", "EG", "ET", "FJ", "FM",
         "GD", "GT", "GU", "HK", "HN", "ID", "IL", "IN", "JM", "JO", "JP", "KE", "KH",
@@ -16,15 +57,18 @@ fun getFirstDayOfWeekByLocale(): DayOfWeek {
         "QA", "SA", "SG", "SV", "SY", "TH", "TT", "TW", "TZ", "UG", "US", "UY", "VE",
         "VI", "VN", "WS", "YE", "ZA", "ZW" -> DayOfWeek.SUNDAY
 
-        // 📿 Países donde la semana comienza el SÁBADO
-        // Principalmente países musulmanes
+        // SÁBADO
         "AF", "DZ", "IR", "IQ", "LY", "SD", "SO" -> DayOfWeek.SATURDAY
 
-        // 🕌 Países donde la semana comienza el VIERNES
-        // Ejemplo: Maldivas
+        // VIERNES
         "MV" -> DayOfWeek.FRIDAY
 
-        // 🗓️ Resto del mundo: semana comienza el LUNES
+        // Por defecto, LUNES
         else -> DayOfWeek.MONDAY
     }
+}
+
+fun getCountryFromNetwork(context: Context): String? {
+    val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+    return tm?.networkCountryIso?.uppercase()?.takeIf { it.isNotBlank() }
 }

@@ -4,6 +4,7 @@ import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.wrapContentSize
@@ -22,6 +23,7 @@ import java.time.LocalDate
 fun CalendarDayButton(
     modifier: Modifier = Modifier,
     enabled:Boolean,
+    isSelectedDate:Boolean,
     date: CalendarUIState.DateCalendar<Unit>,
     onClick:(LocalDate) -> Unit = {},
 ){
@@ -31,27 +33,41 @@ fun CalendarDayButton(
         modifier = modifier
             .aspectRatio(1f)
             .clip(RoundedCornerShape(spacing12))
-            .colorBackgroundDay(isEnabled = enabled)
+            .colorBackgroundDay(isEnabled = enabled,isSelectedDate,
+                isToday = date.dateOfMonth == LocalDate.now())
             .wrapContentSize(Alignment.Center)
     ) {
-        LabelLargeText(
+        LabelMediumText(
             date.dateOfMonth.dayOfMonth.toString(),
             textAlign = TextAlign.Center,
-            color = isEnabledTextColor(isEnabled = enabled)
+            color = isEnabledTextColor(isEnabled = enabled,isDateSelected = isSelectedDate)
         )
     }
 }
 
 @Composable
-fun Modifier.colorBackgroundDay(isEnabled:Boolean):Modifier =
-    if(isEnabled)
-        this.background(MaterialTheme.colorScheme.surfaceVariant)
+fun Modifier.colorBackgroundDay(isEnabled:Boolean,isDateSelected:Boolean,isToday:Boolean):Modifier =
+    if(isEnabled){
+        if(isDateSelected){
+            this.background(MaterialTheme.colorScheme.onSurface)
+        }else if(isToday){
+            this.background(MaterialTheme.colorScheme.surfaceContainer)
+        }
+        else{
+            this.background(MaterialTheme.colorScheme.surfaceVariant)
+        }
+    }
     else
         this.background(MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.3f))
 
 @Composable
-fun isEnabledTextColor(isEnabled:Boolean):Color =
-    if(isEnabled)
-        MaterialTheme.colorScheme.onSurface
+fun isEnabledTextColor(isEnabled:Boolean,isDateSelected: Boolean):Color =
+    if(isEnabled){
+        if(isDateSelected){
+            MaterialTheme.colorScheme.inverseOnSurface
+        }else{
+            MaterialTheme.colorScheme.onSurface
+        }
+    }
     else
         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)

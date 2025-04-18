@@ -1,14 +1,9 @@
 package aeb.proyecto.ui.calendar.model
 
-import aeb.proyecto.language.model.getFirstDayOfWeekByLocale
-import kotlinx.coroutines.flow.Flow
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.Year
 import java.time.YearMonth
 import java.time.temporal.TemporalAdjusters
-import java.time.temporal.WeekFields
-import java.util.Locale
 
 data class CalendarUIState<T>(
     val dates: List<DateCalendar<T>>
@@ -28,9 +23,9 @@ data class CalendarUIState<T>(
     }
 }
 
-fun YearMonth.getCalendarDates(): List<LocalDate> {
+fun YearMonth.getCalendarDates(firstDayWeek: DayOfWeek): List<LocalDate> {
     val firstOfMonth = atDay(1)
-    val firstDayOfWeek = getFirstDayOfWeekByLocale()
+    val firstDayOfWeek = firstDayWeek
 
     val start = firstOfMonth.with(TemporalAdjusters.previousOrSame(firstDayOfWeek))
 

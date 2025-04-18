@@ -78,6 +78,7 @@ fun HabitScreen(
             BottomSheetType.SELECT_DATE -> {
                 BottomSheetSelectDate(
                     onDismiss = viewModel::onDismissBottomSheet,
+                    selectedDate = selectedDate,
                     onClick = viewModel::onClickTimeRange
                 )
             }

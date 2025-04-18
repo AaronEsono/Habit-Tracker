@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker
 import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.language.LanguageInterface
 import aeb.proyecto.language.model.EnumLanguage
+import aeb.proyecto.language.model.FirstDayOfWeekByRegion
 import aeb.proyecto.language.model.findLanguage
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -19,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val datastoreInterface: DatastoreInterface
+    private val datastoreInterface: DatastoreInterface,
+    private val firstDayOfWeekByRegion: FirstDayOfWeekByRegion
 ) : ViewModel(){
 
     private val _dataSet = MutableStateFlow(false)
@@ -41,7 +43,10 @@ class MainViewModel @Inject constructor(
     //Seteamos el primer dia se la semana si no está
     private suspend fun setDayWeek(){
         val day = datastoreInterface.getDayStartWeek()
-        day ?: datastoreInterface.setFirstDayOfWeek()
+        if(day == null){
+            val firstDay = firstDayOfWeekByRegion.getFirstDayOfWeekByLocale().name
+            datastoreInterface.setDayStartWeek(firstDay)
+        }
     }
 
     //Seteamos el idioma si no esta
