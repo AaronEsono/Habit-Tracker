@@ -37,6 +37,7 @@ import java.time.LocalDate
 // NOTA: Iconos de flaticon y svgRepo
 
 // Mirar en un futuro el horizontalRow con los dias, optimizarlo
+// Mirar en addHabit como hacer que se deslice los mensuales
 
 /** Pantalla para mostrar los hábitos e intercactuar con ellos,
  * como añadir nuevos dailyHabits, borrar hábitos o editarlos.*/
