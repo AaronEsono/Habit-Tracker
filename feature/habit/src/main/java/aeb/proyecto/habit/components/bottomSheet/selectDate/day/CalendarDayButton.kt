@@ -6,6 +6,7 @@ import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,12 +36,14 @@ fun CalendarDayButton(
             .clip(RoundedCornerShape(spacing12))
             .colorBackgroundDay(isEnabled = enabled,isSelectedDate,
                 isToday = date.dateOfMonth == LocalDate.now())
-            .wrapContentSize(Alignment.Center)
+            .wrapContentSize(Alignment.Center),
+            contentPadding = PaddingValues()
     ) {
-        LabelMediumText(
+        LabelLargeText(
             date.dateOfMonth.dayOfMonth.toString(),
             textAlign = TextAlign.Center,
-            color = isEnabledTextColor(isEnabled = enabled,isDateSelected = isSelectedDate)
+            color = isEnabledTextColor(isEnabled = enabled,isDateSelected = isSelectedDate,
+                isToday = date.dateOfMonth == LocalDate.now())
         )
     }
 }
@@ -51,7 +54,7 @@ fun Modifier.colorBackgroundDay(isEnabled:Boolean,isDateSelected:Boolean,isToday
         if(isDateSelected){
             this.background(MaterialTheme.colorScheme.onSurface)
         }else if(isToday){
-            this.background(MaterialTheme.colorScheme.surfaceContainer)
+            this.background(MaterialTheme.colorScheme.surfaceContainerLow)
         }
         else{
             this.background(MaterialTheme.colorScheme.surfaceVariant)
@@ -61,11 +64,14 @@ fun Modifier.colorBackgroundDay(isEnabled:Boolean,isDateSelected:Boolean,isToday
         this.background(MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.3f))
 
 @Composable
-fun isEnabledTextColor(isEnabled:Boolean,isDateSelected: Boolean):Color =
+fun isEnabledTextColor(isEnabled:Boolean,isDateSelected: Boolean,isToday: Boolean = false):Color =
     if(isEnabled){
         if(isDateSelected){
             MaterialTheme.colorScheme.inverseOnSurface
-        }else{
+        }else if(isToday){
+            MaterialTheme.colorScheme.inverseOnSurface
+        }
+        else{
             MaterialTheme.colorScheme.onSurface
         }
     }

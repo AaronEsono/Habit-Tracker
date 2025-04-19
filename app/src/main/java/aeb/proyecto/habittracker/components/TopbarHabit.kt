@@ -3,6 +3,12 @@ package aeb.proyecto.habittracker.components
 import aeb.proyecto.ui.controllerProvider.LocalNavController
 import aeb.proyecto.ui.topbar.TopBarViewModel
 import android.util.Log
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
@@ -30,13 +36,41 @@ fun TopBarHabit() {
             initializer = { TopBarViewModel() },
         )
 
+        val title = viewModel.title
+        val actions = viewModel.actions
+        val navigationIcon = viewModel.navigationIcon
+
         CenterAlignedTopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primary
             ),
-            title = viewModel.title,
-            actions = viewModel.actions,
-            navigationIcon = viewModel.navigationIcon
+            title = { AnimatedContent(targetState = title) {titleAnim ->titleAnim()} },
+            actions = { AnimatedContent(targetState = actions,
+                transitionSpec = {
+                    slideInHorizontally(
+                        initialOffsetX = { 1000 }, // entra desde la izquierda
+                        animationSpec = tween(durationMillis = 300)
+                    ) togetherWith  slideOutHorizontally(
+                        targetOffsetX = { 1000 }, // sale hacia la izquierda
+                        animationSpec = tween(durationMillis = 300)
+                    ) using SizeTransform(clip = false)
+                }
+            ) {actionsAnim ->actionsAnim()} },
+            navigationIcon = {
+                AnimatedContent(
+                    targetState = navigationIcon,
+                    transitionSpec = {
+                        slideInHorizontally(
+                            initialOffsetX = { -1000 }, // entra desde la izquierda
+                            animationSpec = tween(durationMillis = 300)
+                        ) togetherWith  slideOutHorizontally(
+                            targetOffsetX = { -1000 }, // sale hacia la izquierda
+                            animationSpec = tween(durationMillis = 300)
+                        ) using SizeTransform(clip = false)
+                    }
+                ) {navigationIconAnim -> navigationIconAnim() }
+            }
         )
+
     }
 }

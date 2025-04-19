@@ -16,7 +16,11 @@
     <string name="habit_action_icon">%1$s %2$s %3$s</string>
 
     <string name="habit_cancel">Cancelar</string>
+    <string name="habit_today_title">Ir a hoy</string>
+
+    <string name="habit_yesterday">Ayer</string>
     <string name="habit_today">Hoy</string>
+    <string name="habit_tomorrow">Mañana</string>
 
     <string name="habit_day_select">Selecciona el día de la semana que quieres consular</string>
 </resources>

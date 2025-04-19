@@ -11,6 +11,7 @@ import aeb.proyecto.habit.components.timeRange.MonthlyTimeRange
 import aeb.proyecto.habit.components.timeRange.WeeklyTimeRange
 import aeb.proyecto.habit.model.pager.PagerElement
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import java.time.LocalDate
 
 /**
@@ -70,9 +73,11 @@ fun PagerElementScreen(
                     selected = selectedTabIndex == index,
                     onClick = { onClickTab(pagerElement) },
                     text = {
-                        LabelLargeText(
+                        LabelMediumText(
                             stringResource(pagerElement.title),
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1,
+                            fontSize = getTextSizePager(pagerElements.size)
                         )
                     }
                 )
@@ -127,5 +132,13 @@ fun PagerElementScreen(
                 }
             }
         }
+    }
+}
+
+fun getTextSizePager(size: Int): TextUnit {
+    return when (size) {
+        4 -> 10.sp
+        3 -> 12.sp
+        else -> 14.sp
     }
 }

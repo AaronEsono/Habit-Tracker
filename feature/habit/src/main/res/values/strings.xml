@@ -17,7 +17,11 @@
     <string name="habit_action_icon">%2$s %1$s %3$s</string>
 
     <string name="habit_cancel">Cancel</string>
+    <string name="habit_today_title">Go to today</string>
+
+    <string name="habit_yesterday">Yesterday</string>
     <string name="habit_today">Today</string>
+    <string name="habit_tomorrow">Tomorrow</string>
 
     <string name="habit_day_select">Select the day of the week you want to check</string>
 </resources>

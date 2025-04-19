@@ -141,7 +141,7 @@ fun BottomSheetSelectDate(
                         ),
                         modifier = Modifier.weight(1f)
                     ) {
-                        LabelLargeText(stringResource(R.string.habit_today),
+                        LabelLargeText(stringResource(R.string.habit_today_title),
                             color = MaterialTheme.colorScheme.inverseOnSurface)
                     }
                 }

@@ -37,12 +37,7 @@ fun DateActionIcon(
             targetState = selectedDate
         ) { selectedDate ->
             LabelLargeText(
-                stringResource(
-                    R.string.habit_action_icon,
-                    selectedDate.dayOfMonth.toString(),
-                    stringResource(getAvrMonth(selectedDate.month.value)),
-                    selectedDate.year.toString()
-                ),
+                getTextActionIcon(selectedDate),
                 color = Color.Black,
                 modifier = Modifier.padding(
                     top = spacing4,
@@ -50,6 +45,23 @@ fun DateActionIcon(
                     bottom = spacing4,
                     start = spacing8
                 )
+            )
+        }
+    }
+}
+
+@Composable
+fun getTextActionIcon(date:LocalDate):String{
+    return when(date){
+        LocalDate.now() -> stringResource(R.string.habit_today)
+        LocalDate.now().plusDays(1) ->  stringResource(R.string.habit_tomorrow)
+        LocalDate.now().minusDays(1) -> stringResource(R.string.habit_yesterday)
+        else -> {
+            stringResource(
+                R.string.habit_action_icon,
+                date.dayOfMonth.toString(),
+                stringResource(getAvrMonth(date.month.value)),
+                date.year.toString()
             )
         }
     }
