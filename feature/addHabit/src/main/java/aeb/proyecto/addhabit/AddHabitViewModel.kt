@@ -5,7 +5,7 @@ import aeb.proyecto.addhabit.constants.GridOptionResult
 import aeb.proyecto.addhabit.constants.PICK_NOTIFICATION
 import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.TypeNotificationResult
-import aeb.proyecto.addhabit.constants.getContrastColor
+import aeb.proyecto.ui.constants.getContrastColor
 import aeb.proyecto.addhabit.converter.fromHabitScreen
 import aeb.proyecto.addhabit.converter.toHabitScreen
 import aeb.proyecto.addhabit.model.AddHabitNotification
@@ -19,8 +19,6 @@ import aeb.proyecto.room.model.classes.TIPO_UNIDAD
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
-import android.app.NotificationManager
-import android.util.Log
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector

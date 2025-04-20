@@ -23,6 +23,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -121,13 +122,17 @@ fun PagerElementScreen(
                 if (currentPagerSelected is CurrentPagerSelection.Selected) {
                     when (currentPagerSelected.pagerSelected.pagerElement) {
                         PagerElement.DAILY -> {
-                            DailyHabitsScreen()
+                            DailyHabitsScreen(selectedDate,filteredHabitsUIState.habits)
                         }
-                        PagerElement.WEEKLY -> {}
+                        PagerElement.WEEKLY -> {
+
+                        }
                         PagerElement.MONTHLY -> {
                             MonthlyHabitsScreen()
                         }
-                        PagerElement.RECURRING -> {}
+                        PagerElement.RECURRING -> {
+
+                        }
                     }
                 }
             }

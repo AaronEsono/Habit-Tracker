@@ -1,9 +1,8 @@
 package aeb.proyecto.addhabit.model
 
 import aeb.proyecto.addhabit.constants.PICK_TYPE_HABIT
-import aeb.proyecto.addhabit.constants.getContrastColor
-import aeb.proyecto.addhabit.constants.listColors
-import aeb.proyecto.ui.date.DaysWeek
+import aeb.proyecto.ui.constants.getContrastColor
+import aeb.proyecto.ui.constants.listColors
 import androidx.compose.ui.graphics.Color
 import java.time.DayOfWeek
 

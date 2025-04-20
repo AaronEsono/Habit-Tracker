@@ -24,4 +24,6 @@
     <string name="habit_tomorrow">Tomorrow</string>
 
     <string name="habit_day_select">Select the day of the week you want to check</string>
+
+    <string name="habit_unit_card">%1$s/%2$s</string>
 </resources>

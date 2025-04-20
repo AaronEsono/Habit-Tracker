@@ -23,4 +23,6 @@
     <string name="habit_tomorrow">Mañana</string>
 
     <string name="habit_day_select">Selecciona el día de la semana que quieres consular</string>
+
+    <string name="habit_unit_card">%1$s/%2$s</string>
 </resources>

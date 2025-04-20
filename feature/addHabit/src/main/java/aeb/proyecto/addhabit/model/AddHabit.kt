@@ -1,8 +1,8 @@
 package aeb.proyecto.addhabit.model
 
 import aeb.proyecto.addhabit.constants.TypeHabit
-import aeb.proyecto.addhabit.constants.listColors
-import aeb.proyecto.addhabit.constants.listIcons
+import aeb.proyecto.ui.constants.listColors
+import aeb.proyecto.ui.constants.listIcons
 import aeb.proyecto.room.model.classes.UnitHabit
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.graphics.Color

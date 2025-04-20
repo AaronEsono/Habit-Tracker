@@ -68,15 +68,3 @@ val outLineLightAlt = Color(0xFF8C8B82)
 val surfaceContainerLightAlt = Color(0xFFA4A39A)
 val surfaceTintLightAlt = Color(0xFFD7D6CF)
 val surfaceContainerHighestLightAlt = Color(0xFFE2E0D7)
-
-val pickColors = listOf(
-    Color(0xFF6248C1),
-    Color(0xFF2638E2),
-    Color(0xFF66DCDC),
-    Color(0xFFB850D0),
-    Color(0xFFCFD72D),
-    Color(0xFF56C157),
-    Color(0xFFDB2F31),
-    Color(0xFFDB8A42),
-    Color(0xFF534B4B)
-)

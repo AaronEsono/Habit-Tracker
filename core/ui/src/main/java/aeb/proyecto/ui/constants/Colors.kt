@@ -1,4 +1,4 @@
-package aeb.proyecto.addhabit.constants
+package aeb.proyecto.ui.constants
 
 import androidx.compose.ui.graphics.Color
 import kotlin.math.pow
