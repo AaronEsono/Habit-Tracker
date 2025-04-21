@@ -1,5 +1,6 @@
 package aeb.proyecto.domain.usecase.habit
 
+import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.DAILY_TAG
 import aeb.proyecto.room.model.classes.MONTHLY_TAG
@@ -15,7 +16,20 @@ import javax.inject.Inject
 class GetDailyHabitUseCase @Inject constructor(
     private val habitWithDailyHabitRepo: HabitWithDailyHabitRepo
 ){
-    operator fun invoke(from: LocalDate,to:LocalDate, tag: String): Flow<List<HabitWithDailyHabit>> {
+    fun getDailyHabitsByType(from: LocalDate,to:LocalDate, tag: String): Flow<List<HabitWithDailyHabit>> {
         return habitWithDailyHabitRepo.getHabitWithDailyHabitsByDateAndType(from, to, tag)
     }
+
+    fun getDailyHabitByDate(id:Long,date:LocalDate): HabitDay?{
+        return habitWithDailyHabitRepo.getHabitDay(date,id)
+    }
+
+    fun insertHabitDay(habitDay: HabitDay){
+        habitWithDailyHabitRepo.insertDailyHabit(habitDay)
+    }
+
+    fun updateHabitDay(habitDay: HabitDay){
+        habitWithDailyHabitRepo.updateDailyHabit(habitDay)
+    }
+
 }

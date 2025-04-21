@@ -1,5 +1,6 @@
 package aeb.proyecto.habit
 
+import aeb.proyecto.habit.components.bottomSheet.editHabitDay.BottomSheetEditHabitDay
 import aeb.proyecto.habit.components.bottomSheet.selectDate.BottomSheetSelectDate
 import aeb.proyecto.habit.components.loading.HabitLoading
 import aeb.proyecto.habit.components.navigationIcon.ActionIconHabitScreen
@@ -13,6 +14,7 @@ import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,7 +42,8 @@ import java.time.LocalDate
 // Mirar en addHabit como hacer que se deslice los mensuales
 
 /** Pantalla para mostrar los hábitos e intercactuar con ellos,
- * como añadir nuevos dailyHabits, borrar hábitos o editarlos.*/
+ * como añadir nuevos dailyHabits, borrar hábitos o editarlos.
+ * */
 @Composable
 fun HabitScreen(
     viewModel: HabitViewModel = hiltViewModel(),
@@ -72,7 +75,9 @@ fun HabitScreen(
         navigateToAddHabit = navigateToAddHabit,
         onClickTab = viewModel::onPagerTypeSelected,
         onClickTimeRange = viewModel::onClickTimeRange,
-        onBottomSheetSelected = viewModel::onBottomSheetSelected
+        onBottomSheetSelected = viewModel::onBottomSheetSelected,
+        onLongClick = viewModel::onLongClick,
+        onClick = viewModel::onClick
     )
 
     if(dataHabitUIState.bottomSheetState.isExpanded){
@@ -87,6 +92,13 @@ fun HabitScreen(
         }
     }
 
+    if(dataHabitUIState.showEditHabitDayBT.showEditHabitDayBT){
+        BottomSheetEditHabitDay(
+            habit = dataHabitUIState.showEditHabitDayBT.habit,
+            habitDay = dataHabitUIState.showEditHabitDayBT.habitDay,
+            onDismiss = viewModel::onDismissEdit,
+        )
+    }
 }
 
 @Composable
@@ -100,6 +112,8 @@ internal fun HabitScreen(
     onClickTab: (PagerElement) -> Unit = {},
     onClickTimeRange: (LocalDate) -> Unit = {},
     onBottomSheetSelected: (BottomSheetType) -> Unit = {},
+    onLongClick: (id:Long,date:LocalDate) -> Unit,
+    onClick: (id:Long,date:LocalDate) -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()){
         when (pagerTypesUIState) {
@@ -118,7 +132,9 @@ internal fun HabitScreen(
                         selectedTimeRangeUiState = selectedTimeRangeUiState,
                         selectedDate = dateSelected,
                         onClickTab = onClickTab,
-                        onClickTimeRange = onClickTimeRange
+                        onClickTimeRange = onClickTimeRange,
+                        onLongClick = onLongClick,
+                        onClick = onClick
                     )
 
                     ProvideAppBarActions {

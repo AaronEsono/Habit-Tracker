@@ -2,9 +2,11 @@ package aeb.proyecto.habit.components.screen.typeHabits
 
 import aeb.proyecto.habit.components.card.habit.CardHabit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
+import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing80
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -23,12 +25,16 @@ import java.time.LocalDate
 @Composable
 fun DailyHabitsScreen(
     selectedDate: LocalDate,
-    habits: List<HabitWithDailyHabit>
+    habits: List<HabitWithDailyHabit>,
+    onLongClick: (id:Long,date:LocalDate) -> Unit,
+    onClick: (id: Long, date: LocalDate) -> Unit
 ) {
     val visibleItems = remember { mutableStateListOf<Int>() }
 
-    // Efecto para mostrar los ítems con retraso uno por uno
-    LaunchedEffect(habits, selectedDate) {
+    // Hash de los IDs de los hábitos (solo cambia si cambian los hábitos que ves)
+    val habitsHash = habits.map { it.habit.id }.hashCode()
+
+    LaunchedEffect(habitsHash) {
         visibleItems.clear()
         habits.indices.forEach { index ->
             delay(50)
@@ -57,7 +63,9 @@ fun DailyHabitsScreen(
                         index,
                         lastElement = index == habits.size - 1
                     ),
-                    selectedDate = selectedDate
+                    selectedDate = selectedDate,
+                    onLongClick = onLongClick,
+                    onClick = onClick
                 )
             }
         }
@@ -71,6 +79,6 @@ fun Modifier.cardHabitPadding(index:Int, lastElement:Boolean = false):Modifier{
         else
             padding(bottom = spacing80)
     }else{
-        if (index == 0) padding(top = spacing12, bottom = spacing8) else padding(bottom = spacing8)
+        if (index == 0) padding(top = spacing12, bottom = spacing10) else padding(bottom = spacing10)
     }
 }

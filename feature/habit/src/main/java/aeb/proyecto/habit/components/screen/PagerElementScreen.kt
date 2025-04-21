@@ -44,6 +44,8 @@ fun PagerElementScreen(
     selectedDate: LocalDate = LocalDate.now(),
     onClickTab: (PagerElement) -> Unit = {},
     onClickTimeRange: (LocalDate) -> Unit = {},
+    onLongClick: (id:Long,date:LocalDate) -> Unit,
+    onClick: (id: Long, date: LocalDate) -> Unit
 ){
 
     val selectedTabIndex = when (currentPagerSelected) {
@@ -122,8 +124,13 @@ fun PagerElementScreen(
                 if (currentPagerSelected is CurrentPagerSelection.Selected) {
                     when (currentPagerSelected.pagerSelected.pagerElement) {
                         PagerElement.DAILY -> {
-                            DailyHabitsScreen(selectedDate,filteredHabitsUIState.habits)
+                            DailyHabitsScreen(
+                                selectedDate, filteredHabitsUIState.habits,
+                                onLongClick = onLongClick,
+                                onClick = onClick
+                            )
                         }
+
                         PagerElement.WEEKLY -> {
 
                         }

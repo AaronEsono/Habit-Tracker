@@ -61,7 +61,7 @@
     <string name="add_habit_error_general_title">Atención</string>
     <string name="add_habit_error_general_subtite">Ha ocurrido un error inesperado, vuelve a intentarlo.</string>
 
-    <string name="add_habit_error_no_name_subtite">Tienes que darle un nombre al hábito y un número de veces para guardarlo</string>
+    <string name="add_habit_error_no_name_subtite">Tienes que darle un nombre al hábito y un número de veces válido para guardarlo</string>
 
     <string name="add_habit_error_interval_days_subtite">Si es un hábito cíclico tienes que establecer un intervalo de días</string>
 

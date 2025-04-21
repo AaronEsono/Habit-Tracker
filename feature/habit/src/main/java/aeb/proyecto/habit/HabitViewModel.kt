@@ -1,6 +1,7 @@
 package aeb.proyecto.habit
 
 import aeb.proyecto.domain.usecase.habit.GetDailyHabitUseCase
+import aeb.proyecto.domain.usecase.habit.GetHabitUseCase
 import aeb.proyecto.domain.usecase.habit.GetTypesOfHabitUseCase
 import aeb.proyecto.domain.usecase.habit.HabitDatastoreUseCase
 import aeb.proyecto.habit.constants.rangeDays
@@ -12,14 +13,18 @@ import aeb.proyecto.habit.model.pager.PagerSelected
 import aeb.proyecto.habit.model.pager.findPagerElement
 import aeb.proyecto.habit.model.pager.orderPagerElements
 import aeb.proyecto.habit.utils.initializeSelectedTypeIfNeeded
+import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.DAILY_TAG
 import aeb.proyecto.room.model.classes.MONTHLY_TAG
 import aeb.proyecto.room.model.classes.RECURRING_TAG
 import aeb.proyecto.room.model.classes.WEEKLY_TAG
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -37,6 +42,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.temporal.TemporalAdjusters
 import javax.inject.Inject
 
@@ -44,7 +50,8 @@ import javax.inject.Inject
 class HabitViewModel @Inject constructor(
     private val getTypesOfHabitUseCase: GetTypesOfHabitUseCase,
     private val getDailyHabitUseCase: GetDailyHabitUseCase,
-    private val habitDatastoreUseCase: HabitDatastoreUseCase
+    private val habitDatastoreUseCase: HabitDatastoreUseCase,
+    private val getHabitUseCase: GetHabitUseCase
 ):ViewModel() {
 
     /** Fecha seleccionada actual por el usuario. */
@@ -165,22 +172,22 @@ class HabitViewModel @Inject constructor(
         .flatMapLatest { (timeState,date) ->
             when (timeState) {
                 is TimeRangeUiState.Daily -> {
-                    getDailyHabitUseCase(date,date, DAILY_TAG) // O usa el tag real
-                        .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> { FilteredHabitsUiState.Success(it) }
+                    getDailyHabitUseCase.getDailyHabitsByType(date,date, DAILY_TAG) // O usa el tag real
+                        .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> {FilteredHabitsUiState.Success(it) }
                         .catch { emit(FilteredHabitsUiState.Error) }
                 }
                 is TimeRangeUiState.Recurring -> {
-                    getDailyHabitUseCase(date,date, RECURRING_TAG) // O usa el tag real
+                    getDailyHabitUseCase.getDailyHabitsByType(date,date, RECURRING_TAG) // O usa el tag real
                         .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> { FilteredHabitsUiState.Success(it) }
                         .catch { emit(FilteredHabitsUiState.Error) }
                 }
                 is TimeRangeUiState.Weekly -> {
-                    getDailyHabitUseCase(timeState.startOfWeek, timeState.endOfWeek, WEEKLY_TAG)
+                    getDailyHabitUseCase.getDailyHabitsByType(timeState.startOfWeek, timeState.endOfWeek, WEEKLY_TAG)
                         .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> { FilteredHabitsUiState.Success(it) }
                         .catch { emit(FilteredHabitsUiState.Error) }
                 }
                 is TimeRangeUiState.Monthly -> {
-                    getDailyHabitUseCase(timeState.startOfMonth, timeState.endOfMonth, MONTHLY_TAG)
+                    getDailyHabitUseCase.getDailyHabitsByType(timeState.startOfMonth, timeState.endOfMonth, MONTHLY_TAG)
                         .map<List<HabitWithDailyHabit>, FilteredHabitsUiState> { FilteredHabitsUiState.Success(it) }
                         .catch { emit(FilteredHabitsUiState.Error) }
                 }
@@ -244,6 +251,74 @@ class HabitViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Abre el bottomSheet para editar un dailyHabit
+     */
+    fun onClick(id:Long,date: LocalDate) = viewModelScope.launch (Dispatchers.IO){
+        val habit = findHabit(id)
+        val habitDay = findDay(id,date) ?: HabitDay(id = habit.id)
+
+        _dataHabitUIState.update { currentState ->
+            currentState.copy(
+                showEditHabitDayBT = currentState
+                    .showEditHabitDayBT.copy(
+                        showEditHabitDayBT = true,
+                        habit = habit,
+                        habitDay = habitDay
+                    )
+            )
+        }
+    }
+
+    fun onDismissEdit(){
+        _dataHabitUIState.update { currentState ->
+            currentState.copy(
+                showEditHabitDayBT = currentState.showEditHabitDayBT.copy(
+                    showEditHabitDayBT = false
+                )
+            )
+        }
+    }
+
+    /**
+     * Permite terminar el dailyHabit del día seleccionado
+     */
+    fun onLongClick(id:Long,date: LocalDate) = viewModelScope.launch (Dispatchers.IO){
+        val habit = findHabit(id)
+        val habitDay = findDay(id,date)
+
+        //Actualizamos
+        if(habitDay != null){
+            val updatedHabitDay = habitDay.copy(
+                goalDone = habit.goal,
+                hourFinishDate = LocalTime.now()
+            )
+            getDailyHabitUseCase.updateHabitDay(updatedHabitDay)
+        }else{
+            //Insertamos
+            val newHabitDay = HabitDay(
+                idHabit = habit.id,
+                date = date,
+                goalDone = habit.goal,
+                hourFinishDate = LocalTime.now()
+            )
+            getDailyHabitUseCase.insertHabitDay(newHabitDay)
+        }
+    }
+
+    /**
+     * Busca el dailyHabit del día seleccionado
+     */
+    private fun findDay(id:Long,date: LocalDate): HabitDay? {
+        return getDailyHabitUseCase.getDailyHabitByDate(id,date)
+    }
+
+    /**
+     * Busca el hábito seleccionado
+     */
+    private fun findHabit(id:Long):Habit{
+        return getHabitUseCase.getHabit(id)
+    }
 }
 
 sealed class PagerTypesUiState(){

@@ -117,7 +117,6 @@ import androidx.compose.material.icons.filled.Work
 val listIcons = listOf(
     // Ejercicio y actividad física
     Icons.Filled.FitnessCenter,
-    Icons.AutoMirrored.Filled.DirectionsRun,
     Icons.Filled.Pool,
     Icons.Filled.Accessibility,
     Icons.Filled.EmojiNature,
@@ -155,7 +154,6 @@ val listIcons = listOf(
     Icons.Filled.Thermostat,
     Icons.Filled.PregnantWoman,
     Icons.Filled.Hearing,
-    Icons.AutoMirrored.Filled.DirectionsWalk,
 
     // Productividad y trabajo
     Icons.Filled.Alarm,
@@ -164,16 +162,12 @@ val listIcons = listOf(
     Icons.Filled.Work,
     Icons.Filled.Notifications,
     Icons.Filled.Edit,
-    Icons.AutoMirrored.Filled.List,
-    Icons.AutoMirrored.Filled.Note,
     Icons.Filled.TaskAlt,
-    Icons.AutoMirrored.Filled.Assignment,
     Icons.Filled.Timer,
     Icons.Filled.Event,
     Icons.Filled.Done,
     Icons.Filled.Description,
     Icons.Filled.ContentCopy,
-    Icons.AutoMirrored.Filled.Send,
     Icons.Filled.FileCopy,
     Icons.Filled.DoneAll,
 
@@ -192,8 +186,6 @@ val listIcons = listOf(
     Icons.Filled.Visibility,
     Icons.Filled.Star,
     Icons.Filled.ControlPoint,
-    Icons.AutoMirrored.Filled.ArrowForward,
-    Icons.AutoMirrored.Filled.ArrowBack,
     Icons.Filled.Today,
     Icons.Filled.ThumbUp,
 
@@ -225,7 +217,6 @@ val listIcons = listOf(
     Icons.Filled.Shield,
 
     // Comunicación
-    Icons.AutoMirrored.Filled.Chat,
     Icons.Filled.Mail,
     Icons.Filled.Phone,
     Icons.Filled.Sms,
@@ -234,17 +225,13 @@ val listIcons = listOf(
     Icons.Filled.Person,
     Icons.Filled.PersonAdd,
     Icons.Filled.PermContactCalendar,
-    Icons.AutoMirrored.Filled.ForwardToInbox,
 
     // Estudio y aprendizaje
     Icons.Filled.Book,
-    Icons.AutoMirrored.Filled.LibraryBooks,
     Icons.Filled.PermMedia,
     Icons.Filled.School,
     Icons.Filled.Explore,
     Icons.Filled.EditAttributes,
     Icons.Filled.LocalLibrary,
     Icons.Filled.AssignmentInd,
-    Icons.AutoMirrored.Filled.SpeakerNotes,
-    Icons.AutoMirrored.Filled.MenuBook,
 )

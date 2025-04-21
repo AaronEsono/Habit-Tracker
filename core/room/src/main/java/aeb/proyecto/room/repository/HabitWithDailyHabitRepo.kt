@@ -42,6 +42,10 @@ class HabitWithDailyHabitRepo @Inject constructor(
         return habitWithDailyHabitDao.getHabits()
     }
 
+    fun getHabitDay(date: LocalDate, idHabit: Long): HabitDay? {
+        return habitWithDailyHabitDao.getHabitDay(date, idHabit)
+    }
+
     fun getExistingTypesHabit():Flow<List<String>>{
         return habitWithDailyHabitDao.getExistingTypesHabit()
             .map { types ->
@@ -63,6 +67,10 @@ class HabitWithDailyHabitRepo @Inject constructor(
                     HabitWithDailyHabit(habit = habit, dailyHabits = daysForHabit.toMutableList())
                 }
         }
+    }
+
+    fun getHabit(id:Long):Habit{
+        return habitWithDailyHabitDao.getHabit(id)
     }
 }
 

@@ -422,6 +422,8 @@ class AddHabitViewModel @Inject constructor(
     private fun dataNameUnitIsCorrect():Boolean{
         return _dataAddHabit.value.habitScreen.nameTextField.text.toString().isNotEmpty()
                 && _dataAddHabit.value.habitScreen.numberTimesTextField.text.toString().isNotEmpty()
+                && _dataAddHabit.value.habitScreen.numberTimesTextField.text.toString() != "0"
+                && _dataAddHabit.value.habitScreen.numberTimesTextField.text.toString() != "0."
     }
 
     private fun cyclicDataIsCorrect():Boolean{
