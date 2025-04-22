@@ -8,7 +8,7 @@ import aeb.proyecto.settings.constants.SettingsConstants
 import aeb.proyecto.settings.model.DataDialog
 import aeb.proyecto.settings.utils.openLink
 import aeb.proyecto.settings.utils.sendEmail
-import aeb.proyecto.ui.date.getDay
+import aeb.proyecto.ui.date.utils.getDay
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6

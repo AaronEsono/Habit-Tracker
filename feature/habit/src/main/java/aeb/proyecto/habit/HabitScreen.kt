@@ -97,6 +97,8 @@ fun HabitScreen(
             habit = dataHabitUIState.showEditHabitDayBT.habit,
             habitDay = dataHabitUIState.showEditHabitDayBT.habitDay,
             onDismiss = viewModel::onDismissEdit,
+            onRestart = viewModel::onRestart,
+            onClick = viewModel::onClick
         )
     }
 }

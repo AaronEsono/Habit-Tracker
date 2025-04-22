@@ -1,7 +1,7 @@
 package aeb.proyecto.habit.components.timeRange
 
 import aeb.proyecto.habit.R
-import aeb.proyecto.ui.date.getDay
+import aeb.proyecto.ui.date.utils.getDay
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16

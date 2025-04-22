@@ -1,6 +1,6 @@
 package aeb.proyecto.habit.components.timeRange.components
 
-import aeb.proyecto.ui.date.getAvr
+import aeb.proyecto.ui.date.utils.getAvr
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2

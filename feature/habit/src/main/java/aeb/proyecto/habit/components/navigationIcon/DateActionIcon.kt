@@ -1,6 +1,7 @@
 package aeb.proyecto.habit.components.navigationIcon
 
 import aeb.proyecto.habit.R
+import aeb.proyecto.ui.date.utils.getTextToday
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
@@ -37,7 +38,7 @@ fun DateActionIcon(
             targetState = selectedDate
         ) { selectedDate ->
             LabelLargeText(
-                getTextActionIcon(selectedDate),
+                getTextToday(selectedDate),
                 color = Color.Black,
                 modifier = Modifier.padding(
                     top = spacing4,
@@ -45,23 +46,6 @@ fun DateActionIcon(
                     bottom = spacing4,
                     start = spacing8
                 )
-            )
-        }
-    }
-}
-
-@Composable
-fun getTextActionIcon(date:LocalDate):String{
-    return when(date){
-        LocalDate.now() -> stringResource(R.string.habit_today)
-        LocalDate.now().plusDays(1) ->  stringResource(R.string.habit_tomorrow)
-        LocalDate.now().minusDays(1) -> stringResource(R.string.habit_yesterday)
-        else -> {
-            stringResource(
-                R.string.habit_action_icon,
-                date.dayOfMonth.toString(),
-                stringResource(getAvrMonth(date.month.value)),
-                date.year.toString()
             )
         }
     }

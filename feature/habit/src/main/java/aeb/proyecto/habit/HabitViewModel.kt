@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
@@ -256,7 +257,7 @@ class HabitViewModel @Inject constructor(
      */
     fun onClick(id:Long,date: LocalDate) = viewModelScope.launch (Dispatchers.IO){
         val habit = findHabit(id)
-        val habitDay = findDay(id,date) ?: HabitDay(id = habit.id)
+        val habitDay = findDay(id,date) ?: HabitDay(id = habit.id, date = date)
 
         _dataHabitUIState.update { currentState ->
             currentState.copy(
@@ -278,6 +279,33 @@ class HabitViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    /**
+     *  Permite editar un dailyHabit
+     */
+    fun onClick(id:Long,date: LocalDate,goalDone: BigDecimal) = viewModelScope.launch (Dispatchers.IO){
+        val habit = findHabit(id)
+        val habitDay = findDay(id,date)
+
+        // Actualizamos
+        if(habitDay != null){
+            val updatedHabitDay = habitDay.copy(
+                goalDone = habitDay.goalDone.plus(goalDone),
+                hourFinishDate = LocalTime.now()
+            )
+            getDailyHabitUseCase.updateHabitDay(updatedHabitDay)
+        }else{
+            // Insertamos
+            val newHabitDay = HabitDay(
+                idHabit = habit.id,
+                date = date,
+                goalDone = goalDone,
+                hourFinishDate = LocalTime.now()
+            )
+            getDailyHabitUseCase.insertHabitDay(newHabitDay)
+        }
+
     }
 
     /**
@@ -304,6 +332,13 @@ class HabitViewModel @Inject constructor(
             )
             getDailyHabitUseCase.insertHabitDay(newHabitDay)
         }
+    }
+
+    /**
+     * Permite eliminar el dailyHabit del día seleccionado
+     */
+    fun onRestart(id:Long,date: LocalDate) = viewModelScope.launch (Dispatchers.IO){
+        getDailyHabitUseCase.deleteHabitDay(id,date)
     }
 
     /**

@@ -46,4 +46,9 @@
     <string name="add_habit_fri">Fri</string>
     <string name="add_habit_sat">Sat</string>
     <string name="add_habit_sun">Sun</string>
+
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="habit_action_icon">%2$s %1$s %3$s</string>
 </resources>

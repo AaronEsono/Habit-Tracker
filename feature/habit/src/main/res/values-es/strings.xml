@@ -25,4 +25,12 @@
     <string name="habit_day_select">Selecciona el día de la semana que quieres consular</string>
 
     <string name="habit_unit_card">%1$s/%2$s</string>
+
+    <string name="habit_edit_habit_day_times_left">%1$s restantes: %2$s</string>
+    <string name="habit_edit_habit_day_times_label">Selecciona el número de %1$s realizadas en esta fecha</string>
+
+    <string name="habit_restart_day">¿Desea reiniciar el día seleccionado?</string>
+
+    <string name="habit_restart">Reiniciar día</string>
+    <string name="habit_accept">Aceptar</string>
 </resources>

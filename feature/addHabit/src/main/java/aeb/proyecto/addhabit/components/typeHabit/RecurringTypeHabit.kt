@@ -3,7 +3,7 @@ package aeb.proyecto.addhabit.components.typeHabit
 import aeb.proyecto.addhabit.R
 import aeb.proyecto.addhabit.components.card.CardLeadingIconButton
 import aeb.proyecto.addhabit.components.textField.AddHabitTextField
-import aeb.proyecto.ui.date.getDay
+import aeb.proyecto.ui.date.utils.getDay
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4

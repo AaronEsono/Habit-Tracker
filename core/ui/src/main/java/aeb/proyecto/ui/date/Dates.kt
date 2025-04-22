@@ -25,26 +25,3 @@ enum class DaysWeekAvr(@StringRes val string:Int, val id:DayOfWeek){
     SABADO(R.string.add_habit_sat,DayOfWeek.SATURDAY),
     DOMINGO(R.string.add_habit_sun,DayOfWeek.SUNDAY)
 }
-
-fun getDay(dayOfWeek:Int):Int{
-    return DaysWeek.entries[dayOfWeek].string
-}
-
-fun getDay(dayOfWeek:String):Int{
-    return DaysWeek.entries.find { it.id.name == dayOfWeek }?.string ?: DaysWeek.LUNES.string
-}
-
-fun getOrderedDays(startDay: DayOfWeek): List<DaysWeekAvr> {
-    val allDays = DaysWeekAvr.entries
-    val startIndex = allDays.indexOfFirst { it.id == startDay }
-
-    return if (startIndex != -1) {
-        allDays.drop(startIndex) + allDays.take(startIndex)
-    } else {
-        allDays
-    }
-}
-
-fun getAvr(day:DayOfWeek):Int{
-    return DaysWeekAvr.entries.find { it.id == day }?.string ?: DaysWeekAvr.LUNES.string
-}

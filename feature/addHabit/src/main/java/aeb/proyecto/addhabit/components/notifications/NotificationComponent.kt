@@ -4,7 +4,7 @@ import aeb.proyecto.addhabit.constants.TypeNotificationResult
 import aeb.proyecto.ui.date.DaysWeekAvr
 import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.room.model.classes.TypeNotification
-import aeb.proyecto.ui.date.getOrderedDays
+import aeb.proyecto.ui.date.utils.getOrderedDays
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2

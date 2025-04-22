@@ -1,7 +1,7 @@
 package aeb.proyecto.ui.calendar.content
 
 import aeb.proyecto.language.provider.getFirstDayOfWeekByLocale
-import aeb.proyecto.ui.date.getOrderedDays
+import aeb.proyecto.ui.date.utils.getOrderedDays
 import aeb.proyecto.ui.text.LabelLargeText
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

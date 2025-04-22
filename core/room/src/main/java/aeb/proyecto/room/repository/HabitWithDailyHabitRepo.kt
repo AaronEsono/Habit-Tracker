@@ -72,5 +72,9 @@ class HabitWithDailyHabitRepo @Inject constructor(
     fun getHabit(id:Long):Habit{
         return habitWithDailyHabitDao.getHabit(id)
     }
+
+    fun deleteHabitDay(id:Long,date:LocalDate){
+        habitWithDailyHabitDao.deleteHabitDay(id,date)
+    }
 }
 
