@@ -46,17 +46,12 @@ fun WeeklyTypeHabit(
     onCheckedChange: () -> Unit = {}
 ){
 
-    val label = remember (weeklyGoal){
-        if (weeklyGoal) R.string.add_habit_weekly_type_label_true
-        else R.string.add_habit_weekly_type_label_false
-    }
-
     Column (
         modifier = modifier,
     ){
 
         Row (
-            modifier = Modifier.fillMaxWidth().paddingGoal(isVisible = weeklyGoal),
+            modifier = Modifier.fillMaxWidth().padding(vertical = spacing8),
             verticalAlignment = Alignment.CenterVertically
         ){
             Column (
@@ -65,7 +60,8 @@ fun WeeklyTypeHabit(
             ){
                 LabelLargeText(stringResource(R.string.add_habit_weekly_goal))
 
-                LabelSmallText(stringResource(label),color = MaterialTheme.colorScheme.outline)
+                LabelSmallText(stringResource(R.string.add_habit_weekly_type_label),
+                    color = MaterialTheme.colorScheme.outline)
             }
 
             Switch(
@@ -145,8 +141,3 @@ fun WeeklyButton(
 fun numberSelected(number:Int, selected:Int):Boolean{
     return number == selected
 }
-
-@Composable
-fun Modifier.paddingGoal(isVisible:Boolean):Modifier =
-    if (isVisible) this.padding(vertical = spacing8)
-    else this.padding(bottom = spacing8)

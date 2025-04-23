@@ -55,14 +55,10 @@
     <string name="add_habit_notificacionRecurring">Select the interval of days for each notification</string>
 
     <string name="add_habit_weekly_goal">Use a single total goal for the week</string>
-    <string name="add_habit_weekly_type_label_true">Complete your weekly goal by adding progress from any day of the week</string>
-    <string name="add_habit_weekly_type_label_false">Each day of the week has its own specific goal</string>
+    <string name="add_habit_weekly_type_label">Choose between a single goal for the entire week or individual goals for each selected day</string>
 
     <string name="add_habit_monthly_goal">Use a single total goal for the month</string>
-    <string name="add_habit_monthly_type_label_true">Complete your monthly goal by adding progress from any day of the month</string>
-    <string name="add_habit_monthly_type_label_false">Each day of the month has its own specific goal</string>
-
-    <string name="add_habit_dots">:</string>
+    <string name="add_habit_monthly_type_label">Choose between a single goal for the entire month or individual goals for each selected day</string>
 
     <!-- Estados bottom sheet-->
     <string name="add_habit_delete_notification_title">Delete Notification</string>
@@ -82,4 +78,8 @@
     <string name="add_habit_no_permissions_button">Go to settings</string>
 
     <string name="add_habit_switch_mode">24 hours mode</string>
+
+
+
+    <string name="add_habit_dots" translatable="false">:</string>
 </resources>

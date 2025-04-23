@@ -10,6 +10,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing14
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
+import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
@@ -51,7 +52,7 @@ fun RestartDay(
         stringResource(R.string.habit_restart_day),
         modifier = Modifier
             .padding(
-                bottom = spacing10,
+                bottom = spacing4,
                 top = spacing14
             ),
         fontSize = 16.sp

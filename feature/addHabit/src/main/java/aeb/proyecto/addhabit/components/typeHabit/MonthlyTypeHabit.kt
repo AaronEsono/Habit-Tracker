@@ -58,18 +58,12 @@ fun MonthlyTypeHabit(
     onCheckedMonthly: () -> Unit = {}
 ){
 
-
-    val label = remember (monthlyGoal){
-        if (monthlyGoal) R.string.add_habit_monthly_type_label_true
-        else R.string.add_habit_monthly_type_label_false
-    }
-
     Column (
         modifier = modifier,
     ){
 
         Row (
-            modifier = Modifier.fillMaxWidth().paddingGoal(isVisible = monthlyGoal),
+            modifier = Modifier.fillMaxWidth().padding(vertical = spacing8),
             verticalAlignment = Alignment.CenterVertically
         ){
             Column (
@@ -78,7 +72,8 @@ fun MonthlyTypeHabit(
             ){
                 LabelLargeText(stringResource(R.string.add_habit_monthly_goal))
 
-                LabelSmallText(stringResource(label),color = MaterialTheme.colorScheme.outline)
+                LabelSmallText(stringResource(R.string.add_habit_monthly_type_label),
+                    color = MaterialTheme.colorScheme.outline)
             }
 
             Switch(
