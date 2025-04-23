@@ -446,6 +446,21 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
+    fun onCheckedWeeklyChange(){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                habitScreen = currentState.habitScreen.copy(weeklyGoal = !currentState.habitScreen.weeklyGoal)
+            )
+        }
+    }
+
+    fun onCheckedMonthlyChange(){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                habitScreen = currentState.habitScreen.copy(monthlyGoal = !currentState.habitScreen.monthlyGoal)
+            )
+        }
+    }
 }
 
 sealed class AddHabitUIState{

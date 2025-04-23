@@ -61,9 +61,11 @@ class TypeHabitAdapter : JsonSerializer<TypeHabit>, JsonDeserializer<TypeHabit> 
             is TypeHabit.Daily -> {}
             is TypeHabit.Weekly -> {
                 jsonObject.addProperty("numberDays", src.numberDays)
+                jsonObject.addProperty("weeklyGoal", src.weeklyGoal)
             }
             is TypeHabit.Monthly -> {
                 jsonObject.addProperty("numberTimes", src.numberTimes)
+                jsonObject.addProperty("monthlyGoal", src.monthlyGoal)
             }
             is TypeHabit.Recurring -> {
                 jsonObject.addProperty("date", src.date.toString())
@@ -81,10 +83,12 @@ class TypeHabitAdapter : JsonSerializer<TypeHabit>, JsonDeserializer<TypeHabit> 
         return when (type) {
             DAILY_TAG -> TypeHabit.Daily
             WEEKLY_TAG -> TypeHabit.Weekly(
-                numberDays = jsonObject.get("numberDays")?.asInt ?: 1
+                numberDays = jsonObject.get("numberDays")?.asInt ?: 1,
+                weeklyGoal = jsonObject.get("weeklyGoal")?.asBoolean ?: false
             )
             MONTHLY_TAG -> TypeHabit.Monthly(
-                numberTimes = jsonObject.get("numberTimes")?.asInt ?: 1
+                numberTimes = jsonObject.get("numberTimes")?.asInt ?: 1,
+                monthlyGoal = jsonObject.get("monthlyGoal")?.asBoolean ?: false
             )
             RECURRING_TAG -> TypeHabit.Recurring(
                 date = LocalDate.parse(jsonObject.get("date")?.asString),

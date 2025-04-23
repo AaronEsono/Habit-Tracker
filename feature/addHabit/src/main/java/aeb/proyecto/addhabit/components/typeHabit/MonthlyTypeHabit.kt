@@ -7,6 +7,8 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
+import aeb.proyecto.ui.text.LabelSmallText
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.foundation.background
@@ -14,10 +16,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
 import androidx.compose.foundation.gestures.snapping.snapFlingBehavior
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,6 +33,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -53,24 +59,62 @@ val days = (1..31).toList()
 fun MonthlyTypeHabit(
     modifier: Modifier = Modifier,
     colorSelected: Color = MaterialTheme.colorScheme.primary,
+    monthlyGoal:Boolean,
     contrastColor: Color = Color.Black,
     numberSelected:Int = 5,
-    onNumberSelected: (Int) -> Unit = {}
+    onNumberSelected: (Int) -> Unit = {},
+    onCheckedMonthly: () -> Unit = {}
 ){
+
+
+    val label = remember (monthlyGoal){
+        if (monthlyGoal) R.string.habit_monthly_type_label_true
+        else R.string.habit_monthly_type_label_false
+    }
 
     Column (
         modifier = modifier,
     ){
 
-        LabelMediumText(stringResource(R.string.add_habit_monthly_type_title))
+        Row (
+            modifier = Modifier.fillMaxWidth().paddingWeeklyGoal(isVisible = monthlyGoal),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Column (
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center
+            ){
+                LabelLargeText(stringResource(R.string.habit_monthly_goal))
 
-        NumberPicker(
-            modifier = Modifier.padding(top = spacing8),
-            colorSelected = colorSelected,
-            contrastColor = contrastColor,
-            numberSelected = numberSelected,
-            onNumberSelected = onNumberSelected
-        )
+                LabelSmallText(stringResource(label),color = MaterialTheme.colorScheme.outline)
+            }
+
+            Switch(
+                modifier = Modifier.padding(start = spacing8),
+                checked = monthlyGoal,
+                onCheckedChange = {onCheckedMonthly()},
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = colorSelected,
+                    checkedBorderColor = colorSelected
+                )
+            )
+        }
+
+        AnimatedVisibility(
+            visible = !monthlyGoal
+        ) {
+            Column {
+                LabelMediumText(stringResource(R.string.add_habit_monthly_type_title))
+
+                NumberPicker(
+                    modifier = Modifier.padding(top = spacing8),
+                    colorSelected = colorSelected,
+                    contrastColor = contrastColor,
+                    numberSelected = numberSelected,
+                    onNumberSelected = onNumberSelected
+                )
+            }
+        }
     }
 
 }

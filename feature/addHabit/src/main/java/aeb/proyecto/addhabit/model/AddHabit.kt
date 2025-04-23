@@ -22,7 +22,11 @@ data class AddHabit(
     val notifications:List<AddHabitNotification> = listOf(),
 
     var numberOfDaysWeek:Int = 1,
+    var weeklyGoal:Boolean = false,
+
     var numberOfDaysMonth:Int = 1,
+    var monthlyGoal:Boolean = false,
+
     var dateRecurringStartDate: LocalDate = LocalDate.now(),
     val intervalTextFieldState:TextFieldState = TextFieldState(initialText = "1")
 )

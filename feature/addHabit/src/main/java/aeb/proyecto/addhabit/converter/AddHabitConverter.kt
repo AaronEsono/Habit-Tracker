@@ -21,8 +21,8 @@ fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
             unit = habitScreen.unit,
             typeHabit = when(habitScreen.typeHabit){
                 aeb.proyecto.addhabit.constants.TypeHabit.DAILY -> { TypeHabit.Daily }
-                aeb.proyecto.addhabit.constants.TypeHabit.WEEKLY -> { TypeHabit.Weekly(habitScreen.numberOfDaysWeek) }
-                aeb.proyecto.addhabit.constants.TypeHabit.MONTHLY -> { TypeHabit.Monthly(habitScreen.numberOfDaysMonth) }
+                aeb.proyecto.addhabit.constants.TypeHabit.WEEKLY -> { TypeHabit.Weekly(habitScreen.numberOfDaysWeek, habitScreen.weeklyGoal) }
+                aeb.proyecto.addhabit.constants.TypeHabit.MONTHLY -> { TypeHabit.Monthly(habitScreen.numberOfDaysMonth, habitScreen.weeklyGoal) }
                 aeb.proyecto.addhabit.constants.TypeHabit.CYCLIC -> { TypeHabit.Recurring(habitScreen.dateRecurringStartDate, habitScreen.intervalTextFieldState.text.toString().toInt()) }
             }
         ),
@@ -51,7 +51,9 @@ fun toHabitScreen(habitWithNotification: HabitWithNotification): AddHabit {
             toNotificationScreen(it)
         },
         numberOfDaysWeek = (habitWithNotification.habit.typeHabit as? TypeHabit.Weekly)?.numberDays ?: 1,
+        weeklyGoal = (habitWithNotification.habit.typeHabit as? TypeHabit.Weekly)?.weeklyGoal ?: false,
         numberOfDaysMonth = (habitWithNotification.habit.typeHabit as? TypeHabit.Monthly)?.numberTimes ?: 1,
+        monthlyGoal = (habitWithNotification.habit.typeHabit as? TypeHabit.Monthly)?.monthlyGoal ?: false,
         dateRecurringStartDate = (habitWithNotification.habit.typeHabit as? TypeHabit.Recurring)?.date ?: LocalDate.now(),
         intervalTextFieldState = TextFieldState(initialText = (habitWithNotification.habit.typeHabit as? TypeHabit.Recurring)?.interval.toString())
     )

@@ -30,7 +30,7 @@
     <string name="add_habit_recurring_date">%1$s, %2$s %3$s</string>
     <string name="add_habit_recurring_title_date">Select the date to start this habit and the interval of days</string>
 
-    <string name="add_habit_times_and_units">Set the number of repetitions per day and the units</string>
+    <string name="add_habit_times_and_units">Set the number of repetitions and the units</string>
 
     <string name="add_habit_time_title">Time</string>
     <string name="add_habit_quantity_title">Quantity</string>
@@ -53,6 +53,14 @@
 
     <string name="add_habit_notificacionWeek">Select the days for each notification</string>
     <string name="add_habit_notificacionRecurring">Select the interval of days for each notification</string>
+
+    <string name="habit_weekly_goal">Use a single total goal for the week</string>
+    <string name="habit_weekly_type_label_true">Complete your weekly goal by adding progress from any day of the week</string>
+    <string name="habit_weekly_type_label_false">Each day of the week has its own specific goal</string>
+
+    <string name="habit_monthly_goal">Use a single total goal for the month</string>
+    <string name="habit_monthly_type_label_true">Complete your monthly goal by adding progress from any day of the month</string>
+    <string name="habit_monthly_type_label_false">Each day of the month has its own specific goal</string>
 
     <!-- Estados bottom sheet-->
     <string name="add_habit_delete_notification_title">Delete Notification</string>

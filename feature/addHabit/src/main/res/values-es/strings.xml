@@ -30,7 +30,7 @@
     <string name="add_habit_recurring_date">%1$s, %2$s %3$s</string>
     <string name="add_habit_recurring_title_date">Selecciona la fecha para comenzar este hábito y el intervalo de días</string>
 
-    <string name="add_habit_times_and_units">Establece el número de repeticiones por día y las unidades</string>
+    <string name="add_habit_times_and_units">Establece el número de repeticiones y las unidades</string>
 
     <string name="add_habit_time_title">Tiempo</string>
     <string name="add_habit_quantity_title">Cantidad</string>
@@ -53,6 +53,14 @@
 
     <string name="add_habit_notificacionWeek">Selecciona los días de la semana para cada notificación</string>
     <string name="add_habit_notificacionRecurring">Selecciona el intervalo de días para cada notificación</string>
+
+    <string name="habit_weekly_goal">Usar una única meta total para la semana</string>
+    <string name="habit_weekly_type_label_true">Completa tu meta semanal sumando el progreso de todos los días de la semana</string>
+    <string name="habit_weekly_type_label_false">Cada día de la semana tiene su propia meta específica</string>
+
+    <string name="habit_monthly_goal">Usar una única meta total para el mes</string>
+    <string name="habit_monthly_type_label_true">Completa tu meta mensual sumando el progreso de todos los días del mes</string>
+    <string name="habit_monthly_type_label_false">Cada día del mes tiene su propia meta específica</string>
 
     <!-- Estados bottom sheet-->
     <string name="add_habit_delete_notification_title">Borrar notificación</string>

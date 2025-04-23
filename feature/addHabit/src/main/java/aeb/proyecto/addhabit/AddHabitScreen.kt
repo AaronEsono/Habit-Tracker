@@ -149,6 +149,8 @@ fun AddHabitScreen(
         onPickUnit = viewModel::onPickUnit,
         onClickTypeNotification = viewModel::onClickTypeNotification,
         onTimeSelected = viewModel::onTimeSelected,
+        onCheckedWeeklyChange = viewModel::onCheckedWeeklyChange,
+        onCheckedMonthlyChange = viewModel::onCheckedMonthlyChange,
         onClickDeleteNotification = viewModel::onClickDeleteNotification,
         onClickTypeNotificationResult = viewModel::onClickTypeNotificationResult,
         onClickEditNotification = viewModel::onEditNotification
@@ -183,6 +185,8 @@ internal fun AddHabitScreen(
     onClickTypeNotification: (TypeNotification) -> Unit = {},
     onTimeSelected: (LocalTime) -> Unit = {},
     onClickDeleteNotification: (String) -> Unit = {},
+    onCheckedWeeklyChange:() -> Unit,
+    onCheckedMonthlyChange:() -> Unit,
     onClickTypeNotificationResult: (TypeNotificationResult) -> Unit = {},
     onClickEditNotification: (String,LocalTime) -> Unit = {_,_ ->}
 ){
@@ -316,8 +320,10 @@ internal fun AddHabitScreen(
                         .fillMaxWidth()
                         .padding(top = spacing10),
                         numberSelected = habit.numberOfDaysWeek,
+                        weeklyGoal = habit.weeklyGoal,
                         colorSelected = habit.color,
                         contrastColor = dataAddHabit.contrastColor,
+                        onCheckedChange = onCheckedWeeklyChange,
                         onClickWeekly = onClickWeekly)
                 }
 
@@ -328,6 +334,8 @@ internal fun AddHabitScreen(
                         colorSelected = habit.color,
                         contrastColor = dataAddHabit.contrastColor,
                         numberSelected = habit.numberOfDaysMonth,
+                        monthlyGoal = habit.monthlyGoal,
+                        onCheckedMonthly = onCheckedMonthlyChange,
                         onNumberSelected = onMonthNumberSelected)
                 }
                 TypeHabit.CYCLIC -> {
