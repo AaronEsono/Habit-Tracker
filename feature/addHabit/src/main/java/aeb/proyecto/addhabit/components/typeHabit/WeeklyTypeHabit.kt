@@ -148,5 +148,5 @@ fun numberSelected(number:Int, selected:Int):Boolean{
 
 @Composable
 fun Modifier.paddingGoal(isVisible:Boolean):Modifier =
-    if (isVisible) this.padding(vertical = spacing4)
+    if (isVisible) this.padding(vertical = spacing8)
     else this.padding(bottom = spacing8)

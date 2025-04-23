@@ -4,9 +4,13 @@ import aeb.proyecto.addhabit.model.AddHabit
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.relations.HabitWithNotification
 import aeb.proyecto.room.model.classes.TypeHabit
+import aeb.proyecto.room.model.classes.UnitHabit
+import aeb.proyecto.room.utils.convertFromSeconds
+import aeb.proyecto.room.utils.convertToSeconds
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 
@@ -17,7 +21,12 @@ fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
             description = habitScreen.descriptionTextField.text.toString(),
             color = habitScreen.color.toArgb(),
             icon = habitScreen.icon,
-            goal = habitScreen.numberTimesTextField.text.toString().toBigDecimal().setScale(3, RoundingMode.HALF_UP).stripTrailingZeros(),
+            goal = goalConverter(
+                habitScreen.numberTimesTextField,
+                habitScreen.firstHourTimesTextField,
+                habitScreen.secondHourTimesTextField,
+                habitScreen.unit
+            ),
             unit = habitScreen.unit,
             typeHabit = when(habitScreen.typeHabit){
                 aeb.proyecto.addhabit.constants.TypeHabit.DAILY -> { TypeHabit.Daily }
@@ -55,6 +64,52 @@ fun toHabitScreen(habitWithNotification: HabitWithNotification): AddHabit {
         numberOfDaysMonth = (habitWithNotification.habit.typeHabit as? TypeHabit.Monthly)?.numberTimes ?: 1,
         monthlyGoal = (habitWithNotification.habit.typeHabit as? TypeHabit.Monthly)?.monthlyGoal ?: false,
         dateRecurringStartDate = (habitWithNotification.habit.typeHabit as? TypeHabit.Recurring)?.date ?: LocalDate.now(),
-        intervalTextFieldState = TextFieldState(initialText = (habitWithNotification.habit.typeHabit as? TypeHabit.Recurring)?.interval.toString())
+        intervalTextFieldState = TextFieldState(initialText = (habitWithNotification.habit.typeHabit as? TypeHabit.Recurring)?.interval.toString()),
+        firstHourTimesTextField = firstHourConverter(habitWithNotification.habit.goal,habitWithNotification.habit.unit),
+        secondHourTimesTextField = secondHourConverter(habitWithNotification.habit.goal,habitWithNotification.habit.unit)
     )
+}
+
+fun goalConverter(
+    numberTextField: TextFieldState,
+    firstHourTextField: TextFieldState,
+    secondHourTextField: TextFieldState,
+    unitHabit: UnitHabit
+):BigDecimal{
+    return when(unitHabit){
+        UnitHabit.MINUTES, UnitHabit.HOURS -> {
+            convertToSeconds(firstHourTextField.text.toString(),secondHourTextField.text.toString(),unitHabit)
+        }
+        else -> {
+            numberTextField.text
+                .toString()
+                .toBigDecimalOrNull()
+                ?.setScale(3, RoundingMode.HALF_UP)
+                ?.stripTrailingZeros() ?: BigDecimal.ZERO
+        }
+    }
+}
+
+fun firstHourConverter(goal:BigDecimal,unitHabit: UnitHabit):TextFieldState{
+    return when(unitHabit){
+        UnitHabit.MINUTES, UnitHabit.HOURS -> {
+            val (hours,_) = convertFromSeconds(goal,unitHabit)
+            TextFieldState(hours.toString())
+        }
+        else -> {
+            TextFieldState(initialText = "1")
+        }
+    }
+}
+
+fun secondHourConverter(goal:BigDecimal,unitHabit: UnitHabit):TextFieldState{
+    return when(unitHabit){
+        UnitHabit.MINUTES, UnitHabit.HOURS -> {
+            val (_,second) = convertFromSeconds(goal,unitHabit)
+            TextFieldState(second.toString())
+        }
+        else -> {
+            TextFieldState(initialText = "1")
+        }
+    }
 }
