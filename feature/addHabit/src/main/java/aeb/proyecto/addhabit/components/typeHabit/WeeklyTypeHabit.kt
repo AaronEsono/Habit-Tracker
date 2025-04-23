@@ -3,6 +3,7 @@ package aeb.proyecto.addhabit.components.typeHabit
 import aeb.proyecto.addhabit.R
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
+import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
@@ -46,8 +47,8 @@ fun WeeklyTypeHabit(
 ){
 
     val label = remember (weeklyGoal){
-        if (weeklyGoal) R.string.habit_weekly_type_label_true
-        else R.string.habit_weekly_type_label_false
+        if (weeklyGoal) R.string.add_habit_weekly_type_label_true
+        else R.string.add_habit_weekly_type_label_false
     }
 
     Column (
@@ -55,14 +56,14 @@ fun WeeklyTypeHabit(
     ){
 
         Row (
-            modifier = Modifier.fillMaxWidth().paddingWeeklyGoal(isVisible = weeklyGoal),
+            modifier = Modifier.fillMaxWidth().paddingGoal(isVisible = weeklyGoal),
             verticalAlignment = Alignment.CenterVertically
         ){
             Column (
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center
             ){
-                LabelLargeText(stringResource(R.string.habit_weekly_goal))
+                LabelLargeText(stringResource(R.string.add_habit_weekly_goal))
 
                 LabelSmallText(stringResource(label),color = MaterialTheme.colorScheme.outline)
             }
@@ -146,6 +147,6 @@ fun numberSelected(number:Int, selected:Int):Boolean{
 }
 
 @Composable
-fun Modifier.paddingWeeklyGoal(isVisible:Boolean):Modifier =
-    if (isVisible) this
+fun Modifier.paddingGoal(isVisible:Boolean):Modifier =
+    if (isVisible) this.padding(vertical = spacing4)
     else this.padding(bottom = spacing8)

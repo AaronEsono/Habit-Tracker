@@ -14,6 +14,7 @@ import aeb.proyecto.addhabit.components.grid.AddHabitGrid
 import aeb.proyecto.addhabit.components.loading.AddHabitLoading
 import aeb.proyecto.addhabit.components.notifications.NotificationComponent
 import aeb.proyecto.addhabit.components.textField.AddHabitTextField
+import aeb.proyecto.addhabit.components.textField.TrailingIcon
 import aeb.proyecto.addhabit.components.typeHabit.MonthlyTypeHabit
 import aeb.proyecto.addhabit.components.typeHabit.RecurringTypeHabit
 import aeb.proyecto.addhabit.components.typeHabit.WeeklyTypeHabit
@@ -31,6 +32,8 @@ import aeb.proyecto.addhabit.utils.OnChangePermissions
 import aeb.proyecto.addhabit.utils.goToAppSettings
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
+import aeb.proyecto.room.model.classes.unitsHourMode
+import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
@@ -42,8 +45,10 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.navigationIcon.NavigationIcon
 import aeb.proyecto.ui.regexTextField.IsOnlyDigit
+import aeb.proyecto.ui.regexTextField.IsOnlyZeroTo59
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
+import aeb.proyecto.ui.text.LabelSmallText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarNavigationIcon
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
@@ -52,6 +57,7 @@ import android.content.pm.PackageManager
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -59,7 +65,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
@@ -71,6 +80,7 @@ import androidx.compose.material.icons.filled.NotificationAdd
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.runtime.Composable
@@ -208,7 +218,10 @@ internal fun AddHabitScreen(
     }
 
     OnChangePermissions(isPermissionGranted,context)
+
     IsOnlyDigit(habit.numberTimesTextField,habit.unit)
+    IsOnlyDigit(habit.firstHourTimesTextField)
+    IsOnlyZeroTo59(habit.secondHourTimesTextField)
 
     when(uiState){
         AddHabitUIState.Error, AddHabitUIState.Success -> Unit
@@ -234,6 +247,7 @@ internal fun AddHabitScreen(
             labelPosition = TextFieldLabelPosition.Above(),
             focusManager = focusManager,
             imeAction = ImeAction.Done,
+            trailingIcon = { TrailingIcon(habit.nameTextField) },
             contentPadding = PaddingValues(start = spacing12),
             keyboardType = KeyboardType.Text
         )
@@ -247,6 +261,7 @@ internal fun AddHabitScreen(
             focusManager = focusManager,
             labelPosition = TextFieldLabelPosition.Above(),
             imeAction = ImeAction.Done,
+            trailingIcon = { TrailingIcon(habit.descriptionTextField) },
             contentPadding = PaddingValues(start = spacing12),
             keyboardType = KeyboardType.Text
         )
@@ -358,30 +373,104 @@ internal fun AddHabitScreen(
         //Unidades y veces
         LabelLargeText(stringResource(R.string.add_habit_times_and_units))
 
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = spacing12),
-        ){
-            AddHabitTextField(
-                textFieldState = habit.numberTimesTextField,
+        AnimatedContent(
+            targetState = habit.unit in unitsHourMode,
+            label = "UnitContentAnimation"
+        ) { isHourMode ->
+
+            Row(
                 modifier = Modifier
-                    .weight(1f)
-                    .height(45.dp)
-                    .padding(top = spacing2),
-                focusManager = focusManager,
-                imeAction = ImeAction.Done,
-                contentPadding = PaddingValues(start = spacing12),
-                keyboardType = KeyboardType.Number
-            )
+                    .fillMaxWidth()
+                    .padding(top = spacing12),
+            ) {
+                if (!isHourMode) {
+                    AddHabitTextField(
+                        textFieldState = habit.numberTimesTextField,
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(45.dp)
+                            .padding(top = spacing2),
+                        focusManager = focusManager,
+                        trailingIcon = { TrailingIcon(habit.numberTimesTextField) },
+                        imeAction = ImeAction.Done,
+                        contentPadding = PaddingValues(start = spacing12),
+                        keyboardType = KeyboardType.Number
+                    )
+                } else {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.weight(1f)
+                    ) {
 
-            Spacer(modifier = Modifier.padding(horizontal = spacing8))
+                        Column (
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(top = spacing2)
+                        ){
+                            AddHabitTextField(
+                                textFieldState = habit.firstHourTimesTextField,
+                                modifier = Modifier
+                                    .height(45.dp),
+                                focusManager = focusManager,
+                                imeAction = ImeAction.Next,
+                                contentPadding = PaddingValues(horizontal = spacing12),
+                                keyboardType = KeyboardType.Number
+                            )
 
-            AddHabitCardButton(
-                title = getTextUnits(habit.numberTimesTextField, habit.unit),
-                modifier = Modifier.weight(1f),
-                onClick = { onClickDialog(PICK_UNIT) }
-            )
+                            LabelSmallText(
+                                stringResource(habit.unit.titlePlural),
+                                color = MaterialTheme.colorScheme.outline,
+                                modifier = Modifier.padding(top = spacing1)
+                            )
+                        }
+
+                        LabelLargeText(
+                            stringResource(R.string.add_habit_dots),
+                            fontSize = 40.sp,
+                            modifier = Modifier
+                                .padding(horizontal = spacing4)
+                                .offset(y = (-10).dp)
+                        )
+
+                        Column (
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(top = spacing2)
+                        ){
+                            val label = remember (habit.unit){
+                                if(habit.unit == UnitHabit.HOURS)
+                                    UnitHabit.MINUTES.titlePlural
+                                else
+                                    UnitHabit.SECONDS.titlePlural
+                            }
+
+                            AddHabitTextField(
+                                textFieldState = habit.secondHourTimesTextField,
+                                modifier = Modifier
+                                    .height(45.dp),
+                                focusManager = focusManager,
+                                imeAction = ImeAction.Done,
+                                contentPadding = PaddingValues(horizontal = spacing12),
+                                keyboardType = KeyboardType.Number
+                            )
+
+                            LabelSmallText(
+                                stringResource(label),
+                                color = MaterialTheme.colorScheme.outline,
+                                modifier = Modifier.padding(top = spacing1)
+                            )
+                        }
+                    }
+            }
+
+                Spacer(modifier = Modifier.padding(horizontal = spacing8))
+
+                AddHabitCardButton(
+                    title = getTextUnits(habit.numberTimesTextField, habit.firstHourTimesTextField, habit.unit),
+                    modifier = Modifier.weight(1f),
+                    onClick = { onClickDialog(PICK_UNIT) }
+                )
+            }
         }
 
         //Notificaciones
@@ -522,7 +611,15 @@ internal fun AddHabitScreen(
 }
 
 @Composable
-fun getTextUnits(timeTextField:TextFieldState, typeUnit: UnitHabit):String{
-    return if(timeTextField.text.toString() == "1") stringResource(typeUnit.title)
-    else stringResource(typeUnit.titlePlural)
+fun getTextUnits(timeTextField:TextFieldState,firstHourTimesTextField: TextFieldState, typeUnit: UnitHabit):String{
+    return when{
+        typeUnit !in unitsHourMode ->{
+            if(timeTextField.text.toString() == "1") stringResource(typeUnit.title)
+            else stringResource(typeUnit.titlePlural)
+        }
+        else -> {
+            if(firstHourTimesTextField.text.toString() == "1") stringResource(typeUnit.title)
+            else stringResource(typeUnit.titlePlural)
+        }
+    }
 }

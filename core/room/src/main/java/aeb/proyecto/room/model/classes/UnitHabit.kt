@@ -136,3 +136,8 @@ val listFrequency = listOf(
     UnitHabit.TASKS,
     UnitHabit.ATTEMPTS
 )
+
+val unitsHourMode = listOf(
+    UnitHabit.MINUTES,
+    UnitHabit.HOURS
+)

@@ -41,6 +41,7 @@ fun AddHabitTextField(
     contentPadding: PaddingValues = OutlinedTextFieldDefaults.contentPadding(),
     leadingIcon: @Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Email,
+    trailingIcon:  @Composable() (() -> Unit)? = null,
     imeAction: ImeAction = ImeAction.Next,
     outPutTransformation: OutputTransformation? = null,
     labelPosition: TextFieldLabelPosition = TextFieldLabelPosition.Attached(),
@@ -54,21 +55,7 @@ fun AddHabitTextField(
             .clearFocusOnKeyboardDismiss(),
         label = label,
         leadingIcon = leadingIcon,
-        trailingIcon = {
-            when (textFieldState.text.toString()) {
-                "" -> {}
-                else -> {
-                    CustomRipple {
-                        IconButton(onClick = {textFieldState.edit { replace(0,length,"") }}){
-                            Icon(
-                                Icons.Filled.Clear,
-                                contentDescription = "Clear icon TextField",
-                            )
-                        }
-                    }
-                }
-            }
-        },
+        trailingIcon = trailingIcon,
         shape = RoundedCornerShape(spacing8),
         outputTransformation = outPutTransformation,
         contentPadding = contentPadding,
@@ -101,9 +88,26 @@ fun AddHabitTextField(
         onKeyboardActions = {
             when(imeAction){
                 ImeAction.Done -> focusManager.clearFocus()
-                ImeAction.Next -> focusManager.moveFocus(FocusDirection.Down)
+                ImeAction.Next -> focusManager.moveFocus(FocusDirection.Right)
             }
         }
     )
 
+}
+
+@Composable
+fun TrailingIcon(textFieldState: TextFieldState){
+    when (textFieldState.text.toString()) {
+        "" -> {}
+        else -> {
+            CustomRipple {
+                IconButton(onClick = {textFieldState.edit { replace(0,length,"") }}){
+                    Icon(
+                        Icons.Filled.Clear,
+                        contentDescription = "Clear icon TextField",
+                    )
+                }
+            }
+        }
+    }
 }

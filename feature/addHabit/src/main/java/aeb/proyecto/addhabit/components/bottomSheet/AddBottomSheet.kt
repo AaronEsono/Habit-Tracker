@@ -113,7 +113,7 @@ fun AddBottomSheet(
 
                         Spacer(modifier = Modifier.padding(horizontal = spacing8))
                     }
-                    DataBottomSheet.ERROR_NAME_UNIT, DataBottomSheet.ERROR_INTERVAL_UNIT, DataBottomSheet.GENERAL_ERROR -> Unit
+                    DataBottomSheet.ERROR_NAME_UNIT,DataBottomSheet.ERROR_HOUR, DataBottomSheet.ERROR_INTERVAL_UNIT, DataBottomSheet.GENERAL_ERROR -> Unit
                 }
 
                 CustomRipple {

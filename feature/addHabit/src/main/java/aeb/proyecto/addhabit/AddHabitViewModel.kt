@@ -18,6 +18,7 @@ import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.room.model.classes.TIPO_UNIDAD
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
+import aeb.proyecto.room.model.classes.unitsHourMode
 import aeb.proyecto.room.repository.HabitWithNotificacionRepo
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.graphics.Color
@@ -231,7 +232,7 @@ class AddHabitViewModel @Inject constructor(
             )
         }
         when(_dataAddHabit.value.bottomSheetState.dataBottomSheet){
-            DataBottomSheet.GENERAL_ERROR,DataBottomSheet.ERROR_NAME_UNIT,DataBottomSheet.ERROR_INTERVAL_UNIT -> {
+            DataBottomSheet.GENERAL_ERROR,DataBottomSheet.ERROR_HOUR,DataBottomSheet.ERROR_NAME_UNIT,DataBottomSheet.ERROR_INTERVAL_UNIT -> {
                 _addHabitUIState.update { AddHabitUIState.Success }
             }
             DataBottomSheet.DELETE_NOTIFICATION -> Unit
@@ -241,7 +242,7 @@ class AddHabitViewModel @Inject constructor(
     fun onAcceptBottomSheet(){
         when(_dataAddHabit.value.bottomSheetState.dataBottomSheet){
             DataBottomSheet.DELETE_NOTIFICATION -> {deleteNotification()}
-            DataBottomSheet.ERROR_NAME_UNIT,DataBottomSheet.ERROR_INTERVAL_UNIT,DataBottomSheet.GENERAL_ERROR -> {
+            DataBottomSheet.ERROR_NAME_UNIT,DataBottomSheet.ERROR_HOUR,DataBottomSheet.ERROR_INTERVAL_UNIT,DataBottomSheet.GENERAL_ERROR -> {
                 _addHabitUIState.update { AddHabitUIState.Success }
             }
         }
@@ -331,22 +332,29 @@ class AddHabitViewModel @Inject constructor(
 
     fun saveData(){
         //Preguntamos si la data esta bien metida
-        if(dataNameUnitIsCorrect()){
-            // Si es ciclico, comprobar
-            if(cyclicDataIsCorrect()){
-                //Ver si es actualizacion o creacion
-                if(_dataAddHabit.value.habitScreen.id == null || _dataAddHabit.value.habitScreen.id == -1L){
-                    //Creacion
-                    saveHabit()
+        val unit = _dataAddHabit.value.habitScreen.unit
+
+        // Miramos si estan bien metidas las horas
+        if((unit in unitsHourMode && isHourCorrect()) || unit !in unitsHourMode){
+            if(dataNameUnitIsCorrect()){
+                // Si es ciclico, comprobar
+                if(cyclicDataIsCorrect()){
+                    //Ver si es actualizacion o creacion
+                    if(_dataAddHabit.value.habitScreen.id == null || _dataAddHabit.value.habitScreen.id == -1L){
+                        //Creacion
+                        saveHabit()
+                    }else{
+                        //Actualizacion
+                        updateHabit()
+                    }
                 }else{
-                    //Actualizacion
-                    updateHabit()
+                    setBottomSheetError(DataBottomSheet.ERROR_INTERVAL_UNIT)
                 }
             }else{
-                setBottomSheetError(DataBottomSheet.ERROR_INTERVAL_UNIT)
+                setBottomSheetError(DataBottomSheet.ERROR_NAME_UNIT)
             }
         }else{
-            setBottomSheetError(DataBottomSheet.ERROR_NAME_UNIT)
+            setBottomSheetError(DataBottomSheet.ERROR_HOUR)
         }
     }
 
@@ -428,6 +436,13 @@ class AddHabitViewModel @Inject constructor(
 
     private fun cyclicDataIsCorrect():Boolean{
         return _dataAddHabit.value.habitScreen.intervalTextFieldState.text.toString().isNotEmpty()
+    }
+
+    private fun isHourCorrect():Boolean{
+        val firstText = _dataAddHabit.value.habitScreen.firstHourTimesTextField.text.toString().toIntOrNull() ?: 0
+        val secondText = _dataAddHabit.value.habitScreen.secondHourTimesTextField.text.toString().toIntOrNull() ?: 0
+
+        return (firstText + secondText) > 0
     }
 
     private fun setNotifications(id:Long){

@@ -1,20 +1,14 @@
 package aeb.proyecto.addhabit.components.typeHabit
 
 import aeb.proyecto.addhabit.R
-import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
-import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
-import androidx.compose.foundation.gestures.snapping.snapFlingBehavior
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,9 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerDefaults
-import androidx.compose.foundation.pager.PagerSnapDistance
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -68,8 +60,8 @@ fun MonthlyTypeHabit(
 
 
     val label = remember (monthlyGoal){
-        if (monthlyGoal) R.string.habit_monthly_type_label_true
-        else R.string.habit_monthly_type_label_false
+        if (monthlyGoal) R.string.add_habit_monthly_type_label_true
+        else R.string.add_habit_monthly_type_label_false
     }
 
     Column (
@@ -77,14 +69,14 @@ fun MonthlyTypeHabit(
     ){
 
         Row (
-            modifier = Modifier.fillMaxWidth().paddingWeeklyGoal(isVisible = monthlyGoal),
+            modifier = Modifier.fillMaxWidth().paddingGoal(isVisible = monthlyGoal),
             verticalAlignment = Alignment.CenterVertically
         ){
             Column (
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center
             ){
-                LabelLargeText(stringResource(R.string.habit_monthly_goal))
+                LabelLargeText(stringResource(R.string.add_habit_monthly_goal))
 
                 LabelSmallText(stringResource(label),color = MaterialTheme.colorScheme.outline)
             }

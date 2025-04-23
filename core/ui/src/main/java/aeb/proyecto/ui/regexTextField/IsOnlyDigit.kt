@@ -9,6 +9,8 @@ import androidx.compose.runtime.LaunchedEffect
 
 val onlyDigits = "-?[0-9]+(\\\\.[0-9]+)?".toRegex()
 val onlyDecimal = """^\d+(\.\d{0,3})?$""".toRegex()
+val onlyZeroTo59 = "([1-5]?\\d)".toRegex()
+
 
 @Composable
 fun IsOnlyDigit(textFieldState: TextFieldState, unit: UnitHabit){
@@ -51,6 +53,30 @@ fun IsOnlyDecimal(textFieldState: TextFieldState) {
                 textFieldState.edit {
                     delete(text.length - 1, text.length)
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun IsOnlyZeroTo59(textFieldState: TextFieldState) {
+    LaunchedEffect(textFieldState.text) {
+        val text = textFieldState.text.toString()
+
+        val value = text.toIntOrNull()
+        if (value != null) {
+            if (value in 6..9 && text.length == 1) {
+                textFieldState.edit {
+                    replace(0, text.length, "0$text")
+                }
+            } else if (value > 59 || text.length >= 3) {
+                textFieldState.edit {
+                    delete(text.length - 1, text.length)
+                }
+            }
+        } else if (text.isNotEmpty()) {
+            textFieldState.edit {
+                delete(text.length - 1, text.length)
             }
         }
     }

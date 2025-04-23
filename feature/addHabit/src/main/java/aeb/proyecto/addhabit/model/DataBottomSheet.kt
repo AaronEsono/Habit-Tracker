@@ -38,6 +38,12 @@ enum class DataBottomSheet(
         subtitle = R.string.add_habit_error_interval_days_subtite
     ),
 
+    ERROR_HOUR(
+        icon = Icons.Default.Error,
+        title = R.string.add_habit_error_general_title,
+        subtitle = R.string.add_habit_error_unit_hout
+    ),
+
     GENERAL_ERROR(
         icon = Icons.Default.Error,
         title = R.string.add_habit_error_general_title,

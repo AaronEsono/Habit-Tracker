@@ -13,7 +13,12 @@ data class AddHabit(
     var id:Long? = null,
     var nameTextField:TextFieldState = TextFieldState(),
     var descriptionTextField:TextFieldState = TextFieldState(),
+
     var numberTimesTextField:TextFieldState = TextFieldState(initialText = "1"),
+
+    var firstHourTimesTextField:TextFieldState = TextFieldState(initialText = "1"),
+    var secondHourTimesTextField:TextFieldState = TextFieldState(initialText = "00"),
+
     var unit: UnitHabit = UnitHabit.TIMES,
 
     val color: Color = listColors[0],

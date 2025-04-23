@@ -54,13 +54,15 @@
     <string name="add_habit_notificacionWeek">Selecciona los días de la semana para cada notificación</string>
     <string name="add_habit_notificacionRecurring">Selecciona el intervalo de días para cada notificación</string>
 
-    <string name="habit_weekly_goal">Usar una única meta total para la semana</string>
-    <string name="habit_weekly_type_label_true">Completa tu meta semanal sumando el progreso de todos los días de la semana</string>
-    <string name="habit_weekly_type_label_false">Cada día de la semana tiene su propia meta específica</string>
+    <string name="add_habit_weekly_goal">Usar una única meta total para la semana</string>
+    <string name="add_habit_weekly_type_label_true">Completa tu meta semanal sumando el progreso de todos los días de la semana</string>
+    <string name="add_habit_weekly_type_label_false">Cada día de la semana tiene su propia meta específica</string>
 
-    <string name="habit_monthly_goal">Usar una única meta total para el mes</string>
-    <string name="habit_monthly_type_label_true">Completa tu meta mensual sumando el progreso de todos los días del mes</string>
-    <string name="habit_monthly_type_label_false">Cada día del mes tiene su propia meta específica</string>
+    <string name="add_habit_monthly_goal">Usar una única meta total para el mes</string>
+    <string name="add_habit_monthly_type_label_true">Completa tu meta mensual sumando el progreso de todos los días del mes</string>
+    <string name="add_habit_monthly_type_label_false">Cada día del mes tiene su propia meta específica</string>
+
+    <string name="add_habit_dots">:</string>
 
     <!-- Estados bottom sheet-->
     <string name="add_habit_delete_notification_title">Borrar notificación</string>
@@ -72,6 +74,7 @@
     <string name="add_habit_error_no_name_subtite">Tienes que darle un nombre al hábito y un número de veces válido para guardarlo</string>
 
     <string name="add_habit_error_interval_days_subtite">Si es un hábito cíclico tienes que establecer un intervalo de días</string>
+    <string name="add_habit_error_unit_hout">La hora no está bien introducida, por favor vuelva a intentarlo.</string>
 
     <string name="add_habit_save">Guardar</string>
 
