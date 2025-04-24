@@ -94,7 +94,7 @@ fun firstHourConverter(goal:BigDecimal,unitHabit: UnitHabit):TextFieldState{
     return when(unitHabit){
         UnitHabit.MINUTES, UnitHabit.HOURS -> {
             val (hours,_) = convertFromSeconds(goal,unitHabit)
-            TextFieldState(hours.toString())
+            TextFieldState(hours)
         }
         else -> {
             TextFieldState(initialText = "1")
@@ -106,7 +106,7 @@ fun secondHourConverter(goal:BigDecimal,unitHabit: UnitHabit):TextFieldState{
     return when(unitHabit){
         UnitHabit.MINUTES, UnitHabit.HOURS -> {
             val (_,second) = convertFromSeconds(goal,unitHabit)
-            TextFieldState(second.toString())
+            TextFieldState(second)
         }
         else -> {
             TextFieldState(initialText = "1")

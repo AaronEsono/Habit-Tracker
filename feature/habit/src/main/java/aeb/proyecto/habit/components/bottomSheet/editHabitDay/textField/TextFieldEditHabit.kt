@@ -35,6 +35,7 @@ fun TextFieldEditHabit(
     textFieldState: TextFieldState = rememberTextFieldState(),
     label: @Composable (TextFieldLabelScope.() -> Unit)? = null,
     containerColor: Color = MaterialTheme.colorScheme.surfaceTint,
+    placeholder: @Composable() (() -> Unit)? = null,
     contentPadding: PaddingValues = OutlinedTextFieldDefaults.contentPadding(),
     keyboardType: KeyboardType = KeyboardType.Number,
     imeAction: ImeAction = ImeAction.Done,
@@ -51,6 +52,7 @@ fun TextFieldEditHabit(
             .fillMaxWidth()
             .clearFocusOnKeyboardDismiss(),
         label = label,
+        placeholder = placeholder,
         trailingIcon = {
             when (textFieldState.text.toString()) {
                 "" -> {}
@@ -100,6 +102,9 @@ fun TextFieldEditHabit(
                 ImeAction.Done -> {
                     focusManager.clearFocus()
                     keyboardController?.hide()
+                }
+                ImeAction.Next -> {
+                    focusManager.moveFocus(FocusDirection.Right)
                 }
             }
         }

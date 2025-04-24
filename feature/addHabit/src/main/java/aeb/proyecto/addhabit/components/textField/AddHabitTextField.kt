@@ -44,6 +44,7 @@ fun AddHabitTextField(
     trailingIcon:  @Composable() (() -> Unit)? = null,
     imeAction: ImeAction = ImeAction.Next,
     outPutTransformation: OutputTransformation? = null,
+    placeholder: @Composable() (() -> Unit)? = null,
     labelPosition: TextFieldLabelPosition = TextFieldLabelPosition.Attached(),
     focusManager: FocusManager,
 ){
@@ -54,6 +55,7 @@ fun AddHabitTextField(
             .fillMaxWidth()
             .clearFocusOnKeyboardDismiss(),
         label = label,
+        placeholder = placeholder,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         shape = RoundedCornerShape(spacing8),

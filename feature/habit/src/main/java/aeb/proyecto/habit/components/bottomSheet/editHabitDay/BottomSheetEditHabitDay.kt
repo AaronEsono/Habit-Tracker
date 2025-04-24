@@ -75,13 +75,10 @@ fun BottomSheetEditHabitDay(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
-    val textFieldState = rememberTextFieldState(initialText = "1")
-    IsOnlyDigit(textFieldState,habit.unit)
-
-    val focusManager = LocalFocusManager.current
-
-    val timesLeft = remember {timesLeft(habit.goal, habitDay.goalDone)}
-    val halfTimesLeft = remember { halfTimesLeft(timesLeft, habit.unit) }
+    val isFinished = remember { habit.goal
+        .minus(habitDay.goalDone)
+        .setScale(3, RoundingMode.HALF_UP)
+        .stripTrailingZeros() ?: BigDecimal.ZERO}
 
     CustomBottomSheet (
         sheetState = sheetState,
@@ -144,7 +141,7 @@ fun BottomSheetEditHabitDay(
 
 
             when{
-                timesLeft <= BigDecimal.ZERO -> {
+                isFinished <= BigDecimal.ZERO -> {
                     RestartDay(
                         habit = habit,
                         habitDay = habitDay,
@@ -158,15 +155,20 @@ fun BottomSheetEditHabitDay(
                     IncompleteDay(
                         habit = habit,
                         habitDay = habitDay,
-                        timesLeft = timesLeft,
-                        halfTimesLeft = halfTimesLeft,
-                        textFieldState = textFieldState,
-                        focusManager = focusManager,
-                        coroutineScope = coroutineScope,
-                        sheetState = sheetState,
-                        onRestart = onRestart,
-                        onClick = onClick,
-                        onDismiss = onDismiss,
+                        onRestart = { id, date ->
+                            coroutineScope.launch {
+                                onRestart(id,date)
+                                sheetState.hide()
+                                onDismiss()
+                            }
+                        },
+                        onClick = { id, date, goalDone ->
+                            coroutineScope.launch {
+                                onClick(id,date,goalDone)
+                                sheetState.hide()
+                                onDismiss()
+                            }
+                        }
                     )
                 }
             }

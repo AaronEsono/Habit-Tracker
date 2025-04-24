@@ -331,30 +331,38 @@ class AddHabitViewModel @Inject constructor(
     }
 
     fun saveData(){
-        //Preguntamos si la data esta bien metida
         val unit = _dataAddHabit.value.habitScreen.unit
 
-        // Miramos si estan bien metidas las horas
-        if((unit in unitsHourMode && isHourCorrect()) || unit !in unitsHourMode){
-            if(dataNameUnitIsCorrect()){
-                // Si es ciclico, comprobar
-                if(cyclicDataIsCorrect()){
-                    //Ver si es actualizacion o creacion
-                    if(_dataAddHabit.value.habitScreen.id == null || _dataAddHabit.value.habitScreen.id == -1L){
-                        //Creacion
-                        saveHabit()
-                    }else{
-                        //Actualizacion
-                        updateHabit()
-                    }
-                }else{
-                    setBottomSheetError(DataBottomSheet.ERROR_INTERVAL_UNIT)
-                }
-            }else{
-                setBottomSheetError(DataBottomSheet.ERROR_NAME_UNIT)
-            }
-        }else{
+        // 1. Validar horas si corresponde
+        if (unit in unitsHourMode && !isHourCorrect()) {
             setBottomSheetError(DataBottomSheet.ERROR_HOUR)
+            return
+        }
+
+        // 2. Validar campo de número si no es de horas
+        if (unit !in unitsHourMode && !textFieldCorrect()) {
+            setBottomSheetError(DataBottomSheet.ERROR_NAME_UNIT)
+            return
+        }
+
+        // 3. Validar nombre
+        if (!dataNameIsCorrect()) {
+            setBottomSheetError(DataBottomSheet.ERROR_NAME_UNIT)
+            return
+        }
+
+        // 4. Validar datos cíclicos
+        if (!cyclicDataIsCorrect() && _dataAddHabit.value.habitScreen.typeHabit == TypeHabit.CYCLIC) {
+            setBottomSheetError(DataBottomSheet.ERROR_INTERVAL_UNIT)
+            return
+        }
+
+        // 5. Decidir si crear o actualizar
+        val habitId = _dataAddHabit.value.habitScreen.id
+        if (habitId == null || habitId == -1L) {
+            saveHabit()
+        } else {
+            updateHabit()
         }
     }
 
@@ -427,12 +435,17 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
-    private fun dataNameUnitIsCorrect():Boolean{
+    private fun dataNameIsCorrect():Boolean{
         return _dataAddHabit.value.habitScreen.nameTextField.text.toString().isNotEmpty()
-                && _dataAddHabit.value.habitScreen.numberTimesTextField.text.toString().isNotEmpty()
+    }
+
+    private fun textFieldCorrect():Boolean{
+        return _dataAddHabit.value.habitScreen.numberTimesTextField.text.toString().isNotEmpty()
                 && _dataAddHabit.value.habitScreen.numberTimesTextField.text.toString() != "0"
                 && _dataAddHabit.value.habitScreen.numberTimesTextField.text.toString() != "0."
     }
+
+
 
     private fun cyclicDataIsCorrect():Boolean{
         return _dataAddHabit.value.habitScreen.intervalTextFieldState.text.toString().isNotEmpty()

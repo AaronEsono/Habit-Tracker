@@ -4,6 +4,7 @@ import aeb.proyecto.habit.R
 import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.UnitHabit
+import aeb.proyecto.room.utils.convertFromSeconds
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
@@ -118,6 +119,7 @@ fun CardHabit(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
+            //Icono
             Box(
                 modifier = Modifier
                     .size(45.dp)
@@ -133,6 +135,7 @@ fun CardHabit(
                 )
             }
 
+            // Nombre y descripcion
             Column(
                 modifier = Modifier
                     .padding(start = spacing12, end = spacing6)
@@ -157,17 +160,18 @@ fun CardHabit(
                 }
             }
 
+            // Metas
             Column(
                 modifier = Modifier
                     .padding(end = spacing12, start = spacing6),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.End
             ) {
                 LabelMediumText(
                     stringResource(
                         R.string.habit_unit_card,
-                        habitDaySelected?.goalDone ?: "0",
-                        habit.habit.goal
+                        getTextTotal(habitDaySelected?.goalDone, habit.habit.unit),
+                        getTextTotal(habit.habit.goal, habit.habit.unit)
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -181,61 +185,93 @@ fun CardHabit(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-                Box(
-                    modifier = Modifier
-                        .size(45.dp)
-                        .clip(RoundedCornerShape(spacing8))
-                        .background(MaterialTheme.colorScheme.background)
-                        .combinedClickable(
-                            onClick = { onClick(habit.habit.id,selectedDate) },
-                            onLongClick = {onLongClick(habit.habit.id,selectedDate)}
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    AnimatedContent(
-                        targetState = visualState,
-                        transitionSpec = {
-                            fadeIn(tween(250)) togetherWith  fadeOut(tween(250))
-                        },
-                        label = "Content Transition"
-                    ) { state ->
-                        when (state) {
-                            "add" -> {
-                                Icon(
-                                    Icons.Filled.Add,
-                                    contentDescription = "add habit",
-                                    tint = MaterialTheme.colorScheme.onSurface,
-                                    modifier = Modifier.fillMaxSize(0.8f),
-                                )
-                            }
-                            "check" -> {
-                                Icon(
-                                    Icons.Filled.Check,
-                                    contentDescription = "check habit",
-                                    tint = Color(habit.habit.color),
-                                    modifier = Modifier.fillMaxSize(0.8f)
-                                )
-                            }
-                            "progress" -> {
-                                CircularProgressIndicator(
-                                    progress = { animatedProgress },
-                                    color = Color(habit.habit.color),
-                                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
-                                    strokeWidth = 2.dp,
-                                    modifier = Modifier.fillMaxSize(0.8f)
-                                )
-                            }
+
+            // Progresion
+            Box(
+                modifier = Modifier
+                    .size(45.dp)
+                    .clip(RoundedCornerShape(spacing8))
+                    .background(MaterialTheme.colorScheme.background)
+                    .combinedClickable(
+                        onClick = { onClick(habit.habit.id, selectedDate) },
+                        onLongClick = { onLongClick(habit.habit.id, selectedDate) }
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                AnimatedContent(
+                    targetState = visualState,
+                    transitionSpec = {
+                        fadeIn(tween(250)) togetherWith fadeOut(tween(250))
+                    },
+                    label = "Content Transition"
+                ) { state ->
+                    when (state) {
+                        "add" -> {
+                            Icon(
+                                Icons.Filled.Add,
+                                contentDescription = "add habit",
+                                tint = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.fillMaxSize(0.8f),
+                            )
+                        }
+
+                        "check" -> {
+                            Icon(
+                                Icons.Filled.Check,
+                                contentDescription = "check habit",
+                                tint = Color(habit.habit.color),
+                                modifier = Modifier.fillMaxSize(0.8f)
+                            )
+                        }
+
+                        "progress" -> {
+                            CircularProgressIndicator(
+                                progress = { animatedProgress },
+                                color = Color(habit.habit.color),
+                                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                                strokeWidth = 2.dp,
+                                modifier = Modifier.fillMaxSize(0.8f)
+                            )
                         }
                     }
                 }
             }
+        }
     }
 }
 
 fun getUnitTitle(unitHabit: UnitHabit, timesDone: BigDecimal): Int {
-    return if (timesDone == BigDecimal(1)) unitHabit.title else unitHabit.titlePlural
+    return when(unitHabit){
+        UnitHabit.MINUTES -> {
+            if (timesDone <= BigDecimal(60)) unitHabit.title else unitHabit.titlePlural
+        }
+        UnitHabit.HOURS -> {
+            if (timesDone <= BigDecimal(3600)) unitHabit.title else unitHabit.titlePlural
+        }
+        else -> {
+            if (timesDone == BigDecimal(1)) unitHabit.title else unitHabit.titlePlural
+        }
+    }
 }
 
 fun getSelected(dateSelected:LocalDate,dailyHabits:List<HabitDay>):HabitDay?{
     return dailyHabits.find {date -> date.date == dateSelected}
+}
+
+fun getTextTotal(goal: BigDecimal?, unit: UnitHabit): String {
+    return when (unit) {
+        UnitHabit.HOURS -> {
+            val date = convertFromSeconds(goal?:BigDecimal.ZERO,unit)
+            "${date.first}:${date.second}"
+        }
+
+        UnitHabit.MINUTES -> {
+            val date = convertFromSeconds(goal?:BigDecimal.ZERO,unit)
+            "${date.first}:${date.second}"
+        }
+
+        else -> {
+            goal?.toPlainString() ?: "0"
+        }
+    }
 }

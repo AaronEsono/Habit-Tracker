@@ -81,6 +81,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.runtime.Composable
@@ -449,6 +450,10 @@ internal fun AddHabitScreen(
                                 modifier = Modifier
                                     .height(45.dp),
                                 focusManager = focusManager,
+                                placeholder = {
+                                    Text(stringResource(R.string.add_habit_zero),
+                                        color = MaterialTheme.colorScheme.onSurface)
+                                },
                                 imeAction = ImeAction.Done,
                                 contentPadding = PaddingValues(horizontal = spacing12),
                                 keyboardType = KeyboardType.Number

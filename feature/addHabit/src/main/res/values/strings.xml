@@ -82,4 +82,5 @@
 
 
     <string name="add_habit_dots" translatable="false">:</string>
+    <string name="add_habit_zero" translatable="false">00</string>
 </resources>

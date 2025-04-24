@@ -34,4 +34,7 @@
 
     <string name="habit_restart">Restart day</string>
     <string name="habit_accept">Accept</string>
+
+    <string name="habit_dots" translatable="false">:</string>
+    <string name="habit_zero" translatable="false">00</string>
 </resources>

@@ -30,23 +30,23 @@ fun convertToSeconds(
 fun convertFromSeconds(
     value: BigDecimal,
     unit: UnitHabit
-): Pair<Int, Int> {
+): Pair<String, String> {
     val totalSeconds = value.toInt()
 
     return when (unit) {
         UnitHabit.HOURS -> {
             val hours = totalSeconds / 3600
             val minutes = (totalSeconds % 3600) / 60
-            Pair(hours, minutes)
+            Pair(hours.toString(), minutes.toString().padStart(2, '0'))
         }
         UnitHabit.MINUTES -> {
             val minutes = totalSeconds / 60
             val seconds = totalSeconds % 60
-            Pair(minutes, seconds)
+            Pair(minutes.toString(), seconds.toString().padStart(2, '0'))
         }
         else -> {
             // Si no aplica, devuelvo el total en el primer valor y 0 en el segundo
-            Pair(totalSeconds, 0)
+            Pair(totalSeconds.toString(), "00")
         }
     }
 }

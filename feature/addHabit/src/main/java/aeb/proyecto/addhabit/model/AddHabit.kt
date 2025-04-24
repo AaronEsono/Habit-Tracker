@@ -17,7 +17,7 @@ data class AddHabit(
     var numberTimesTextField:TextFieldState = TextFieldState(initialText = "1"),
 
     var firstHourTimesTextField:TextFieldState = TextFieldState(initialText = "1"),
-    var secondHourTimesTextField:TextFieldState = TextFieldState(initialText = "00"),
+    var secondHourTimesTextField:TextFieldState = TextFieldState(),
 
     var unit: UnitHabit = UnitHabit.TIMES,
 
