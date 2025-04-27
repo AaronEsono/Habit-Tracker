@@ -13,6 +13,8 @@ import aeb.proyecto.save.navigation.navigateToSave
 import aeb.proyecto.save.navigation.saveScreen
 import aeb.proyecto.settings.navigation.settingsScreen
 import aeb.proyecto.statistics.navigation.statisticsScreen
+import aeb.proyecto.timer.navigation.navigateToTimer
+import aeb.proyecto.timer.navigation.timerScreen
 import aeb.proyecto.ui.controllerProvider.LocalNavController
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -23,9 +25,12 @@ fun NavigationHabit(){
     val navController = LocalNavController.current
 
     NavHost(navController = navController, startDestination = Habit){
-        habitScreen { id ->
-            navController.navigateToAddHabit(id)
-        }
+        habitScreen(
+            onAddHabit = { id -> navController.navigateToAddHabit(id)},
+            onClickTimer = { (id, date) ->
+                navController.navigateToTimer(id, date)
+            }
+        )
 
         statisticsScreen()
 
@@ -57,5 +62,15 @@ fun NavigationHabit(){
                 }
             }
         }
+
+        timerScreen(
+            navigateToHabit = {
+                navController.navigateToHabit{
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        inclusive = true
+                    }
+                }
+            }
+        )
     }
 }

@@ -27,7 +27,8 @@
     <string name="habit_unit_card">%1$s/%2$s</string>
 
     <string name="habit_edit_habit_day_times_left">%1$s restantes: %2$s</string>
-    <string name="habit_edit_habit_day_times_label">Selecciona el número de %1$s realizadas en esta fecha</string>
+    <string name="habit_edit_habit_day_times_label">Seleccione el número correspondiente a esta fecha.</string>
+    <string name="habit_timer">Iniciar temporizador</string>
 
     <string name="habit_restart_day">¿Desea reiniciar el día seleccionado?</string>
 

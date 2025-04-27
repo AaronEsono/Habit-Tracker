@@ -47,7 +47,8 @@ import java.time.LocalDate
 @Composable
 fun HabitScreen(
     viewModel: HabitViewModel = hiltViewModel(),
-    navigateToAddHabit: (Long) -> Unit
+    navigateToAddHabit: (Long) -> Unit,
+    navigateToTimer : (Pair<Long,String>) -> Unit
 ){
 
     val pagerTypesUIState = viewModel.availablePagerTypesUiState.collectAsStateWithLifecycle().value
@@ -98,7 +99,8 @@ fun HabitScreen(
             habitDay = dataHabitUIState.showEditHabitDayBT.habitDay,
             onDismiss = viewModel::onDismissEdit,
             onRestart = viewModel::onRestart,
-            onClick = viewModel::onClick
+            onClick = viewModel::onClick,
+            onClickTimer = navigateToTimer
         )
     }
 }

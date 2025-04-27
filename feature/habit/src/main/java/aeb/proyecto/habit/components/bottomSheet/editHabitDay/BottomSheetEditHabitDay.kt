@@ -69,6 +69,7 @@ fun BottomSheetEditHabitDay(
     habitDay: HabitDay,
     onDismiss: () -> Unit = {},
     onRestart:(id:Long,date:LocalDate) -> Unit,
+    onClickTimer: (Pair<Long,String>) -> Unit,
     onClick:(id:Long,date:LocalDate,goalDone:BigDecimal) -> Unit
 ){
 
@@ -155,6 +156,13 @@ fun BottomSheetEditHabitDay(
                     IncompleteDay(
                         habit = habit,
                         habitDay = habitDay,
+                        onClickTimer = { (id,date) ->
+                            coroutineScope.launch {
+                                onClickTimer(Pair(id,date))
+                                sheetState.hide()
+                                onDismiss()
+                            }
+                        },
                         onRestart = { id, date ->
                             coroutineScope.launch {
                                 onRestart(id,date)

@@ -2,6 +2,7 @@ package aeb.proyecto.habit.components.bottomSheet.editHabitDay.screen.incomplete
 
 import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.bottomSheet.editHabitDay.button.ButtonEditDay
+import aeb.proyecto.habit.components.bottomSheet.editHabitDay.card.TimerCard
 import aeb.proyecto.habit.components.bottomSheet.editHabitDay.rowButton.RowButton
 import aeb.proyecto.habit.components.bottomSheet.editHabitDay.textField.TextFieldEditHabit
 import aeb.proyecto.habit.components.bottomSheet.editHabitDay.utils.isHourInputValid
@@ -10,6 +11,7 @@ import aeb.proyecto.habit.components.bottomSheet.editHabitDay.utils.passToHour
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.model.classes.UnitHabit
+import aeb.proyecto.room.model.classes.listTime
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
@@ -20,9 +22,11 @@ import aeb.proyecto.ui.regexTextField.IsOnlyZeroTo59
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -52,6 +56,7 @@ fun HourIncompleteMode(
     leftTimes: BigDecimal,
     halfTimesLeft:BigDecimal,
     onRestart:(id:Long,date: LocalDate) -> Unit,
+    onClickTimer:(Pair<Long,String>) -> Unit = {},
     onClick:(id:Long, date: LocalDate, goalDone:BigDecimal) -> Unit
 ){
 
@@ -66,6 +71,10 @@ fun HourIncompleteMode(
     IsOnlyDigit(firstTextFieldState)
     IsOnlyZeroTo59(secondTextFieldState)
 
+    val unitInListTime = remember {
+        habit.unit in listTime
+    }
+
     LabelLargeText(
         stringResource(
             R.string.habit_edit_habit_day_times_left,
@@ -74,16 +83,26 @@ fun HourIncompleteMode(
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = spacing2),
-        fontSize = 15.sp
+            .padding(top = spacing2)
     )
+
+    if(unitInListTime){
+        Row (
+            modifier = Modifier.fillMaxWidth().padding(top = spacing10),
+            horizontalArrangement = Arrangement.Center
+        ){
+            TimerCard(
+                onClick = { onClickTimer(Pair(habit.id,day.date.toString())) }
+            )
+        }
+    }
 
     //** Unidades para el usuario*/
     Row (
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = spacing12, start =
+                top = spacing10, start =
                     spacing20, end = spacing20
             ),
         verticalAlignment = Alignment.CenterVertically
@@ -97,10 +116,11 @@ fun HourIncompleteMode(
             secondTextFieldState.edit { replace(0,length,halfTimesLeftToHour.split(":")[1]) }
         }
 
+        Spacer(modifier = Modifier.padding(horizontal = spacing12))
+
         ButtonEditDay(
             modifier = Modifier
-                .weight(1f)
-                .padding(start = spacing12),
+                .weight(1f),
             text = leftTimesToHour
         ) {
             firstTextFieldState.edit { replace(0,length,leftTimesToHour.split(":")[0]) }
@@ -111,7 +131,7 @@ fun HourIncompleteMode(
     Row (
         Modifier
             .fillMaxWidth()
-            .padding(top = spacing10, bottom = spacing4, start = spacing12, end = spacing12),
+            .padding(top = spacing10, bottom = spacing4, start = spacing20, end = spacing20),
         verticalAlignment = Alignment.CenterVertically
     ){
 
@@ -183,7 +203,7 @@ fun convertToBigDecimal(firstTextFieldState: TextFieldState, secondTextFieldStat
 
     return when(unitHabit){
         UnitHabit.HOURS -> {
-            first.multiply(BigDecimal(3660)).add(second.multiply(BigDecimal(60)))
+            first.multiply(BigDecimal(3600)).add(second.multiply(BigDecimal(60)))
         }
         UnitHabit.MINUTES -> {
             first.multiply(BigDecimal(60)).add(second)

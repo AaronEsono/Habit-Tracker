@@ -43,6 +43,7 @@
             <option value="$PROJECT_DIR$/feature/save" />
             <option value="$PROJECT_DIR$/feature/settings" />
             <option value="$PROJECT_DIR$/feature/statistics" />
+            <option value="$PROJECT_DIR$/feature/timer" />
           </set>
         </option>
       </GradleProjectSettings>

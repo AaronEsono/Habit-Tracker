@@ -55,10 +55,10 @@
     <string name="add_habit_notificacionRecurring">Selecciona el intervalo de días para cada notificación</string>
 
     <string name="add_habit_weekly_goal">Usar una única meta total para la semana</string>
-    <string name="add_habit_weekly_type_label">"Elige si quieres una meta única para toda la semana o una meta específica para cada día elegido</string>
+    <string name="add_habit_weekly_type_label">"Elige si quieres una única meta semanal o una meta para cada día seleccionado</string>
 
     <string name="add_habit_monthly_goal">Usar una única meta total para el mes</string>
-    <string name="add_habit_monthly_type_label">Elige si quieres una meta única para todo el mes o una meta específica para cada día elegido</string>
+    <string name="add_habit_monthly_type_label">Elige si quieres una única meta mensual o una meta específica para cada día seleccionado</string>
 
     <!-- Estados bottom sheet-->
     <string name="add_habit_delete_notification_title">Borrar notificación</string>

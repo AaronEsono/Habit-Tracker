@@ -8,28 +8,18 @@ plugins {
 }
 
 android {
-    namespace = "aeb.proyecto.settings"
-
-    defaultConfig {
-        buildConfigField("String","APP_VERSION","\"${project.properties["versionName"].toString()}\"")
-    }
-
-    buildFeatures {
-        buildConfig = true
-    }
-
+    namespace = "aeb.proyecto.timer"
 }
 
 dependencies {
+
     implementation(projects.core.ui)
-    implementation(projects.core.authentication)
-    implementation(projects.core.datastore)
-    implementation(projects.core.language)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     //Serializable

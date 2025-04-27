@@ -28,7 +28,8 @@
     <string name="habit_unit_card">%1$s/%2$s</string>
 
     <string name="habit_edit_habit_day_times_left">%1$s left: %2$s</string>
-    <string name="habit_edit_habit_day_times_label">Select the number of %1$s completed on this date</string>
+    <string name="habit_edit_habit_day_times_label">Select the number corresponding to this date.</string>
+    <string name="habit_timer">Start timer</string>
 
     <string name="habit_restart_day">Do you want to restart the selected day?</string>
 
