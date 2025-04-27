@@ -24,14 +24,7 @@ fun TimerScreen(
 ){
 
     ProvideAppBarNavigationIcon {
-        IconButton(onClick = {navigateToHabitScreen()})
-        {
-            Icon(
-                painter = painterResource(aeb.proyecto.ui.R.drawable.ic_arrow_back),
-                contentDescription = "Icon navigation",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-        }
+        NavigationIcon()
     }
 
     ProvideAppBarTitle {
