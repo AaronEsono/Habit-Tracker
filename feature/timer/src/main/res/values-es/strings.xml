@@ -2,4 +2,16 @@
 
     <string name="timer_title">Temporizador</string>
 
+    <string name="timer_loading">Cargando...</string>
+
+    <string name="timer_hours">Horas</string>
+    <string name="timer_minutes">Minutos</string>
+    <string name="timer_seconds">Segundos</string>
+
+    <string name="timer_accept">Aceptar</string>
+    <string name="timer_cancel">Cancelar</string>
+
+    <string name="timer_start">Iniciar</string>
+    <string name="timer_left">Tiempo restante: %1$s</string>
+
 </resources>

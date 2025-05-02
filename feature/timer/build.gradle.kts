@@ -13,6 +13,8 @@ android {
 
 dependencies {
 
+    implementation(projects.core.domain)
+    implementation(projects.core.room)
     implementation(projects.core.ui)
 
     implementation(libs.androidx.core.ktx)

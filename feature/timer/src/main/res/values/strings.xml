@@ -2,4 +2,17 @@
 
     <string name="timer_title">Timer</string>
 
+    <string name="timer_loading">Loading...</string>
+
+    <string name="timer_hours">Hours</string>
+    <string name="timer_minutes">Minutes</string>
+    <string name="timer_seconds">Seconds</string>
+
+    <string name="timer_start">Start</string>
+    <string name="timer_left">Time left: %1$s</string>
+
+    <string name="timer_accept">Accept</string>
+    <string name="timer_cancel">Cancel</string>
+
+    <string name="timer_dots" translatable="false">:</string>
 </resources>

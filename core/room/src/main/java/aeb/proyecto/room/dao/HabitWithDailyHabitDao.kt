@@ -55,4 +55,7 @@ interface HabitWithDailyHabitDao {
 
     @Query("DELETE FROM HABITDAY where idHabit = :id AND date = :date")
     fun deleteHabitDay(id:Long,date:LocalDate)
+
+    @Query("SELECT * FROM HabitDay WHERE date = :date AND idHabit = :id")
+    fun getDayByDate(id:Long, date:LocalDate): HabitDay?
 }

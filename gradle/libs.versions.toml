@@ -1,6 +1,7 @@
 [versions]
 activityComposeVersion = "1.9.3"
 agp = "8.7.3"
+constraintlayoutCompose = "1.1.1"
 credentialsPlayServicesAuth = "1.5.0-beta01"
 datastorePreferences = "1.1.1"
 datastorePreferencesVersion = "1.0.0"

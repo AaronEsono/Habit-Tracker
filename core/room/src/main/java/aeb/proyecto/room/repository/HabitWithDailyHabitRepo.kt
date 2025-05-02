@@ -4,9 +4,12 @@ import aeb.proyecto.room.dao.HabitWithDailyHabitDao
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
+import aeb.proyecto.room.entities.relations.HabitWithDay
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import java.math.BigDecimal
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -75,6 +78,13 @@ class HabitWithDailyHabitRepo @Inject constructor(
 
     fun deleteHabitDay(id:Long,date:LocalDate){
         habitWithDailyHabitDao.deleteHabitDay(id,date)
+    }
+
+    fun getHabitWithDay(id:Long,date:LocalDate): HabitWithDay {
+        val habit = habitWithDailyHabitDao.getHabit(id)
+        val day = habitWithDailyHabitDao.getDayByDate(id,date) ?: HabitDay(date = date, idHabit = id, goalDone = BigDecimal(0))
+
+        return HabitWithDay(habit, day)
     }
 }
 
