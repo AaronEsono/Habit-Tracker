@@ -77,6 +77,8 @@ dependencies {
     implementation(projects.core.alarmManager)
     implementation(projects.core.ui)
     implementation(projects.core.language)
+    implementation(projects.core.domain)
+    implementation(projects.core.stopWatch)
 
     implementation(projects.feature.settings)
     implementation(projects.feature.save)

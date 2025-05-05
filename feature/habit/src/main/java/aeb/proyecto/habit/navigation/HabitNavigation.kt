@@ -16,7 +16,7 @@ fun NavController.navigateToHabit(optionsBuilder: NavOptionsBuilder.() -> Unit =
 
 fun NavGraphBuilder.habitScreen(
     onAddHabit: (Long) -> Unit,
-    onClickTimer: (Pair<Long, String>) -> Unit
+    onClickTimer: () -> Unit
 ) {
     composable<Habit> {
         HabitScreen(navigateToAddHabit = onAddHabit, navigateToTimer = onClickTimer)

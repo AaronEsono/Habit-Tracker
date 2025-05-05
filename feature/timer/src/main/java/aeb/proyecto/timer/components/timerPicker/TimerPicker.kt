@@ -1,12 +1,12 @@
 package aeb.proyecto.timer.components.timerPicker
 
 import aeb.proyecto.timer.R
-import aeb.proyecto.timer.TimerSelectedState
 import aeb.proyecto.timer.components.infinitePicker.InfinitePicker
-import aeb.proyecto.timer.constants.TypeList
+import aeb.proyecto.timer.constants.TypeUnitDate
 import aeb.proyecto.timer.constants.hours
 import aeb.proyecto.timer.constants.minutes
 import aeb.proyecto.timer.constants.seconds
+import aeb.proyecto.timer.model.HourSelectedState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,17 +32,18 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TimerPicker(
     modifier: Modifier = Modifier,
-    timerSelected: TimerSelectedState,
-    onHourChange: (String) -> Unit = {},
-    onMinuteChange: (String) -> Unit = {},
-    onSecondChange: (String) -> Unit = {}
+    timerSelected: HourSelectedState,
+    onHourChange:(String) -> Unit,
+    onMinuteChange:(String) -> Unit,
+    onSecondChange: (String) -> Unit
 ) {
 
-    val firstTimer = remember {
-        if(timerSelected is TimerSelectedState.NoData){
+
+    var currentTimer = remember {
+        if(timerSelected is HourSelectedState.NoData){
             Triple(0,0,0)
         }else{
-            (timerSelected as TimerSelectedState.Data).data
+            (timerSelected as HourSelectedState.Data).data
         }
     }
 
@@ -62,8 +64,8 @@ fun TimerPicker(
 
             InfinitePicker(
                 items = hours,
-                startIndex = firstTimer.first,
-                typeList = TypeList.Hours,
+                startIndex = currentTimer.first,
+                typeList = TypeUnitDate.Hours,
                 alertDialogTitle = stringResource(R.string.timer_hours),
                 onTextSelected = onHourChange)
         }
@@ -88,8 +90,8 @@ fun TimerPicker(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 InfinitePicker(
                     items = minutes,
-                    startIndex = firstTimer.second,
-                    typeList = TypeList.Minutes,
+                    startIndex = currentTimer.second,
+                    typeList = TypeUnitDate.Minutes,
                     alertDialogTitle = stringResource(R.string.timer_minutes),
                     onTextSelected = onMinuteChange
                 )
@@ -116,8 +118,8 @@ fun TimerPicker(
             // Solo el picker
             InfinitePicker(
                 items = seconds,
-                startIndex = firstTimer.third,
-                typeList = TypeList.Seconds,
+                startIndex = currentTimer.third,
+                typeList = TypeUnitDate.Seconds,
                 alertDialogTitle = stringResource(R.string.timer_seconds),
                 onTextSelected = onSecondChange
             )

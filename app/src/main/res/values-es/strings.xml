@@ -6,5 +6,6 @@
     <string name="bottombar_habit">Hábitos</string>
     <string name="bottombar_stadistics">Estadísticas</string>
     <string name="bottombar_settins">Opciones</string>
+    <string name="bottombar_timer">Temporizador</string>
 
 </resources>

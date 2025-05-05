@@ -11,6 +11,12 @@
     <string name="timer_start">Start</string>
     <string name="timer_left">Time left: %1$s</string>
 
+    <string name="timer_segmented_button_stopwatch">Stopwatch</string>
+    <string name="timer_segmented_button_timer">Timer</string>
+    <string name="timer_segmented_button_interval">Intervals</string>
+
+    <string name="timer_stopwatch_start">00:00:00.00</string>
+
     <string name="timer_accept">Accept</string>
     <string name="timer_cancel">Cancel</string>
 

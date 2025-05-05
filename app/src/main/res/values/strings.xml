@@ -4,4 +4,5 @@
     <string name="bottombar_habit">Habits</string>
     <string name="bottombar_stadistics">Statistics</string>
     <string name="bottombar_settins">Settings</string>
+    <string name="bottombar_timer">Timer</string>
 </resources>

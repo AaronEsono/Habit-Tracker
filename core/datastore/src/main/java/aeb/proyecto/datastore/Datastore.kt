@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -23,14 +24,31 @@ class DataStoreManager @Inject constructor(
 ) {
 
     private companion object {
+        //Settings
         private val THEME_MODE = intPreferencesKey("themeMode")
         private val LANGUAGE = stringPreferencesKey("language")
+        private val DAY_START_WEEK = stringPreferencesKey("dayStartWeek")
+
+        //Login Screen
         private val EMAIL = stringPreferencesKey("email")
         private val PASSWORD = stringPreferencesKey("password")
-        private val DAY_START_WEEK = stringPreferencesKey("dayStartWeek")
+
+        // Habit Screen
         private val TYPE_SELECTED = stringPreferencesKey("typeSelected")
+
+        //Timer Screeen
+        private val ID_TIMER_SELECTED = longPreferencesKey("idTimerSelected")
+        private val DATE_TIMER_SELECTED = stringPreferencesKey("dateTimerSelected")
+        private val TYPE_TIMER_SELECTED = intPreferencesKey("typeTimerSelected")
+
+        //Wheel picker timer
+        private val HOUR_WHEEL_TIMER = intPreferencesKey("hourWheelTimer")
+        private val MINUTE_WHEEL_TIMER = intPreferencesKey("minuteWheelTimer")
+        private val SECOND_WHEEL_TIMER = intPreferencesKey("secondWheelTimer")
+
+        // Por mirar
         private val CURRENT_ID = stringPreferencesKey("currentId")
-        private val DATE  = stringPreferencesKey("date")
+        private val DATE = stringPreferencesKey("date")
         private val SEARCHED = booleanPreferencesKey("searched")
     }
 
@@ -39,11 +57,35 @@ class DataStoreManager @Inject constructor(
     }
 
     val languageMode: Flow<String> = dataStore.data.map { preferences ->
-        preferences[LANGUAGE]?: ""
+        preferences[LANGUAGE] ?: ""
     }
 
     val dayOfWeek: Flow<String> = dataStore.data.map { preferences ->
         preferences[DAY_START_WEEK] ?: DayOfWeek.MONDAY.name
+    }
+
+    val idTimerSelected: Flow<Long?> = dataStore.data.map { preferences ->
+        preferences[ID_TIMER_SELECTED]
+    }
+
+    val dateTimerSelected: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[DATE_TIMER_SELECTED]
+    }
+
+    val typeTimerSelected: Flow<Int?> = dataStore.data.map { preferences ->
+        preferences[TYPE_TIMER_SELECTED]
+    }
+
+    val hourWheelTimer: Flow<Int?> = dataStore.data.map { preferences ->
+        preferences[HOUR_WHEEL_TIMER]
+    }
+
+    val minuteWheelTimer: Flow<Int?> = dataStore.data.map { preferences ->
+        preferences[MINUTE_WHEEL_TIMER]
+    }
+
+    val secondWheelTimer: Flow<Int?> = dataStore.data.map { preferences ->
+        preferences[SECOND_WHEEL_TIMER]
     }
 
     suspend fun getEmailPassword() = dataStore.data.map { preferences ->
@@ -74,61 +116,124 @@ class DataStoreManager @Inject constructor(
         preferences[TYPE_SELECTED]
     }.firstOrNull()
 
-    suspend fun setTypeSelectedDate(type:String){
+    suspend fun getIdTimerSelected() = dataStore.data.map { preferences ->
+        preferences[ID_TIMER_SELECTED]
+    }.firstOrNull()
+
+    suspend fun getDateTimerSelected() = dataStore.data.map { preferences ->
+        preferences[DATE_TIMER_SELECTED]
+    }.firstOrNull()
+
+    suspend fun getTypeTimerSelected() = dataStore.data.map { preferences ->
+        preferences[TYPE_TIMER_SELECTED]
+    }.firstOrNull()
+
+    suspend fun setIdTimerSelected(id: Long) {
         dataStore.edit { preferences ->
-            preferences[TYPE_SELECTED] = type
+            preferences[ID_TIMER_SELECTED] = id
         }
     }
 
-    suspend fun setDayStartWeek(day:String){
+
+    suspend fun setDateTimerSelected(date: String) {
         dataStore.edit { preferences ->
-            preferences[DAY_START_WEEK] = day
+            preferences[DATE_TIMER_SELECTED] = date
         }
     }
 
-    suspend fun setLanguage(language:String){
+
+    suspend fun setTypeTimerSelected(type: Int) {
         dataStore.edit { preferences ->
-            preferences[LANGUAGE] = language
+            preferences[TYPE_TIMER_SELECTED] = type
         }
     }
 
-    suspend fun setModeTheme(themeMode: Int) {
+    suspend fun setHourWheelTimer(hour: Int) {
         dataStore.edit { preferences ->
-            preferences[THEME_MODE] = themeMode
+            preferences[HOUR_WHEEL_TIMER] = hour
         }
     }
 
-    suspend fun setEmail(email:String){
+    suspend fun setMinuteWheelTimer(minute: Int) {
         dataStore.edit { preferences ->
-            preferences[EMAIL] = email
+            preferences[MINUTE_WHEEL_TIMER] = minute
         }
     }
 
-    suspend fun setPassword(password:String){
+    suspend fun setSecondWheelTimer(second: Int) {
         dataStore.edit { preferences ->
-            preferences[PASSWORD] = password
+            preferences[SECOND_WHEEL_TIMER] = second
         }
     }
 
-    suspend fun setLastSearched(uid:String, date:String){
+    suspend fun setTimerData(id: Long, date: String, type: Int, time: Triple<Int,Int,Int>) {
         dataStore.edit { preferences ->
-            preferences[CURRENT_ID] = uid
-            preferences[DATE] = date
-            preferences[SEARCHED] = true
+            preferences[ID_TIMER_SELECTED] = id
+            preferences[DATE_TIMER_SELECTED] = date
+            preferences[TYPE_TIMER_SELECTED] = type
+
+            preferences[HOUR_WHEEL_TIMER] = time.first
+            preferences[MINUTE_WHEEL_TIMER] = time.second
+            preferences[SECOND_WHEEL_TIMER] = time.third
         }
     }
 
-    suspend fun clearDataUser(){
-        dataStore.edit { preferences ->
-            preferences[EMAIL] = ""
-            preferences[PASSWORD] = ""
+        suspend fun setTypeSelectedDate(type: String) {
+            dataStore.edit { preferences ->
+                preferences[TYPE_SELECTED] = type
+            }
         }
-    }
 
-    suspend fun setFirstDayOfWeek(){
-        val firstDayOfWeek = DayOfWeek.of(Calendar.getInstance(Locale.getDefault()).firstDayOfWeek).name
-        dataStore.edit { preferences ->
-            preferences[DAY_START_WEEK] = firstDayOfWeek
+        suspend fun setDayStartWeek(day: String) {
+            dataStore.edit { preferences ->
+                preferences[DAY_START_WEEK] = day
+            }
         }
-    }
+
+        suspend fun setLanguage(language: String) {
+            dataStore.edit { preferences ->
+                preferences[LANGUAGE] = language
+            }
+        }
+
+        suspend fun setModeTheme(themeMode: Int) {
+            dataStore.edit { preferences ->
+                preferences[THEME_MODE] = themeMode
+            }
+        }
+
+        suspend fun setEmail(email: String) {
+            dataStore.edit { preferences ->
+                preferences[EMAIL] = email
+            }
+        }
+
+        suspend fun setPassword(password: String) {
+            dataStore.edit { preferences ->
+                preferences[PASSWORD] = password
+            }
+        }
+
+        suspend fun setLastSearched(uid: String, date: String) {
+            dataStore.edit { preferences ->
+                preferences[CURRENT_ID] = uid
+                preferences[DATE] = date
+                preferences[SEARCHED] = true
+            }
+        }
+
+        suspend fun clearDataUser() {
+            dataStore.edit { preferences ->
+                preferences[EMAIL] = ""
+                preferences[PASSWORD] = ""
+            }
+        }
+
+        suspend fun setFirstDayOfWeek() {
+            val firstDayOfWeek =
+                DayOfWeek.of(Calendar.getInstance(Locale.getDefault()).firstDayOfWeek).name
+            dataStore.edit { preferences ->
+                preferences[DAY_START_WEEK] = firstDayOfWeek
+            }
+        }
 }

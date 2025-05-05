@@ -2,13 +2,11 @@ package aeb.proyecto.timer.components.infinitePicker
 
 import aeb.proyecto.timer.R
 import aeb.proyecto.timer.components.textField.TimerTextField
-import aeb.proyecto.timer.constants.TypeList
+import aeb.proyecto.timer.constants.TypeUnitDate
 import aeb.proyecto.ui.dialog.CustomDialog
-import aeb.proyecto.ui.dimmens.Dimmens
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
-import aeb.proyecto.ui.dimmens.Dimmens.spacing32
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.regexTextField.IsOnlyZeroTo59
@@ -16,12 +14,9 @@ import aeb.proyecto.ui.regexTextField.IsOnlyZeroTo99
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,7 +35,6 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TimePicker
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -51,22 +45,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
-
 
 
 @Composable
@@ -74,7 +64,7 @@ fun InfinitePicker(
     modifier: Modifier = Modifier,
     items: List<String>,
     alertDialogTitle:String,
-    typeList: TypeList,
+    typeList: TypeUnitDate,
     fontSizeItem: TextUnit = 48.sp,
     startIndex:Int = 1,
     visibleItemsCount: Int = 3,
@@ -238,7 +228,7 @@ fun InfinitePicker(
 @Composable
 fun AlertDialog(
     label:String,
-    typeList:TypeList,
+    typeList:TypeUnitDate,
     initialText:String = "00",
     onDismissRequest: () -> Unit = {},
     onAccept: (Int) -> Unit = {}
@@ -246,10 +236,10 @@ fun AlertDialog(
     val textFieldState = rememberTextFieldState(initialText = initialText)
 
     when(typeList){
-        TypeList.Minutes,TypeList.Seconds -> {
+        TypeUnitDate.Minutes,TypeUnitDate.Seconds -> {
             IsOnlyZeroTo59(textFieldState)
         }
-        TypeList.Hours -> {
+        TypeUnitDate.Hours -> {
             IsOnlyZeroTo99(textFieldState)
         }
     }

@@ -27,8 +27,8 @@ fun NavigationHabit(){
     NavHost(navController = navController, startDestination = Habit){
         habitScreen(
             onAddHabit = { id -> navController.navigateToAddHabit(id)},
-            onClickTimer = { (id, date) ->
-                navController.navigateToTimer(id, date)
+            onClickTimer = {
+                navController.navigateToTimer()
             }
         )
 

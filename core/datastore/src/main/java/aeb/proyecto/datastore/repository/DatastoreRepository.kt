@@ -5,6 +5,7 @@ import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.datastore.model.EmailPassword
 import aeb.proyecto.datastore.model.LastSearched
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 class DatastoreRepository @Inject constructor(
@@ -19,6 +20,28 @@ class DatastoreRepository @Inject constructor(
 
     override val dayOfWeek: Flow<String>
         get() = dataStoreManager.dayOfWeek
+
+    override val idTimerSelected: Flow<Long?>
+        get() = dataStoreManager.idTimerSelected
+
+    override val dateTimerSelected: Flow<String?>
+        get() = dataStoreManager.dateTimerSelected
+
+    override val typeTimerSelected: Flow<Int?>
+        get() = dataStoreManager.typeTimerSelected
+
+    override val hourSelected: Flow<String> = combine(
+        dataStoreManager.hourWheelTimer,
+        dataStoreManager.minuteWheelTimer,
+        dataStoreManager.secondWheelTimer
+    ){ hour, minute, second ->
+
+        val hourString = hour.toString().padStart(2, '0')
+        val minuteString = minute.toString().padStart(2, '0')
+        val secondString = second.toString().padStart(2, '0')
+
+        "$hourString:$minuteString:$secondString"
+    }
 
     override suspend fun getEmailAndPassword(): EmailPassword {
         return dataStoreManager.getEmailPassword()
@@ -38,6 +61,46 @@ class DatastoreRepository @Inject constructor(
 
     override suspend fun getTypeSelected(): String? {
         return dataStoreManager.getTypeSeleted()
+    }
+
+    override suspend fun getIdTimerSelected(): Long? {
+        return dataStoreManager.getIdTimerSelected()
+    }
+
+    override suspend fun getDateTimerSelected(): String? {
+        return dataStoreManager.getDateTimerSelected()
+    }
+
+    override suspend fun getTypeTimerSelected(): Int? {
+        return dataStoreManager.getTypeTimerSelected()
+    }
+
+    override suspend fun setIdTimerSelected(id: Long) {
+        dataStoreManager.setIdTimerSelected(id)
+    }
+
+    override suspend fun setDateTimerSelected(date: String) {
+        dataStoreManager.setDateTimerSelected(date)
+    }
+
+    override suspend fun setTypeTimerSelected(type: Int) {
+        dataStoreManager.setTypeTimerSelected(type)
+    }
+
+    override suspend fun setHourWheelTimer(hour: Int) {
+        dataStoreManager.setHourWheelTimer(hour)
+    }
+
+    override suspend fun setMinuteWheelTimer(minute: Int) {
+        dataStoreManager.setMinuteWheelTimer(minute)
+    }
+
+    override suspend fun setSecondWheelTimer(second: Int) {
+        dataStoreManager.setSecondWheelTimer(second)
+    }
+
+    override suspend fun setTimerData(id: Long, date: String, type: Int, time: Triple<Int,Int,Int>) {
+        dataStoreManager.setTimerData(id, date, type, time)
     }
 
     override suspend fun setTypeSelectedDate(type: String) {

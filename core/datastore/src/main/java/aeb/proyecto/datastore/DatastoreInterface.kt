@@ -13,6 +13,14 @@ interface DatastoreInterface {
 
     val dayOfWeek:Flow<String>
 
+    val idTimerSelected:Flow<Long?>
+
+    val dateTimerSelected:Flow<String?>
+
+    val typeTimerSelected:Flow<Int?>
+
+    val hourSelected:Flow<String>
+
     suspend fun getEmailAndPassword():EmailPassword
 
     suspend fun getLastSearched():LastSearched
@@ -22,6 +30,26 @@ interface DatastoreInterface {
     suspend fun getLanguage():String?
 
     suspend fun getTypeSelected():String?
+
+    suspend fun getIdTimerSelected():Long?
+
+    suspend fun getDateTimerSelected():String?
+
+    suspend fun getTypeTimerSelected():Int?
+
+    suspend fun setTimerData(id:Long, date:String, type:Int, time:Triple<Int,Int,Int>)
+
+    suspend fun setIdTimerSelected(id:Long)
+
+    suspend fun setDateTimerSelected(date:String)
+
+    suspend fun setTypeTimerSelected(type:Int)
+
+    suspend fun setHourWheelTimer(hour:Int)
+
+    suspend fun setMinuteWheelTimer(minute:Int)
+
+    suspend fun setSecondWheelTimer(second:Int)
 
     suspend fun setTypeSelectedDate(type:String)
 

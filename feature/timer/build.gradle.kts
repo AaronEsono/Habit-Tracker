@@ -16,6 +16,8 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.room)
     implementation(projects.core.ui)
+    implementation(projects.core.datastore)
+    implementation(projects.core.stopWatch)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
