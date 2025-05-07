@@ -64,6 +64,7 @@ fun InfinitePicker(
     modifier: Modifier = Modifier,
     items: List<String>,
     alertDialogTitle:String,
+    colorGradient:Color = MaterialTheme.colorScheme.background,
     typeList: TypeUnitDate,
     fontSizeItem: TextUnit = 48.sp,
     startIndex:Int = 1,
@@ -173,9 +174,9 @@ fun InfinitePicker(
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
-                            MaterialTheme.colorScheme.background,
+                            colorGradient,
                             Color.Transparent,
-                            MaterialTheme.colorScheme.background
+                            colorGradient
                         ),
                         startY = 0f,
                         endY = Float.POSITIVE_INFINITY

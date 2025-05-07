@@ -25,7 +25,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 
@@ -33,13 +36,14 @@ import androidx.compose.ui.unit.sp
 fun TimerPicker(
     modifier: Modifier = Modifier,
     timerSelected: HourSelectedState,
+    colorGradient: Color = MaterialTheme.colorScheme.background,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
     onSecondChange: (String) -> Unit
 ) {
 
 
-    var currentTimer = remember {
+    val currentTimer = remember(timerSelected) {
         if(timerSelected is HourSelectedState.NoData){
             Triple(0,0,0)
         }else{
@@ -59,12 +63,15 @@ fun TimerPicker(
             LabelLargeText(
                 stringResource(R.string.timer_hours),
                 color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.padding(bottom = spacing6)
+                modifier = Modifier.padding(bottom = spacing6),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             InfinitePicker(
                 items = hours,
                 startIndex = currentTimer.first,
+                colorGradient = colorGradient,
                 typeList = TypeUnitDate.Hours,
                 alertDialogTitle = stringResource(R.string.timer_hours),
                 onTextSelected = onHourChange)
@@ -84,12 +91,15 @@ fun TimerPicker(
             LabelLargeText(
                 stringResource(R.string.timer_minutes),
                 color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.padding(bottom = spacing6)
+                modifier = Modifier.padding(bottom = spacing6),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 InfinitePicker(
                     items = minutes,
+                    colorGradient = colorGradient,
                     startIndex = currentTimer.second,
                     typeList = TypeUnitDate.Minutes,
                     alertDialogTitle = stringResource(R.string.timer_minutes),
@@ -112,12 +122,15 @@ fun TimerPicker(
             LabelLargeText(
                 stringResource(R.string.timer_seconds),
                 color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.padding(bottom = spacing6)
+                modifier = Modifier.padding(bottom = spacing6),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             // Solo el picker
             InfinitePicker(
                 items = seconds,
+                colorGradient = colorGradient,
                 startIndex = currentTimer.third,
                 typeList = TypeUnitDate.Seconds,
                 alertDialogTitle = stringResource(R.string.timer_seconds),

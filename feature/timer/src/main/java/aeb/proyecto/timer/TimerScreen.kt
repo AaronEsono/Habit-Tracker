@@ -36,7 +36,8 @@ fun TimerScreen(
         onMinuteChange = viewModel::onMinuteChange,
         onSecondChange = viewModel::onSecondChange,
         onTypeChange = viewModel::onTypeButtonChange,
-        onStartService = viewModel::startService
+        onStartService = viewModel::startService,
+        onIntervalHourChange = viewModel::setIntervalHour
     )
 }
 
@@ -48,7 +49,8 @@ internal fun TimerScreen(
     onMinuteChange:(String) -> Unit = {},
     onSecondChange: (String) -> Unit = {},
     onTypeChange: (Int) -> Unit = {},
-    onStartService: () -> Unit = {}
+    onStartService: () -> Unit = {},
+    onIntervalHourChange: (Triple<String,String,String>,Int) -> Unit = {_,_ ->},
 ){
 
     Column(
@@ -70,7 +72,8 @@ internal fun TimerScreen(
                     onMinuteChange = onMinuteChange,
                     onSecondChange = onSecondChange,
                     onTypeChange = onTypeChange,
-                    onStartService = onStartService
+                    onStartService = onStartService,
+                    onIntervalHourChange = onIntervalHourChange
                 )
             }
         }

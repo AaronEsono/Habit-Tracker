@@ -3,6 +3,7 @@ package aeb.proyecto.timer.components.screens
 import aeb.proyecto.timer.R
 import aeb.proyecto.timer.TimerUiState
 import aeb.proyecto.timer.components.timerPicker.TimerPicker
+import aeb.proyecto.timer.components.typeSegmentedScreen.IntervalSegmentedScreen
 import aeb.proyecto.timer.components.typeSegmentedScreen.StopWatchSegmentedScreen
 import aeb.proyecto.timer.components.typeSegmentedScreen.TimerSegmentedScreen
 import aeb.proyecto.timer.constants.TypeUnitDate
@@ -62,6 +63,7 @@ fun RelojScreen(
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
     onSecondChange: (String) -> Unit,
+    onIntervalHourChange: (Triple<String,String,String>,Int) -> Unit,
     onTypeChange: (Int) -> Unit,
     onStartService: () -> Unit,
 ){
@@ -100,7 +102,11 @@ fun RelojScreen(
                     }
 
                     SegmentedButtonOptions.Interval -> {
-                        LabelMediumText("Hola")
+                        IntervalSegmentedScreen(
+                            hourSelectedState = timerUIState.timerDataUIState.hourSelected,
+                            restSelectedState = timerUIState.timerDataUIState.restHour,
+                            onIntervalHourChange = onIntervalHourChange
+                        )
                     }
                 }
             }

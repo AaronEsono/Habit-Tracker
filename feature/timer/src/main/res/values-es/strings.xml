@@ -17,6 +17,16 @@
 
     <string name="timer_stopwatch_start">00:00:00.00</string>
 
+    <string name="timer_interval_work">Trabajo</string>
+    <string name="timer_interval_rest">Descanso</string>
+    <string name="timer_interval_sets">Repeticiones</string>
+
+    <string name="timer_interval_work_time">%1$s:%2$s:%3$s</string>
+    <string name="timer_interval_rest_time">%1$s:%2$s:%3$s</string>
+
+    <string name="timer_bottom_sheet_work_title">Tiempo de trabajo</string>
+    <string name="timer_bottom_sheet_rest_title">Tiempo de descanso</string>
+
     <string name="timer_start">Iniciar</string>
     <string name="timer_left">Tiempo restante: %1$s</string>
 

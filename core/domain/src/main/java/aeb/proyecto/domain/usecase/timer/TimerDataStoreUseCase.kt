@@ -18,6 +18,18 @@ class TimerDataStoreUseCase @Inject constructor(
         datastoreInterface.setSecondWheelTimer(second)
     }
 
+    suspend fun saveRestHourWheelTimer(hour: Int) {
+        datastoreInterface.setRestIntervalHourTimer(hour)
+    }
+
+    suspend fun saveRestMinuteWheelTimer(minute: Int) {
+        datastoreInterface.setRestIntervalMinuteTimer(minute)
+    }
+
+    suspend fun saveRestSecondWheelTimer(second: Int) {
+        datastoreInterface.setRestIntervalSecondTimer(second)
+    }
+
     suspend fun saveTypeButtonTimer(value:Int){
         datastoreInterface.setTypeTimerSelected(value)
     }

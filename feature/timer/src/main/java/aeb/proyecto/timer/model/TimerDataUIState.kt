@@ -5,7 +5,8 @@ import aeb.proyecto.room.entities.relations.HabitWithDay
 data class TimerDataUIState(
     val habitLinked: HabitLinkedState = HabitLinkedState.NoData,
     val typeTimer: SegmentedButtonOptions = SegmentedButtonOptions.Timer,
-    val hourSelected: HourSelectedState = HourSelectedState.NoData
+    val hourSelected: HourSelectedState = HourSelectedState.NoData,
+    val restHour: HourSelectedState = HourSelectedState.NoData
 )
 
 sealed class HabitLinkedState(){

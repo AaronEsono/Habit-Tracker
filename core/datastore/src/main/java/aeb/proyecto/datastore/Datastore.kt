@@ -37,14 +37,22 @@ class DataStoreManager @Inject constructor(
         private val TYPE_SELECTED = stringPreferencesKey("typeSelected")
 
         //Timer Screeen
+        //Id del habito
         private val ID_TIMER_SELECTED = longPreferencesKey("idTimerSelected")
+        // Fecha del habito
         private val DATE_TIMER_SELECTED = stringPreferencesKey("dateTimerSelected")
+        // Tipo de timer seleccionado
         private val TYPE_TIMER_SELECTED = intPreferencesKey("typeTimerSelected")
 
         //Wheel picker timer
         private val HOUR_WHEEL_TIMER = intPreferencesKey("hourWheelTimer")
         private val MINUTE_WHEEL_TIMER = intPreferencesKey("minuteWheelTimer")
         private val SECOND_WHEEL_TIMER = intPreferencesKey("secondWheelTimer")
+
+        //Rest interval time
+        private val REST_INTERVAL_HOUR_TIMER = intPreferencesKey("restIntervalHourTime")
+        private val REST_INTERVAL_MINUTE_TIMER = intPreferencesKey("restIntervalMinuteTime")
+        private val REST_INTERVAL_SECOND_TIMER = intPreferencesKey("restIntervalSecondTime")
 
         // Por mirar
         private val CURRENT_ID = stringPreferencesKey("currentId")
@@ -88,6 +96,18 @@ class DataStoreManager @Inject constructor(
         preferences[SECOND_WHEEL_TIMER]
     }
 
+    val restIntervalHourTimer: Flow<Int?> = dataStore.data.map { preferences ->
+        preferences[REST_INTERVAL_HOUR_TIMER]
+    }
+
+    val restIntervalMinuteTimer: Flow<Int?> = dataStore.data.map { preferences ->
+        preferences[REST_INTERVAL_MINUTE_TIMER]
+    }
+
+    val restIntervalSecondTimer: Flow<Int?> = dataStore.data.map { preferences ->
+        preferences[REST_INTERVAL_SECOND_TIMER]
+    }
+
     suspend fun getEmailPassword() = dataStore.data.map { preferences ->
         EmailPassword(
             email = preferences[EMAIL] ?: "",
@@ -127,6 +147,36 @@ class DataStoreManager @Inject constructor(
     suspend fun getTypeTimerSelected() = dataStore.data.map { preferences ->
         preferences[TYPE_TIMER_SELECTED]
     }.firstOrNull()
+
+    suspend fun getRestIntervalHourTimer() = dataStore.data.map { preferences ->
+        preferences[REST_INTERVAL_HOUR_TIMER]
+    }.firstOrNull()
+
+    suspend fun getRestIntervalMinuteTimer() = dataStore.data.map { preferences ->
+        preferences[REST_INTERVAL_MINUTE_TIMER]
+    }.firstOrNull()
+
+    suspend fun getRestIntervalSecondTimer() = dataStore.data.map { preferences ->
+        preferences[REST_INTERVAL_SECOND_TIMER]
+    }.firstOrNull()
+
+    suspend fun setRestIntervalHourTimer(hour: Int) {
+        dataStore.edit { preferences ->
+            preferences[REST_INTERVAL_HOUR_TIMER] = hour
+        }
+    }
+
+    suspend fun setRestIntervalMinuteTimer(minute: Int) {
+        dataStore.edit { preferences ->
+            preferences[REST_INTERVAL_MINUTE_TIMER] = minute
+        }
+    }
+
+    suspend fun setRestIntervalSecondTimer(second: Int) {
+        dataStore.edit { preferences ->
+            preferences[REST_INTERVAL_SECOND_TIMER] = second
+        }
+    }
 
     suspend fun setIdTimerSelected(id: Long) {
         dataStore.edit { preferences ->

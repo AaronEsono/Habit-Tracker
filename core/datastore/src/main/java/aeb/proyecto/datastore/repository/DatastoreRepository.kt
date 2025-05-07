@@ -43,6 +43,19 @@ class DatastoreRepository @Inject constructor(
         "$hourString:$minuteString:$secondString"
     }
 
+    override val restHourSelected: Flow<String> = combine(
+        dataStoreManager.restIntervalHourTimer,
+        dataStoreManager.restIntervalMinuteTimer,
+        dataStoreManager.restIntervalSecondTimer
+    ){ hour, minute, second ->
+
+        val hourString = hour.toString().padStart(2, '0')
+        val minuteString = minute.toString().padStart(2, '0')
+        val secondString = second.toString().padStart(2, '0')
+
+        "$hourString:$minuteString:$secondString"
+    }
+
     override suspend fun getEmailAndPassword(): EmailPassword {
         return dataStoreManager.getEmailPassword()
     }
@@ -73,6 +86,30 @@ class DatastoreRepository @Inject constructor(
 
     override suspend fun getTypeTimerSelected(): Int? {
         return dataStoreManager.getTypeTimerSelected()
+    }
+
+    override suspend fun getRestIntervalHourTimer(): Int? {
+        return dataStoreManager.getRestIntervalHourTimer()
+    }
+
+    override suspend fun getRestIntervalMinuteTimer(): Int? {
+        return dataStoreManager.getRestIntervalMinuteTimer()
+    }
+
+    override suspend fun getRestIntervalSecondTimer(): Int? {
+        return dataStoreManager.getRestIntervalSecondTimer()
+    }
+
+    override suspend fun setRestIntervalHourTimer(hour: Int) {
+        dataStoreManager.setRestIntervalHourTimer(hour)
+    }
+
+    override suspend fun setRestIntervalMinuteTimer(minute: Int) {
+        dataStoreManager.setRestIntervalMinuteTimer(minute)
+    }
+
+    override suspend fun setRestIntervalSecondTimer(second: Int) {
+        dataStoreManager.setRestIntervalSecondTimer(second)
     }
 
     override suspend fun setIdTimerSelected(id: Long) {
