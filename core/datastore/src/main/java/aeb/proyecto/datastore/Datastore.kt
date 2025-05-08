@@ -54,6 +54,9 @@ class DataStoreManager @Inject constructor(
         private val REST_INTERVAL_MINUTE_TIMER = intPreferencesKey("restIntervalMinuteTime")
         private val REST_INTERVAL_SECOND_TIMER = intPreferencesKey("restIntervalSecondTime")
 
+        //Sets Timer
+        private val SETS_TIMER = intPreferencesKey("setsTimer")
+
         // Por mirar
         private val CURRENT_ID = stringPreferencesKey("currentId")
         private val DATE = stringPreferencesKey("date")
@@ -108,6 +111,10 @@ class DataStoreManager @Inject constructor(
         preferences[REST_INTERVAL_SECOND_TIMER]
     }
 
+    val setsTimer: Flow<Int?> = dataStore.data.map { preferences ->
+        preferences[SETS_TIMER]
+    }
+
     suspend fun getEmailPassword() = dataStore.data.map { preferences ->
         EmailPassword(
             email = preferences[EMAIL] ?: "",
@@ -159,6 +166,16 @@ class DataStoreManager @Inject constructor(
     suspend fun getRestIntervalSecondTimer() = dataStore.data.map { preferences ->
         preferences[REST_INTERVAL_SECOND_TIMER]
     }.firstOrNull()
+
+    suspend fun getSetsTimer() = dataStore.data.map { preferences ->
+        preferences[SETS_TIMER]
+    }.firstOrNull()
+
+    suspend fun setSetsTimer(sets: Int) {
+        dataStore.edit { preferences ->
+            preferences[SETS_TIMER] = sets
+        }
+    }
 
     suspend fun setRestIntervalHourTimer(hour: Int) {
         dataStore.edit { preferences ->

@@ -37,7 +37,10 @@ fun TimerScreen(
         onSecondChange = viewModel::onSecondChange,
         onTypeChange = viewModel::onTypeButtonChange,
         onStartService = viewModel::startService,
-        onIntervalHourChange = viewModel::setIntervalHour
+        onSetChange = viewModel::onSetChange,
+        onIntervalHourChange = viewModel::setIntervalHour,
+        onButtonIntervalWorkChange = viewModel::addHourTimer,
+        onButtonIntervalRestChange = viewModel::addRestTimer
     )
 }
 
@@ -50,13 +53,16 @@ internal fun TimerScreen(
     onSecondChange: (String) -> Unit = {},
     onTypeChange: (Int) -> Unit = {},
     onStartService: () -> Unit = {},
+    onSetChange: (Int) -> Unit = {},
     onIntervalHourChange: (Triple<String,String,String>,Int) -> Unit = {_,_ ->},
+    onButtonIntervalWorkChange: (Boolean) -> Unit = {},
+    onButtonIntervalRestChange: (Boolean) -> Unit = {}
 ){
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = spacing12, start = spacing8, end = spacing8),
+            .padding(start = spacing8, end = spacing8),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         when (timerUiState) {
@@ -73,7 +79,10 @@ internal fun TimerScreen(
                     onSecondChange = onSecondChange,
                     onTypeChange = onTypeChange,
                     onStartService = onStartService,
-                    onIntervalHourChange = onIntervalHourChange
+                    onSetChange = onSetChange,
+                    onIntervalHourChange = onIntervalHourChange,
+                    onButtonIntervalWorkChange = onButtonIntervalWorkChange,
+                    onButtonIntervalRestChange = onButtonIntervalRestChange
                 )
             }
         }

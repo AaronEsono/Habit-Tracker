@@ -23,6 +23,8 @@ interface DatastoreInterface {
 
     val restHourSelected:Flow<String>
 
+    val timer:Flow<Int?>
+
     suspend fun getEmailAndPassword():EmailPassword
 
     suspend fun getLastSearched():LastSearched
@@ -44,6 +46,10 @@ interface DatastoreInterface {
     suspend fun getRestIntervalMinuteTimer():Int?
 
     suspend fun getRestIntervalSecondTimer():Int?
+
+    suspend fun getSetsTimer():Int?
+
+    suspend fun setSetsTimer(sets:Int)
 
     suspend fun setRestIntervalHourTimer(hour:Int)
 

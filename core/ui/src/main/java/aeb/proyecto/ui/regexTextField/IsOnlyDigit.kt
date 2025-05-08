@@ -101,3 +101,23 @@ fun IsOnlyZeroTo99(textFieldState: TextFieldState) {
         }
     }
 }
+
+@Composable
+fun OneTo99(textFieldState: TextFieldState) {
+    LaunchedEffect(textFieldState.text) {
+        val text = textFieldState.text.toString()
+
+        val value = text.toIntOrNull()
+        if (value != null) {
+            if (value > 99 || value < 1) {
+                textFieldState.edit {
+                    delete(text.length - 1, text.length)
+                }
+            }
+        } else if (text.isNotEmpty()) {
+            textFieldState.edit {
+                delete(text.length - 1, text.length)
+            }
+        }
+    }
+}

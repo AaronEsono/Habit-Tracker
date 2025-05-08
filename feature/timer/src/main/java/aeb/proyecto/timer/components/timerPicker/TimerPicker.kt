@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,21 +37,20 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TimerPicker(
     modifier: Modifier = Modifier,
-    timerSelected: HourSelectedState,
     colorGradient: Color = MaterialTheme.colorScheme.background,
+    hourListState:LazyListState = rememberLazyListState(),
+    minuteListState:LazyListState = rememberLazyListState(),
+    secondListState:LazyListState = rememberLazyListState(),
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
-    onSecondChange: (String) -> Unit
+    onSecondChange: (String) -> Unit,
+    scrollToItemHour: (Int) -> Unit = {},
+    scrollToItemMinute: (Int) -> Unit = {},
+    scrollToItemSecond: (Int) -> Unit = {},
+    onClickCenterHour: (String) -> Unit = {},
+    onClickCenterMinute: (String) -> Unit = {},
+    onClickCenterSecond: (String) -> Unit = {}
 ) {
-
-
-    val currentTimer = remember(timerSelected) {
-        if(timerSelected is HourSelectedState.NoData){
-            Triple(0,0,0)
-        }else{
-            (timerSelected as HourSelectedState.Data).data
-        }
-    }
 
     Row(
         modifier = modifier
@@ -70,11 +71,12 @@ fun TimerPicker(
 
             InfinitePicker(
                 items = hours,
-                startIndex = currentTimer.first,
+                listState = hourListState,
                 colorGradient = colorGradient,
-                typeList = TypeUnitDate.Hours,
-                alertDialogTitle = stringResource(R.string.timer_hours),
-                onTextSelected = onHourChange)
+                currentItemSelected = onHourChange,
+                scrollToItem = scrollToItemHour,
+                onClickCenter = onClickCenterHour
+                )
         }
 
         LabelMediumText(
@@ -99,11 +101,11 @@ fun TimerPicker(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 InfinitePicker(
                     items = minutes,
+                    listState = minuteListState,
                     colorGradient = colorGradient,
-                    startIndex = currentTimer.second,
-                    typeList = TypeUnitDate.Minutes,
-                    alertDialogTitle = stringResource(R.string.timer_minutes),
-                    onTextSelected = onMinuteChange
+                    currentItemSelected = onMinuteChange,
+                    scrollToItem = scrollToItemMinute,
+                    onClickCenter = onClickCenterMinute
                 )
             }
         }
@@ -117,7 +119,7 @@ fun TimerPicker(
             fontSize = 50.sp
         )
 
-        // SEGUNDOS (sin puntos)
+        // SEGUNDOS
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             LabelLargeText(
                 stringResource(R.string.timer_seconds),
@@ -127,14 +129,13 @@ fun TimerPicker(
                 overflow = TextOverflow.Ellipsis
             )
 
-            // Solo el picker
             InfinitePicker(
                 items = seconds,
+                listState = secondListState,
                 colorGradient = colorGradient,
-                startIndex = currentTimer.third,
-                typeList = TypeUnitDate.Seconds,
-                alertDialogTitle = stringResource(R.string.timer_seconds),
-                onTextSelected = onSecondChange
+                currentItemSelected = onSecondChange,
+                scrollToItem = scrollToItemSecond,
+                onClickCenter = onClickCenterSecond
             )
         }
     }

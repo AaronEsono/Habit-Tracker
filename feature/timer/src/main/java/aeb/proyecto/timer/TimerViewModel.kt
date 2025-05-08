@@ -17,6 +17,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -40,7 +41,8 @@ class TimerViewModel @Inject constructor(
                     habitLinked = data.habitWithDay?.let { HabitLinkedState.Data(it) } ?: HabitLinkedState.NoData,
                     typeTimer = getSegmentedButtonOptions(data.typeTimer ?: 1),
                     hourSelected = data.hourSelected?.let { HourSelectedState.Data(it) } ?: HourSelectedState.NoData,
-                    restHour = data.restHour?.let { HourSelectedState.Data(it) } ?: HourSelectedState.NoData
+                    restHour = data.restHour?.let { HourSelectedState.Data(it) } ?: HourSelectedState.NoData,
+                    sets = data.sets
                 )
             )
         }
@@ -72,29 +74,37 @@ class TimerViewModel @Inject constructor(
         timerDataStoreUseCase.saveSecondWheelTimer(hour.toIntOrNull() ?: 0)
     }
 
-    private fun onRestHourChange(hour:String) = viewModelScope.launch (Dispatchers.IO){
-        timerDataStoreUseCase.saveRestHourWheelTimer(hour.toIntOrNull() ?: 0)
+    private fun setHour(value: Triple<Int,Int,Int>) = viewModelScope.launch (Dispatchers.IO){
+        timerDataStoreUseCase.saveHourWheelTimer(value.first)
+        timerDataStoreUseCase.saveMinuteWheelTimer(value.second)
+        timerDataStoreUseCase.saveSecondWheelTimer(value.third)
     }
 
-    private fun onRestMinuteChange(hour:String) = viewModelScope.launch (Dispatchers.IO){
-        timerDataStoreUseCase.saveRestMinuteWheelTimer(hour.toIntOrNull() ?: 0)
-    }
-
-    private fun onRestSecondChange(hour:String) = viewModelScope.launch (Dispatchers.IO){
-        timerDataStoreUseCase.saveRestSecondWheelTimer(hour.toIntOrNull() ?: 0)
+    private fun setHourRest(value: Triple<Int,Int,Int>) = viewModelScope.launch (Dispatchers.IO){
+        timerDataStoreUseCase.saveRestHourWheelTimer(value.first)
+        timerDataStoreUseCase.saveRestMinuteWheelTimer(value.second)
+        timerDataStoreUseCase.saveRestSecondWheelTimer(value.third)
     }
 
     fun setIntervalHour(time:Triple<String,String,String>, type:Int) = viewModelScope.launch(Dispatchers.IO){
         when(type){
             TypePickState.WORK_TIME.value -> {
-                onHourChange(time.first)
-                onMinuteChange(time.second)
-                onSecondChange(time.third)
+                setHour(
+                    Triple(
+                        time.first.toIntOrNull() ?: 0,
+                        time.second.toIntOrNull() ?: 0,
+                        time.third.toIntOrNull() ?: 0
+                    )
+                )
             }
             TypePickState.REST_TIME.value -> {
-                onRestHourChange(time.first)
-                onRestMinuteChange(time.second)
-                onRestSecondChange(time.third)
+                setHourRest(
+                    Triple(
+                        time.first.toIntOrNull() ?: 0,
+                        time.second.toIntOrNull() ?: 0,
+                        time.third.toIntOrNull() ?: 0
+                    )
+                )
             }
         }
     }
@@ -102,6 +112,61 @@ class TimerViewModel @Inject constructor(
     fun onTypeButtonChange(value:Int) = viewModelScope.launch(Dispatchers.IO){
         timerDataStoreUseCase.saveTypeButtonTimer(value)
     }
+
+    fun onSetChange(value:Int) = viewModelScope.launch(Dispatchers.IO){
+        if(value in 1..99){
+            timerDataStoreUseCase.setTimer(value)
+        }
+    }
+
+    fun addHourTimer(plusTime:Boolean) = viewModelScope.launch (Dispatchers.IO){
+        setHour(editTime(getTime(),5,plusTime))
+    }
+
+    fun addRestTimer(plusTime:Boolean) = viewModelScope.launch (Dispatchers.IO){
+        setHourRest(editTime(getRestTime(),5,plusTime))
+    }
+
+    private fun editTime(time:Triple<Int,Int,Int>, delta:Int, plusTime:Boolean):Triple<Int,Int,Int>{
+        val (hours, minutes, seconds) = time
+
+        val currentTotalSeconds = hours * 3600 + minutes * 60 + seconds
+
+        val updatedTotalSeconds = when (plusTime) {
+            true -> (currentTotalSeconds + delta).coerceAtMost(99 * 3600 + 59 * 60 + 59) // máx 99:59:59
+            false -> (currentTotalSeconds - delta).coerceAtLeast(0) // mínimo 00:00:00
+        }
+
+        // Convertir total de segundos a h:m:s
+        val newHours = updatedTotalSeconds / 3600
+        val newMinutes = (updatedTotalSeconds % 3600) / 60
+        val newSeconds = updatedTotalSeconds % 60
+
+        return Triple(newHours, newMinutes, newSeconds)
+    }
+
+    private fun getTime():Triple<Int,Int,Int>{
+        val time = (timerData.value as? TimerUiState.Success)?.timerDataUIState?.hourSelected ?: HourSelectedState.NoData
+        var respond:Triple<Int,Int,Int> = Triple(0,0,0)
+
+        if(time is HourSelectedState.Data){
+            respond = Triple(time.data.first,time.data.second,time.data.third)
+        }
+
+        return respond
+    }
+
+    private fun getRestTime():Triple<Int,Int,Int>{
+        val time = (timerData.value as? TimerUiState.Success)?.timerDataUIState?.restHour ?: HourSelectedState.NoData
+        var respond:Triple<Int,Int,Int> = Triple(0,0,0)
+
+        if(time is HourSelectedState.Data){
+            respond = Triple(time.data.first,time.data.second,time.data.third)
+        }
+
+        return respond
+    }
+
 }
 
 sealed class TimerUiState{

@@ -19,9 +19,14 @@ class GetTimerDataUseCase @Inject constructor(
         datastoreInterface.idTimerSelected,
         datastoreInterface.dateTimerSelected,
         datastoreInterface.typeTimerSelected,
-        datastoreInterface.hourSelected,
-        datastoreInterface.restHourSelected
-    ){ idHabit, dateHabit, typeHabit, timeHabit, restHour ->
+        combine(
+            datastoreInterface.hourSelected,
+            datastoreInterface.restHourSelected
+        ) { hourSelected,restSelected ->
+            Pair(hourSelected,restSelected)
+        },
+        datastoreInterface.timer
+    ){ idHabit, dateHabit, typeHabit, (timeHabit, restHour), timer ->
 
         val habitWithDay = if (idHabit != null && !dateHabit.isNullOrEmpty()) {
             runCatching {
@@ -33,7 +38,8 @@ class GetTimerDataUseCase @Inject constructor(
             habitWithDay = habitWithDay,
             typeTimer = typeHabit ?: 0,
             hourSelected = getHourFromString(timeHabit),
-            restHour = getHourFromString(restHour)
+            restHour = getHourFromString(restHour),
+            sets = timer ?: 1
         )
     }
 }
@@ -43,7 +49,8 @@ class TimerData(
     val habitWithDay: HabitWithDay? = null,
     val typeTimer: Int? = null,
     val hourSelected: Triple<Int,Int,Int>? = null,
-    val restHour: Triple<Int,Int,Int>? = null
+    val restHour: Triple<Int,Int,Int>? = null,
+    val sets:Int = 1
 )
 
 fun getHourFromString(hour: String): Triple<Int, Int, Int>? {

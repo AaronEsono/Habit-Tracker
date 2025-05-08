@@ -12,6 +12,8 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
 import aeb.proyecto.ui.dimmens.Dimmens.spacing26
+import aeb.proyecto.ui.dimmens.Dimmens.spacing30
+import aeb.proyecto.ui.dimmens.Dimmens.spacing32
 import aeb.proyecto.ui.dimmens.Dimmens.spacing36
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing40
@@ -20,6 +22,8 @@ import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleLargeText
+import aeb.proyecto.ui.text.TitleMediumText
+import android.content.Intent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -36,6 +40,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -52,8 +57,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -64,11 +72,21 @@ fun RelojScreen(
     onMinuteChange:(String) -> Unit,
     onSecondChange: (String) -> Unit,
     onIntervalHourChange: (Triple<String,String,String>,Int) -> Unit,
+    onButtonIntervalWorkChange: (Boolean) -> Unit,
+    onButtonIntervalRestChange: (Boolean) -> Unit,
+    onSetChange: (Int) -> Unit,
     onTypeChange: (Int) -> Unit,
     onStartService: () -> Unit,
 ){
 
+
+    val haptic = LocalHapticFeedback.current
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
+
+    val icon = remember(timerUIState.timerDataUIState.typeTimer) {
+        segmentedOptions.find { it.key == timerUIState.timerDataUIState.typeTimer.key }?.icon
+            ?: SegmentedButtonOptions.StopWatch.icon
+    }
 
     Column {
 
@@ -105,7 +123,11 @@ fun RelojScreen(
                         IntervalSegmentedScreen(
                             hourSelectedState = timerUIState.timerDataUIState.hourSelected,
                             restSelectedState = timerUIState.timerDataUIState.restHour,
-                            onIntervalHourChange = onIntervalHourChange
+                            setInterval = timerUIState.timerDataUIState.sets,
+                            onSetIntervalChange = onSetChange,
+                            onClickButtonWorkTime = onButtonIntervalWorkChange,
+                            onIntervalHourChange = onIntervalHourChange,
+                            onClickButtonRestTime = onButtonIntervalRestChange
                         )
                     }
                 }
@@ -113,7 +135,7 @@ fun RelojScreen(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(top = spacing8),
             horizontalArrangement = Arrangement.Center
         ) {
             SingleChoiceSegmentedButtonRow {
@@ -141,10 +163,17 @@ fun RelojScreen(
                         onClick = { onTypeChange(typeButton.key) },
                         selected = typeButton == timerUIState.timerDataUIState.typeTimer,
                         colors = SegmentedButtonDefaults.colors(
-                            activeContentColor = MaterialTheme.colorScheme.onSurface,
-                            disabledActiveContentColor = MaterialTheme.colorScheme.onSurface
+                            activeContentColor = MaterialTheme.colorScheme.inverseOnSurface,
+                            disabledActiveContentColor = MaterialTheme.colorScheme.onSurface,
+                            activeContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
                         ),
                         label = {
+                            val colorSelected = if (typeButton == timerUIState.timerDataUIState.typeTimer) {
+                                MaterialTheme.colorScheme.inverseOnSurface
+                            } else {
+                                MaterialTheme.colorScheme.onSurface
+                            }
+
 
                             Column (
                                 verticalArrangement = Arrangement.Center,
@@ -153,11 +182,15 @@ fun RelojScreen(
                                 Icon(
                                     imageVector = typeButton.icon,
                                     contentDescription = "icon type timer button",
+                                    modifier = Modifier.size(20.dp)
                                 )
 
-                                LabelMediumText(
+                                LabelLargeText(
                                     stringResource(typeButton.title),
-                                    modifier = Modifier.padding(top = spacing2)
+                                    modifier = Modifier.padding(top = spacing2),
+                                    color = colorSelected,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         },
@@ -170,24 +203,43 @@ fun RelojScreen(
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = spacing26),
+                .padding(top = spacing32),
             horizontalArrangement = Arrangement.Center
         ){
             CustomRipple {
                 Button(
-                    onClick = onStartService,
+                    onClick = {
+                        onStartService()
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
                     ),
                     shape = RoundedCornerShape(spacing12),
                 ) {
-                    TitleLargeText(
-                        stringResource(R.string.timer_start),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
-                        modifier = Modifier.padding(horizontal = spacing12, vertical = spacing2)
-                    )
+                    Row (
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        AnimatedContent(targetState = icon) {
+                            icon ->
+
+                            Icon(
+                                icon,
+                                contentDescription = "icon start",
+                                tint = MaterialTheme.colorScheme.inverseOnSurface,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+
+                        TitleMediumText(
+                            stringResource(R.string.timer_start),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.inverseOnSurface,
+                            modifier = Modifier.padding(horizontal = spacing12, vertical = spacing2)
+                        )
+                    }
                 }
             }
         }

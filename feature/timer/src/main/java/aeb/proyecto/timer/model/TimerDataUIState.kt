@@ -6,7 +6,8 @@ data class TimerDataUIState(
     val habitLinked: HabitLinkedState = HabitLinkedState.NoData,
     val typeTimer: SegmentedButtonOptions = SegmentedButtonOptions.Timer,
     val hourSelected: HourSelectedState = HourSelectedState.NoData,
-    val restHour: HourSelectedState = HourSelectedState.NoData
+    val restHour: HourSelectedState = HourSelectedState.NoData,
+    val sets:Int = 1
 )
 
 sealed class HabitLinkedState(){

@@ -56,6 +56,9 @@ class DatastoreRepository @Inject constructor(
         "$hourString:$minuteString:$secondString"
     }
 
+    override val timer: Flow<Int?>
+        get() = dataStoreManager.setsTimer
+
     override suspend fun getEmailAndPassword(): EmailPassword {
         return dataStoreManager.getEmailPassword()
     }
@@ -98,6 +101,14 @@ class DatastoreRepository @Inject constructor(
 
     override suspend fun getRestIntervalSecondTimer(): Int? {
         return dataStoreManager.getRestIntervalSecondTimer()
+    }
+
+    override suspend fun getSetsTimer(): Int? {
+        return dataStoreManager.getSetsTimer()
+    }
+
+    override suspend fun setSetsTimer(sets: Int) {
+        dataStoreManager.setSetsTimer(sets)
     }
 
     override suspend fun setRestIntervalHourTimer(hour: Int) {

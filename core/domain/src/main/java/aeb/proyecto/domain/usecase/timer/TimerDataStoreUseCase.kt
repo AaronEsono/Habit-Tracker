@@ -1,6 +1,9 @@
 package aeb.proyecto.domain.usecase.timer
 
 import aeb.proyecto.datastore.DatastoreInterface
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 class TimerDataStoreUseCase @Inject constructor(
@@ -34,4 +37,7 @@ class TimerDataStoreUseCase @Inject constructor(
         datastoreInterface.setTypeTimerSelected(value)
     }
 
+    suspend fun setTimer(value:Int){
+        datastoreInterface.setSetsTimer(value)
+    }
 }

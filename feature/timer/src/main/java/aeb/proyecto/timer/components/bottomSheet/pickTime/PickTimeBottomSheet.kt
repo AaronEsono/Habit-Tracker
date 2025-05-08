@@ -2,7 +2,14 @@ package aeb.proyecto.timer.components.bottomSheet.pickTime
 
 import aeb.proyecto.timer.R
 import aeb.proyecto.timer.components.bottomSheet.pickTime.model.TypePickState
+import aeb.proyecto.timer.components.infinitePicker.AlertDialogPicker
+import aeb.proyecto.timer.components.infinitePicker.DialogDataTimerScreen
+import aeb.proyecto.timer.components.infinitePicker.getCenteredIndex
 import aeb.proyecto.timer.components.timerPicker.TimerPicker
+import aeb.proyecto.timer.constants.TypeUnitDate
+import aeb.proyecto.timer.constants.hours
+import aeb.proyecto.timer.constants.minutes
+import aeb.proyecto.timer.constants.seconds
 import aeb.proyecto.timer.model.HourSelectedState
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
@@ -14,6 +21,7 @@ import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleLargeText
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +30,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -56,11 +65,33 @@ fun PickTimeBottomSheet(
 ){
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
+    var dialogData by remember { mutableStateOf(DialogDataTimerScreen()) }
 
     var hourState by remember { mutableStateOf("00") }
     var minuteState by remember { mutableStateOf("00") }
     var secondState by remember { mutableStateOf("00") }
+
+    val firstTimer = remember {
+        if (hourSelectedState is HourSelectedState.NoData) {
+            Triple(0, 0,0)
+        } else {
+            hourSelectedState as HourSelectedState.Data
+            Triple(hourSelectedState.data.first, hourSelectedState.data.second, hourSelectedState.data.third)
+        }
+    }
+
+    val hourListState = rememberLazyListState(
+        initialFirstVisibleItemIndex = getCenteredIndex(hours.size, firstTimer.first)
+    )
+
+    val minuteListState = rememberLazyListState(
+        initialFirstVisibleItemIndex = getCenteredIndex(minutes.size, firstTimer.second)
+    )
+
+    val secondListState = rememberLazyListState(
+        initialFirstVisibleItemIndex = getCenteredIndex(seconds.size, firstTimer.third)
+    )
 
     CustomBottomSheet (
         modifier = modifier,
@@ -92,7 +123,7 @@ fun PickTimeBottomSheet(
                             .size(35.dp)
                             .align(Alignment.TopEnd)
                             .clickable {
-                                coroutineScope.launch {
+                                scope.launch {
                                     sheetState.hide()
                                     onDismissRequest()
                                 }
@@ -104,11 +135,37 @@ fun PickTimeBottomSheet(
 
             TimerPicker(
                 modifier = Modifier.padding(top = spacing20),
-                timerSelected = hourSelectedState,
                 colorGradient = MaterialTheme.colorScheme.primaryContainer,
+                hourListState = hourListState,
+                minuteListState = minuteListState,
+                secondListState = secondListState,
                 onHourChange = { hour -> hourState = hour },
                 onMinuteChange = { minute -> minuteState = minute },
-                onSecondChange = { second -> secondState = second }
+                onSecondChange = { second -> secondState = second },
+                scrollToItemHour = {index -> scope.launch { hourListState.scrollToItem(index) } },
+                scrollToItemMinute = {index -> scope.launch { minuteListState.scrollToItem(index) } },
+                scrollToItemSecond = {index -> scope.launch { secondListState.scrollToItem(index) } },
+                onClickCenterHour = {
+                    dialogData = dialogData.copy(
+                        showDialog = true,
+                        typeUnitDate = TypeUnitDate.Hours,
+                        initialText = it
+                    )
+                },
+                onClickCenterMinute = {
+                    dialogData = dialogData.copy(
+                        showDialog = true,
+                        typeUnitDate = TypeUnitDate.Minutes,
+                        initialText = it
+                    )
+                },
+                onClickCenterSecond = {
+                    dialogData = dialogData.copy(
+                        showDialog = true,
+                        typeUnitDate = TypeUnitDate.Seconds,
+                        initialText = it
+                    )
+                }
             )
 
 
@@ -121,8 +178,9 @@ fun PickTimeBottomSheet(
                 CustomRipple {
                     OutlinedButton(
                         modifier = Modifier.weight(1f),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
                         onClick = {
-                            coroutineScope.launch {
+                            scope.launch {
                                 sheetState.hide()
                                 onDismissRequest()
                             }
@@ -139,7 +197,7 @@ fun PickTimeBottomSheet(
                     Button(
                         modifier = Modifier.weight(1f),
                         onClick = {
-                            coroutineScope.launch {
+                            scope.launch {
                                 onIntervalHourChange(
                                     Triple(hourState,minuteState,secondState),
                                     typePickState.value
@@ -162,7 +220,30 @@ fun PickTimeBottomSheet(
 
             }
         }
-
     }
 
+    if(dialogData.showDialog){
+        AlertDialogPicker(
+            typeList = dialogData.typeUnitDate,
+            initialText = dialogData.initialText,
+            onDismissRequest = {
+                dialogData = dialogData.copy(showDialog = false)
+            },
+            onAccept = { index ->
+                scope.launch {
+                    when(dialogData.typeUnitDate){
+                        TypeUnitDate.Hours -> {
+                            hourListState.animateScrollToItem(getCenteredIndex(hours.size, index))
+                        }
+                        TypeUnitDate.Minutes -> {
+                            minuteListState.animateScrollToItem(getCenteredIndex(minutes.size, index))
+                        }
+                        TypeUnitDate.Seconds -> {
+                            secondListState.animateScrollToItem(getCenteredIndex(seconds.size, index))
+                        }
+                    }
+                }
+            }
+        )
+    }
 }

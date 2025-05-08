@@ -12,7 +12,10 @@ import aeb.proyecto.ui.navigationIcon.NavigationIcon
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing24
+import aeb.proyecto.ui.dimmens.Dimmens.spacing32
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
+import aeb.proyecto.ui.dimmens.Dimmens.spacing40
+import aeb.proyecto.ui.dimmens.Dimmens.spacing48
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
@@ -33,8 +36,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
@@ -123,7 +128,8 @@ internal fun LoginScreen(
 
     Box(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(horizontal = spacing40),
         contentAlignment = Alignment.TopCenter
     ) {
         AnimatedContent(
@@ -132,8 +138,9 @@ internal fun LoginScreen(
 
             Column(
                 modifier = Modifier
-                    .fillMaxSize(0.8f)
+                    .fillMaxSize()
                     .padding(top = spacing24)
+                    .verticalScroll(rememberScrollState())
             ) {
                 // -----------------------------------------------------
                 // Variables
@@ -265,7 +272,7 @@ internal fun LoginScreen(
                 Spacer(modifier = Modifier.padding(vertical = spacing8))
 
                 Row(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     LabelMediumText(accountCreated)
