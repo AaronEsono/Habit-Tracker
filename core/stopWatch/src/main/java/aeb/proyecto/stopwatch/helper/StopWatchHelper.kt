@@ -1,17 +1,21 @@
 package aeb.proyecto.stopwatch.helper
 
+import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_CANCEL
+import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_FINISH
+import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_RESUME
+import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_START_INTERVAL
+import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_START_STOPWATCH
+import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_START_TIMER
+import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_STOP
 import aeb.proyecto.stopwatch.constants.CANCEL_REQUEST_CODE
 import aeb.proyecto.stopwatch.constants.CLICK_REQUEST_CODE
 import aeb.proyecto.stopwatch.constants.RESUME_REQUEST_CODE
-import aeb.proyecto.stopwatch.constants.STOPWATCH_STATE
 import aeb.proyecto.stopwatch.constants.STOP_REQUEST_CODE
+import aeb.proyecto.stopwatch.manager.StopwatchState
 import aeb.proyecto.stopwatch.service.StopWatchService
-import aeb.proyecto.stopwatch.service.StopwatchState
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-import android.util.Log
 import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -25,45 +29,79 @@ class StopWatchHelper @Inject constructor(
     private val flag = PendingIntent.FLAG_IMMUTABLE
 
     fun clickPendingIntent(): PendingIntent {
-        val clickIntent = Intent(Intent.ACTION_VIEW, "app://main".toUri()).apply {
-            putExtra(STOPWATCH_STATE, StopwatchState.Started.name)
+        val clickIntent = Intent(Intent.ACTION_VIEW, "app://main/timer".toUri()).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("destination", "timer")
         }
         return PendingIntent.getActivity(
             context, CLICK_REQUEST_CODE, clickIntent, flag
         )
     }
 
-    fun stopPendingIntent(): PendingIntent {
-        val stopIntent = Intent(context, StopWatchService::class.java).apply {
-            putExtra(STOPWATCH_STATE, StopwatchState.Stopped.name)
+    fun finishPendingIntent(): PendingIntent {
+        val finishIntent = Intent(context, StopWatchService::class.java).apply {
+            action = ACTION_SERVICE_FINISH
         }
+
         return PendingIntent.getService(
-            context, STOP_REQUEST_CODE, stopIntent, flag
+            context, CLICK_REQUEST_CODE, finishIntent, flag
         )
     }
 
     fun resumePendingIntent(): PendingIntent {
         val resumeIntent = Intent(context, StopWatchService::class.java).apply {
-            putExtra(STOPWATCH_STATE, StopwatchState.Started.name)
+            action = ACTION_SERVICE_RESUME
         }
+
         return PendingIntent.getService(
             context, RESUME_REQUEST_CODE, resumeIntent, flag
         )
     }
 
-    fun cancelPendingIntent(): PendingIntent {
-        val cancelIntent = Intent(context, StopWatchService::class.java).apply {
-            putExtra(STOPWATCH_STATE, StopwatchState.Canceled.name)
+    fun stopPendingIntent(): PendingIntent {
+        val stopIntent = Intent(context,StopWatchService::class.java).apply {
+            action = ACTION_SERVICE_STOP
         }
+
+        return PendingIntent.getService(
+            context, STOP_REQUEST_CODE, stopIntent, flag
+        )
+    }
+
+    fun cancelPendingIntent() : PendingIntent {
+        val cancelIntent = Intent(context, StopWatchService::class.java).apply {
+            action = ACTION_SERVICE_CANCEL
+        }
+
         return PendingIntent.getService(
             context, CANCEL_REQUEST_CODE, cancelIntent, flag
         )
     }
 
-    fun triggerForegroundService(action: String) {
+    fun startForegroundServiceOnStopWatch(){
         Intent(context, StopWatchService::class.java).apply {
-            this.action = action
+            this.action = ACTION_SERVICE_START_STOPWATCH
             context.startService(this)
         }
     }
+
+    fun startForegroundServiceOnTimer(time:Long){
+        Intent(context,StopWatchService::class.java).apply {
+            putExtra("time",time)
+            this.action = ACTION_SERVICE_START_TIMER
+            context.startService(this)
+        }
+    }
+
+    fun startForegroundServiceOnInterval(time:Long,rest:Long,interval:Int){
+        Intent(context,StopWatchService::class.java).apply {
+            putExtra("time",time)
+            putExtra("rest",rest)
+            putExtra("interval",interval)
+
+            this.action = ACTION_SERVICE_START_INTERVAL
+            context.startService(this)
+        }
+    }
+
 }

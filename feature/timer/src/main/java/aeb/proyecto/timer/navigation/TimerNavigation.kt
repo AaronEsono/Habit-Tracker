@@ -17,7 +17,13 @@ fun NavController.navigateToTimer(optionsBuilder: NavOptionsBuilder.() -> Unit =
 }
 
 fun NavGraphBuilder.timerScreen(navigateToHabit: () -> Unit){
-    composable<Timer> {
+    composable<Timer>(
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = "app://main/timer"
+            }
+        )
+    ){
         TimerScreen(navigateToHabitScreen = navigateToHabit)
     }
 }

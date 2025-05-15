@@ -3,21 +3,17 @@ package aeb.proyecto.timer
 import aeb.proyecto.domain.usecase.timer.GetTimerDataUseCase
 import aeb.proyecto.domain.usecase.timer.TimerData
 import aeb.proyecto.domain.usecase.timer.TimerDataStoreUseCase
-import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_START
 import aeb.proyecto.stopwatch.helper.StopWatchHelper
 import aeb.proyecto.timer.components.bottomSheet.pickTime.model.TypePickState
-import aeb.proyecto.timer.constants.TypeUnitDate
 import aeb.proyecto.timer.model.HabitLinkedState
 import aeb.proyecto.timer.model.HourSelectedState
+import aeb.proyecto.timer.model.SegmentedButtonOptions
 import aeb.proyecto.timer.model.TimerDataUIState
 import aeb.proyecto.timer.model.getSegmentedButtonOptions
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -59,7 +55,25 @@ class TimerViewModel @Inject constructor(
         )
 
     fun startService(){
-        serviceHelper.triggerForegroundService(ACTION_SERVICE_START)
+        val data = (timerData.value as? TimerUiState.Success)?.timerDataUIState
+        val time = getLongMillisecondsTime(data?.hourSelected ?: HourSelectedState.NoData)
+        val rest = getLongMillisecondsTime(data?.restHour ?: HourSelectedState.NoData)
+        val interval = data?.sets ?: 1
+
+        when(data?.typeTimer){
+            SegmentedButtonOptions.StopWatch -> {
+                serviceHelper.startForegroundServiceOnStopWatch()
+            }
+            SegmentedButtonOptions.Timer -> {
+                serviceHelper.startForegroundServiceOnTimer(time)
+            }
+            SegmentedButtonOptions.Interval -> {
+                serviceHelper.startForegroundServiceOnInterval(time,rest,interval)
+            }
+            null -> {
+                serviceHelper.startForegroundServiceOnStopWatch()
+            }
+        }
     }
 
     fun onHourChange(hour:String) = viewModelScope.launch (Dispatchers.IO){
@@ -165,6 +179,28 @@ class TimerViewModel @Inject constructor(
         }
 
         return respond
+    }
+
+    private fun getHourString(hour:HourSelectedState):String{
+        return when(hour){
+            is HourSelectedState.Data -> {
+                "${hour.data.first}:${hour.data.second}:${hour.data.third}"
+            }
+            HourSelectedState.NoData -> {
+                "00:00:00"
+            }
+        }
+    }
+
+    private fun getLongMillisecondsTime(hour: HourSelectedState):Long{
+        return when(hour){
+            is HourSelectedState.Data -> {
+                (hour.data.first * 3600 + hour.data.second * 60 + hour.data.third) * 1000L
+            }
+            HourSelectedState.NoData -> {
+                0
+            }
+        }
     }
 
 }

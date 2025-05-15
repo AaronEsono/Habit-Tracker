@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="service_stopwatch">Stopwatch</string>
+    <string name="service_timer">Timer</string>
+    <string name="service_interval">Interval</string>
+
+    <string name="service_interval_work">Interval - Round %1$s of %2$s</string>
+    <string name="service_interval_last_round">Interval - Last round</string>
+    <string name="service_interval_rest">Interval - Rest</string>
+
+    <string name="service_cancel">Cancel</string>
+    <string name="service_stop">Stop</string>
+    <string name="service_resume">Resume</string>
+    <string name="service_finish">Finish</string>
+
+    <string name="service_paused">%1$s - Paused</string>
+    <string name="service_finished">%1$s - Finished</string>
+
+</resources>

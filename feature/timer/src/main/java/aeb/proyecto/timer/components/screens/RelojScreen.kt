@@ -42,6 +42,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayCircleOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -82,11 +84,6 @@ fun RelojScreen(
 
     val haptic = LocalHapticFeedback.current
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
-
-    val icon = remember(timerUIState.timerDataUIState.typeTimer) {
-        segmentedOptions.find { it.key == timerUIState.timerDataUIState.typeTimer.key }?.icon
-            ?: SegmentedButtonOptions.StopWatch.icon
-    }
 
     Column {
 
@@ -221,16 +218,12 @@ fun RelojScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ){
-                        AnimatedContent(targetState = icon) {
-                            icon ->
-
-                            Icon(
-                                icon,
-                                contentDescription = "icon start",
-                                tint = MaterialTheme.colorScheme.inverseOnSurface,
-                                modifier = Modifier.size(20.dp)
-                            )
-                        }
+                        Icon(
+                            Icons.Filled.PlayCircleOutline,
+                            contentDescription = "icon start",
+                            tint = MaterialTheme.colorScheme.inverseOnSurface,
+                            modifier = Modifier.size(20.dp)
+                        )
 
                         TitleMediumText(
                             stringResource(R.string.timer_start),

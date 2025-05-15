@@ -3,6 +3,7 @@ package aeb.proyecto.stopwatch.di
 import aeb.proyecto.stopwatch.R
 import aeb.proyecto.stopwatch.constants.NOTIFICATION_CHANNEL_ID
 import aeb.proyecto.stopwatch.helper.StopWatchHelper
+import aeb.proyecto.stopwatch.notification.NotificationBuilderHelper
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
@@ -22,15 +23,8 @@ object NotificationModule {
     fun provideNotificationBuilder(
         @ApplicationContext context: Context,
         stopWatchHelper: StopWatchHelper
-    ): NotificationCompat.Builder {
-        return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle("Stopwatch")
-            .setContentText("00:00:00")
-            .setOngoing(true)
-            .setSmallIcon(R.drawable.ic_achievement)
-            .addAction(0,"Stop",stopWatchHelper.stopPendingIntent())
-            .addAction(0,"Cancel",stopWatchHelper.cancelPendingIntent())
-            .setContentIntent(stopWatchHelper.clickPendingIntent())
+    ): NotificationBuilderHelper  {
+        return NotificationBuilderHelper(context, stopWatchHelper)
     }
 
     @ServiceScoped

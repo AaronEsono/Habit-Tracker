@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="service_stopwatch">Cronómetro</string>
+    <string name="service_timer">Temporizador</string>
+    <string name="service_interval">Intervalos</string>
+
+    <string name="service_interval_work">Intervalos - Ronda %1$s de %2$s</string>
+    <string name="service_interval_last_round">Intervalos - Última ronda</string>
+    <string name="service_interval_rest">Intervalos - Descanso</string>
+
+    <string name="service_cancel">Cancelar</string>
+    <string name="service_stop">Parar</string>
+    <string name="service_resume">Continuar</string>
+    <string name="service_finish">Finalizar</string>
+
+    <string name="service_paused">%1$s - Pausado</string>
+    <string name="service_finished">%1$s - Finalizado</string>
+
+</resources>
