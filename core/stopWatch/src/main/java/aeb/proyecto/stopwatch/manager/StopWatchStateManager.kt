@@ -47,6 +47,8 @@ class StopWatchStateManager @Inject constructor() {
             initialValue = "00:00:00"
         )
 
+    // --- Public setters ---
+
     fun setNotificationTitle(title: String) {
         _notificationTitle.value = title
     }
@@ -66,6 +68,7 @@ class StopWatchStateManager @Inject constructor() {
     fun setTimerRunning(isTimerRunning: Boolean) {
         this._isTimerRunning.value = isTimerRunning
     }
+
 }
 
 enum class StopwatchState {

@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
@@ -103,6 +104,7 @@ class HabitViewModel @Inject constructor(
         .catch {
             emit(PagerTypesUiState.Error)
         }
+        .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeOutMillis),
@@ -155,7 +157,8 @@ class HabitViewModel @Inject constructor(
 
                 else -> TimeRangeUiState.Empty
             }
-        }.stateIn(
+        }.flowOn(Dispatchers.Default)
+            .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeOutMillis),
             initialValue = TimeRangeUiState.Empty
@@ -195,6 +198,7 @@ class HabitViewModel @Inject constructor(
                 else -> flowOf(FilteredHabitsUiState.Empty)
             }
         }
+        .flowOn(Dispatchers.Default)
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(stopTimeOutMillis),

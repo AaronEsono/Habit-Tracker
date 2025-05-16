@@ -4,6 +4,7 @@ import aeb.proyecto.domain.usecase.timer.GetTimerDataUseCase
 import aeb.proyecto.domain.usecase.timer.TimerData
 import aeb.proyecto.domain.usecase.timer.TimerDataStoreUseCase
 import aeb.proyecto.stopwatch.helper.StopWatchHelper
+import aeb.proyecto.stopwatch.manager.StopWatchStateManager
 import aeb.proyecto.timer.components.bottomSheet.pickTime.model.TypePickState
 import aeb.proyecto.timer.model.HabitLinkedState
 import aeb.proyecto.timer.model.HourSelectedState
@@ -27,7 +28,8 @@ import javax.inject.Inject
 class TimerViewModel @Inject constructor(
     private val serviceHelper: StopWatchHelper,
     getTimerDataUseCase: GetTimerDataUseCase,
-    private val timerDataStoreUseCase: TimerDataStoreUseCase
+    private val timerDataStoreUseCase: TimerDataStoreUseCase,
+    private val stopWatchStateManager: StopWatchStateManager
 ):ViewModel(){
 
     val timerData: StateFlow<TimerUiState> = getTimerDataUseCase.timerData
