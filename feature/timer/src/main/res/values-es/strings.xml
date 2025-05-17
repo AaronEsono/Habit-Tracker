@@ -30,4 +30,23 @@
     <string name="timer_start">Iniciar</string>
     <string name="timer_left">Tiempo restante: %1$s</string>
 
+    <string name="timer_button_stop">Parar</string>
+    <string name="timer_button_cancel">Cancelar</string>
+    <string name="timer_button_resume">Reanudar</string>
+    <string name="timer_button_finish">Finalizar</string>
+
+    <string name="timer_title_stopWatch">Cronómetro</string>
+    <string name="timer_title_stopWatch_paused">Cronómetro - Pausado</string>
+    <string name="timer_title_stopWatch_finish">Cronómetro - Finalizado</string>
+
+    <string name="timer_title_timer">Temporizador</string>
+    <string name="timer_title_timer_paused">Temporizador - Pausado</string>
+    <string name="timer_title_timer_finish">Temporizador - Finalizado</string>
+
+    <string name="timer_title_interval">Intervalos - Ronda %1$s de %2$s</string>
+    <string name="timer_title_interval_last">Intervalos - Última ronda</string>
+    <string name="timer_title_interval_rest">Intervalos - Descanso</string>
+
+    <string name="timer_title_interval_paused">Intervalos - Pausado</string>
+    <string name="timer_title_interval_finish">Intervalos - Finalizado</string>
 </resources>

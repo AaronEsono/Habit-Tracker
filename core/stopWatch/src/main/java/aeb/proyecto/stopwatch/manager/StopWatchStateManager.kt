@@ -33,8 +33,8 @@ class StopWatchStateManager @Inject constructor() {
     private val _notificationTitle = MutableStateFlow("Stopwatch")
     val notificationTitle: StateFlow<String> = _notificationTitle.asStateFlow()
 
-    private var _typeTimer = mutableStateOf<TypeTimer>(TypeTimer.STOPWATCH)
-    val typeTimer: MutableState<TypeTimer> get() = _typeTimer
+    private var _typeTimer = MutableStateFlow<TypeTimer>(TypeTimer.STOPWATCH)
+    val typeTimer: StateFlow<TypeTimer> = _typeTimer.asStateFlow()
 
     private var _currentState = MutableStateFlow(StopwatchState.Idle)
     val currentState: StateFlow<StopwatchState> = _currentState.asStateFlow()

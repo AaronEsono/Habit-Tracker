@@ -3,7 +3,7 @@ package aeb.proyecto.ui.color
 import androidx.compose.ui.graphics.Color
 
 //Colores generales
-val colorErrorGeneral = Color(0xFFD9362D)
+val colorErrorGeneral = Color(0xFFDB3C33)
 
 //Colores tema oscuro
 val backgroundDark = Color(0xFF201f1e)
@@ -23,6 +23,7 @@ val scrimDark = Color(0xFFBABABA)
 val onBackgroundDark = Color(0xFFD1D2D4)
 val onSurfaceVariantDark = Color(0xFFA5A4A1)
 val surfaceContainerLowDark = Color(0xFFB0AFAE)
+val surfaceContainerLowestDark = Color(0xFF4CAF50)
 
 //Colores tema claro
 val backgroundLight = Color(0xFFFAF9F7)

@@ -5,12 +5,15 @@ import aeb.proyecto.domain.usecase.timer.TimerData
 import aeb.proyecto.domain.usecase.timer.TimerDataStoreUseCase
 import aeb.proyecto.stopwatch.helper.StopWatchHelper
 import aeb.proyecto.stopwatch.manager.StopWatchStateManager
+import aeb.proyecto.stopwatch.manager.StopwatchState
 import aeb.proyecto.timer.components.bottomSheet.pickTime.model.TypePickState
 import aeb.proyecto.timer.model.HabitLinkedState
 import aeb.proyecto.timer.model.HourSelectedState
 import aeb.proyecto.timer.model.SegmentedButtonOptions
 import aeb.proyecto.timer.model.TimerDataUIState
+import aeb.proyecto.timer.model.TimerServiceUIState
 import aeb.proyecto.timer.model.getSegmentedButtonOptions
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,11 +21,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+//Falta lo de los 5 segundos
 
 @HiltViewModel
 class TimerViewModel @Inject constructor(
@@ -50,11 +57,38 @@ class TimerViewModel @Inject constructor(
         .onStart {
             emit(TimerUiState.Loading)
         }
+        .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = TimerUiState.Loading
         )
+
+    val timerStopWatchUIState: StateFlow<TimerServiceUIState> = combine(
+        stopWatchStateManager.elapsedTime,
+        stopWatchStateManager.typeTimer,
+        stopWatchStateManager.currentState,
+        stopWatchStateManager.timerString
+    ) { elapsedTime, typeTimer, currentState, timerString ->
+
+        if(currentState == StopwatchState.Idle) TimerServiceUIState.NoTimer
+        else{
+            TimerServiceUIState.TimerRunning(
+                elapsedTime = elapsedTime,
+                typeTimer = typeTimer,
+                currentState = currentState,
+                hourString = timerString
+            )
+        }
+
+    }
+        .flowOn(Dispatchers.Default)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = TimerServiceUIState.NoTimer
+        )
+
 
     fun startService(){
         val data = (timerData.value as? TimerUiState.Success)?.timerDataUIState
@@ -183,17 +217,6 @@ class TimerViewModel @Inject constructor(
         return respond
     }
 
-    private fun getHourString(hour:HourSelectedState):String{
-        return when(hour){
-            is HourSelectedState.Data -> {
-                "${hour.data.first}:${hour.data.second}:${hour.data.third}"
-            }
-            HourSelectedState.NoData -> {
-                "00:00:00"
-            }
-        }
-    }
-
     private fun getLongMillisecondsTime(hour: HourSelectedState):Long{
         return when(hour){
             is HourSelectedState.Data -> {
@@ -202,6 +225,38 @@ class TimerViewModel @Inject constructor(
             HourSelectedState.NoData -> {
                 0
             }
+        }
+    }
+
+    fun finishService(){
+        try {
+            serviceHelper.finishService()
+        }catch (e:Exception){
+            Log.e("Error","${e.message}")
+        }
+    }
+
+    fun cancelService(){
+        try {
+            serviceHelper.cancelService()
+        }catch (e:Exception){
+            Log.e("Error","${e.message}")
+        }
+    }
+
+    fun resumeService(){
+        try {
+            serviceHelper.resumeService()
+        }catch (e:Exception){
+            Log.e("Error","${e.message}")
+        }
+    }
+
+    fun stopService(){
+        try {
+            serviceHelper.stopService()
+        }catch (e:Exception){
+            Log.e("Error","${e.message}")
         }
     }
 

@@ -3,6 +3,7 @@ package aeb.proyecto.timer
 import aeb.proyecto.timer.components.loading.TimerLoading
 import aeb.proyecto.timer.components.screens.RelojScreen
 import aeb.proyecto.timer.constants.TypeUnitDate
+import aeb.proyecto.timer.model.TimerServiceUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
@@ -25,6 +26,7 @@ fun TimerScreen(
 ){
 
     val timerDataUIState = viewModel.timerData.collectAsStateWithLifecycle().value
+    val timerStopWatchUIState = viewModel.timerStopWatchUIState.collectAsStateWithLifecycle().value
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.timer_title), fontSize = 20.sp)
@@ -32,6 +34,7 @@ fun TimerScreen(
 
     TimerScreen(
         timerUiState = timerDataUIState,
+        timerStopWatchUIState = timerStopWatchUIState,
         onHourChange = viewModel::onHourChange,
         onMinuteChange = viewModel::onMinuteChange,
         onSecondChange = viewModel::onSecondChange,
@@ -40,7 +43,11 @@ fun TimerScreen(
         onSetChange = viewModel::onSetChange,
         onIntervalHourChange = viewModel::setIntervalHour,
         onButtonIntervalWorkChange = viewModel::addHourTimer,
-        onButtonIntervalRestChange = viewModel::addRestTimer
+        onButtonIntervalRestChange = viewModel::addRestTimer,
+        onFinishButton = viewModel::finishService,
+        onResumeButton = viewModel::resumeService,
+        onStopService = viewModel::stopService,
+        onCancelButton = viewModel::cancelService
     )
 }
 
@@ -48,6 +55,7 @@ fun TimerScreen(
 @Composable
 internal fun TimerScreen(
     timerUiState: TimerUiState,
+    timerStopWatchUIState: TimerServiceUIState,
     onHourChange:(String) -> Unit = {},
     onMinuteChange:(String) -> Unit = {},
     onSecondChange: (String) -> Unit = {},
@@ -56,7 +64,11 @@ internal fun TimerScreen(
     onSetChange: (Int) -> Unit = {},
     onIntervalHourChange: (Triple<String,String,String>,Int) -> Unit = {_,_ ->},
     onButtonIntervalWorkChange: (Boolean) -> Unit = {},
-    onButtonIntervalRestChange: (Boolean) -> Unit = {}
+    onButtonIntervalRestChange: (Boolean) -> Unit = {},
+    onFinishButton: () -> Unit = {},
+    onResumeButton: () -> Unit = {},
+    onStopService: () -> Unit = {},
+    onCancelButton: () -> Unit = {}
 ){
 
     Column(
@@ -74,6 +86,7 @@ internal fun TimerScreen(
             is TimerUiState.Success -> {
                 RelojScreen(
                     timerUIState = timerUiState,
+                    timerStopWatchUIState = timerStopWatchUIState,
                     onHourChange = onHourChange,
                     onMinuteChange = onMinuteChange,
                     onSecondChange = onSecondChange,
@@ -82,7 +95,11 @@ internal fun TimerScreen(
                     onSetChange = onSetChange,
                     onIntervalHourChange = onIntervalHourChange,
                     onButtonIntervalWorkChange = onButtonIntervalWorkChange,
-                    onButtonIntervalRestChange = onButtonIntervalRestChange
+                    onButtonIntervalRestChange = onButtonIntervalRestChange,
+                    onFinishButton = onFinishButton,
+                    onResumeButton = onResumeButton,
+                    onStopService = onStopService,
+                    onCancelButton = onCancelButton
                 )
             }
         }

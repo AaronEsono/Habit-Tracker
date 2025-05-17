@@ -48,6 +48,13 @@ class StopWatchHelper @Inject constructor(
         )
     }
 
+    fun finishService(){
+        val intent = Intent(context, StopWatchService::class.java).apply {
+            action = ACTION_SERVICE_FINISH
+        }
+        context.startService(intent)
+    }
+
     fun resumePendingIntent(): PendingIntent {
         val resumeIntent = Intent(context, StopWatchService::class.java).apply {
             action = ACTION_SERVICE_RESUME
@@ -56,6 +63,13 @@ class StopWatchHelper @Inject constructor(
         return PendingIntent.getService(
             context, RESUME_REQUEST_CODE, resumeIntent, flag
         )
+    }
+
+    fun resumeService(){
+        val intent = Intent(context, StopWatchService::class.java).apply {
+            action = ACTION_SERVICE_RESUME
+        }
+        context.startService(intent)
     }
 
     fun stopPendingIntent(): PendingIntent {
@@ -68,6 +82,13 @@ class StopWatchHelper @Inject constructor(
         )
     }
 
+    fun stopService(){
+        val intent = Intent(context, StopWatchService::class.java).apply {
+            action = ACTION_SERVICE_STOP
+        }
+        context.startService(intent)
+    }
+
     fun cancelPendingIntent() : PendingIntent {
         val cancelIntent = Intent(context, StopWatchService::class.java).apply {
             action = ACTION_SERVICE_CANCEL
@@ -76,6 +97,14 @@ class StopWatchHelper @Inject constructor(
         return PendingIntent.getService(
             context, CANCEL_REQUEST_CODE, cancelIntent, flag
         )
+    }
+
+    fun cancelService(){
+        val intent = Intent(context, StopWatchService::class.java).apply {
+            action = ACTION_SERVICE_CANCEL
+        }
+
+        context.startService(intent)
     }
 
     fun startForegroundServiceOnStopWatch(){
