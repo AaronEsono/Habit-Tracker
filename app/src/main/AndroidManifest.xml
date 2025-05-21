@@ -25,6 +25,7 @@
         <service
             android:name="aeb.proyecto.stopwatch.service.StopWatchService"
             android:foregroundServiceType="specialUse"
+            android:stopWithTask="false"
             android:enabled="true"
             android:exported="false"/>
         <activity

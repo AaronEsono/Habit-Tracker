@@ -13,6 +13,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,7 +48,7 @@ fun ActiveIntervalScreen(
 
     val animatedProgress by animateFloatAsState(
         targetValue = targetProgress,
-        animationSpec = tween(durationMillis = 50, easing = LinearEasing),
+        animationSpec = tween(durationMillis = 200, easing = LinearEasing),
         label = "progressAnimation"
     )
 
@@ -61,13 +63,16 @@ fun ActiveIntervalScreen(
 
     BoxWithConstraints(
         modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f)
-            .padding(16.dp),
+            .fillMaxHeight()
+            .aspectRatio(1f),
         contentAlignment = Alignment.Center
     ) {
-        val circleSize = maxWidth * 0.75f
-        val offsetY = circleSize * 0.30f
+        val circleSize = maxWidth
+        val offsetY = circleSize * 0.10f
+        val density = LocalDensity.current
+
+        val labelFontSize = with(density) { (circleSize * 0.05f).toSp() }
+        val timeFontSize = with(density) { (circleSize * 0.20f).toSp() }
 
         CircularProgressIndicator(
             progress = { animatedProgress },
@@ -79,7 +84,7 @@ fun ActiveIntervalScreen(
 
         LabelLargeText(
             text = longToHMS(totalTime),
-            fontSize = 16.sp,
+            fontSize = labelFontSize,
             color = backgroundColor,
             modifier = Modifier
                 .offset(y = offsetY)
@@ -88,7 +93,7 @@ fun ActiveIntervalScreen(
 
         LabelLargeText(
             text = serviceState.hourString,
-            fontSize = 40.sp,
+            fontSize = timeFontSize,
             textAlign = TextAlign.Center,
             color = backgroundColor,
             modifier = Modifier.align(Alignment.Center)

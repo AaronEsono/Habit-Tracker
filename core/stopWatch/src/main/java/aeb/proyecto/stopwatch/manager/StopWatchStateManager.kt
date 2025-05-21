@@ -2,6 +2,7 @@ package aeb.proyecto.stopwatch.manager
 
 import aeb.proyecto.stopwatch.utils.longToHMS
 import aeb.proyecto.stopwatch.utils.pad
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.CoroutineScope
@@ -27,8 +28,8 @@ class StopWatchStateManager @Inject constructor() {
     private var _elapsedTime: MutableStateFlow<Long> = MutableStateFlow(0L)
     val elapsedTime: StateFlow<Long> = _elapsedTime.asStateFlow()
 
-    private val _isTimerRunning = MutableStateFlow(false)
-    val isTimerRunning: StateFlow<Boolean> = _isTimerRunning.asStateFlow()
+    private val _runningTimer: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val runningTimer: StateFlow<Boolean> = _runningTimer.asStateFlow()
 
     private val _notificationTitle = MutableStateFlow("Stopwatch")
     val notificationTitle: StateFlow<String> = _notificationTitle.asStateFlow()
@@ -65,8 +66,8 @@ class StopWatchStateManager @Inject constructor() {
         this._elapsedTime.value = maxOf(0L, elapsedTime)
     }
 
-    fun setTimerRunning(isTimerRunning: Boolean) {
-        this._isTimerRunning.value = isTimerRunning
+    fun setRunningTimer(running:Boolean){
+        _runningTimer.value = running
     }
 
 }

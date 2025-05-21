@@ -1,6 +1,7 @@
 package aeb.proyecto.timer.components.button
 
 import aeb.proyecto.timer.R
+import aeb.proyecto.ui.constants.getContrastColor
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
@@ -91,7 +92,7 @@ fun ResumeButton(
         iconButton = Icons.Filled.PlayArrow,
         title = stringResource(R.string.timer_button_resume),
         colorButton = MaterialTheme.colorScheme.surfaceContainerLowest,
-        contentColorButton = MaterialTheme.colorScheme.inverseOnSurface
+        contentColorButton = getContrastColor(MaterialTheme.colorScheme.surfaceContainerLowest)
     ){ onClick() }
 }
 
@@ -104,8 +105,8 @@ fun CancelButton(
         modifier = modifier,
         iconButton = Icons.Filled.Close,
         title = stringResource(R.string.timer_button_cancel),
-        colorButton = MaterialTheme.colorScheme.scrim,
-        contentColorButton = MaterialTheme.colorScheme.inverseOnSurface
+        colorButton = MaterialTheme.colorScheme.onBackground,
+        contentColorButton = getContrastColor(MaterialTheme.colorScheme.onBackground)
     ){ onClick() }
 }
 
@@ -119,7 +120,7 @@ fun StopButton(
         iconButton = Icons.Filled.Stop,
         title = stringResource(R.string.timer_button_stop),
         colorButton = MaterialTheme.colorScheme.error,
-        contentColorButton = MaterialTheme.colorScheme.inverseOnSurface
+        contentColorButton = getContrastColor(MaterialTheme.colorScheme.error)
     ){ onClick() }
 }
 
@@ -133,6 +134,6 @@ fun FinishButton(
         iconButton = Icons.Filled.Check,
         title = stringResource(R.string.timer_button_finish),
         colorButton = MaterialTheme.colorScheme.onSurface,
-        contentColorButton = MaterialTheme.colorScheme.inverseOnSurface
+        contentColorButton = getContrastColor(MaterialTheme.colorScheme.onSurface)
     ){ onClick() }
 }

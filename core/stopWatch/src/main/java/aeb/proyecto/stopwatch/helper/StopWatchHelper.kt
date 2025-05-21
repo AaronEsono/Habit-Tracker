@@ -16,6 +16,7 @@ import aeb.proyecto.stopwatch.service.StopWatchService
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -110,7 +111,7 @@ class StopWatchHelper @Inject constructor(
     fun startForegroundServiceOnStopWatch(){
         Intent(context, StopWatchService::class.java).apply {
             this.action = ACTION_SERVICE_START_STOPWATCH
-            context.startService(this)
+            ContextCompat.startForegroundService(context,this)
         }
     }
 
@@ -118,7 +119,7 @@ class StopWatchHelper @Inject constructor(
         Intent(context,StopWatchService::class.java).apply {
             putExtra("time",time)
             this.action = ACTION_SERVICE_START_TIMER
-            context.startService(this)
+            ContextCompat.startForegroundService(context,this)
         }
     }
 
@@ -129,7 +130,7 @@ class StopWatchHelper @Inject constructor(
             putExtra("interval",interval)
 
             this.action = ACTION_SERVICE_START_INTERVAL
-            context.startService(this)
+            ContextCompat.startForegroundService(context,this)
         }
     }
 

@@ -29,7 +29,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//Falta lo de los 5 segundos
 
 @HiltViewModel
 class TimerViewModel @Inject constructor(
@@ -179,13 +178,27 @@ class TimerViewModel @Inject constructor(
 
     private fun editTime(time:Triple<Int,Int,Int>, delta:Int, plusTime:Boolean):Triple<Int,Int,Int>{
         val (hours, minutes, seconds) = time
+        var currentTotalSeconds = hours * 3600 + minutes * 60 + seconds
 
-        val currentTotalSeconds = hours * 3600 + minutes * 60 + seconds
-
-        val updatedTotalSeconds = when (plusTime) {
-            true -> (currentTotalSeconds + delta).coerceAtMost(99 * 3600 + 59 * 60 + 59) // máx 99:59:59
-            false -> (currentTotalSeconds - delta).coerceAtLeast(0) // mínimo 00:00:00
+        // Ajuste inicial para alinear al múltiplo de delta
+        val remainder = currentTotalSeconds % delta
+        val updatedTotalSeconds = when {
+            remainder != 0 -> {
+                if (plusTime) {
+                    (currentTotalSeconds + (delta - remainder)).coerceAtMost(99 * 3600 + 59 * 60 + 59)
+                } else {
+                    (currentTotalSeconds - remainder).coerceAtLeast(0)
+                }
+            }
+            else -> {
+                if (plusTime) {
+                    (currentTotalSeconds + delta).coerceAtMost(99 * 3600 + 59 * 60 + 59)
+                } else {
+                    (currentTotalSeconds - delta).coerceAtLeast(0)
+                }
+            }
         }
+
 
         // Convertir total de segundos a h:m:s
         val newHours = updatedTotalSeconds / 3600

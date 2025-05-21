@@ -86,7 +86,7 @@ fun RelojScreen(
     onStopService: () -> Unit,
     onResumeButton: () -> Unit,
     onCancelButton: () -> Unit,
-    onFinishButton: () -> Unit
+    onFinishButton: () -> Unit,
 ){
 
     AnimatedContent(

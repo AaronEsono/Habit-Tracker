@@ -26,6 +26,7 @@ class NotificationBuilderHelper @Inject constructor(
             .setContentTitle(title)
             .setContentText(contentText)
             .setOngoing(true)
+            .setOnlyAlertOnce(true)
             .setSmallIcon(R.drawable.ic_achievement)
             .setContentIntent(stopWatchHelper.clickPendingIntent())
 

@@ -68,7 +68,7 @@ internal fun TimerScreen(
     onFinishButton: () -> Unit = {},
     onResumeButton: () -> Unit = {},
     onStopService: () -> Unit = {},
-    onCancelButton: () -> Unit = {}
+    onCancelButton: () -> Unit = {},
 ){
 
     Column(
@@ -99,7 +99,7 @@ internal fun TimerScreen(
                     onFinishButton = onFinishButton,
                     onResumeButton = onResumeButton,
                     onStopService = onStopService,
-                    onCancelButton = onCancelButton
+                    onCancelButton = onCancelButton,
                 )
             }
         }

@@ -9,9 +9,8 @@ import androidx.compose.ui.unit.sp
 fun ActiveStopwatchScreen(
     hour:String
 ){
-
     LabelMediumText(
         hour,
-        fontSize = 60.sp)
-
+        fontSize = 60.sp
+    )
 }
