@@ -37,9 +37,9 @@ fun ActiveIntervalScreen(
 ){
 
     val totalTime = if (typeTimer.state == IntervalState.Work) {
-        typeTimer.time
+        typeTimer.time.takeIf { it > 0 } ?: 1
     } else {
-        typeTimer.rest
+        typeTimer.rest.takeIf { it > 0 } ?: 1
     }
 
     val targetProgress = remember(serviceState.elapsedTime, totalTime) {

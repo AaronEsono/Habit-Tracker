@@ -192,6 +192,7 @@ fun NoTimerScreen(
                         containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
                     ),
                     shape = RoundedCornerShape(spacing12),
+                    enabled = timerUIState.timerDataUIState.buttonEnabled
                 ) {
                     Row (
                         verticalAlignment = Alignment.CenterVertically,

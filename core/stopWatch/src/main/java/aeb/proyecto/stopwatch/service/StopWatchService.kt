@@ -193,19 +193,21 @@ class StopWatchService : Service(){
 
     private fun startObservingNotificationState() {
         notificationJob?.cancel()
-        notificationJob = CoroutineScope(Dispatchers.Main.immediate).launch {
+        notificationJob = CoroutineScope(Dispatchers.Default).launch {
             combine(
                 stateManager.timerString,
                 stateManager.currentState,
                 stateManager.notificationTitle
             ) { time, currentState, title -> Triple(time, currentState, title) }
+                .distinctUntilChanged()
+                .conflate()
                 .collect { (time, state, title) ->
                     updateNotification(title, state, time)
                 }
         }
     }
 
-    fun updateTotalElapsed(elapsed:Long){
+    private fun updateTotalElapsed(elapsed:Long){
         CoroutineScope(Dispatchers.Main).launch {
             stateManager.updateElapsedTime(elapsed)
         }
@@ -213,6 +215,7 @@ class StopWatchService : Service(){
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if(intent == null){
+            //Restablecer el service correspondiente
             handleStart(TypeTimer.TIMER(10000L))
         }else{
             when (intent.action) {
@@ -234,7 +237,6 @@ class StopWatchService : Service(){
                 ACTION_SERVICE_STOP ->  stopStopwatch()
                 ACTION_SERVICE_RESUME -> resumeStopwatch()
                 ACTION_SERVICE_FINISH -> finishStopWatch()
-                else ->  handleStart(TypeTimer.TIMER(10000L))
             }
         }
         return START_STICKY
@@ -361,7 +363,7 @@ class StopWatchService : Service(){
     private fun startForegroundService(){
         createNotificationChannel()
 
-        val initialNotification = notificationBuilderHelper.buildNotification()
+        val initialNotification = notificationBuilderHelper.createNotification()
         startForeground(NOTIFICATION_ID, initialNotification.build())
     }
 
@@ -407,25 +409,25 @@ class StopWatchService : Service(){
         if (state == StopwatchState.Idle) return
 
         val builder = when (state) {
-            StopwatchState.InProgress -> notificationBuilderHelper.buildNotification(
-                title = title,
-                contentText = time,
+            StopwatchState.InProgress -> notificationBuilderHelper.updateNotification(
+                newTitle = title,
+                newTime = time,
                 showStop = true,
                 showCancel = true,
                 showFinish = false,
                 showResume = false
             )
-            StopwatchState.Stopped -> notificationBuilderHelper.buildNotification(
-                title = title,
-                contentText = time,
+            StopwatchState.Stopped -> notificationBuilderHelper.updateNotification(
+                newTitle = title,
+                newTime = time,
                 showResume = true,
                 showCancel = true,
                 showStop = false,
                 showFinish = false
             )
-            StopwatchState.Finished -> notificationBuilderHelper.buildNotification(
-                title = title,
-                contentText = time,
+            StopwatchState.Finished -> notificationBuilderHelper.updateNotification(
+                newTitle = title,
+                newTime = time,
                 showFinish = true,
                 showCancel = false,
                 showResume = false,

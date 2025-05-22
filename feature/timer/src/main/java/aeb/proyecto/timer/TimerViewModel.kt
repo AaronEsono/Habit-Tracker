@@ -40,13 +40,24 @@ class TimerViewModel @Inject constructor(
 
     val timerData: StateFlow<TimerUiState> = getTimerDataUseCase.timerData
         .map<TimerData, TimerUiState> { data ->
+            val hourSelected = data.hourSelected?.let {  HourSelectedState.Data(it) } ?: HourSelectedState.NoData
+            val typeTimer = getSegmentedButtonOptions(data.typeTimer ?: 1)
+
             TimerUiState.Success(
                 TimerDataUIState(
                     habitLinked = data.habitWithDay?.let { HabitLinkedState.Data(it) } ?: HabitLinkedState.NoData,
-                    typeTimer = getSegmentedButtonOptions(data.typeTimer ?: 1),
-                    hourSelected = data.hourSelected?.let { HourSelectedState.Data(it) } ?: HourSelectedState.NoData,
+                    typeTimer = typeTimer,
+                    hourSelected = hourSelected,
                     restHour = data.restHour?.let { HourSelectedState.Data(it) } ?: HourSelectedState.NoData,
-                    sets = data.sets
+                    sets = data.sets,
+                    buttonEnabled = typeTimer == SegmentedButtonOptions.StopWatch || (
+                            hourSelected is HourSelectedState.Data &&
+                                    !(
+                                    hourSelected.data.first == 0 &&
+                                    hourSelected.data.second == 0 &&
+                                    hourSelected.data.third == 0
+                                            )
+                            )
                 )
             )
         }

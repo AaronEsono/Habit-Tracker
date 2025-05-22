@@ -10,59 +10,66 @@ import javax.inject.Inject
 
 class NotificationBuilderHelper @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val stopWatchHelper: StopWatchHelper
+    private val stopWatchHelper: StopWatchHelper,
+    private val notificationBuilder: NotificationCompat.Builder
 ) {
 
-    fun buildNotification(
-        title: String = "Stopwatch",
-        contentText: String = "00:00:00",
-        showStop: Boolean = true,
-        showCancel: Boolean = true,
-        showFinish: Boolean = false,
-        showResume: Boolean = false
-    ): NotificationCompat.Builder {
+    fun createNotification(): NotificationCompat.Builder {
+        return notificationBuilder.setWhen(System.currentTimeMillis())
+    }
 
-        val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle(title)
-            .setContentText(contentText)
-            .setOngoing(true)
-            .setOnlyAlertOnce(true)
-            .setSmallIcon(R.drawable.ic_achievement)
-            .setContentIntent(stopWatchHelper.clickPendingIntent())
+    fun updateNotification(
+        newTitle:String,
+        newTime: String,
+        showStop: Boolean = false,
+        showResume: Boolean = false,
+        showCancel: Boolean = false,
+        showFinish: Boolean = false
+    ): NotificationCompat.Builder {
+        notificationBuilder.setContentTitle(newTitle)
+        notificationBuilder.setContentText(newTime)
+        notificationBuilder.clearActions()
 
         if (showStop) {
-            builder.addAction(
-                0,
-                context.getString(R.string.service_stop),
-                stopWatchHelper.stopPendingIntent()
+            notificationBuilder.addAction(
+                NotificationCompat.Action.Builder(
+                    0,
+                    context.getString(R.string.service_stop),
+                    stopWatchHelper.stopPendingIntent()
+                ).build()
             )
         }
 
         if (showResume) {
-            builder.addAction(
-                0,
-                context.getString(R.string.service_resume),
-                stopWatchHelper.resumePendingIntent()
+            notificationBuilder.addAction(
+                NotificationCompat.Action.Builder(
+                    0,
+                    context.getString(R.string.service_resume),
+                    stopWatchHelper.resumePendingIntent()
+                ).build()
             )
         }
 
         if (showCancel) {
-            builder.addAction(
-                0,
-                context.getString(R.string.service_cancel),
-                stopWatchHelper.cancelPendingIntent()
+            notificationBuilder.addAction(
+                NotificationCompat.Action.Builder(
+                    0,
+                    context.getString(R.string.service_cancel),
+                    stopWatchHelper.cancelPendingIntent()
+                ).build()
             )
         }
 
         if (showFinish) {
-            builder.addAction(
-                0,
-                context.getString(R.string.service_finish),
-                stopWatchHelper.finishPendingIntent()
+            notificationBuilder.addAction(
+                NotificationCompat.Action.Builder(
+                    0,
+                    context.getString(R.string.service_finish),
+                    stopWatchHelper.finishPendingIntent()
+                ).build()
             )
         }
 
-        return builder
+        return notificationBuilder
     }
-
 }
