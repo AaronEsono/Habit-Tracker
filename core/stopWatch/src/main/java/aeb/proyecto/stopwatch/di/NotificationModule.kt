@@ -27,6 +27,7 @@ object NotificationModule {
         return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_achievement)
             .setOngoing(true)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
             .setOnlyAlertOnce(true)
             .setContentIntent(stopWatchHelper.clickPendingIntent())
     }

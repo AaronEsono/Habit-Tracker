@@ -17,7 +17,9 @@ import aeb.proyecto.stopwatch.manager.StopWatchStateManager
 import aeb.proyecto.stopwatch.manager.StopwatchState
 import aeb.proyecto.stopwatch.manager.TypeTimer
 import aeb.proyecto.stopwatch.notification.NotificationBuilderHelper
-import android.Manifest
+import aeb.proyecto.stopwatch.utils.getPausedTitle
+import aeb.proyecto.stopwatch.utils.prepareInitialTimerTitle
+import aeb.proyecto.stopwatch.utils.setIntervalTitle
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
@@ -26,27 +28,22 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Binder
-import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.os.PowerManager
 import android.os.SystemClock
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
-import androidx.annotation.RequiresPermission
-import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.concurrent.timer
 
 
 @AndroidEntryPoint
@@ -74,9 +71,12 @@ class StopWatchService : Service(){
     private var timerJob: Job? = null
     private var notificationJob: Job? = null
 
+    private val serviceJob = SupervisorJob()
     private var mediaPlayer: MediaPlayer? = null
 
-    override fun onBind(p0: Intent?) = binder
+    private var wakeLock: PowerManager.WakeLock? = null
+
+    override fun onBind(intent: Intent?) = binder
 
     private fun startTimerCoroutine(){
         timerJob?.cancel()
@@ -128,7 +128,7 @@ class StopWatchService : Service(){
                     )
                     stateManager.timeElapsedBeforePause = 0L
                     stateManager.startTime = SystemClock.elapsedRealtime()
-                    setIntervalTitle()
+                    setIntervalTitle(stateManager, context)
                     playAlarm(R.raw.worknotification, false)
                 }
 
@@ -150,7 +150,7 @@ class StopWatchService : Service(){
                         stateManager.setTimerType(currentState.copy(state = IntervalState.Rest))
                         stateManager.timeElapsedBeforePause = 0L
                         stateManager.startTime = SystemClock.elapsedRealtime()
-                        setIntervalTitle()
+                        setIntervalTitle(stateManager, context)
                         playAlarm(R.raw.restnotification, false)
                     }
                 }
@@ -214,30 +214,25 @@ class StopWatchService : Service(){
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if(intent == null){
-            //Restablecer el service correspondiente
-            handleStart(TypeTimer.TIMER(10000L))
-        }else{
-            when (intent.action) {
-                ACTION_SERVICE_START_STOPWATCH -> {
-                    handleStart(TypeTimer.STOPWATCH)
-                }
-                ACTION_SERVICE_START_TIMER -> {
-                    val time = intent.getLongExtra("time", 0L) ?: 0L
-                    handleStart(TypeTimer.TIMER(time))
-                }
-                ACTION_SERVICE_START_INTERVAL -> {
-                    val time = intent.getLongExtra("time",0L) ?: 0L
-                    val rest = intent.getLongExtra("rest", 0L) ?: 0L
-                    val interval = intent.getIntExtra("interval",1) ?: 1
-
-                    handleStart(TypeTimer.INTERVAL(time,rest,interval))
-                }
-                ACTION_SERVICE_CANCEL -> cancelStopwatch()
-                ACTION_SERVICE_STOP ->  stopStopwatch()
-                ACTION_SERVICE_RESUME -> resumeStopwatch()
-                ACTION_SERVICE_FINISH -> finishStopWatch()
+        when (intent?.action) {
+            ACTION_SERVICE_START_STOPWATCH -> {
+                handleStart(TypeTimer.STOPWATCH)
             }
+            ACTION_SERVICE_START_TIMER -> {
+                val time = intent.getLongExtra("time", 0L)
+                handleStart(TypeTimer.TIMER(time))
+            }
+            ACTION_SERVICE_START_INTERVAL -> {
+                val time = intent.getLongExtra("time",0L)
+                val rest = intent.getLongExtra("rest", 0L)
+                val interval = intent.getIntExtra("interval",1) ?: 1
+
+                handleStart(TypeTimer.INTERVAL(time,rest,interval))
+            }
+            ACTION_SERVICE_CANCEL -> cancelStopwatch()
+            ACTION_SERVICE_STOP ->  stopStopwatch()
+            ACTION_SERVICE_RESUME -> resumeStopwatch()
+            ACTION_SERVICE_FINISH -> finishStopWatch()
         }
         return START_STICKY
     }
@@ -246,6 +241,7 @@ class StopWatchService : Service(){
         startForegroundService()
         setTimerState(type)
         startNotificationService()
+        acquireWakeLock()
     }
 
     private fun startNotificationService(){
@@ -255,36 +251,46 @@ class StopWatchService : Service(){
             startTime = SystemClock.elapsedRealtime()
         }
 
-        prepareInitialTimerTitle()
+        prepareInitialTimerTitle(stateManager, context)
         startObservingNotificationState()
         stateManager.setRunningTimer(true)
         startTimerCoroutine()
     }
 
-    private fun getPausedTitle(): String {
-        val labelRes = when(stateManager.typeTimer.value) {
-            is TypeTimer.INTERVAL -> R.string.service_interval
-            TypeTimer.STOPWATCH -> R.string.service_stopwatch
-            is TypeTimer.TIMER -> R.string.service_timer
+    private fun stopStopwatch() {
+        stateManager.setRunningTimer(false)
+        timerJob?.cancel()
+        val now = SystemClock.elapsedRealtime()
+        val elapsed = now - stateManager.startTime
+
+        stateManager.apply {
+            setNotificationTitle(getPausedTitle(stateManager, context))
+            setState(StopwatchState.Stopped)
+            timeElapsedBeforePause += elapsed
         }
-        return context.getString(R.string.service_paused, context.getString(labelRes))
     }
 
-    private fun prepareInitialTimerTitle() {
-        when (val timer = stateManager.typeTimer.value) {
-            is TypeTimer.INTERVAL -> {
-                stateManager.updateElapsedTime(timer.time)
-                setIntervalTitle()
-            }
-            TypeTimer.STOPWATCH -> {
-                stateManager.updateElapsedTime(0L)
-                stateManager.setNotificationTitle(context.getString(R.string.service_stopwatch))
-            }
-            is TypeTimer.TIMER -> {
-                stateManager.updateElapsedTime(timer.time)
-                stateManager.setNotificationTitle(context.getString(R.string.service_timer))
-            }
+    private fun cancelStopwatch() {
+        stateManager.setRunningTimer(false)
+        stateManager.setState(StopwatchState.Idle)
+        cancelAlarm()
+        releaseWakeLock()
+        stopForegroundService()
+    }
+
+    private fun resumeStopwatch() {
+        stateManager.apply {
+            startTime = SystemClock.elapsedRealtime()
+            setState(StopwatchState.InProgress)
         }
+
+        stateManager.setRunningTimer(true)
+        prepareInitialTimerTitle(stateManager, context)
+        startTimerCoroutine()
+    }
+
+    private fun finishStopWatch(){
+        cancelStopwatch()
     }
 
     private fun setTimerState(type:TypeTimer){
@@ -325,40 +331,6 @@ class StopWatchService : Service(){
         mediaPlayer = null
     }
 
-    private fun stopStopwatch() {
-        stateManager.setRunningTimer(false)
-        timerJob?.cancel()
-        val now = SystemClock.elapsedRealtime()
-        val elapsed = now - stateManager.startTime
-
-        stateManager.apply {
-            setNotificationTitle(getPausedTitle())
-            setState(StopwatchState.Stopped)
-            timeElapsedBeforePause += elapsed
-        }
-    }
-
-    private fun cancelStopwatch() {
-        stateManager.setRunningTimer(false)
-        stateManager.setState(StopwatchState.Idle)
-        cancelAlarm()
-        stopForegroundService()
-    }
-
-    private fun resumeStopwatch() {
-        stateManager.apply {
-            startTime = SystemClock.elapsedRealtime()
-            setState(StopwatchState.InProgress)
-        }
-
-        stateManager.setRunningTimer(true)
-        prepareInitialTimerTitle()
-        startTimerCoroutine()
-    }
-
-    private fun finishStopWatch(){
-        cancelStopwatch()
-    }
 
     private fun startForegroundService(){
         createNotificationChannel()
@@ -370,6 +342,7 @@ class StopWatchService : Service(){
     private fun stopForegroundService() {
         notificationManager.cancel(NOTIFICATION_ID)
         stopForeground(STOP_FOREGROUND_REMOVE)
+        releaseWakeLock()
         stopSelf()
     }
 
@@ -380,25 +353,6 @@ class StopWatchService : Service(){
             NotificationManager.IMPORTANCE_HIGH
         )
         notificationManager.createNotificationChannel(channel)
-    }
-
-    private fun setIntervalTitle(){
-        val type =  stateManager.typeTimer.value as TypeTimer.INTERVAL
-
-        when(type.state){
-            IntervalState.Rest -> {
-                stateManager.setNotificationTitle(context.getString(R.string.service_interval_rest))
-            }
-            IntervalState.Work -> {
-                if(type.currentInterval == type.interval){
-                    stateManager.setNotificationTitle(context.getString(R.string.service_interval_last_round))
-                }else{
-                    stateManager.setNotificationTitle(context.getString(R.string.service_interval_work,
-                        type.currentInterval.toString(), type.interval.toString()))
-                }
-            }
-        }
-
     }
 
     private fun updateNotification(
@@ -443,16 +397,36 @@ class StopWatchService : Service(){
         fun getService(): StopWatchService = this@StopWatchService
     }
 
+    private fun acquireWakeLock() {
+        if (wakeLock == null) {
+            val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+            wakeLock = powerManager.newWakeLock(
+                PowerManager.PARTIAL_WAKE_LOCK,
+                "MiApp::TimerWakeLock"
+            ).apply {
+                setReferenceCounted(false)
+            }
+        }
+
+        if (wakeLock?.isHeld == false) {
+            wakeLock?.acquire()
+        }
+    }
+
+    private fun releaseWakeLock() {
+        if (wakeLock?.isHeld == true) {
+            wakeLock?.release()
+        }
+    }
+
     override fun onDestroy() {
         stateManager.setRunningTimer(false)
         timerJob?.cancel()
         notificationJob?.cancel()
         cancelAlarm()
         vibrator.cancel()
+        serviceJob.cancel()
+        releaseWakeLock()
         super.onDestroy()
-    }
-
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        super.onTaskRemoved(rootIntent)
     }
 }

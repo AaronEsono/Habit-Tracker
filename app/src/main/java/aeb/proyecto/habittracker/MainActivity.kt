@@ -5,7 +5,6 @@ import aeb.proyecto.habittracker.components.TopBarHabit
 import aeb.proyecto.habittracker.navigation.NavigationHabit
 import aeb.proyecto.habittracker.permissions.RequestPermissions
 import aeb.proyecto.stopwatch.service.StopWatchService
-import aeb.proyecto.timer.navigation.navigateToTimer
 import aeb.proyecto.ui.controllerProvider.LocalNavController
 import aeb.proyecto.ui.theme.HabitTrackerTheme
 import android.content.ComponentName
@@ -39,6 +38,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
 
     private var isBound by mutableStateOf(false)
     private lateinit var stopwatchService: StopWatchService
