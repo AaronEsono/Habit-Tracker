@@ -6,6 +6,8 @@ import aeb.proyecto.timer.constants.TypeUnitDate
 import aeb.proyecto.timer.model.TimerServiceUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import aeb.proyecto.ui.orientation.Orientation
+import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
 import androidx.compose.foundation.layout.Column
@@ -27,9 +29,15 @@ fun TimerScreen(
 
     val timerDataUIState = viewModel.timerData.collectAsStateWithLifecycle().value
     val timerStopWatchUIState = viewModel.timerStopWatchUIState.collectAsStateWithLifecycle().value
+    val orientation = getOrientation()
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.timer_title), fontSize = 20.sp)
+    }
+
+    when(orientation){
+        Orientation.Portrait -> {}
+        Orientation.Landscape -> {}
     }
 
     TimerScreen(

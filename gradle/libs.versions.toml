@@ -105,6 +105,9 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 # JUnit (Standalone)
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
+#Adaptative
+material3-adaptive-navigation-suite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite" }
+
 # Google Services
 play-services-tflite-support = { group = "com.google.android.gms", name = "play-services-tflite-support", version.ref = "playServicesTfliteSupport" }
 

@@ -8,6 +8,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable object Statistics
 
+fun NavController.navigateToStatistics(){
+    navigate(Statistics)
+}
+
 fun NavGraphBuilder.statisticsScreen() {
     composable<Statistics> {
         StatisticsScreen()

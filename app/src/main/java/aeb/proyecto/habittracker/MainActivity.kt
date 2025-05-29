@@ -1,8 +1,10 @@
 package aeb.proyecto.habittracker
 
-import aeb.proyecto.habittracker.components.BottomNavigationHabit
 import aeb.proyecto.habittracker.components.TopBarHabit
+import aeb.proyecto.habittracker.components.bottomBars.BottomNavigationHabit
+import aeb.proyecto.habittracker.components.bottomBars.BottomRailHabit
 import aeb.proyecto.habittracker.navigation.NavigationHabit
+import aeb.proyecto.habittracker.navigation.suiteNavigation
 import aeb.proyecto.habittracker.permissions.RequestPermissions
 import aeb.proyecto.stopwatch.service.StopWatchService
 import aeb.proyecto.ui.controllerProvider.LocalNavController
@@ -17,10 +19,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -91,16 +100,37 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppContent(navController: NavHostController) {
     CompositionLocalProvider(LocalNavController provides navController) {
-        Scaffold(
-            topBar = { TopBarHabit() },
-            bottomBar = { BottomNavigationHabit() }
-        ) { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-            ) {
-                NavigationHabit()
+        val suiteNavigation = suiteNavigation()
+        val showBottomRail = suiteNavigation == NavigationSuiteType.NavigationRail
+
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.primary)
+                .then(
+                    if (showBottomRail)
+                        Modifier.padding(WindowInsets.safeDrawing.asPaddingValues())
+                    else
+                        Modifier
+                )
+        ){
+            if(suiteNavigation == NavigationSuiteType.NavigationRail){
+                BottomRailHabit()
+            }
+
+            Scaffold(
+                topBar = { TopBarHabit() },
+                bottomBar = { if(suiteNavigation == NavigationSuiteType.NavigationBar)
+                    BottomNavigationHabit()
+                }
+            ) { innerPadding ->
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ){
+                    NavigationHabit()
+                }
             }
         }
     }

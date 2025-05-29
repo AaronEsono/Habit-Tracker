@@ -1,9 +1,9 @@
-package aeb.proyecto.habittracker.components
+package aeb.proyecto.habittracker.components.bottomBars
 
-import aeb.proyecto.habittracker.navigation.TopLevelDestinations
 import aeb.proyecto.habittracker.navigation.menuItems
 import aeb.proyecto.ui.controllerProvider.LocalNavController
 import aeb.proyecto.ui.text.LabelSmallText
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +28,9 @@ fun BottomNavigationHabit() {
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
     val showBottomBar = currentDestination?.route in menuItems.map { it.route::class.qualifiedName }
 
-    if (showBottomBar) {
+    AnimatedVisibility(
+        visible = showBottomBar,
+    ) {
         NavigationBar(
             containerColor = MaterialTheme.colorScheme.primary
         ) {

@@ -165,4 +165,7 @@ dependencies {
 
     //Datastore
     implementation(libs.androidx.datastore.preferences)
+
+    //Adaptative
+    implementation(libs.material3.adaptive.navigation.suite)
 }
