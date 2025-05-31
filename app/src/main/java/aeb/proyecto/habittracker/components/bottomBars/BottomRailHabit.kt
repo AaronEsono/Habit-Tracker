@@ -2,9 +2,18 @@ package aeb.proyecto.habittracker.components.bottomBars
 
 import aeb.proyecto.habittracker.navigation.menuItems
 import aeb.proyecto.ui.controllerProvider.LocalNavController
+import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -19,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 
@@ -36,6 +46,8 @@ fun BottomRailHabit(){
     ) {
         NavigationRail(
             containerColor = MaterialTheme.colorScheme.primary,
+            windowInsets = WindowInsets(0, 0, 0, 0),
+            modifier = Modifier.padding(horizontal = spacing2)
         ) {
             menuItems.forEach { menuItem ->
                 NavigationRailItem(
@@ -55,11 +67,14 @@ fun BottomRailHabit(){
                         Icon(
                             painter = painterResource(menuItem.icon),
                             contentDescription = "bottom bar icon",
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(20.dp)
                         )
                     },
                     label = {
-                        LabelSmallText(stringResource(menuItem.title))
+                        LabelSmallText(
+                            stringResource(menuItem.title),
+                            fontSize = 10.sp
+                        )
                     },
                     colors = NavigationRailItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,

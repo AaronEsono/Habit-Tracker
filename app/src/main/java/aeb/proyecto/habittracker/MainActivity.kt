@@ -20,13 +20,22 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
@@ -40,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -101,24 +111,38 @@ class MainActivity : ComponentActivity() {
 fun AppContent(navController: NavHostController) {
     CompositionLocalProvider(LocalNavController provides navController) {
         val suiteNavigation = suiteNavigation()
-        val showBottomRail = suiteNavigation == NavigationSuiteType.NavigationRail
 
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.primary)
-                .then(
-                    if (showBottomRail)
-                        Modifier.padding(WindowInsets.safeDrawing.asPaddingValues())
-                    else
-                        Modifier
+                .padding(
+                    PaddingValues(
+                        end = WindowInsets.safeDrawing
+                            .asPaddingValues()
+                            .calculateEndPadding(LayoutDirection.Ltr),
+                        start = WindowInsets.safeDrawing
+                            .asPaddingValues()
+                            .calculateStartPadding(LayoutDirection.Ltr)
+                    )
                 )
         ){
             if(suiteNavigation == NavigationSuiteType.NavigationRail){
-                BottomRailHabit()
+                Box(
+                    modifier = Modifier
+                        .padding(
+                            PaddingValues(
+                                top = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding(),
+                                bottom = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
+                            )
+                        )
+                ) {
+                    BottomRailHabit()
+                }
             }
 
             Scaffold(
+                contentWindowInsets = WindowInsets(0, 0, 0, 0),
                 topBar = { TopBarHabit() },
                 bottomBar = { if(suiteNavigation == NavigationSuiteType.NavigationBar)
                     BottomNavigationHabit()

@@ -9,9 +9,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,6 +25,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 
@@ -48,10 +54,10 @@ fun TopBarHabit() {
             actions = { AnimatedContent(targetState = actions,
                 transitionSpec = {
                     slideInHorizontally(
-                        initialOffsetX = { 1000 }, // entra desde la izquierda
+                        initialOffsetX = { 1000 },
                         animationSpec = tween(durationMillis = 300)
                     ) togetherWith  slideOutHorizontally(
-                        targetOffsetX = { 1000 }, // sale hacia la izquierda
+                        targetOffsetX = { 1000 },
                         animationSpec = tween(durationMillis = 300)
                     ) using SizeTransform(clip = false)
                 }
@@ -61,15 +67,21 @@ fun TopBarHabit() {
                     targetState = navigationIcon,
                     transitionSpec = {
                         slideInHorizontally(
-                            initialOffsetX = { -1000 }, // entra desde la izquierda
+                            initialOffsetX = { -1000 },
                             animationSpec = tween(durationMillis = 300)
                         ) togetherWith  slideOutHorizontally(
-                            targetOffsetX = { -1000 }, // sale hacia la izquierda
+                            targetOffsetX = { -1000 },
                             animationSpec = tween(durationMillis = 300)
                         ) using SizeTransform(clip = false)
                     }
                 ) {navigationIconAnim -> navigationIconAnim() }
-            }
+            },
+            windowInsets = WindowInsets(
+                left = 0,
+                top = TopAppBarDefaults.windowInsets.getTop(LocalDensity.current),
+                right = 0,
+                bottom = TopAppBarDefaults.windowInsets.getBottom(LocalDensity.current)
+            )
         )
 
     }
