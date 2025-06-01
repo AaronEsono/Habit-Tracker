@@ -1,27 +1,22 @@
-package aeb.proyecto.habittracker.components.bottomBars
+package aeb.proyecto.habittracker.components.bottomBars.bottomRail
 
+import aeb.proyecto.habittracker.components.bottomBars.bottomRail.components.BottomRailIconResponsive
+import aeb.proyecto.habittracker.components.bottomBars.bottomRail.components.LabelBottomRailResponsive
 import aeb.proyecto.habittracker.navigation.menuItems
 import aeb.proyecto.ui.controllerProvider.LocalNavController
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
+import aeb.proyecto.ui.dimmens.Dimmens.spacing3
 import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.NavigationRailItemDefaults
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -38,6 +33,7 @@ fun BottomRailHabit(){
 
     val menuItems = remember { menuItems() }
 
+    val windowWidthSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
     val showBottomBar = currentDestination?.route in menuItems.map { it.route::class.qualifiedName }
 
@@ -47,7 +43,7 @@ fun BottomRailHabit(){
         NavigationRail(
             containerColor = MaterialTheme.colorScheme.primary,
             windowInsets = WindowInsets(0, 0, 0, 0),
-            modifier = Modifier.padding(horizontal = spacing2)
+            modifier = Modifier.padding(horizontal = spacing3)
         ) {
             menuItems.forEach { menuItem ->
                 NavigationRailItem(
@@ -63,19 +59,8 @@ fun BottomRailHabit(){
                             }
                         }
                     },
-                    icon = {
-                        Icon(
-                            painter = painterResource(menuItem.icon),
-                            contentDescription = "bottom bar icon",
-                            modifier = Modifier.size(20.dp)
-                        )
-                    },
-                    label = {
-                        LabelSmallText(
-                            stringResource(menuItem.title),
-                            fontSize = 10.sp
-                        )
-                    },
+                    icon = {BottomRailIconResponsive(menuItem.icon,windowWidthSizeClass)},
+                    label = {LabelBottomRailResponsive(menuItem.title,windowWidthSizeClass)},
                     colors = NavigationRailItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
                         indicatorColor = MaterialTheme.colorScheme.onSurface,

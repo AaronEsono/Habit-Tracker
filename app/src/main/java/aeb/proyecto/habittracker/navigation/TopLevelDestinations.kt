@@ -39,12 +39,3 @@ val menuItems = {
         TopLevelDestinations.SettingsBottom,
     )
 }
-
-fun navigateToTopLevelDestination(destination: TopLevelDestinations<*>, navController: NavHostController){
-    when(destination){
-        TopLevelDestinations.HabitsBottom -> { navController.navigateToHabit()}
-        TopLevelDestinations.SettingsBottom -> { navController.navigateToSettings()}
-        TopLevelDestinations.StatisticsBottom -> { navController.navigateToStatistics()}
-        TopLevelDestinations.TimerBottom -> { navController.navigateToTimer()}
-    }
-}

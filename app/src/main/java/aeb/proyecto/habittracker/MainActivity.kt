@@ -2,7 +2,7 @@ package aeb.proyecto.habittracker
 
 import aeb.proyecto.habittracker.components.TopBarHabit
 import aeb.proyecto.habittracker.components.bottomBars.BottomNavigationHabit
-import aeb.proyecto.habittracker.components.bottomBars.BottomRailHabit
+import aeb.proyecto.habittracker.components.bottomBars.bottomRail.BottomRailHabit
 import aeb.proyecto.habittracker.navigation.NavigationHabit
 import aeb.proyecto.habittracker.navigation.suiteNavigation
 import aeb.proyecto.habittracker.permissions.RequestPermissions
@@ -25,17 +25,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
