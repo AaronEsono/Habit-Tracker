@@ -6,6 +6,7 @@ import aeb.proyecto.habittracker.navigation.menuItems
 import aeb.proyecto.ui.controllerProvider.LocalNavController
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing3
+import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.WindowInsets
@@ -36,6 +37,7 @@ fun BottomRailHabit(){
     val windowWidthSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
     val showBottomBar = currentDestination?.route in menuItems.map { it.route::class.qualifiedName }
+    val orientation = getOrientation()
 
     AnimatedVisibility(
         visible = showBottomBar,
@@ -59,8 +61,8 @@ fun BottomRailHabit(){
                             }
                         }
                     },
-                    icon = {BottomRailIconResponsive(menuItem.icon,windowWidthSizeClass)},
-                    label = {LabelBottomRailResponsive(menuItem.title,windowWidthSizeClass)},
+                    icon = {BottomRailIconResponsive(menuItem.icon,windowWidthSizeClass,orientation)},
+                    label = {LabelBottomRailResponsive(menuItem.title,windowWidthSizeClass,orientation)},
                     colors = NavigationRailItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
                         indicatorColor = MaterialTheme.colorScheme.onSurface,
