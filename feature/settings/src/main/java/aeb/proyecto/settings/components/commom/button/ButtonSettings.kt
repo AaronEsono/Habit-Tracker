@@ -1,4 +1,4 @@
-package aeb.proyecto.settings.components.button
+package aeb.proyecto.settings.components.commom.button
 
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -48,7 +49,7 @@ fun ButtonSettings(
             colors = ButtonDefaults.elevatedButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer
             ),
-            modifier = modifier,
+            modifier = modifier.height(60.dp),
             contentPadding = PaddingValues(spacing10)
         ) {
             Row(

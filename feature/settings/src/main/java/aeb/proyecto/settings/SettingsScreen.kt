@@ -1,44 +1,23 @@
 package aeb.proyecto.settings
 
-import aeb.proyecto.language.model.returnStringValue
-import aeb.proyecto.settings.components.button.ButtonSettings
-import aeb.proyecto.settings.components.dialog.DialogSettings
-import aeb.proyecto.settings.components.divider.CustomHorizontalDivider
-import aeb.proyecto.settings.constants.SettingsConstants
+import aeb.proyecto.settings.components.horizontal.HorizontalSettingsScreen
+import aeb.proyecto.settings.components.vertical.VerticalSettingsScreen
 import aeb.proyecto.settings.model.DataDialog
+import aeb.proyecto.settings.model.DataResult
 import aeb.proyecto.settings.utils.openLink
 import aeb.proyecto.settings.utils.sendEmail
-import aeb.proyecto.ui.date.utils.getDay
-import aeb.proyecto.ui.dimmens.Dimmens.spacing16
-import aeb.proyecto.ui.dimmens.Dimmens.spacing24
-import aeb.proyecto.ui.dimmens.Dimmens.spacing6
+import aeb.proyecto.ui.orientation.Orientation
+import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.text.LabelLargeText
-import aeb.proyecto.ui.text.LabelMediumText
-import aeb.proyecto.ui.text.TitleMediumText
-import aeb.proyecto.ui.theme.getTitle
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
-import android.os.Build
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 // Future -> TODO transicion en los botones del idioma
-
 
 @Composable
 fun SettingsScreen(
@@ -47,141 +26,56 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val orientation = getOrientation()
+
     val settingsDialogState = viewModel.settingDialogState.collectAsStateWithLifecycle().value
-    val themeSelected = viewModel.themeSelected.collectAsStateWithLifecycle().value
-    val languageSelected = viewModel.languageSelected.collectAsStateWithLifecycle().value
-    val dayOfWeek = viewModel.dayOfWeek.collectAsStateWithLifecycle().value
+    val settingsUIState = viewModel.settingsUIState.collectAsStateWithLifecycle().value
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.settings_configuration),fontSize = 20.sp)
     }
 
-    SettingsScreen(
-        themeSelected = themeSelected,
-        languageSelected = languageSelected,
-        daySelected = dayOfWeek,
-        onClickTheme = { viewModel.setDataDialogMode(DataDialog.THEME) },
-        onClickLanguage = { viewModel.setDataDialogMode(DataDialog.LANGUAGE) },
-        onClickGeneralSettings = { viewModel.setDataDialogMode(DataDialog.DAY_WEEK) },
-        onClickExport = { (if (viewModel.getCurrentUser()) onSaveScreen else onImportScreen)() },
-        onClickEmail = { sendEmail(context) },
-        onClickGithub = { uri -> openLink(context, uri) },
-        onClickLinkedin = { uri -> openLink(context, uri) }
-    )
+    //Variables pantalla
+    val onClickTheme = { viewModel.setDataDialogMode(DataDialog.THEME) }
+    val onClickLanguage = { viewModel.setDataDialogMode(DataDialog.LANGUAGE) }
+    val onClickGeneralSettings = { viewModel.setDataDialogMode(DataDialog.DAY_WEEK) }
+    val onClickExport = { (if (viewModel.getCurrentUser()) onSaveScreen else onImportScreen)() }
+    val onClickEmail = { sendEmail(context) }
+    val onClickGithub = { uri: String -> openLink(context, uri) }
+    val onClickLinkedin = { uri: String -> openLink(context, uri) }
+    val onDismissDialog = { viewModel.setStateDialog(false) }
+    val onAcceptDialog = { dataResult: DataResult -> viewModel.treatResultDialog(dataResult) }
 
-    if (settingsDialogState.showDialog) {
-        DialogSettings(
-            dataDialog = settingsDialogState.dataDialog,
-            themeSelected = themeSelected,
-            languageSelected = languageSelected,
-            daySelected = dayOfWeek,
-            onDismissRequest = { viewModel.setStateDialog(false) },
-            onClickButton = { dataResult -> viewModel.treatResultDialog(dataResult) }
-        )
-    }
-}
-
-
-@Composable
-internal fun SettingsScreen(
-    themeSelected:Int,
-    languageSelected:String,
-    daySelected:String,
-    onClickTheme: () -> Unit,
-    onClickLanguage: () -> Unit,
-    onClickGeneralSettings: () -> Unit,
-    onClickExport: () -> Unit,
-    onClickEmail: () -> Unit,
-    onClickGithub: (String) -> Unit,
-    onClickLinkedin: (String) -> Unit,
-) {
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(top = spacing24, start = spacing16, end = spacing16)
-    ) {
-
-        TitleMediumText(
-            text = stringResource(R.string.settings_configuration),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Left
-        )
-
-        ButtonSettings(
-            modifier = Modifier.padding(top = spacing6),
-            title = R.string.settings_theme,
-            label = getTitle(themeSelected),
-            leadingIcon = R.drawable.ic_palette,
-            shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-            onClick = onClickTheme
-        )
-
-        CustomHorizontalDivider()
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            ButtonSettings(
-                title = R.string.settings_language,
-                leadingIcon = R.drawable.ic_language,
-                label = returnStringValue(languageSelected),
-                onClick = onClickLanguage
+    when(orientation){
+        Orientation.Portrait -> {
+            VerticalSettingsScreen(
+                settingsUIState = settingsUIState,
+                dialogState = settingsDialogState,
+                onClickTheme = onClickTheme,
+                onClickLanguage = onClickLanguage,
+                onClickGeneralSettings = onClickGeneralSettings,
+                onClickExport = onClickExport,
+                onClickEmail = onClickEmail,
+                onClickGithub = onClickGithub,
+                onClickLinkedin = onClickLinkedin,
+                onDismissDialog = onDismissDialog,
+                onAcceptDialog = onAcceptDialog
             )
-
-            CustomHorizontalDivider()
         }
-
-        ButtonSettings(
-            title = R.string.settings_day_title,
-            label = getDay(daySelected),
-            leadingIcon = R.drawable.ic_calendar_day,
-            onClick = onClickGeneralSettings
-        )
-
-        CustomHorizontalDivider()
-
-        ButtonSettings(
-            title = R.string.settings_export_import,
-            leadingIcon = R.drawable.ic_save,
-            shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
-            onClick = onClickExport
-        )
-
-        Spacer(modifier = Modifier.padding(vertical = spacing16))
-
-        TitleMediumText(
-            text = stringResource(R.string.settings_about),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Left
-        )
-
-        ButtonSettings(
-            modifier = Modifier.padding(top = spacing6),
-            title = R.string.settings_email,
-            leadingIcon = R.drawable.ic_email,
-            shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-            onClick = onClickEmail
-        )
-
-        CustomHorizontalDivider()
-
-        ButtonSettings(
-            title = R.string.settings_github,
-            leadingIcon = R.drawable.ic_github,
-            onClick = { onClickGithub(SettingsConstants.LINK_GITHUB) }
-        )
-
-        CustomHorizontalDivider()
-
-        ButtonSettings(
-            title = R.string.settings_link,
-            leadingIcon = R.drawable.ic_link,
-            shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
-            onClick = { onClickLinkedin(SettingsConstants.LINK_LINKEDN) }
-        )
-
-        Spacer(modifier = Modifier.padding(vertical = spacing6))
-
-        LabelMediumText(stringResource(R.string.settings_version,BuildConfig.APP_VERSION))
+        Orientation.Landscape -> {
+            HorizontalSettingsScreen(
+                settingsUIState = settingsUIState,
+                dialogState = settingsDialogState,
+                onClickTheme = onClickTheme,
+                onClickLanguage = onClickLanguage,
+                onClickGeneralSettings = onClickGeneralSettings,
+                onClickExport = onClickExport,
+                onClickEmail = onClickEmail,
+                onClickGithub = onClickGithub,
+                onClickLinkedin = onClickLinkedin,
+                onDismissDialog = onDismissDialog,
+                onAcceptDialog = onAcceptDialog
+            )
+        }
     }
 }

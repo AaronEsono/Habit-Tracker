@@ -1,4 +1,4 @@
-package aeb.proyecto.settings.components.divider
+package aeb.proyecto.settings.components.commom.divider
 
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider

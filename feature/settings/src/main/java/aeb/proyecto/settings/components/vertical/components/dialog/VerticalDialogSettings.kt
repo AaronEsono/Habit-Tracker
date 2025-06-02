@@ -1,10 +1,14 @@
-package aeb.proyecto.settings.components.dialog
+package aeb.proyecto.settings.components.vertical.components.dialog
 
-import aeb.proyecto.settings.components.button.BodyMediumTextButtonDialog
-import aeb.proyecto.settings.components.button.ButtonDialog
+import aeb.proyecto.settings.components.commom.button.BodyMediumTextButtonDialog
+import aeb.proyecto.settings.components.commom.button.ButtonDialog
+import aeb.proyecto.settings.components.commom.dialogButtons.DayWeekDialogButton
+import aeb.proyecto.settings.components.commom.dialogButtons.LanguageDialogButton
+import aeb.proyecto.settings.components.commom.dialogButtons.ThemeDialogButton
 import aeb.proyecto.settings.model.DataDialog
 import aeb.proyecto.settings.model.DataResult
 import aeb.proyecto.settings.model.DialogElements
+import aeb.proyecto.settings.utils.setContainerColorButton
 import aeb.proyecto.ui.dialog.CustomDialog
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing3
@@ -23,7 +27,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Icon
@@ -31,23 +38,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import java.time.DayOfWeek
 
 @Composable
-fun DialogSettings(
+fun VerticalDialogSettings(
     dataDialog: DataDialog,
     themeSelected:Int,
     languageSelected:String,
     daySelected:String,
     onDismissRequest: () -> Unit,
     onClickButton: (DataResult) -> Unit
-) {
-
+){
     CustomDialog(
         modifier = Modifier.fillMaxWidth(0.8f),
         onDismissRequest = onDismissRequest,
@@ -96,70 +100,44 @@ fun DialogSettings(
 
             Spacer(modifier = Modifier.padding(vertical = spacing8))
 
-            when(dataDialog.dialogComponent){
-                is DialogElements.DialogLanguage -> {
-                    dataDialog.dialogComponent.language.forEach { elementLanguage ->
-                        ButtonDialog(
-                            modifier = Modifier.padding(vertical = spacing3),
-                            paddingValues = PaddingValues(horizontal = spacing6),
-                            containerColor = setContainerColorButton(elementLanguage.value, languageSelected),
-                            onClick = { onClickButton(DataResult.LanguageResult(elementLanguage.value)) }
-                        ){
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Image(
-                                    painter = painterResource(elementLanguage.image),
-                                    "image",
-                                    modifier = Modifier.size(22.dp)
-                                )
-
-                                BodyMediumTextButtonDialog(text = stringResource(elementLanguage.title))
-                            }
+            Column (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                when(dataDialog.dialogComponent){
+                    is DialogElements.DialogLanguage -> {
+                        dataDialog.dialogComponent.language.forEach { elementLanguage ->
+                            LanguageDialogButton(
+                                elementLanguage = elementLanguage,
+                                languageSelected = languageSelected,
+                                onClickButton = onClickButton
+                            )
                         }
                     }
-                }
-                is DialogElements.DialogTheme -> {
-                    dataDialog.dialogComponent.theme.forEach { elementTheme ->
-                        ButtonDialog(
-                            modifier = Modifier.padding(vertical = spacing3),
-                            containerColor = setContainerColorButton(elementTheme.theme, themeSelected),
-                            onClick = { onClickButton(DataResult.ThemeResult(elementTheme.theme)) }
-                        ){
-                            BodyMediumTextButtonDialog(text = stringResource(elementTheme.title))
+                    is DialogElements.DialogTheme -> {
+                        dataDialog.dialogComponent.theme.forEach { elementTheme ->
+                            ThemeDialogButton(
+                                elementTheme = elementTheme,
+                                themeSelected = themeSelected,
+                                onClickButton = onClickButton
+                            )
                         }
                     }
-                }
 
-                is DialogElements.DialogDayWeek -> {
-                    dataDialog.dialogComponent.dayWeek.forEach { dayOfWeek ->
-                        ButtonDialog(
-                            modifier = Modifier.padding(vertical = spacing3),
-                            containerColor = setContainerColorButton(dayOfWeek.id, daySelected),
-                            onClick = { onClickButton(DataResult.DayOfWeekResult(dayOfWeek.id)) }
-                        ){
-                            BodyMediumTextButtonDialog(text = stringResource(dayOfWeek.string))
+                    is DialogElements.DialogDayWeek -> {
+                        dataDialog.dialogComponent.dayWeek.forEach { dayOfWeek ->
+                            DayWeekDialogButton(
+                                dayOfWeek = dayOfWeek,
+                                daySelected = daySelected,
+                                onClickButton = onClickButton
+                            )
                         }
                     }
                 }
             }
         }
     }
-}
-
-@Composable
-fun setContainerColorButton(theme: Int, themeSelected: Int): Color {
-    return if (theme == themeSelected) MaterialTheme.colorScheme.surfaceContainer else MaterialTheme.colorScheme.background
-}
-
-@Composable
-fun setContainerColorButton(language: String, languageSelected: String): Color {
-    return if (language == languageSelected) MaterialTheme.colorScheme.surfaceContainer else MaterialTheme.colorScheme.background
-}
-
-@Composable
-fun setContainerColorButton(day:DayOfWeek, daySelected: String): Color {
-    return if (day.toString() == daySelected) MaterialTheme.colorScheme.surfaceContainer else MaterialTheme.colorScheme.background
 }

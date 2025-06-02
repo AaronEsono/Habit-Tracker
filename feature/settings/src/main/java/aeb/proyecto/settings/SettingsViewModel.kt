@@ -2,19 +2,25 @@ package aeb.proyecto.settings
 
 import aeb.proyecto.authentication.AuthResponseAuthentication
 import aeb.proyecto.authentication.AuthenticationInterface
-import aeb.proyecto.datastore.DatastoreInterface
-import aeb.proyecto.language.LanguageInterface
+import aeb.proyecto.domain.usecase.settings.DataSettingsUseCase
+import aeb.proyecto.domain.usecase.settings.SetValueDataStoreSettingsUseCase
+import aeb.proyecto.domain.usecase.settings.SettingsData
+import aeb.proyecto.domain.usecase.settings.SetLanguageUseCase
+import aeb.proyecto.domain.usecase.settings.SettingsAuthenticationUseCase
 import aeb.proyecto.settings.model.DataDialog
 import aeb.proyecto.settings.model.DataResult
-import aeb.proyecto.settings.model.GeneralOptionsData
 import aeb.proyecto.settings.model.SettingsDialogState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,47 +29,41 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val authenticationInterface: AuthenticationInterface,
-    private val datastoreInterface: DatastoreInterface,
-    private val languageInterface: LanguageInterface
+    dataSettingsUseCase: DataSettingsUseCase,
+    private val setValueDataStoreSettingsUseCase: SetValueDataStoreSettingsUseCase,
+    private val setLanguageUseCase: SetLanguageUseCase,
+    private val settingsAuthenticationUseCase: SettingsAuthenticationUseCase
 ):ViewModel() {
 
     private val _settingDialogState:MutableStateFlow<SettingsDialogState> = MutableStateFlow(SettingsDialogState())
     val settingDialogState:StateFlow<SettingsDialogState> = _settingDialogState.asStateFlow()
 
-    private val _dataSearched:MutableStateFlow<Boolean> = MutableStateFlow(false)
-
-    val themeSelected = datastoreInterface.themeMode.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 0
-    )
-
-    val languageSelected = datastoreInterface.language.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = "en"
-    )
-
-    val dayOfWeek = datastoreInterface.dayOfWeek.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = "MONDAY"
-    )
+    val settingsUIState:StateFlow<SettingsUIState> = dataSettingsUseCase.dataSettings
+        .map<SettingsData,SettingsUIState>{
+            SettingsUIState.Success(it)
+        }
+        .catch {
+            emit(SettingsUIState.Error)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = SettingsUIState.Loading
+        )
 
     private fun setTheme(themeMode:Int) = viewModelScope.launch{
         setStateDialog(false)
-        datastoreInterface.setModeTheme(themeMode)
+        setValueDataStoreSettingsUseCase.setTheme(themeMode)
     }
 
     private fun setLanguage(language:String) = viewModelScope.launch{
         setStateDialog(false)
-        languageInterface.setLanguage(language)
-        datastoreInterface.setLanguage(language)
+        setLanguageUseCase.setLanguage(language)
+        setValueDataStoreSettingsUseCase.setLanguage(language)
     }
 
     fun getCurrentUser():Boolean{
-        return authenticationInterface.currentUser() is AuthResponseAuthentication.Success
+        return settingsAuthenticationUseCase.getCurrentUser()
     }
 
     fun setStateDialog(state:Boolean){
@@ -80,7 +80,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun setDaySelected(dayOfWeek: DayOfWeek) = viewModelScope.launch{
         setStateDialog(false)
-        datastoreInterface.setDayStartWeek(dayOfWeek.name)
+        setValueDataStoreSettingsUseCase.setDaySelected(dayOfWeek.name)
     }
 
     fun treatResultDialog(dataResult: DataResult){
@@ -90,4 +90,10 @@ class SettingsViewModel @Inject constructor(
             is DataResult.DayOfWeekResult -> {setDaySelected(dataResult.dayOfWeek)}
         }
     }
+}
+
+sealed class SettingsUIState(){
+    data object Loading: SettingsUIState()
+    data object Error: SettingsUIState()
+    data class Success(val data:SettingsData): SettingsUIState()
 }

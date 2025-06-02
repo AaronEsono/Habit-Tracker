@@ -14,6 +14,8 @@ dependencies {
 
     implementation(projects.core.room)
     implementation(projects.core.datastore)
+    implementation(projects.core.language)
+    implementation(projects.core.authentication)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

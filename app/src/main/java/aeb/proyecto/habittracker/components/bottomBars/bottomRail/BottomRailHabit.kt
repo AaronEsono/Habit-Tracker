@@ -45,7 +45,7 @@ fun BottomRailHabit(){
         NavigationRail(
             containerColor = MaterialTheme.colorScheme.primary,
             windowInsets = WindowInsets(0, 0, 0, 0),
-            modifier = Modifier.padding(horizontal = spacing3)
+            modifier = Modifier.padding(horizontal = spacing2)
         ) {
             menuItems.forEach { menuItem ->
                 NavigationRailItem(
