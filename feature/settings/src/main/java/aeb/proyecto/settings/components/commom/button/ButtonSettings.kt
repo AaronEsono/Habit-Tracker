@@ -49,7 +49,7 @@ fun ButtonSettings(
             colors = ButtonDefaults.elevatedButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer
             ),
-            modifier = modifier.height(60.dp),
+            modifier = modifier.height(65.dp),
             contentPadding = PaddingValues(spacing10)
         ) {
             Row(

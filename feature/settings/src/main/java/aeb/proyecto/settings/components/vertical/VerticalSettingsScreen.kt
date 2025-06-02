@@ -15,6 +15,7 @@ import aeb.proyecto.ui.date.utils.getDay
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
+import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleMediumText
 import aeb.proyecto.ui.theme.getTitle
@@ -59,7 +60,7 @@ fun VerticalSettingsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(top = spacing24, start = spacing16, end = spacing16)
+                    .padding(top = spacing24, start = spacing16, end = spacing16, bottom = spacing8)
             ) {
 
                 TitleMediumText(

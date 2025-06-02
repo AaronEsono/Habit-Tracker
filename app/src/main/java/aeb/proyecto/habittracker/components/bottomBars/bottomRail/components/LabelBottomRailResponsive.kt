@@ -24,8 +24,8 @@ fun LabelBottomRailResponsive(
             WindowWidthSizeClass.MEDIUM -> {
                 if (orientation == Orientation.Landscape) 10.sp else 15.sp
             }
-            WindowWidthSizeClass.EXPANDED -> 18.sp
-            else -> 18.sp
+            WindowWidthSizeClass.EXPANDED -> 16.sp
+            else -> 16.sp
         }
     }
 
