@@ -3,7 +3,7 @@ package aeb.proyecto.authentication
 import aeb.proyecto.analytics.AnalyticsManagerInterface
 import aeb.proyecto.analytics.events.AuthenticationEvents
 import aeb.proyecto.authentication.errors.treatError
-import aeb.proyecto.authentication.utils.ERROR_SEND_EMAIL
+import aeb.proyecto.authentication.utils.ERROR_EMAIL_EXISTS
 import aeb.proyecto.authentication.utils.ERROR_UNVERIFIED_EMAIL
 import aeb.proyecto.authentication.utils.createNonce
 import android.content.Context
@@ -30,52 +30,72 @@ class AuthenticationManager @Inject constructor(
     private val auth: FirebaseAuth
 ):AuthenticationInterface {
 
-    override suspend fun createAccountWithEmail(email: String, password: String): AuthResponseAuthentication {
+    override suspend fun createAccountWithEmail(email: String, password: String): Flow<AuthResponseAuthentication> = callbackFlow {
+        trySend(AuthResponseAuthentication.Loading)
+
         try {
-            val response = auth.createUserWithEmailAndPassword(email, password).await()
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful){
+                        //Actualizacion del perfil y envio del email
+                        auth.currentUser?.let {
+                            val profileUpdates = userProfileChangeRequest {
+                                displayName = it.email
+                            }
 
-            response.user?.let {
-                val profileUpdates = userProfileChangeRequest {
-                    displayName = it.email
+                            it.updateProfile(profileUpdates)
+                            it.sendEmailVerification()
+
+                            auth.signOut()
+
+                            analyticsManagerInterface.logEvent(AuthenticationEvents.createdAccount(it.uid))
+                            trySend(AuthResponseAuthentication.Success)
+                        }
+
+                    }else{
+                        auth.signOut()
+                        analyticsManagerInterface.logEvent(AuthenticationEvents.error(ERROR_EMAIL_EXISTS))
+                        trySend(AuthResponseAuthentication.Error(R.string.error_auth_email_exists))
+                    }
                 }
-
-                it.updateProfile(profileUpdates).await()
-                it.sendEmailVerification().await()
-
-                auth.signOut()
-
-                analyticsManagerInterface.logEvent(AuthenticationEvents.createdAccount(it.uid))
-                return AuthResponseAuthentication.Success
-            }
-
-            auth.signOut()
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(ERROR_SEND_EMAIL))
-            return AuthResponseAuthentication.Error(R.string.error_auth_send_email)
         } catch (e: Exception) {
             val error = treatError(e)
             analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
-            return AuthResponseAuthentication.Error(error)
+            trySend(AuthResponseAuthentication.Error(error))
         }
+
+        awaitClose()
     }
 
-    override suspend fun signInWithEmail(email: String, password: String): AuthResponseAuthentication {
-        return try {
-            val response = auth.signInWithEmailAndPassword(email, password).await()
+    override suspend fun signInWithEmail(email: String, password: String): Flow<AuthResponseAuthentication> = callbackFlow {
+        trySend(AuthResponseAuthentication.Loading)
 
-            if(response.user?.isEmailVerified == true){
-                analyticsManagerInterface.logEvent(AuthenticationEvents.logUserLogged(response.user!!.uid))
-                AuthResponseAuthentication.Success
-            }else{
-                analyticsManagerInterface.logEvent(AuthenticationEvents.error(ERROR_UNVERIFIED_EMAIL))
-                auth.signOut()
-                AuthResponseAuthentication.UnverifiedEmail
-            }
+        try {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful){
+                        if(auth.currentUser?.isEmailVerified == true){
+                            analyticsManagerInterface.logEvent(AuthenticationEvents.logUserLogged(auth.currentUser?.uid ?: ""))
+                            trySend(AuthResponseAuthentication.Success)
+                        }else{
+                            analyticsManagerInterface.logEvent(AuthenticationEvents.error(ERROR_UNVERIFIED_EMAIL))
+                            auth.signOut()
+                            trySend(AuthResponseAuthentication.UnverifiedEmail)
+                        }
+                    }else{
+                        val error = treatError(task.exception!!)
+                        analyticsManagerInterface.logEvent(AuthenticationEvents.error(task.exception.toString()))
+                        trySend(AuthResponseAuthentication.Error(error))
+                    }
+                }
         }catch (e:Exception){
             val error = treatError(e)
             auth.signOut()
             analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
-            AuthResponseAuthentication.Error(error)
+            trySend(AuthResponseAuthentication.Error(error))
         }
+
+        awaitClose()
     }
 
     override fun signInWithGoogle(): Flow<AuthResponseAuthentication> = callbackFlow {
@@ -140,32 +160,54 @@ class AuthenticationManager @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun resendEmail(email:String, password:String): AuthResponseAuthentication {
-        try {
-            auth.signInWithEmailAndPassword(email,password).await()
-            auth.currentUser?.sendEmailVerification()?.await()
+    override suspend fun resendEmail(email:String, password:String): Flow<AuthResponseAuthentication> = callbackFlow {
+        trySend(AuthResponseAuthentication.Loading)
 
-            analyticsManagerInterface.logEvent(AuthenticationEvents.resendEmail(auth.currentUser!!.email!!))
-            auth.signOut()
-            return AuthResponseAuthentication.Success
+        try {
+            auth.signInWithEmailAndPassword(email,password)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful){
+                        auth.currentUser?.sendEmailVerification()?.addOnCompleteListener {
+                            if(it.isSuccessful){
+                                analyticsManagerInterface.logEvent(AuthenticationEvents.resendEmail(auth.currentUser!!.email!!))
+                                auth.signOut()
+                                trySend(AuthResponseAuthentication.Success)
+                            }else{
+                                val error = treatError(it.exception ?: Exception())
+                                analyticsManagerInterface.logEvent(AuthenticationEvents.error(it.exception.toString()))
+                                trySend(AuthResponseAuthentication.Error(error))
+                            }
+                        }
+                    }
+                }
         }catch (e:Exception){
             val error = treatError(e)
             auth.signOut()
             analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
-            return AuthResponseAuthentication.Error(error)
+            trySend(AuthResponseAuthentication.Error(error))
         }
+
+        awaitClose()
     }
 
-    override suspend fun forgotPassword(email: String): AuthResponseAuthentication {
+    override suspend fun forgotPassword(email: String): Flow<AuthResponseAuthentication> = callbackFlow {
+        trySend(AuthResponseAuthentication.Loading)
+
         try {
-            auth.sendPasswordResetEmail(email).await()
-            analyticsManagerInterface.logEvent(AuthenticationEvents.forgotPassword(email))
-            return AuthResponseAuthentication.Success
+            auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful){
+                        analyticsManagerInterface.logEvent(AuthenticationEvents.forgotPassword(email))
+                        trySend(AuthResponseAuthentication.Success)
+                    }
+                }
         }catch (e:Exception){
             val error = treatError(e)
             analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
-            return AuthResponseAuthentication.Error(error)
+            trySend(AuthResponseAuthentication.Error(error))
         }
+
+        awaitClose()
     }
 
     override fun logOut() {
@@ -193,4 +235,5 @@ interface AuthResponseAuthentication {
     data object Success : AuthResponseAuthentication
     data class Error(val message: Int) : AuthResponseAuthentication
     data object UnverifiedEmail: AuthResponseAuthentication
+    data object Loading: AuthResponseAuthentication
 }

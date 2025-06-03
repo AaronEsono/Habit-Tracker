@@ -1,68 +1,56 @@
-package aeb.proyecto.login.components.textField
+package aeb.proyecto.login.components.commom.textField
 
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelMediumText
-import aeb.proyecto.ui.textField.CustomSecureTextField
 import aeb.proyecto.ui.textField.CustomTextField
 import aeb.proyecto.ui.textField.utils.clearFocusOnKeyboardDismiss
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.LockOpen
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldLabelPosition
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 
 @Composable
-fun LoginSecureTextField(
+fun LoginTextField(
     modifier: Modifier = Modifier,
     textFieldState: TextFieldState = rememberTextFieldState(),
     isError: Boolean = false,
     errorText : String? = null,
     label: String? = null,
-    leadingIcon: ImageVector? = Icons.Filled.Lock,
+    containerColor: Color = MaterialTheme.colorScheme.background,
+    leadingIcon:ImageVector? = Icons.Filled.Email,
+    keyboardType: KeyboardType = KeyboardType.Email,
     imeAction: ImeAction = ImeAction.Next,
     focusManager: FocusManager,
 ){
-    var passwordHidden by rememberSaveable { mutableStateOf(true) }
 
-    CustomSecureTextField(
+    CustomTextField(
         textFieldState = textFieldState,
         modifier = modifier
             .fillMaxWidth()
             .clearFocusOnKeyboardDismiss(),
         label = {
             label?.let {
-                LabelMediumText(
-                    label,
-                    color = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
-                )
+                LabelMediumText(label)
             }
         },
         leadingIcon = {
@@ -74,12 +62,18 @@ fun LoginSecureTextField(
             }
         },
         trailingIcon = {
-            IconButton(onClick = { passwordHidden = !passwordHidden }) {
-                val visibilityIcon =
-                    if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-
-                val description = if (passwordHidden) "Show password" else "Hide password"
-                Icon(imageVector = visibilityIcon, contentDescription = description)
+            when (textFieldState.text.toString()) {
+                "" -> {}
+                else -> {
+                    CustomRipple {
+                        IconButton(onClick = {textFieldState.edit { replace(0,length,"") }}){
+                            Icon(
+                                Icons.Filled.Clear,
+                                contentDescription = "Clear icon TextField",
+                            )
+                        }
+                    }
+                }
             }
         },
         isError = isError,
@@ -96,15 +90,15 @@ fun LoginSecureTextField(
             focusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
             unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
 
-            errorLeadingIconColor = MaterialTheme.colorScheme.error,
-            errorTrailingIconColor = MaterialTheme.colorScheme.error,
-            errorCursorColor = MaterialTheme.colorScheme.error,
-            errorBorderColor = MaterialTheme.colorScheme.error,
-            errorTextColor = MaterialTheme.colorScheme.error,
+            errorLeadingIconColor = MaterialTheme.colorScheme.onSurface,
+            errorTextColor = MaterialTheme.colorScheme.onSurface,
+            errorTrailingIconColor = MaterialTheme.colorScheme.onSurface,
+            errorCursorColor = MaterialTheme.colorScheme.onSurface,
+            errorBorderColor = MaterialTheme.colorScheme.onSurface,
 
-            focusedContainerColor = MaterialTheme.colorScheme.background,
-            unfocusedContainerColor = MaterialTheme.colorScheme.background,
-            errorContainerColor = MaterialTheme.colorScheme.background,
+            focusedContainerColor = containerColor,
+            unfocusedContainerColor = containerColor,
+            errorContainerColor = containerColor,
 
             selectionColors = TextSelectionColors(
                 handleColor = MaterialTheme.colorScheme.onSurface,
@@ -113,6 +107,7 @@ fun LoginSecureTextField(
         ),
         keyboardOptions = KeyboardOptions(
             imeAction = imeAction,
+            keyboardType = keyboardType
         ),
         onKeyboardActions = {
             when(imeAction){
@@ -131,9 +126,6 @@ fun LoginSecureTextField(
                 }
             }
         },
-        textObfuscationMode =
-        if (passwordHidden) TextObfuscationMode.RevealLastTyped
-        else TextObfuscationMode.Visible
     )
 
 }

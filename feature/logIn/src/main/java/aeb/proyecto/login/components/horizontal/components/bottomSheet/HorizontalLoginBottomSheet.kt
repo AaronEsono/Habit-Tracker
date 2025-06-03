@@ -1,11 +1,13 @@
-package aeb.proyecto.login.components.bottomSheet
+package aeb.proyecto.login.components.horizontal.components.bottomSheet
 
 import aeb.proyecto.login.R
-import aeb.proyecto.login.components.button.BottomSheetFilledButton
-import aeb.proyecto.login.components.button.BottomSheetOutFilledButton
-import aeb.proyecto.login.components.textField.LoginTextField
+import aeb.proyecto.login.components.commom.button.BottomSheetFilledButton
+import aeb.proyecto.login.components.commom.button.BottomSheetOutFilledButton
+import aeb.proyecto.login.components.commom.textField.LoginTextField
 import aeb.proyecto.login.model.DataLoginBottomSheet
+import aeb.proyecto.login.utils.isButtonEnabled
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
+import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
 import aeb.proyecto.ui.dimmens.Dimmens.spacing3
@@ -13,11 +15,11 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.TitleLargeText
-import android.util.Patterns
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -40,14 +42,14 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginBottomSheet(
+fun HorizontalLoginBottomSheet(
     dataBottomSheet: DataLoginBottomSheet,
     emailTextFieldState: TextFieldState = rememberTextFieldState(),
     onDismiss: () -> Unit = {},
     onAccept: () -> Unit = {}
 ){
 
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
     CustomBottomSheet(
@@ -101,7 +103,7 @@ fun LoginBottomSheet(
                         imeAction = ImeAction.Done,
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         keyboardType = KeyboardType.Email,
-                        modifier = Modifier.padding(vertical = spacing2)
+                        modifier = Modifier.padding(vertical = spacing2).fillMaxWidth(0.6f)
                     )
 
                 }
@@ -111,14 +113,14 @@ fun LoginBottomSheet(
             Spacer(modifier = Modifier.padding(vertical = spacing8))
 
             when(dataBottomSheet){
-                DataLoginBottomSheet.UNVERIFIED_EMAIL,DataLoginBottomSheet.FORGOT_PASSWORD -> {
+                DataLoginBottomSheet.UNVERIFIED_EMAIL, DataLoginBottomSheet.FORGOT_PASSWORD -> {
                     val title = if(dataBottomSheet == DataLoginBottomSheet.UNVERIFIED_EMAIL)
                         R.string.login_resent_email
                     else
                         R.string.login_accept
 
                     Row (
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = spacing16),
                         horizontalArrangement = Arrangement.Center,
                     ){
                         BottomSheetOutFilledButton(
@@ -161,8 +163,5 @@ fun LoginBottomSheet(
             Spacer(modifier = Modifier.padding(vertical = spacing4))
         }
     }
-}
 
-fun isButtonEnabled(dataLoginScreen: DataLoginBottomSheet,emailTextFieldState: TextFieldState): Boolean{
-    return dataLoginScreen != DataLoginBottomSheet.FORGOT_PASSWORD || Patterns.EMAIL_ADDRESS.matcher(emailTextFieldState.text).matches()
 }

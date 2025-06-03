@@ -1,10 +1,9 @@
-package aeb.proyecto.login.components.button
+package aeb.proyecto.login.components.commom.button
 
 import aeb.proyecto.login.R
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.ripple.CustomRipple
-import aeb.proyecto.ui.text.TitleSmallText
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row

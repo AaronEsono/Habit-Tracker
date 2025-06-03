@@ -1,7 +1,7 @@
 package aeb.proyecto.authentication.utils
 
 //Sign up errors
-const val ERROR_SEND_EMAIL = "ERROR_SEND_EMAIL"
+const val ERROR_EMAIL_EXISTS = "ERROR_EMAIL_EXISTS"
 
 // Sign in errors
 const val ERROR_UNVERIFIED_EMAIL = "ERROR_UNVERIFIED_EMAIL"

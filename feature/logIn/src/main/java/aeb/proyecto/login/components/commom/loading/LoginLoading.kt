@@ -1,4 +1,4 @@
-package aeb.proyecto.login.components.loading
+package aeb.proyecto.login.components.commom.loading
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

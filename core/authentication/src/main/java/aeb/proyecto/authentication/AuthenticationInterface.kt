@@ -6,13 +6,13 @@ interface AuthenticationInterface {
 
     fun signInWithGoogle(): Flow<AuthResponseAuthentication>
 
-    suspend fun signInWithEmail(email: String, password: String): AuthResponseAuthentication
+    suspend fun signInWithEmail(email: String, password: String): Flow<AuthResponseAuthentication>
 
-    suspend fun createAccountWithEmail(email: String, password: String): AuthResponseAuthentication
+    suspend fun createAccountWithEmail(email: String, password: String): Flow<AuthResponseAuthentication>
 
-    suspend fun resendEmail(email: String, password: String): AuthResponseAuthentication
+    suspend fun resendEmail(email: String, password: String): Flow<AuthResponseAuthentication>
 
-    suspend fun forgotPassword(email: String): AuthResponseAuthentication
+    suspend fun forgotPassword(email: String): Flow<AuthResponseAuthentication>
 
     fun logOut()
 

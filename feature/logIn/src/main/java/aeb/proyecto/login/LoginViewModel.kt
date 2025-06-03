@@ -3,6 +3,8 @@ package aeb.proyecto.login
 import aeb.proyecto.authentication.AuthResponseAuthentication
 import aeb.proyecto.authentication.AuthenticationInterface
 import aeb.proyecto.datastore.DatastoreInterface
+import aeb.proyecto.domain.usecase.login.LoginAuthenticationUseCase
+import aeb.proyecto.domain.usecase.login.SaveLoginCredentialUseCase
 import aeb.proyecto.login.model.BottomSheetState
 import aeb.proyecto.login.model.DataLoginBottomSheet
 import aeb.proyecto.login.model.DataLoginScreen
@@ -15,14 +17,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val datastoreInterface: DatastoreInterface,
-    private val authenticationInterface: AuthenticationInterface,
+    private val loginAuthenticationUseCase: LoginAuthenticationUseCase,
+    private val saveLoginCredentialUseCase: SaveLoginCredentialUseCase
 ):ViewModel() {
 
     private val _uiState: MutableStateFlow<LoginUIState> = MutableStateFlow(LoginUIState.Success)
@@ -62,63 +65,64 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun signIn() = viewModelScope.launch{
-        _uiState.update { LoginUIState.Loading }
         try {
             val email = _dataLoginScreen.value.emailTextFieldState.text.toString()
             val password = _dataLoginScreen.value.passwordTextFieldState.text.toString()
 
-            when(val response = authenticationInterface.signInWithEmail(email,password)){
-                is AuthResponseAuthentication.Success -> {
-                    saveData(email,password)
-                    _uiState.update { LoginUIState.Login }
+            loginAuthenticationUseCase.signIn(email,password)
+                .onEach { task ->
+                    when(task){
+                        is AuthResponseAuthentication.Success -> {
+                            saveData(email,password)
+                            _uiState.update { LoginUIState.Login }
+                        }
+                        is AuthResponseAuthentication.UnverifiedEmail -> {
+                            setDataBottomSheet(DataLoginBottomSheet.UNVERIFIED_EMAIL)
+                            _uiState.update { LoginUIState.Error }
+                        }
+                        is AuthResponseAuthentication.Error -> {
+                            setError(task.message)
+                        }
+                    }
                 }
-
-                is AuthResponseAuthentication.UnverifiedEmail -> {
-                    setDataBottomSheet(DataLoginBottomSheet.UNVERIFIED_EMAIL)
-                    _uiState.update { LoginUIState.Error }
+                .onStart {
+                    _uiState.update { LoginUIState.Loading }
                 }
-
-                is AuthResponseAuthentication.Error -> {
-                    setError(response.message)
-                }
-            }
-
+                .launchIn(viewModelScope)
         }catch (e:Exception){
             setError(R.string.login_error_default)
         }
     }
 
     private fun register() = viewModelScope.launch{
-        _uiState.update { LoginUIState.Loading }
-
         try {
             val email = _dataLoginScreen.value.emailTextFieldState.text.toString()
             val password = _dataLoginScreen.value.passwordTextFieldState.text.toString()
 
-            when(val response = authenticationInterface.createAccountWithEmail(email,password)){
-                is AuthResponseAuthentication.Success -> {
-                    setDataBottomSheet(DataLoginBottomSheet.ACCOUNT_CREATED)
-                    _uiState.update { LoginUIState.Success }
+            loginAuthenticationUseCase.createAccount(email,password)
+                .onEach { task ->
+                    when(task){
+                        AuthResponseAuthentication.Success -> {
+                            setDataBottomSheet(DataLoginBottomSheet.ACCOUNT_CREATED)
+                            _uiState.update { LoginUIState.Success }
+                        }
+                        is AuthResponseAuthentication.Error -> {
+                            setError(task.message)
+                        }
+                    }
                 }
-                is AuthResponseAuthentication.Error -> {
-                    setError(response.message)
-                }
-                else -> {
-                    setError(R.string.login_error_default)
-                }
-            }
+                .onStart {
+                    _uiState.update { LoginUIState.Loading }
+                }.launchIn(viewModelScope)
 
         }catch (e:Exception){
             setError(R.string.login_error_default)
         }
-
     }
 
     fun signInGoogle() {
-        _uiState.update { LoginUIState.Loading }
-
         try {
-            authenticationInterface.signInWithGoogle().onEach { response ->
+            loginAuthenticationUseCase.signInWithGoogle().onEach { response ->
                 when (response) {
                     is AuthResponseAuthentication.Success -> {
                         _uiState.update { LoginUIState.Login }
@@ -131,7 +135,11 @@ class LoginViewModel @Inject constructor(
                         setError(R.string.login_error_default)
                     }
                 }
-            }.launchIn(viewModelScope)
+            }
+                .onStart {
+                    _uiState.update { LoginUIState.Loading }
+                }
+                .launchIn(viewModelScope)
         }catch (e:Exception){
             setError(R.string.login_error_default)
         }
@@ -159,7 +167,7 @@ class LoginViewModel @Inject constructor(
         if(!_dataSearched.value){
             _uiState.update { LoginUIState.Loading }
 
-            val credentials = datastoreInterface.getEmailAndPassword()
+            val credentials = saveLoginCredentialUseCase.getCredentials()
             _dataLoginScreen.update { currentState ->
                 currentState.copy(
                     emailTextFieldState = TextFieldState(credentials.email),
@@ -174,21 +182,23 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun forgotPassword() = viewModelScope.launch {
-        _uiState.update { LoginUIState.Loading }
-
         try {
             val email = _dataBottomSheet.value.emailSentForgotPassword.text.toString()
 
-            when(val response = authenticationInterface.forgotPassword(email)){
-                is AuthResponseAuthentication.Success -> {
-                    setDataBottomSheet(DataLoginBottomSheet.EMAIL_SENT_FORGOT_PASSWORD)
-                    _uiState.update { LoginUIState.Success }
+            loginAuthenticationUseCase.forgotPassword(email)
+                .onEach {task ->
+                    when(task){
+                        is AuthResponseAuthentication.Success -> {
+                            setDataBottomSheet(DataLoginBottomSheet.EMAIL_SENT_FORGOT_PASSWORD)
+                            _uiState.update { LoginUIState.Success }
+                        }
+                        is AuthResponseAuthentication.Error -> {
+                            setError(task.message)
+                        }
+                    }
                 }
-                is AuthResponseAuthentication.Error -> {
-                    setError(response.message)
-                }
-            }
-
+                .onStart { _uiState.update { LoginUIState.Loading } }
+                .launchIn(viewModelScope)
         }catch (e:Exception){
             setError(R.string.login_error_default)
         }
@@ -196,22 +206,24 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun resendEmail() = viewModelScope.launch{
-        _uiState.update { LoginUIState.Loading }
-
         try{
             val email = _dataLoginScreen.value.emailTextFieldState.text.toString()
             val password = _dataLoginScreen.value.passwordTextFieldState.text.toString()
 
-            when(val response = authenticationInterface.resendEmail(email,password)){
-                is AuthResponseAuthentication.Success -> {
-                    setDataBottomSheet(DataLoginBottomSheet.EMAIL_SENT)
-                    _uiState.update { LoginUIState.Success }
+            loginAuthenticationUseCase.resendEmail(email,password)
+                .onEach { task ->
+                    when(task){
+                        is AuthResponseAuthentication.Success -> {
+                            setDataBottomSheet(DataLoginBottomSheet.EMAIL_SENT)
+                            _uiState.update { LoginUIState.Success }
+                        }
+                        is AuthResponseAuthentication.Error -> {
+                            setError(task.message)
+                        }
+                    }
                 }
-                is AuthResponseAuthentication.Error -> {
-                    setError(response.message)
-                }
-            }
-
+                .onStart { _uiState.update { LoginUIState.Loading } }
+                .launchIn(viewModelScope)
         }catch (e:Exception){
             setError(R.string.login_error_default)
         }
@@ -219,10 +231,9 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun saveData(email:String, password:String){
         if(_dataLoginScreen.value.isChecked){
-            datastoreInterface.setEmail(email)
-            datastoreInterface.setPassword(password)
+            saveLoginCredentialUseCase.setData(email,password)
         }else{
-            datastoreInterface.clearUser()
+            saveLoginCredentialUseCase.clearData()
         }
     }
 

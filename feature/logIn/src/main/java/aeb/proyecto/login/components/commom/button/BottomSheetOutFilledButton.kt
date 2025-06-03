@@ -1,4 +1,4 @@
-package aeb.proyecto.login.components.button
+package aeb.proyecto.login.components.commom.button
 
 import aeb.proyecto.login.R
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
