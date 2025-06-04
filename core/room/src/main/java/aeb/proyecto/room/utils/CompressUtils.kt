@@ -1,6 +1,10 @@
 package aeb.proyecto.room.utils
 
+import aeb.proyecto.room.dto.EntireHabitDTO
+import aeb.proyecto.room.dto.convertToDTO
+import aeb.proyecto.room.dto.convertToEntireHabit
 import aeb.proyecto.room.entities.relations.EntireHabit
+import android.util.Log
 import com.google.gson.Gson
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -9,11 +13,14 @@ import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 
 fun jsonCompressed(habits:List<EntireHabit>):String{
-    return compressJson(Gson().toJson(habits))
+    val entireHabitDTO = habits.map { it.convertToDTO() }
+    return compressJson(Gson().toJson(entireHabitDTO))
 }
 
 fun decompressJsonFirestore(compressed: String): List<EntireHabit> {
-    return Gson().fromJson(decompressJson(compressed), Array<EntireHabit>::class.java).toList()
+    val decompressJson = decompressJson(compressed)
+    val entireHabitDTO = Gson().fromJson(decompressJson, Array<EntireHabitDTO>::class.java).toList()
+    return entireHabitDTO.map { it.convertToEntireHabit() }
 }
 
 fun compressJson(json: String): String {

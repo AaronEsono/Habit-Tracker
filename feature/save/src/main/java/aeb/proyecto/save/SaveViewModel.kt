@@ -1,25 +1,25 @@
 package aeb.proyecto.save
 
-import aeb.proyecto.alarmmanager.NotificationUtils
-import aeb.proyecto.authentication.AuthenticationInterface
+import aeb.proyecto.domain.usecase.save.SaveAuthenticationUseCase
+import aeb.proyecto.domain.usecase.save.SaveFirestoreUseCase
+import aeb.proyecto.domain.usecase.save.SaveHabitsRepositoryUseCase
+import aeb.proyecto.domain.usecase.save.SaveNotificationUseCase
 import aeb.proyecto.firestore.AuthResponseFirestore
-import aeb.proyecto.firestore.FirestoreInterface
 import aeb.proyecto.firestore.model.FirestoreData
-import aeb.proyecto.room.repository.EntireHabitRepo
 import aeb.proyecto.save.model.BottomSheetState
 import aeb.proyecto.save.model.DataBottomSheet
 import aeb.proyecto.save.model.DataSaveScreen
 import android.util.Log
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -27,10 +27,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SaveViewModel @Inject constructor(
-    private val authenticationInterface: AuthenticationInterface,
-    private val firestoreInterface: FirestoreInterface,
-    private val entireHabitRepo: EntireHabitRepo,
-    private val notificationUtils: NotificationUtils
+    private val saveHabitsRepositoryUseCase: SaveHabitsRepositoryUseCase,
+    private val saveNotificationUseCase: SaveNotificationUseCase,
+    private val saveFirestoreUseCase: SaveFirestoreUseCase,
+    private val saveAuthenticationUseCase: SaveAuthenticationUseCase
 ):ViewModel() {
 
     private val _bottomSheetState: MutableStateFlow<BottomSheetState> =
@@ -61,31 +61,35 @@ class SaveViewModel @Inject constructor(
         if (!_dataSearched.value) {
             viewModelScope.launch {
                 try {
-                    _saveUIState.update { SaveUIState.Loading }
+                    val user = saveAuthenticationUseCase.getCurrentId()
+                    saveFirestoreUseCase.getDataUser(user)
+                        .onEach {task ->
+                            when(task){
+                                is AuthResponseFirestore.Success -> {
+                                    val dateString = task.data?.date
+                                    val date:LocalDateTime? = dateString?.let { LocalDateTime.parse(it) }
 
-                    val user = authenticationInterface.getCurrentId()
-                    val response = firestoreInterface.getDataUser(user)
+                                    val name = saveAuthenticationUseCase.getName()
 
-                    when (response) {
-                        is AuthResponseFirestore.Success -> {
-                            val dateString = response.data?.date
-                            val date:LocalDateTime? = dateString?.let { LocalDateTime.parse(it) }
+                                    _dataSaveScreen.update { currentState ->
+                                        currentState.copy(localDateTime = date, name = name)
+                                    }
 
-                            val name = authenticationInterface.getName()
+                                    _saveUIState.update { SaveUIState.Success }
+                                    _dataSearched.update { true }
+                                }
 
-                            _dataSaveScreen.update { currentState ->
-                                currentState.copy(localDateTime = date, name = name)
+                                is AuthResponseFirestore.Error -> {
+                                    _saveUIState.update { SaveUIState.Error }
+                                    treatError(message = task.message)
+                                }
                             }
 
-                            _saveUIState.update { SaveUIState.Success }
-                            _dataSearched.update { true }
                         }
-
-                        is AuthResponseFirestore.Error -> {
-                            _saveUIState.update { SaveUIState.Error }
-                            treatError(message = response.message)
+                        .onStart {
+                            _saveUIState.update { SaveUIState.Loading }
                         }
-                    }
+                        .launchIn(viewModelScope)
                 } catch (e: Exception) {
                     _saveUIState.update { SaveUIState.Error }
                     treatError(R.string.save_error_generic)
@@ -110,27 +114,28 @@ class SaveViewModel @Inject constructor(
                 _saveUIState.update { SaveUIState.Loading }
                 closeBottomSheet()
 
-                val user = authenticationInterface.getCurrentId()
-                val habits = entireHabitRepo.getAll()
+                val user = saveAuthenticationUseCase.getCurrentId()
+                val habits = saveHabitsRepositoryUseCase.getAll()
                 val firestoreData = FirestoreData(habit = habits)
 
-                val response = firestoreInterface.saveDataUser(firestoreData,user)
-
-                when(response){
-                    is AuthResponseFirestore.Success -> {
-                        _saveUIState.update { SaveUIState.Success }
-                        _dataSaveScreen.update { currentState ->
-                            currentState.copy(localDateTime = LocalDateTime.now())
+                saveFirestoreUseCase.saveDataUser(firestoreData,user)
+                    .onEach {task ->
+                        when(task){
+                            is AuthResponseFirestore.Success -> {
+                                _saveUIState.update { SaveUIState.Success }
+                                _dataSaveScreen.update { currentState ->
+                                    currentState.copy(localDateTime = LocalDateTime.now())
+                                }
+                                setBottomSheetState(DataBottomSheet.SAVED_DATA)
+                            }
+                            is AuthResponseFirestore.Error -> {
+                                _saveUIState.update { SaveUIState.Error }
+                                treatError(message = task.message)
+                            }
                         }
-                        setBottomSheetState(DataBottomSheet.SAVED_DATA)
                     }
-
-                    is AuthResponseFirestore.Error -> {
-                        _saveUIState.update { SaveUIState.Error }
-                        treatError(message = response.message)
-                    }
-                }
-
+                    .onStart {_saveUIState.update { SaveUIState.Loading }}
+                    .launchIn(viewModelScope)
             }catch (e:Exception){
                 _saveUIState.update { SaveUIState.Error }
                 treatError(R.string.save_error_generic)
@@ -141,34 +146,33 @@ class SaveViewModel @Inject constructor(
     private fun restoreHabit(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                _saveUIState.update { SaveUIState.Loading }
                 closeBottomSheet()
+                val user = saveAuthenticationUseCase.getCurrentId()
 
-                val user = authenticationInterface.getCurrentId()
-                val response = firestoreInterface.getDataUser(user)
+                saveFirestoreUseCase.getDataUser(user)
+                    .onStart {_saveUIState.update { SaveUIState.Loading }}
+                    .collect  {task ->
+                        when(task){
+                            is AuthResponseFirestore.Success -> {
+                                val data = task.data?.habit ?: ""
+                                val notifications = saveHabitsRepositoryUseCase.setData(data)
+                                saveNotificationUseCase.setNotifications(notifications)
 
-                when(response){
-                    is AuthResponseFirestore.Success -> {
-                        val data = response.data?.habit ?: ""
-                        val notifications = entireHabitRepo.setData(data)
-
-                        notifications.forEach { notification ->
-                            notificationUtils.setUpAlarm(notification)
+                                _saveUIState.update { SaveUIState.Success }
+                                _dataSaveScreen.update { currentState ->
+                                    currentState.copy(localDateTime = LocalDateTime.now())
+                                }
+                                setBottomSheetState(DataBottomSheet.RESTORED_DATA)
+                            }
+                            is AuthResponseFirestore.Error -> {
+                                _saveUIState.update { SaveUIState.Error }
+                                treatError(message = task.message)
+                            }
                         }
 
-                        _saveUIState.update { SaveUIState.Success }
-                        _dataSaveScreen.update { currentState ->
-                            currentState.copy(localDateTime = LocalDateTime.now())
-                        }
-                        setBottomSheetState(DataBottomSheet.RESTORED_DATA)
                     }
-
-                    is AuthResponseFirestore.Error -> {
-                        _saveUIState.update { SaveUIState.Error }
-                        treatError(message = response.message)
-                    }
-                }
             }catch (e:Exception){
+                Log.e("Error",e.message.toString())
                 _saveUIState.update { SaveUIState.Error }
                 treatError(R.string.save_error_generic)
             }
@@ -178,26 +182,27 @@ class SaveViewModel @Inject constructor(
     private fun deleteHabit(){
         viewModelScope.launch {
             try {
-                _saveUIState.update { SaveUIState.Loading }
                 closeBottomSheet()
+                val user = saveAuthenticationUseCase.getCurrentId()
 
-                val user = authenticationInterface.getCurrentId()
-                val response = firestoreInterface.deleteDataUser(user)
-
-                when(response){
-                    is AuthResponseFirestore.Success -> {
-                        _saveUIState.update { SaveUIState.Success }
-                        _dataSaveScreen.update { currentState ->
-                            currentState.copy(localDateTime = null)
+                saveFirestoreUseCase.deleteDataUser(user)
+                    .onEach {task ->
+                        when(task){
+                            is AuthResponseFirestore.Success -> {
+                                _saveUIState.update { SaveUIState.Success }
+                                _dataSaveScreen.update { currentState ->
+                                    currentState.copy(localDateTime = null)
+                                }
+                                setBottomSheetState(DataBottomSheet.DELETED_DATA)
+                            }
+                            is AuthResponseFirestore.Error -> {
+                                _saveUIState.update { SaveUIState.Error }
+                                treatError(message = task.message)
+                            }
                         }
-                        setBottomSheetState(DataBottomSheet.DELETED_DATA)
                     }
-
-                    is AuthResponseFirestore.Error -> {
-                        _saveUIState.update { SaveUIState.Error }
-                        treatError(message = response.message)
-                    }
-                }
+                    .onStart {_saveUIState.update { SaveUIState.Loading }}
+                    .launchIn(viewModelScope)
             }catch (e:Exception){
                 _saveUIState.update { SaveUIState.Error }
                 treatError(R.string.save_error_generic)
@@ -209,7 +214,7 @@ class SaveViewModel @Inject constructor(
         viewModelScope.launch {
             closeBottomSheet()
             _saveUIState.update { SaveUIState.LogOut }
-            authenticationInterface.logOut()
+            saveAuthenticationUseCase.logOut()
         }
     }
 

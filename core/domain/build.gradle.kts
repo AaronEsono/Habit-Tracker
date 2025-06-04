@@ -16,6 +16,8 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.language)
     implementation(projects.core.authentication)
+    implementation(projects.core.firestore)
+    implementation(projects.core.alarmManager)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -6,6 +6,7 @@ import aeb.proyecto.room.model.NotificationWithNameAndColor
 import aeb.proyecto.room.utils.decompressJson
 import aeb.proyecto.room.utils.decompressJsonFirestore
 import aeb.proyecto.room.utils.jsonCompressed
+import android.util.Log
 import javax.inject.Inject
 
 class EntireHabitRepo @Inject constructor(

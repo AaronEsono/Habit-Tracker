@@ -11,7 +11,7 @@ class IconConverter {
     fun fromImageVector(imageVector: ImageVector): String = imageVector.name.split(".")[1]
 
     @TypeConverter
-    fun toColor(value:String): ImageVector {
+    fun toImageVector(value:String): ImageVector {
         val cl = Class.forName("androidx.compose.material.icons.filled.${value}Kt")
         val method = cl.declaredMethods.first()
         return method.invoke(null, Icons.Filled) as ImageVector

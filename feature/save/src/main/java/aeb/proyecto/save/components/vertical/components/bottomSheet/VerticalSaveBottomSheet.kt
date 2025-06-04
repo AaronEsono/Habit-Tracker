@@ -1,7 +1,7 @@
-package aeb.proyecto.save.components.bottomSheet
+package aeb.proyecto.save.components.vertical.components.bottomSheet
 
-import aeb.proyecto.save.components.button.BottomSheetFilledButton
-import aeb.proyecto.save.components.button.BottomSheetOutLinedButton
+import aeb.proyecto.save.components.commom.button.BottomSheetFilledButton
+import aeb.proyecto.save.components.commom.button.BottomSheetOutLinedButton
 import aeb.proyecto.save.model.DataBottomSheet
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SaveBottomSheet(
+fun VerticalSaveBottomSheet(
     dataBottomSheet: DataBottomSheet,
     onDismiss: () -> Unit = {},
     onAccept: () -> Unit = {}

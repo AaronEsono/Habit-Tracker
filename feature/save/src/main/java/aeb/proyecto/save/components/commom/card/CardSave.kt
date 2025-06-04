@@ -1,4 +1,4 @@
-package aeb.proyecto.save.components.card
+package aeb.proyecto.save.components.commom.card
 
 import aeb.proyecto.save.R
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1

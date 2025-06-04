@@ -1,4 +1,4 @@
-package aeb.proyecto.save.components.button
+package aeb.proyecto.save.components.commom.button
 
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12

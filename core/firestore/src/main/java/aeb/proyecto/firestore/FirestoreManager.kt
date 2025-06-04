@@ -6,6 +6,9 @@ import aeb.proyecto.firestore.errors.treatError
 import aeb.proyecto.firestore.model.FirestoreData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -16,47 +19,59 @@ class FirestoreManager @Inject constructor(
 
     private val collection = firestore.collection("Habits")
 
-    override suspend fun getDataUser(userId: String):AuthResponseFirestore {
-        return try {
-            val document = collection.document(userId).get().await()
+    override suspend fun getDataUser(userId: String): Flow<AuthResponseFirestore> = callbackFlow {
+        trySend(AuthResponseFirestore.Loading)
 
-            analyticsManagerInterface.logEvent(FirestoreEvents.getDataUser(userId))
-            AuthResponseFirestore.Success(document.toObject(FirestoreData::class.java))
-
-        }catch (e:Exception){
+        try {
+            collection.document(userId).get()
+                .addOnSuccessListener { data ->
+                    analyticsManagerInterface.logEvent(FirestoreEvents.getDataUser(userId))
+                    trySend(AuthResponseFirestore.Success(data.toObject(FirestoreData::class.java)))
+                }
+        } catch (e: Exception) {
             analyticsManagerInterface.logEvent(FirestoreEvents.Error(e.message.toString()))
 
             val message = treatError(e)
-            AuthResponseFirestore.Error(message)
+            trySend(AuthResponseFirestore.Error(message))
         }
+
+        awaitClose()
     }
 
-    override suspend fun saveDataUser(data: FirestoreData, userId: String): AuthResponseFirestore {
-        return try {
-            collection.document(userId).set(data).await()
+    override suspend fun saveDataUser(data: FirestoreData, userId: String): Flow<AuthResponseFirestore> = callbackFlow {
+        trySend(AuthResponseFirestore.Loading)
 
-            analyticsManagerInterface.logEvent(FirestoreEvents.saveDataUser(userId))
-            AuthResponseFirestore.Success(null)
+        try {
+            collection.document(userId).set(data)
+                .addOnSuccessListener {
+                    analyticsManagerInterface.logEvent(FirestoreEvents.saveDataUser(userId))
+                    trySend(AuthResponseFirestore.Success(null))
+                }
         }catch (e:Exception){
             analyticsManagerInterface.logEvent(FirestoreEvents.Error(e.message.toString()))
-
             val message = treatError(e)
-            AuthResponseFirestore.Error(message)
+            trySend(AuthResponseFirestore.Error(message))
         }
+
+        awaitClose()
     }
 
-    override suspend fun deleteDataUser(userId: String): AuthResponseFirestore {
-        return try {
-            collection.document(userId).delete().await()
+    override suspend fun deleteDataUser(userId: String): Flow<AuthResponseFirestore> = callbackFlow {
+        trySend(AuthResponseFirestore.Loading)
 
-            analyticsManagerInterface.logEvent(FirestoreEvents.deleteDataUser(userId))
-            AuthResponseFirestore.Success(null)
+        try {
+            collection.document(userId).delete()
+                .addOnSuccessListener {
+                    analyticsManagerInterface.logEvent(FirestoreEvents.deleteDataUser(userId))
+                    trySend(AuthResponseFirestore.Success(null))
+                }
         }catch (e:Exception){
             analyticsManagerInterface.logEvent(FirestoreEvents.Error(e.message.toString()))
-
             val message = treatError(e)
-            AuthResponseFirestore.Error(message)
+            trySend(AuthResponseFirestore.Error(message))
         }
+
+        awaitClose()
     }
 
 }
@@ -64,4 +79,5 @@ class FirestoreManager @Inject constructor(
 interface AuthResponseFirestore {
     data class Success(val data: FirestoreData?) : AuthResponseFirestore
     data class Error(val message: Int) : AuthResponseFirestore
+    data object Loading : AuthResponseFirestore
 }
