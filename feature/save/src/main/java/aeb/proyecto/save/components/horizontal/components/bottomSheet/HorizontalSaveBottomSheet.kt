@@ -40,7 +40,9 @@ fun HorizontalSaveBottomSheet(
     onAccept: () -> Unit = {}
 ) {
 
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
     val coroutineScope = rememberCoroutineScope()
 
     CustomBottomSheet(

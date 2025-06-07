@@ -5,7 +5,6 @@ import aeb.proyecto.addhabit.constants.GridOptionResult
 import aeb.proyecto.addhabit.constants.PICK_NOTIFICATION
 import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.TypeNotificationResult
-import aeb.proyecto.ui.constants.getContrastColor
 import aeb.proyecto.addhabit.converter.fromHabitScreen
 import aeb.proyecto.addhabit.converter.toHabitScreen
 import aeb.proyecto.addhabit.model.AddHabitNotification
@@ -13,13 +12,14 @@ import aeb.proyecto.addhabit.model.BottomSheetState
 import aeb.proyecto.addhabit.model.DEFAULT_TIME
 import aeb.proyecto.addhabit.model.DataAddHabitScreen
 import aeb.proyecto.addhabit.model.DataBottomSheet
-import aeb.proyecto.alarmmanager.NotificationUtils
-import aeb.proyecto.datastore.DatastoreInterface
+import aeb.proyecto.domain.usecase.addHabit.DataStoreAddHabitUseCase
+import aeb.proyecto.domain.usecase.addHabit.RoomRepositoryAddHabitUseCase
+import aeb.proyecto.domain.usecase.addHabit.SetNotificationAddHabitUseCase
 import aeb.proyecto.room.model.classes.TIPO_UNIDAD
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.model.classes.unitsHourMode
-import aeb.proyecto.room.repository.HabitWithNotificacionRepo
+import aeb.proyecto.ui.constants.getContrastColor
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,16 +31,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
 class AddHabitViewModel @Inject constructor(
-    private val habitWithNotificacionRepo: HabitWithNotificacionRepo,
-    private val notificationUtils: NotificationUtils,
-    private val datastoreInterface: DatastoreInterface
+    private val roomRepositoryAddHabitUseCase: RoomRepositoryAddHabitUseCase,
+    private val setNotificationAddHabitUseCase: SetNotificationAddHabitUseCase,
+    private val dataStoreAddHabitUseCase: DataStoreAddHabitUseCase
 ):ViewModel() {
 
     private val _dataAddHabit = MutableStateFlow(DataAddHabitScreen())
@@ -135,7 +134,7 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
-    fun monthNumberSelected(numberDays:Int) = viewModelScope.launch(Dispatchers.IO){
+    fun monthNumberSelected(numberDays:Int){
         _dataAddHabit.update { currentState ->
             currentState.copy(
                 habitScreen = currentState.habitScreen.copy(numberOfDaysMonth = numberDays)
@@ -371,7 +370,7 @@ class AddHabitViewModel @Inject constructor(
             _addHabitUIState.update { AddHabitUIState.Loading }
             val habitWithNotifications = fromHabitScreen(_dataAddHabit.value.habitScreen)
 
-            val id = habitWithNotificacionRepo.insertHabit(habitWithNotifications)
+            val id = roomRepositoryAddHabitUseCase.insertHabit(habitWithNotifications)
 
             setNotifications(id)
 
@@ -390,7 +389,7 @@ class AddHabitViewModel @Inject constructor(
 
             cancelNotifications(habitWithNotifications.habit.id)
 
-            val id = habitWithNotificacionRepo.updateHabit(habitWithNotifications)
+            val id = roomRepositoryAddHabitUseCase.updateNotification(habitWithNotifications)
 
             setNotifications(id)
 
@@ -404,14 +403,14 @@ class AddHabitViewModel @Inject constructor(
     fun getData(id: Long) = viewModelScope.launch(Dispatchers.IO) {
         _dataAddHabit.update { currentState ->
             currentState.copy(
-                dayStartWeek = DayOfWeek.valueOf(datastoreInterface.getDayStartWeek() ?: "Monday")
+                dayStartWeek = dataStoreAddHabitUseCase.getDayOfWeek()
             )
         }
 
         if (!_dataSearched.value && id != -1L) {
             _addHabitUIState.update { AddHabitUIState.Loading }
 
-            val habit = habitWithNotificacionRepo.getHabitById(id)
+            val habit = roomRepositoryAddHabitUseCase.getHabitById(id)
 
             _dataAddHabit.update { currentState ->
                 currentState.copy(
@@ -459,19 +458,13 @@ class AddHabitViewModel @Inject constructor(
     }
 
     private fun setNotifications(id:Long){
-        val notifications = habitWithNotificacionRepo.getAllNotificationsWithId(id)
-
-        notifications.forEach { notification ->
-            notificationUtils.setUpAlarm(notification)
-        }
+        val notifications = roomRepositoryAddHabitUseCase.getAllNotifications(id)
+        setNotificationAddHabitUseCase.setAlarm(notifications)
     }
 
     private fun cancelNotifications(id:Long){
-        val notifications = habitWithNotificacionRepo.getNotificationById(id)
-
-        notifications.forEach { notification ->
-            notificationUtils.cancelAlarm(notification.id)
-        }
+        val notifications = roomRepositoryAddHabitUseCase.getNotificationsById(id)
+        setNotificationAddHabitUseCase.cancelAlarms(notifications)
     }
 
     fun onCheckedWeeklyChange(){
