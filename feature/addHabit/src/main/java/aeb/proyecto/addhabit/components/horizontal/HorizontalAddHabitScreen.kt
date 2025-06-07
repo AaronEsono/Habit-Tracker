@@ -221,7 +221,7 @@ fun HorizontalAddHabitScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
                 //Unidades y veces
-                LabelLargeText(stringResource(R.string.add_habit_times_and_units),
+                LabelMediumText(stringResource(R.string.add_habit_times_and_units),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Left)
 
