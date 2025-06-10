@@ -31,4 +31,7 @@ dependencies {
 
     //Mas iconos
     implementation(libs.material.icons.extended)
+
+    //Adaptative
+    implementation(libs.material3.adaptive.navigation.suite)
 }

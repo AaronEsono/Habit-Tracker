@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.screens
+package aeb.proyecto.timer.components.horizontal.components.screens
 
 import aeb.proyecto.timer.TimerUiState
 import aeb.proyecto.timer.components.screens.noTimer.NoTimerScreen
@@ -8,7 +8,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
 
 @Composable
-fun RelojScreen(
+fun HorizontalSuccessTimerScreen(
     timerUIState: TimerUiState.Success,
     timerStopWatchUIState: TimerServiceUIState,
     onHourChange:(String) -> Unit,
@@ -25,7 +25,6 @@ fun RelojScreen(
     onCancelButton: () -> Unit,
     onFinishButton: () -> Unit,
 ){
-
     AnimatedContent(
         targetState = timerStopWatchUIState,
         contentKey = { it::class }
@@ -57,4 +56,5 @@ fun RelojScreen(
             }
         }
     }
+
 }

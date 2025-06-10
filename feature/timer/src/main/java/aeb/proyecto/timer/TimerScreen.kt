@@ -1,7 +1,9 @@
 package aeb.proyecto.timer
 
-import aeb.proyecto.timer.components.loading.TimerLoading
+import aeb.proyecto.timer.components.commom.loading.TimerLoading
+import aeb.proyecto.timer.components.horizontal.HorizontalTimerScreen
 import aeb.proyecto.timer.components.screens.RelojScreen
+import aeb.proyecto.timer.components.vertical.VerticalTimerScreen
 import aeb.proyecto.timer.constants.TypeUnitDate
 import aeb.proyecto.timer.model.TimerServiceUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
@@ -36,80 +38,43 @@ fun TimerScreen(
     }
 
     when(orientation){
-        Orientation.Portrait -> {}
-        Orientation.Landscape -> {}
-    }
-
-    TimerScreen(
-        timerUiState = timerDataUIState,
-        timerStopWatchUIState = timerStopWatchUIState,
-        onHourChange = viewModel::onHourChange,
-        onMinuteChange = viewModel::onMinuteChange,
-        onSecondChange = viewModel::onSecondChange,
-        onTypeChange = viewModel::onTypeButtonChange,
-        onStartService = viewModel::startService,
-        onSetChange = viewModel::onSetChange,
-        onIntervalHourChange = viewModel::setIntervalHour,
-        onButtonIntervalWorkChange = viewModel::addHourTimer,
-        onButtonIntervalRestChange = viewModel::addRestTimer,
-        onFinishButton = viewModel::finishService,
-        onResumeButton = viewModel::resumeService,
-        onStopService = viewModel::stopService,
-        onCancelButton = viewModel::cancelService
-    )
-}
-
-
-@Composable
-internal fun TimerScreen(
-    timerUiState: TimerUiState,
-    timerStopWatchUIState: TimerServiceUIState,
-    onHourChange:(String) -> Unit = {},
-    onMinuteChange:(String) -> Unit = {},
-    onSecondChange: (String) -> Unit = {},
-    onTypeChange: (Int) -> Unit = {},
-    onStartService: () -> Unit = {},
-    onSetChange: (Int) -> Unit = {},
-    onIntervalHourChange: (Triple<String,String,String>,Int) -> Unit = {_,_ ->},
-    onButtonIntervalWorkChange: (Boolean) -> Unit = {},
-    onButtonIntervalRestChange: (Boolean) -> Unit = {},
-    onFinishButton: () -> Unit = {},
-    onResumeButton: () -> Unit = {},
-    onStopService: () -> Unit = {},
-    onCancelButton: () -> Unit = {},
-){
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = spacing8, end = spacing8),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        when (timerUiState) {
-            is TimerUiState.Error -> Unit
-            TimerUiState.Loading -> {
-                TimerLoading()
-            }
-
-            is TimerUiState.Success -> {
-                RelojScreen(
-                    timerUIState = timerUiState,
-                    timerStopWatchUIState = timerStopWatchUIState,
-                    onHourChange = onHourChange,
-                    onMinuteChange = onMinuteChange,
-                    onSecondChange = onSecondChange,
-                    onTypeChange = onTypeChange,
-                    onStartService = onStartService,
-                    onSetChange = onSetChange,
-                    onIntervalHourChange = onIntervalHourChange,
-                    onButtonIntervalWorkChange = onButtonIntervalWorkChange,
-                    onButtonIntervalRestChange = onButtonIntervalRestChange,
-                    onFinishButton = onFinishButton,
-                    onResumeButton = onResumeButton,
-                    onStopService = onStopService,
-                    onCancelButton = onCancelButton,
-                )
-            }
+        Orientation.Portrait -> {
+            VerticalTimerScreen(
+                timerUiState = timerDataUIState,
+                timerStopWatchUIState = timerStopWatchUIState,
+                onHourChange = viewModel::onHourChange,
+                onMinuteChange = viewModel::onMinuteChange,
+                onSecondChange = viewModel::onSecondChange,
+                onTypeChange = viewModel::onTypeButtonChange,
+                onStartService = viewModel::startService,
+                onSetChange = viewModel::onSetChange,
+                onIntervalHourChange = viewModel::setIntervalHour,
+                onButtonIntervalWorkChange = viewModel::addHourTimer,
+                onButtonIntervalRestChange = viewModel::addRestTimer,
+                onFinishButton = viewModel::finishService,
+                onResumeButton = viewModel::resumeService,
+                onStopService = viewModel::stopService,
+                onCancelButton = viewModel::cancelService
+            )
+        }
+        Orientation.Landscape -> {
+            HorizontalTimerScreen(
+                timerUiState = timerDataUIState,
+                timerStopWatchUIState = timerStopWatchUIState,
+                onHourChange = viewModel::onHourChange,
+                onMinuteChange = viewModel::onMinuteChange,
+                onSecondChange = viewModel::onSecondChange,
+                onTypeChange = viewModel::onTypeButtonChange,
+                onStartService = viewModel::startService,
+                onSetChange = viewModel::onSetChange,
+                onIntervalHourChange = viewModel::setIntervalHour,
+                onButtonIntervalWorkChange = viewModel::addHourTimer,
+                onButtonIntervalRestChange = viewModel::addRestTimer,
+                onFinishButton = viewModel::finishService,
+                onResumeButton = viewModel::resumeService,
+                onStopService = viewModel::stopService,
+                onCancelButton = viewModel::cancelService
+            )
         }
     }
 }

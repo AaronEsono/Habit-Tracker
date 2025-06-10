@@ -180,7 +180,7 @@ fun HorizontalAddHabitScreen(
                 AnimatedVisibility(
                     visible = habit.unit !in unitsHourMode
                 ) {
-                    Spacer(modifier = Modifier.padding(vertical = spacing6))
+                    Spacer(modifier = Modifier.padding(vertical = spacing4))
                 }
 
                 //TextField Nombre y descripción
@@ -601,6 +601,7 @@ fun HorizontalAddHabitScreen(
                     color = habit.color,
                     notification = dataAddHabit.notificationSelected,
                     contrastColor = dataAddHabit.contrastColor,
+                    initialTimeMode = false,
                     onDismissRequest = onDismissDialog,
                     onConfirm = onTimeSelected
                 )

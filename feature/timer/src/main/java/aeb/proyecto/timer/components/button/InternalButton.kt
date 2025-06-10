@@ -5,6 +5,7 @@ import aeb.proyecto.ui.repeatingClick.repeatingClickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun InternalButton(
+fun InternalSegmentedButton(
     modifier: Modifier = Modifier,
     icon: ImageVector = Icons.Filled.Add,
     size: Dp = 44.dp,
@@ -31,6 +32,7 @@ fun InternalButton(
     Box (
         modifier = modifier
             .size(size)
+            .aspectRatio(1f)
             .clip(RoundedCornerShape(spacing12))
             .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f))
             .repeatingClickable(

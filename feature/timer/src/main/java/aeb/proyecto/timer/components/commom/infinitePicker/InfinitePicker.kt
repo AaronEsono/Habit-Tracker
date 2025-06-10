@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.infinitePicker
+package aeb.proyecto.timer.components.commom.infinitePicker
 
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.text.LabelLargeText

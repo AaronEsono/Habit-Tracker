@@ -1,18 +1,17 @@
 package aeb.proyecto.timer.components.timerPicker
 
 import aeb.proyecto.timer.R
-import aeb.proyecto.timer.components.infinitePicker.InfinitePicker
-import aeb.proyecto.timer.constants.TypeUnitDate
+import aeb.proyecto.timer.components.commom.infinitePicker.InfinitePicker
 import aeb.proyecto.timer.constants.hours
 import aeb.proyecto.timer.constants.minutes
 import aeb.proyecto.timer.constants.seconds
-import aeb.proyecto.timer.model.HourSelectedState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,15 +22,14 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 
 
 @Composable
@@ -52,91 +50,121 @@ fun TimerPicker(
     onClickCenterSecond: (String) -> Unit = {}
 ) {
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically // <- los pickers y puntos alineados verticalmente
-    ) {
-        // HORAS
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            LabelLargeText(
-                stringResource(R.string.timer_hours),
-                color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.padding(bottom = spacing6),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+    BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
+        val density = LocalDensity.current
 
-            InfinitePicker(
-                items = hours,
-                listState = hourListState,
-                colorGradient = colorGradient,
-                currentItemSelected = onHourChange,
-                scrollToItem = scrollToItemHour,
-                onClickCenter = onClickCenterHour
-                )
+        val (rawFontSize, labelFontSize) = remember(maxWidth, maxHeight, density) {
+            val totalWidth = maxWidth
+            val totalHeight = maxHeight
+
+            // Mínimo de height para reducir en casos muy pequeños
+            val minHeightThreshold = 300.dp
+            val isShortHeight = totalHeight < minHeightThreshold
+
+            // Convertimos el ancho en Sp
+            val baseFontSize = with(density) { (totalWidth / 3).toSp() }
+
+            // Ajustamos el tamaño
+            val adjustedBaseFontSize = if (isShortHeight) baseFontSize * 0.8f else baseFontSize
+
+            val raw = adjustedBaseFontSize / 2.3f
+            val label = raw * 0.3f
+
+            raw to label
         }
 
-        LabelMediumText(
-            stringResource(R.string.timer_dots),
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(horizontal = spacing4)
-                .offset(y = spacing8),
-            fontSize = 50.sp
-        )
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // HORAS
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                LabelLargeText(
+                    stringResource(R.string.timer_hours),
+                    color = MaterialTheme.colorScheme.outline,
+                    modifier = Modifier.padding(bottom = spacing6),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = labelFontSize
+                )
 
-        // MINUTOS
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            LabelLargeText(
-                stringResource(R.string.timer_minutes),
-                color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.padding(bottom = spacing6),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
                 InfinitePicker(
-                    items = minutes,
-                    listState = minuteListState,
+                    items = hours,
+                    listState = hourListState,
                     colorGradient = colorGradient,
-                    currentItemSelected = onMinuteChange,
-                    scrollToItem = scrollToItemMinute,
-                    onClickCenter = onClickCenterMinute
+                    currentItemSelected = onHourChange,
+                    scrollToItem = scrollToItemHour,
+                    onClickCenter = onClickCenterHour,
+                    fontSizeItem = rawFontSize
                 )
             }
-        }
 
-        LabelMediumText(
-            stringResource(R.string.timer_dots),
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(horizontal = spacing4)
-                .offset(y = spacing8),
-            fontSize = 50.sp
-        )
-
-        // SEGUNDOS
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            LabelLargeText(
-                stringResource(R.string.timer_seconds),
-                color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.padding(bottom = spacing6),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+            LabelMediumText(
+                stringResource(R.string.timer_dots),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(horizontal = spacing4)
+                    .offset(y = spacing8),
+                fontSize = rawFontSize
             )
 
-            InfinitePicker(
-                items = seconds,
-                listState = secondListState,
-                colorGradient = colorGradient,
-                currentItemSelected = onSecondChange,
-                scrollToItem = scrollToItemSecond,
-                onClickCenter = onClickCenterSecond
+            // MINUTOS
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                LabelLargeText(
+                    stringResource(R.string.timer_minutes),
+                    color = MaterialTheme.colorScheme.outline,
+                    modifier = Modifier.padding(bottom = spacing6),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = labelFontSize
+                )
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    InfinitePicker(
+                        items = minutes,
+                        listState = minuteListState,
+                        colorGradient = colorGradient,
+                        currentItemSelected = onMinuteChange,
+                        scrollToItem = scrollToItemMinute,
+                        onClickCenter = onClickCenterMinute,
+                        fontSizeItem = rawFontSize
+                    )
+                }
+            }
+
+            LabelMediumText(
+                stringResource(R.string.timer_dots),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(horizontal = spacing4)
+                    .offset(y = spacing8),
+                fontSize = rawFontSize
             )
+
+            // SEGUNDOS
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                LabelLargeText(
+                    stringResource(R.string.timer_seconds),
+                    color = MaterialTheme.colorScheme.outline,
+                    modifier = Modifier.padding(bottom = spacing6),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = labelFontSize
+                )
+
+                InfinitePicker(
+                    items = seconds,
+                    listState = secondListState,
+                    colorGradient = colorGradient,
+                    currentItemSelected = onSecondChange,
+                    scrollToItem = scrollToItemSecond,
+                    onClickCenter = onClickCenterSecond,
+                    fontSizeItem = rawFontSize
+                )
+            }
         }
     }
 }

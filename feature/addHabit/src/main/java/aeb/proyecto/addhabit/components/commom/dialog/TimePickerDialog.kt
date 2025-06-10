@@ -66,6 +66,7 @@ fun TimePickerDialog(
     notification: AddHabitNotification,
     color: Color,
     contrastColor: Color,
+    initialTimeMode:Boolean = true,
     onDismissRequest: () -> Unit = {},
     onConfirm: (LocalTime) -> Unit = {},
 ){
@@ -81,7 +82,7 @@ fun TimePickerDialog(
         )
     }
 
-    var timeMode by rememberSaveable { mutableStateOf(true) }
+    var timeMode by rememberSaveable { mutableStateOf(initialTimeMode) }
     val icon = if (timeMode) Icons.Filled.Keyboard else Icons.Filled.AccessTime
 
     CustomDialog(

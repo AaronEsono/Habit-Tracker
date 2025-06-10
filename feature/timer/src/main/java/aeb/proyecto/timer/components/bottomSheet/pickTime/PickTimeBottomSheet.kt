@@ -4,7 +4,7 @@ import aeb.proyecto.timer.R
 import aeb.proyecto.timer.components.bottomSheet.pickTime.model.TypePickState
 import aeb.proyecto.timer.components.infinitePicker.AlertDialogPicker
 import aeb.proyecto.timer.components.infinitePicker.DialogDataTimerScreen
-import aeb.proyecto.timer.components.infinitePicker.getCenteredIndex
+import aeb.proyecto.timer.components.commom.infinitePicker.getCenteredIndex
 import aeb.proyecto.timer.components.timerPicker.TimerPicker
 import aeb.proyecto.timer.constants.TypeUnitDate
 import aeb.proyecto.timer.constants.hours
@@ -13,13 +13,10 @@ import aeb.proyecto.timer.constants.seconds
 import aeb.proyecto.timer.model.HourSelectedState
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
-import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
-import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
-import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleLargeText
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable

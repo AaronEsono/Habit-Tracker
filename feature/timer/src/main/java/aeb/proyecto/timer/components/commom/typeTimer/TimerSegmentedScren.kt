@@ -1,19 +1,14 @@
-package aeb.proyecto.timer.components.typeSegmentedScreen
+package aeb.proyecto.timer.components.commom.typeTimer
 
-import aeb.proyecto.timer.TimerUiState
 import aeb.proyecto.timer.components.infinitePicker.AlertDialogPicker
 import aeb.proyecto.timer.components.infinitePicker.DialogDataTimerScreen
-import aeb.proyecto.timer.components.infinitePicker.getCenteredIndex
+import aeb.proyecto.timer.components.commom.infinitePicker.getCenteredIndex
 import aeb.proyecto.timer.components.timerPicker.TimerPicker
 import aeb.proyecto.timer.constants.TypeUnitDate
 import aeb.proyecto.timer.constants.hours
 import aeb.proyecto.timer.constants.minutes
 import aeb.proyecto.timer.constants.seconds
 import aeb.proyecto.timer.model.HourSelectedState
-import aeb.proyecto.ui.text.LabelMediumText
-import android.util.Log
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,10 +39,12 @@ fun TimerSegmentedScreen(
     }
 
     val hourListState = rememberLazyListState(
-        initialFirstVisibleItemIndex = getCenteredIndex(hours.size, firstTimer.first))
+        initialFirstVisibleItemIndex = getCenteredIndex(hours.size, firstTimer.first)
+    )
 
     val minuteListState = rememberLazyListState(
-        initialFirstVisibleItemIndex = getCenteredIndex(minutes.size, firstTimer.second))
+        initialFirstVisibleItemIndex = getCenteredIndex(minutes.size, firstTimer.second)
+    )
 
     val secondListState = rememberLazyListState(
         initialFirstVisibleItemIndex = getCenteredIndex(seconds.size, firstTimer.third)
@@ -110,5 +107,4 @@ fun TimerSegmentedScreen(
             }
         )
     }
-
 }

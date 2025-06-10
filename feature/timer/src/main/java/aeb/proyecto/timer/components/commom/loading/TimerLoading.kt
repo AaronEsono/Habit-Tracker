@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.loading
+package aeb.proyecto.timer.components.commom.loading
 
 import aeb.proyecto.timer.R
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10

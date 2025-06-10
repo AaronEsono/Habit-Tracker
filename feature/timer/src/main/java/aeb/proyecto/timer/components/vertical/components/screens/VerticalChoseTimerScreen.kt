@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.screens.noTimer
+package aeb.proyecto.timer.components.vertical.components.screens
 
 import aeb.proyecto.timer.R
 import aeb.proyecto.timer.TimerUiState
@@ -48,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun NoTimerScreen(
+fun VerticalChoseTimerScreen(
     timerUIState: TimerUiState.Success,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
@@ -60,7 +60,6 @@ fun NoTimerScreen(
     onButtonIntervalWorkChange: (Boolean) -> Unit,
     onButtonIntervalRestChange: (Boolean) -> Unit
 ){
-
     val haptic = LocalHapticFeedback.current
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
 
@@ -216,5 +215,4 @@ fun NoTimerScreen(
             }
         }
     }
-
 }
