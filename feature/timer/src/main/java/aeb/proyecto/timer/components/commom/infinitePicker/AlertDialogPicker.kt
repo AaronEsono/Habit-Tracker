@@ -1,7 +1,7 @@
-package aeb.proyecto.timer.components.infinitePicker
+package aeb.proyecto.timer.components.commom.infinitePicker
 
 import aeb.proyecto.timer.R
-import aeb.proyecto.timer.components.textField.TimerTextField
+import aeb.proyecto.timer.components.commom.textField.TimerTextField
 import aeb.proyecto.timer.constants.TypeUnitDate
 import aeb.proyecto.ui.dialog.CustomDialog
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12

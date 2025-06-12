@@ -1,9 +1,9 @@
 package aeb.proyecto.timer.components.commom.typeTimer
 
-import aeb.proyecto.timer.components.infinitePicker.AlertDialogPicker
-import aeb.proyecto.timer.components.infinitePicker.DialogDataTimerScreen
+import aeb.proyecto.timer.components.commom.infinitePicker.AlertDialogPicker
+import aeb.proyecto.timer.components.commom.infinitePicker.DialogDataTimerScreen
 import aeb.proyecto.timer.components.commom.infinitePicker.getCenteredIndex
-import aeb.proyecto.timer.components.timerPicker.TimerPicker
+import aeb.proyecto.timer.components.commom.timePicker.TimerPicker
 import aeb.proyecto.timer.constants.TypeUnitDate
 import aeb.proyecto.timer.constants.hours
 import aeb.proyecto.timer.constants.minutes

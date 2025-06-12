@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.textField
+package aeb.proyecto.timer.components.commom.textField
 
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8

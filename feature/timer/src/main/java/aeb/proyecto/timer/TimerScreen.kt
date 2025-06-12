@@ -2,7 +2,6 @@ package aeb.proyecto.timer
 
 import aeb.proyecto.timer.components.commom.loading.TimerLoading
 import aeb.proyecto.timer.components.horizontal.HorizontalTimerScreen
-import aeb.proyecto.timer.components.screens.RelojScreen
 import aeb.proyecto.timer.components.vertical.VerticalTimerScreen
 import aeb.proyecto.timer.constants.TypeUnitDate
 import aeb.proyecto.timer.model.TimerServiceUIState

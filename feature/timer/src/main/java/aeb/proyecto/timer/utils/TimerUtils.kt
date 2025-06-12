@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.screens.timer.utils
+package aeb.proyecto.timer.utils
 
 import aeb.proyecto.stopwatch.manager.IntervalState
 import aeb.proyecto.stopwatch.manager.StopwatchState

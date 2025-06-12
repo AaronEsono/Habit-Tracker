@@ -1,8 +1,6 @@
 package aeb.proyecto.timer.components.vertical.components.screens
 
 import aeb.proyecto.timer.TimerUiState
-import aeb.proyecto.timer.components.screens.noTimer.NoTimerScreen
-import aeb.proyecto.timer.components.screens.timer.TimerActiveScreen
 import aeb.proyecto.timer.model.TimerServiceUIState
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
@@ -47,7 +45,7 @@ fun VerticalSuccessTimerScreen(
                 )
             }
             is TimerServiceUIState.TimerRunning -> {
-                TimerActiveScreen(
+                VerticalActiveTimerScreen(
                     timerStopWatchUIState = timerStopWatchUIStateAnim,
                     onStopService = onStopService,
                     onCancelButton = onCancelButton,

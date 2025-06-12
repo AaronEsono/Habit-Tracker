@@ -2,11 +2,11 @@ package aeb.proyecto.timer.components.commom.typeTimer
 
 import aeb.proyecto.stopwatch.utils.pad
 import aeb.proyecto.timer.R
-import aeb.proyecto.timer.components.bottomSheet.pickTime.PickTimeBottomSheet
-import aeb.proyecto.timer.components.bottomSheet.pickTime.model.PickHourState
-import aeb.proyecto.timer.components.bottomSheet.pickTime.model.TypeTimer
-import aeb.proyecto.timer.components.button.InternalSegmentedButton
-import aeb.proyecto.timer.components.textField.TimerTextField
+import aeb.proyecto.timer.components.commom.bottomsheet.pickTime.PickTimeBottomSheet
+import aeb.proyecto.timer.components.commom.bottomsheet.pickTime.model.PickHourState
+import aeb.proyecto.timer.components.commom.bottomsheet.pickTime.model.TypeTimer
+import aeb.proyecto.timer.components.commom.button.InternalSegmentedButton
+import aeb.proyecto.timer.components.commom.textField.TimerTextField
 import aeb.proyecto.timer.model.HourSelectedState
 import aeb.proyecto.ui.dialog.CustomDialog
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
@@ -14,6 +14,8 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import aeb.proyecto.ui.orientation.Orientation
+import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.regexTextField.OneTo99
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
@@ -81,31 +83,35 @@ fun IntervalSegmentedScreen(
     }
 
     BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        val width = maxWidth
         val height = maxHeight
         val density = LocalDensity.current
-        //Padding entre elementos y bordes ( 3 elementos = 2 entre elementos + 2 bordes)
         val padding = spacing8
+        val orientation = getOrientation()
 
-        val baseHeight = remember (height, padding){
+        val baseHeight = remember(height, padding) {
             val totalHeight = height - (padding * 4)
-            //Separamos el width en 3 partes para cada infinitePicker
-            (totalHeight / 3)
+            totalHeight / 3
         }
 
-        val (titleFontSize, contentFontSize,contentHeight) = remember(maxHeight, density) {
-            val totalHeight = maxHeight - (padding * 4)
+        val (titleFontSize, contentFontSize, contentHeight) = remember(maxHeight, maxWidth, density) {
+            val totalHeight = height - (padding * 4)
             val minHeightThreshold = 250.dp
+            val isShortHeight = totalHeight < minHeightThreshold
 
-            val titleHeight = if (totalHeight < minHeightThreshold) baseHeight * 0.25f
-            else baseHeight * 0.25f * 0.8f
+            // Ajustes dinámicos según proporción
+            val titleFactor = if (isShortHeight) 0.25f else 0.25f * 0.8f
+            val contentFactor = if (isShortHeight) 0.6f else 0.6f * 0.75f
 
-            val contentHeight = if (totalHeight < minHeightThreshold) baseHeight * 0.6f
-            else baseHeight * 0.6f * 0.75f
+            // Si estamos en landscape, reducimos un poco más el contenido
+            val finalTitleHeight = baseHeight * titleFactor * if (orientation == Orientation.Landscape) 0.8f else 1f
+            val finalContentHeight = baseHeight * contentFactor * if (orientation == Orientation.Landscape) 0.7f else 1f
 
             with(density) {
-                Triple(titleHeight.toSp(), contentHeight.toSp(),contentHeight)
+                Triple(finalTitleHeight.toSp(), finalContentHeight.toSp(), finalContentHeight)
             }
         }
+
 
         Column (
             modifier = Modifier.fillMaxSize(),

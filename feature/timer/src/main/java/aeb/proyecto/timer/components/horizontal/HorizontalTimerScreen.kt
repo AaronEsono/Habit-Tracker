@@ -1,8 +1,17 @@
 package aeb.proyecto.timer.components.horizontal
 
 import aeb.proyecto.timer.TimerUiState
+import aeb.proyecto.timer.components.commom.loading.TimerLoading
+import aeb.proyecto.timer.components.horizontal.components.screens.HorizontalSuccessTimerScreen
+import aeb.proyecto.timer.components.vertical.components.screens.VerticalSuccessTimerScreen
 import aeb.proyecto.timer.model.TimerServiceUIState
+import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 
 @Composable
 fun HorizontalTimerScreen(
@@ -22,5 +31,39 @@ fun HorizontalTimerScreen(
     onStopService: () -> Unit = {},
     onCancelButton: () -> Unit = {},
 ){
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = spacing8, end = spacing8),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        when (timerUiState) {
+            is TimerUiState.Error -> Unit
+            TimerUiState.Loading -> {
+                TimerLoading()
+            }
+
+            is TimerUiState.Success -> {
+                HorizontalSuccessTimerScreen(
+                    timerUIState = timerUiState,
+                    timerStopWatchUIState = timerStopWatchUIState,
+                    onHourChange = onHourChange,
+                    onMinuteChange = onMinuteChange,
+                    onSecondChange = onSecondChange,
+                    onTypeChange = onTypeChange,
+                    onStartService = onStartService,
+                    onSetChange = onSetChange,
+                    onIntervalHourChange = onIntervalHourChange,
+                    onButtonIntervalWorkChange = onButtonIntervalWorkChange,
+                    onButtonIntervalRestChange = onButtonIntervalRestChange,
+                    onFinishButton = onFinishButton,
+                    onResumeButton = onResumeButton,
+                    onStopService = onStopService,
+                    onCancelButton = onCancelButton,
+                )
+            }
+        }
+    }
 
 }

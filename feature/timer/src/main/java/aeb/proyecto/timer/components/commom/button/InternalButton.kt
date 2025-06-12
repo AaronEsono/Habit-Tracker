@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.button
+package aeb.proyecto.timer.components.commom.button
 
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.repeatingClick.repeatingClickable

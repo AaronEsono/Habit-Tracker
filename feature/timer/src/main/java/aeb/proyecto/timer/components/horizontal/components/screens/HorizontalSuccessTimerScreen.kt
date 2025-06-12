@@ -1,8 +1,6 @@
 package aeb.proyecto.timer.components.horizontal.components.screens
 
 import aeb.proyecto.timer.TimerUiState
-import aeb.proyecto.timer.components.screens.noTimer.NoTimerScreen
-import aeb.proyecto.timer.components.screens.timer.TimerActiveScreen
 import aeb.proyecto.timer.model.TimerServiceUIState
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
@@ -32,7 +30,7 @@ fun HorizontalSuccessTimerScreen(
 
         when(timerStopWatchUIStateAnim){
             TimerServiceUIState.NoTimer -> {
-                NoTimerScreen(
+                HorizontalChoseTimerScreen(
                     timerUIState = timerUIState,
                     onHourChange = onHourChange,
                     onMinuteChange = onMinuteChange,
@@ -46,7 +44,7 @@ fun HorizontalSuccessTimerScreen(
                 )
             }
             is TimerServiceUIState.TimerRunning -> {
-                TimerActiveScreen(
+                HorizontalActiveTimerScreen(
                     timerStopWatchUIState = timerStopWatchUIStateAnim,
                     onStopService = onStopService,
                     onCancelButton = onCancelButton,

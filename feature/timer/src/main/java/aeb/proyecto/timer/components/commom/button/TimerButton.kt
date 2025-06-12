@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.button
+package aeb.proyecto.timer.components.commom.button
 
 import aeb.proyecto.timer.R
 import aeb.proyecto.ui.constants.getContrastColor

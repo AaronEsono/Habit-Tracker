@@ -1,11 +1,10 @@
-package aeb.proyecto.timer.components.screens.timer.typeTimer
+package aeb.proyecto.timer.components.commom.typeActiveTimer
 
 import aeb.proyecto.stopwatch.manager.StopwatchState
 import aeb.proyecto.stopwatch.manager.TypeTimer
 import aeb.proyecto.stopwatch.utils.longToHMS
 import aeb.proyecto.timer.model.TimerServiceUIState
 import aeb.proyecto.ui.text.LabelLargeText
-import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState

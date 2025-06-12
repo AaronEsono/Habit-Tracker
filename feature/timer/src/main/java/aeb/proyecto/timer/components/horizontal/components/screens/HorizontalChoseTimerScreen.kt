@@ -1,6 +1,5 @@
-package aeb.proyecto.timer.components.vertical.components.screens
+package aeb.proyecto.timer.components.horizontal.components.screens
 
-import aeb.proyecto.timer.R
 import aeb.proyecto.timer.TimerUiState
 import aeb.proyecto.timer.components.commom.button.AcceptButton
 import aeb.proyecto.timer.components.commom.segmentedRow.SegmentedRow
@@ -8,13 +7,9 @@ import aeb.proyecto.timer.components.commom.typeTimer.IntervalSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.StopWatchSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.TimerSegmentedScreen
 import aeb.proyecto.timer.model.SegmentedButtonOptions
-import aeb.proyecto.ui.dimmens.Dimmens.spacing12
-import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing32
+import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
-import aeb.proyecto.ui.ripple.CustomRipple
-import aeb.proyecto.ui.text.LabelLargeText
-import aeb.proyecto.ui.text.TitleMediumText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
@@ -23,34 +18,18 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayCircleOutline
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
-fun VerticalChoseTimerScreen(
+fun HorizontalChoseTimerScreen(
     timerUIState: TimerUiState.Success,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
@@ -64,11 +43,11 @@ fun VerticalChoseTimerScreen(
 ){
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
 
-    Column {
+    Row {
         Column (
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.5f),
+                .fillMaxWidth(0.5f)
+                .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
@@ -109,23 +88,31 @@ fun VerticalChoseTimerScreen(
             }
         }
 
-        SegmentedRow(
-            modifier = Modifier.fillMaxWidth().padding(top = spacing8),
-            segmentedList = segmentedOptions,
-            onClickOption = onTypeChange,
-            typeTimer = timerUIState.timerDataUIState.typeTimer,
-        )
+        Spacer(modifier = Modifier.padding(horizontal = spacing4))
 
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = spacing32),
-            horizontalArrangement = Arrangement.Center
+        Column (
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ){
-            AcceptButton(
-                timerUIState = timerUIState,
-                onStartService = onStartService
+            SegmentedRow(
+                modifier = Modifier.fillMaxWidth().padding(top = spacing8),
+                segmentedList = segmentedOptions,
+                onClickOption = onTypeChange,
+                typeTimer = timerUIState.timerDataUIState.typeTimer,
             )
+
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = spacing32),
+                horizontalArrangement = Arrangement.Center
+            ){
+                AcceptButton(
+                    timerUIState = timerUIState,
+                    onStartService = onStartService
+                )
+            }
         }
     }
 }

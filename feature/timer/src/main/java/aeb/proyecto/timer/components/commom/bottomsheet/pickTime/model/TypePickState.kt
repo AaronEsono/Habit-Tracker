@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.bottomSheet.pickTime.model
+package aeb.proyecto.timer.components.commom.bottomsheet.pickTime.model
 
 enum class TypePickState (val value:Int){
     WORK_TIME(1),

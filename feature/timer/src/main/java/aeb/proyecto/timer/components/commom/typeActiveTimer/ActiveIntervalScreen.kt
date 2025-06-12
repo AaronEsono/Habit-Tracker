@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.screens.timer.typeTimer
+package aeb.proyecto.timer.components.commom.typeActiveTimer
 
 import aeb.proyecto.stopwatch.manager.IntervalState
 import aeb.proyecto.stopwatch.manager.StopwatchState
@@ -6,7 +6,6 @@ import aeb.proyecto.stopwatch.manager.TypeTimer
 import aeb.proyecto.stopwatch.utils.longToHMS
 import aeb.proyecto.timer.model.TimerServiceUIState
 import aeb.proyecto.ui.text.LabelLargeText
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -14,9 +13,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun ActiveIntervalScreen(
