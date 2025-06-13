@@ -3,7 +3,7 @@ package aeb.proyecto.timer.components.horizontal.components.screens
 import aeb.proyecto.timer.TimerUiState
 import aeb.proyecto.timer.components.commom.button.AcceptButton
 import aeb.proyecto.timer.components.commom.segmentedRow.SegmentedRow
-import aeb.proyecto.timer.components.commom.typeTimer.IntervalSegmentedScreen
+import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.IntervalSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.StopWatchSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.TimerSegmentedScreen
 import aeb.proyecto.timer.model.SegmentedButtonOptions

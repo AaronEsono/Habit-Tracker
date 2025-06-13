@@ -1,4 +1,4 @@
-package aeb.proyecto.timer.components.commom.bottomsheet.pickTime.model
+package aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.model
 
 import aeb.proyecto.timer.R
 import aeb.proyecto.timer.model.HourSelectedState

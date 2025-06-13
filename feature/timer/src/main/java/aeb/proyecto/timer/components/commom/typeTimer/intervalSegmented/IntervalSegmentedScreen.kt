@@ -1,12 +1,15 @@
-package aeb.proyecto.timer.components.commom.typeTimer
+package aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented
 
 import aeb.proyecto.stopwatch.utils.pad
 import aeb.proyecto.timer.R
-import aeb.proyecto.timer.components.commom.bottomsheet.pickTime.PickTimeBottomSheet
-import aeb.proyecto.timer.components.commom.bottomsheet.pickTime.model.PickHourState
-import aeb.proyecto.timer.components.commom.bottomsheet.pickTime.model.TypeTimer
+import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.vertical.VerticalTimePicker
+import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.model.PickHourState
+import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.model.TypeTimer
 import aeb.proyecto.timer.components.commom.button.InternalSegmentedButton
 import aeb.proyecto.timer.components.commom.textField.TimerTextField
+import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.horizontal.HorizontalTimePicker
+import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.utils.calculateResponsiveSizes
+import aeb.proyecto.timer.components.horizontal.HorizontalTimerScreen
 import aeb.proyecto.timer.model.HourSelectedState
 import aeb.proyecto.ui.dialog.CustomDialog
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
@@ -21,6 +24,7 @@ import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleMediumText
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -45,6 +49,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -65,6 +70,7 @@ fun IntervalSegmentedScreen(
 
     var pickHourState by remember { mutableStateOf(PickHourState()) }
     var showSetDialog by remember { mutableStateOf(false) }
+    val orientation = getOrientation()
 
     val currentTimer = remember (hourSelectedState){
         if (hourSelectedState is HourSelectedState.NoData) {
@@ -83,50 +89,29 @@ fun IntervalSegmentedScreen(
     }
 
     BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
-        val width = maxWidth
-        val height = maxHeight
-        val density = LocalDensity.current
-        val padding = spacing8
-        val orientation = getOrientation()
+        val baseHeight = (maxHeight - (spacing4 * 4)) / 3
 
-        val baseHeight = remember(height, padding) {
-            val totalHeight = height - (padding * 4)
-            totalHeight / 3
-        }
+        val responsiveSizes = calculateResponsiveSizes(maxWidth, baseHeight)
 
-        val (titleFontSize, contentFontSize, contentHeight) = remember(maxHeight, maxWidth, density) {
-            val totalHeight = height - (padding * 4)
-            val minHeightThreshold = 250.dp
-            val isShortHeight = totalHeight < minHeightThreshold
-
-            // Ajustes dinámicos según proporción
-            val titleFactor = if (isShortHeight) 0.25f else 0.25f * 0.8f
-            val contentFactor = if (isShortHeight) 0.6f else 0.6f * 0.75f
-
-            // Si estamos en landscape, reducimos un poco más el contenido
-            val finalTitleHeight = baseHeight * titleFactor * if (orientation == Orientation.Landscape) 0.8f else 1f
-            val finalContentHeight = baseHeight * contentFactor * if (orientation == Orientation.Landscape) 0.7f else 1f
-
-            with(density) {
-                Triple(finalTitleHeight.toSp(), finalContentHeight.toSp(), finalContentHeight)
-            }
-        }
-
+        val dynamicFontSize = responsiveSizes.fontSize
+        val dynamicButtonSize = responsiveSizes.buttonSize
+        val dynamicLabelWidth = responsiveSizes.labelWidth
+        val dynamicLabelFontSize = responsiveSizes.labelFontSize
 
         Column (
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.spacedBy(spacing4),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
 
             Column(
-                modifier = Modifier.fillMaxWidth().height(baseHeight),
+                modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
                 TitleMediumText(
                     stringResource(R.string.timer_interval_work),
-                    fontSize = titleFontSize)
+                    fontSize = dynamicFontSize)
 
                 Row (
                     verticalAlignment = Alignment.CenterVertically,
@@ -134,7 +119,7 @@ fun IntervalSegmentedScreen(
                 ){
                     InternalSegmentedButton (
                         icon = Icons.Filled.Remove,
-                        size = contentHeight
+                        size = dynamicButtonSize
                     ){
                         onClickButtonWorkTime(false)
                     }
@@ -147,7 +132,7 @@ fun IntervalSegmentedScreen(
                             currentTimer.third.pad()
                         ),
                         textAlign = TextAlign.Center,
-                        fontSize = contentFontSize,
+                        fontSize = dynamicLabelFontSize,
                         modifier = Modifier.clickable(
                             interactionSource = null,
                             indication = null
@@ -162,7 +147,7 @@ fun IntervalSegmentedScreen(
                     )
 
                     InternalSegmentedButton (
-                        size = contentHeight
+                        size = dynamicButtonSize
                     ){
                         onClickButtonWorkTime(true)
                     }
@@ -170,12 +155,12 @@ fun IntervalSegmentedScreen(
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth().height(baseHeight),
+                modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
                 TitleMediumText(stringResource(R.string.timer_interval_rest),
-                    fontSize = titleFontSize)
+                    fontSize = dynamicFontSize)
 
                 Row (
                     verticalAlignment = Alignment.CenterVertically,
@@ -183,7 +168,7 @@ fun IntervalSegmentedScreen(
                 ){
                     InternalSegmentedButton (
                         icon = Icons.Filled.Remove,
-                        size = contentHeight
+                        size = dynamicButtonSize
                     ){
                         onClickButtonRestTime(false)
                     }
@@ -194,7 +179,7 @@ fun IntervalSegmentedScreen(
                             currentRest.first.pad(),
                             currentRest.second.pad(),
                             currentRest.third.pad()),
-                        fontSize = contentFontSize,
+                        fontSize = dynamicLabelFontSize,
                         modifier = Modifier.clickable(
                             interactionSource = null,
                             indication = null
@@ -209,7 +194,7 @@ fun IntervalSegmentedScreen(
                     )
 
                     InternalSegmentedButton (
-                        size = contentHeight
+                        size = dynamicButtonSize
                     ){
                         onClickButtonRestTime(true)
                     }
@@ -217,12 +202,12 @@ fun IntervalSegmentedScreen(
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth().height(baseHeight),
+                modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
                 TitleMediumText(stringResource(R.string.timer_interval_sets),
-                    fontSize = titleFontSize)
+                    fontSize = dynamicFontSize)
 
                 Row (
                     verticalAlignment = Alignment.CenterVertically,
@@ -230,16 +215,16 @@ fun IntervalSegmentedScreen(
                 ){
                     InternalSegmentedButton (
                         icon = Icons.Filled.Remove,
-                        size = contentHeight
+                        size = dynamicButtonSize
                     ){
                         onSetIntervalChange(setInterval - 1)
                     }
 
                     LabelMediumText(
                         setInterval.toString(),
-                        fontSize = contentFontSize,
+                        fontSize = dynamicLabelFontSize,
                         modifier = Modifier
-                            .width(contentHeight * 2.5f)
+                            .width(dynamicLabelWidth)
                             .padding(horizontal = spacing20)
                             .clickable {
                                 showSetDialog = true
@@ -248,7 +233,7 @@ fun IntervalSegmentedScreen(
                     )
 
                     InternalSegmentedButton (
-                        size = contentHeight
+                        size = dynamicButtonSize
                     ){
                         onSetIntervalChange(setInterval + 1)
                     }
@@ -258,13 +243,26 @@ fun IntervalSegmentedScreen(
     }
 
     if(pickHourState.showDialog){
-        PickTimeBottomSheet(
-            hourSelectedState = pickHourState.hourState,
-            typePickState = pickHourState.typeTimer.typePickState,
-            label = stringResource(pickHourState.typeTimer.label),
-            onIntervalHourChange = onIntervalHourChange,
-            onDismissRequest = { pickHourState = pickHourState.copy(showDialog = false) }
-        )
+        when(orientation){
+            Orientation.Portrait -> {
+                VerticalTimePicker(
+                    hourSelectedState = pickHourState.hourState,
+                    typePickState = pickHourState.typeTimer.typePickState,
+                    label = stringResource(pickHourState.typeTimer.label),
+                    onIntervalHourChange = onIntervalHourChange,
+                    onDismissRequest = { pickHourState = pickHourState.copy(showDialog = false) }
+                )
+            }
+            Orientation.Landscape -> {
+                HorizontalTimePicker(
+                    hourSelectedState = pickHourState.hourState,
+                    typePickState = pickHourState.typeTimer.typePickState,
+                    label = stringResource(pickHourState.typeTimer.label),
+                    onIntervalHourChange = onIntervalHourChange,
+                    onDismissRequest = { pickHourState = pickHourState.copy(showDialog = false) }
+                )
+            }
+        }
     }
 
     if(showSetDialog){

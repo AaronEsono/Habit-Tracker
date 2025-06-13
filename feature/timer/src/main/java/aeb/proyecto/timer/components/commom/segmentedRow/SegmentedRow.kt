@@ -3,6 +3,8 @@ package aeb.proyecto.timer.components.commom.segmentedRow
 import aeb.proyecto.timer.model.SegmentedButtonOptions
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import aeb.proyecto.ui.orientation.Orientation
+import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.text.LabelLargeText
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +41,7 @@ fun SegmentedRow(
 
     val adaptiveInfo = currentWindowAdaptiveInfo()
     val windowSizeClass = adaptiveInfo.windowSizeClass
+    val orientation = getOrientation()
 
     Row(
         modifier = modifier,
@@ -84,21 +87,45 @@ fun SegmentedRow(
                         }
 
                         // Ajustes personalizados según el widthSizeClass
-                        val iconSize = remember (windowSizeClass.windowWidthSizeClass){
-                            when (windowSizeClass.windowWidthSizeClass) {
-                                WindowWidthSizeClass.COMPACT -> 24.dp
-                                WindowWidthSizeClass.MEDIUM -> 28.dp
-                                WindowWidthSizeClass.EXPANDED -> 32.dp
-                                else -> 28.dp
+                        val iconSize = remember (windowSizeClass.windowWidthSizeClass,orientation){
+                            when(orientation){
+                                Orientation.Portrait -> {
+                                    when (windowSizeClass.windowWidthSizeClass) {
+                                        WindowWidthSizeClass.COMPACT -> 24.dp
+                                        WindowWidthSizeClass.MEDIUM -> 28.dp
+                                        WindowWidthSizeClass.EXPANDED -> 32.dp
+                                        else -> 28.dp
+                                    }
+                                }
+                                Orientation.Landscape -> {
+                                    when (windowSizeClass.windowWidthSizeClass) {
+                                        WindowWidthSizeClass.COMPACT -> 16.dp
+                                        WindowWidthSizeClass.MEDIUM -> 20.dp
+                                        WindowWidthSizeClass.EXPANDED -> 24.dp
+                                        else -> 28.dp
+                                    }
+                                }
                             }
                         }
 
-                        val fontSize = remember (windowSizeClass.windowWidthSizeClass){
-                            when (windowSizeClass.windowWidthSizeClass) {
-                                WindowWidthSizeClass.COMPACT -> 14.sp
-                                WindowWidthSizeClass.MEDIUM -> 16.sp
-                                WindowWidthSizeClass.EXPANDED -> 18.sp
-                                else -> 16.sp
+                        val fontSize = remember (windowSizeClass.windowWidthSizeClass, orientation){
+                            when(orientation){
+                                Orientation.Portrait -> {
+                                    when (windowSizeClass.windowWidthSizeClass) {
+                                        WindowWidthSizeClass.COMPACT -> 14.sp
+                                        WindowWidthSizeClass.MEDIUM -> 16.sp
+                                        WindowWidthSizeClass.EXPANDED -> 18.sp
+                                        else -> 16.sp
+                                    }
+                                }
+                                Orientation.Landscape -> {
+                                    when (windowSizeClass.windowWidthSizeClass) {
+                                        WindowWidthSizeClass.COMPACT -> 10.sp
+                                        WindowWidthSizeClass.MEDIUM -> 12.sp
+                                        WindowWidthSizeClass.EXPANDED -> 14.sp
+                                        else -> 16.sp
+                                    }
+                                }
                             }
                         }
 

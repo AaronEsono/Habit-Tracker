@@ -6,7 +6,7 @@ import aeb.proyecto.domain.usecase.timer.TimerDataStoreUseCase
 import aeb.proyecto.stopwatch.helper.StopWatchHelper
 import aeb.proyecto.stopwatch.manager.StopWatchStateManager
 import aeb.proyecto.stopwatch.manager.StopwatchState
-import aeb.proyecto.timer.components.commom.bottomsheet.pickTime.model.TypePickState
+import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.model.TypePickState
 import aeb.proyecto.timer.model.HabitLinkedState
 import aeb.proyecto.timer.model.HourSelectedState
 import aeb.proyecto.timer.model.SegmentedButtonOptions
