@@ -49,4 +49,7 @@
 
     <string name="timer_title_interval_paused">Intervalos - Pausado</string>
     <string name="timer_title_interval_finish">Intervalos - Finalizado</string>
+
+    <string name="timer_linked_habit_no_data">Sin hábito vinculado</string>
+    <string name="timer_linked_habit_no_habit">No hay hábitos disponibles con una unidad de tiempo</string>
 </resources>

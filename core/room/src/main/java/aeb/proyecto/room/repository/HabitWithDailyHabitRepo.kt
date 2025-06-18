@@ -5,6 +5,8 @@ import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.room.model.classes.UnitHabit
+import aeb.proyecto.room.model.classes.listTime
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -86,5 +88,13 @@ class HabitWithDailyHabitRepo @Inject constructor(
 
         return HabitWithDay(habit, day)
     }
+
+    fun getHabitWithTimeUnit():Flow<List<Habit>>{
+        return habitWithDailyHabitDao.getAllHabits()
+            .map { habits ->
+                habits.filter { it.unit in listTime }
+            }
+    }
+
 }
 

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 fun VerticalSuccessTimerScreen(
     timerUIState: TimerUiState.Success,
     timerStopWatchUIState: TimerServiceUIState,
+    bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
     onSecondChange: (String) -> Unit,
@@ -22,6 +23,8 @@ fun VerticalSuccessTimerScreen(
     onResumeButton: () -> Unit,
     onCancelButton: () -> Unit,
     onFinishButton: () -> Unit,
+    onClickHabitButton: () -> Unit,
+    onDismissHabitBottomSheet: () -> Unit
 ){
 
     AnimatedContent(
@@ -33,6 +36,7 @@ fun VerticalSuccessTimerScreen(
             TimerServiceUIState.NoTimer -> {
                 VerticalChoseTimerScreen(
                     timerUIState = timerUIState,
+                    bottomSheetState = bottomSheetState,
                     onHourChange = onHourChange,
                     onMinuteChange = onMinuteChange,
                     onSecondChange = onSecondChange,
@@ -41,7 +45,9 @@ fun VerticalSuccessTimerScreen(
                     onSetChange = onSetChange,
                     onIntervalHourChange = onIntervalHourChange,
                     onButtonIntervalWorkChange = onButtonIntervalWorkChange,
-                    onButtonIntervalRestChange = onButtonIntervalRestChange
+                    onButtonIntervalRestChange = onButtonIntervalRestChange,
+                    onClickHabitButton = onClickHabitButton,
+                    onDismissHabitBottomSheet = onDismissHabitBottomSheet
                 )
             }
             is TimerServiceUIState.TimerRunning -> {

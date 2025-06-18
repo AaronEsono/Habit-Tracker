@@ -52,4 +52,7 @@
     <string name="timer_title_interval_paused">Interval - Paused</string>
     <string name="timer_title_interval_finish">Interval - Finished</string>
 
+    <string name="timer_linked_habit_no_data">Habit not linked</string>
+    <string name="timer_linked_habit_no_habit">No habits available with a time unit</string>
+
 </resources>

@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 fun HorizontalTimerScreen(
     timerUiState: TimerUiState,
     timerStopWatchUIState: TimerServiceUIState,
+    bottomSheetState:Boolean,
     onHourChange:(String) -> Unit = {},
     onMinuteChange:(String) -> Unit = {},
     onSecondChange: (String) -> Unit = {},

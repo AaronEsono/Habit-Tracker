@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 fun VerticalTimerScreen(
     timerUiState: TimerUiState,
     timerStopWatchUIState: TimerServiceUIState,
+    bottomSheetState:Boolean,
     onHourChange:(String) -> Unit = {},
     onMinuteChange:(String) -> Unit = {},
     onSecondChange: (String) -> Unit = {},
@@ -29,6 +30,8 @@ fun VerticalTimerScreen(
     onResumeButton: () -> Unit = {},
     onStopService: () -> Unit = {},
     onCancelButton: () -> Unit = {},
+    onClickHabitButton: () -> Unit = {},
+    onDismissHabitBottomSheet: () -> Unit = {}
 ){
 
     Column(
@@ -47,6 +50,7 @@ fun VerticalTimerScreen(
                 VerticalSuccessTimerScreen(
                     timerUIState = timerUiState,
                     timerStopWatchUIState = timerStopWatchUIState,
+                    bottomSheetState = bottomSheetState,
                     onHourChange = onHourChange,
                     onMinuteChange = onMinuteChange,
                     onSecondChange = onSecondChange,
@@ -60,6 +64,8 @@ fun VerticalTimerScreen(
                     onResumeButton = onResumeButton,
                     onStopService = onStopService,
                     onCancelButton = onCancelButton,
+                    onClickHabitButton = onClickHabitButton,
+                    onDismissHabitBottomSheet = onDismissHabitBottomSheet
                 )
             }
         }

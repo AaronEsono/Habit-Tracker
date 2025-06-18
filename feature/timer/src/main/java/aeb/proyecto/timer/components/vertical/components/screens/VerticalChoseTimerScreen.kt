@@ -1,13 +1,18 @@
 package aeb.proyecto.timer.components.vertical.components.screens
 
 import aeb.proyecto.timer.TimerUiState
+import aeb.proyecto.timer.components.commom.bottomSheet.pickHabit.PickHabitBottomSheet
 import aeb.proyecto.timer.components.commom.button.AcceptButton
+import aeb.proyecto.timer.components.commom.habitLinked.HabitLinkedButton
 import aeb.proyecto.timer.components.commom.segmentedRow.SegmentedRow
 import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.IntervalSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.StopWatchSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.TimerSegmentedScreen
 import aeb.proyecto.timer.model.SegmentedButtonOptions
-import aeb.proyecto.ui.dimmens.Dimmens.spacing32
+import aeb.proyecto.ui.dimmens.Dimmens.spacing12
+import aeb.proyecto.ui.dimmens.Dimmens.spacing16
+import aeb.proyecto.ui.dimmens.Dimmens.spacing20
+import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExitTransition
@@ -28,6 +33,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun VerticalChoseTimerScreen(
     timerUIState: TimerUiState.Success,
+    bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
     onSecondChange: (String) -> Unit,
@@ -36,7 +42,9 @@ fun VerticalChoseTimerScreen(
     onSetChange: (Int) -> Unit,
     onIntervalHourChange: (Triple<String,String,String>,Int) -> Unit,
     onButtonIntervalWorkChange: (Boolean) -> Unit,
-    onButtonIntervalRestChange: (Boolean) -> Unit
+    onButtonIntervalRestChange: (Boolean) -> Unit,
+    onClickHabitButton: () -> Unit,
+    onDismissHabitBottomSheet: () -> Unit
 ){
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
 
@@ -92,10 +100,15 @@ fun VerticalChoseTimerScreen(
             typeTimer = timerUIState.timerDataUIState.typeTimer,
         )
 
+        HabitLinkedButton(
+            modifier = Modifier.padding(top = spacing16, bottom = spacing16),
+            linkedState = timerUIState.timerDataUIState.habitLinked,
+            onClickHabitLinkedButton = onClickHabitButton
+        )
+
         Row (
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = spacing32),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ){
             AcceptButton(
@@ -104,4 +117,11 @@ fun VerticalChoseTimerScreen(
             )
         }
     }
+
+    if(bottomSheetState){
+        PickHabitBottomSheet(
+            onDismiss = onDismissHabitBottomSheet
+        )
+    }
+
 }
