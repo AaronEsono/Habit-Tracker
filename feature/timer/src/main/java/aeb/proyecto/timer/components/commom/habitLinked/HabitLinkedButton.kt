@@ -22,6 +22,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,7 @@ fun HabitLinkedButton(
     onClickHabitLinkedButton:() -> Unit,
     onClickCross:()->Unit = {}
 ){
+
     CustomRipple {
             Card(
                 modifier = modifier
@@ -50,21 +52,17 @@ fun HabitLinkedButton(
                 modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically
             ){
-                AnimatedContent(
-                    targetState = linkedState,
-                ) { linkedStateAnim ->
-                    when(linkedStateAnim){
-                        is HabitLinkedState.Data -> {
-                            LinkedHabit(
-                                linkedState = linkedStateAnim,
-                                onClickCross = onClickCross
-                            )
-                        }
-                        HabitLinkedState.NoData -> {
-                            NoLinkedHabit(
-                                modifier = Modifier.padding(start = spacing24)
-                            )
-                        }
+                when(linkedState){
+                    is HabitLinkedState.Data -> {
+                        LinkedHabit(
+                            linkedState = linkedState,
+                            onClickCross = onClickCross
+                        )
+                    }
+                    HabitLinkedState.NoData -> {
+                        NoLinkedHabit(
+                            modifier = Modifier.padding(start = spacing24)
+                        )
                     }
                 }
             }
