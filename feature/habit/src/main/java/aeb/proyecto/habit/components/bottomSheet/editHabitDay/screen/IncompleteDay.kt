@@ -36,7 +36,7 @@ fun IncompleteDay(
     habit: Habit,
     habitDay: HabitDay,
     onRestart:(id:Long,date:LocalDate) -> Unit,
-    onClickTimer:(Pair<Long,String>) -> Unit,
+    onClickTimer:(Triple<Long,String,BigDecimal>) -> Unit,
     onClick:(id:Long, date: LocalDate, goalDone:BigDecimal) -> Unit
 ){
 

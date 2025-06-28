@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import java.time.LocalDate
 
 @Composable
 fun VerticalTimerScreen(
@@ -31,7 +32,9 @@ fun VerticalTimerScreen(
     onStopService: () -> Unit = {},
     onCancelButton: () -> Unit = {},
     onClickHabitButton: () -> Unit = {},
-    onDismissHabitBottomSheet: () -> Unit = {}
+    onDismissHabitBottomSheet: () -> Unit = {},
+    onAcceptBottomSheet: (Long, LocalDate) -> Unit,
+    onClickCross:()->Unit = {}
 ){
 
     Column(
@@ -65,7 +68,9 @@ fun VerticalTimerScreen(
                     onStopService = onStopService,
                     onCancelButton = onCancelButton,
                     onClickHabitButton = onClickHabitButton,
-                    onDismissHabitBottomSheet = onDismissHabitBottomSheet
+                    onDismissHabitBottomSheet = onDismissHabitBottomSheet,
+                    onAcceptBottomSheet = onAcceptBottomSheet,
+                    onClickCross = onClickCross
                 )
             }
         }

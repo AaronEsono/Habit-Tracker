@@ -9,6 +9,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +31,7 @@ fun HabitLinkedButton(
     modifier: Modifier = Modifier,
     linkedState: HabitLinkedState,
     onClickHabitLinkedButton:() -> Unit,
+    onClickCross:()->Unit = {}
 ){
     CustomRipple {
             Card(
@@ -41,24 +43,28 @@ fun HabitLinkedButton(
                 colors = CardDefaults.elevatedCardColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 ),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                elevation = CardDefaults.elevatedCardElevation(
-                    defaultElevation = spacing4
-                )
+                border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outline),
         ){
 
             Row (
                 modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically
             ){
-                when(linkedState){
-                    is HabitLinkedState.Data -> {
-                        LinkedHabit()
-                    }
-                    HabitLinkedState.NoData -> {
-                        NoLinkedHabit(
-                            modifier = Modifier.padding(start = spacing24)
-                        )
+                AnimatedContent(
+                    targetState = linkedState,
+                ) { linkedStateAnim ->
+                    when(linkedStateAnim){
+                        is HabitLinkedState.Data -> {
+                            LinkedHabit(
+                                linkedState = linkedStateAnim,
+                                onClickCross = onClickCross
+                            )
+                        }
+                        HabitLinkedState.NoData -> {
+                            NoLinkedHabit(
+                                modifier = Modifier.padding(start = spacing24)
+                            )
+                        }
                     }
                 }
             }

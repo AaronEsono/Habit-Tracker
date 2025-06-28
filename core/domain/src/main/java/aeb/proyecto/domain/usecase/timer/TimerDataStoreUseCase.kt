@@ -4,6 +4,7 @@ import aeb.proyecto.datastore.DatastoreInterface
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import java.time.LocalDate
 import javax.inject.Inject
 
 class TimerDataStoreUseCase @Inject constructor(
@@ -40,4 +41,14 @@ class TimerDataStoreUseCase @Inject constructor(
     suspend fun setTimer(value:Int){
         datastoreInterface.setSetsTimer(value)
     }
+
+    suspend fun setHabitLinked(id:Long, date:LocalDate){
+        datastoreInterface.setIdTimerSelected(id)
+        datastoreInterface.setDateTimerSelected(date.toString())
+    }
+
+    suspend fun removeHabitLinked(){
+        datastoreInterface.setIdTimerSelected(-1)
+    }
+
 }

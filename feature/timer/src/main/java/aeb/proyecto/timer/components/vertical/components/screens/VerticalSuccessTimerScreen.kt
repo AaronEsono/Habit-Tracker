@@ -4,6 +4,7 @@ import aeb.proyecto.timer.TimerUiState
 import aeb.proyecto.timer.model.TimerServiceUIState
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
+import java.time.LocalDate
 
 @Composable
 fun VerticalSuccessTimerScreen(
@@ -24,7 +25,9 @@ fun VerticalSuccessTimerScreen(
     onCancelButton: () -> Unit,
     onFinishButton: () -> Unit,
     onClickHabitButton: () -> Unit,
-    onDismissHabitBottomSheet: () -> Unit
+    onDismissHabitBottomSheet: () -> Unit,
+    onAcceptBottomSheet: (Long, LocalDate) -> Unit,
+    onClickCross:()->Unit = {}
 ){
 
     AnimatedContent(
@@ -47,7 +50,9 @@ fun VerticalSuccessTimerScreen(
                     onButtonIntervalWorkChange = onButtonIntervalWorkChange,
                     onButtonIntervalRestChange = onButtonIntervalRestChange,
                     onClickHabitButton = onClickHabitButton,
-                    onDismissHabitBottomSheet = onDismissHabitBottomSheet
+                    onDismissHabitBottomSheet = onDismissHabitBottomSheet,
+                    onAcceptBottomSheet = onAcceptBottomSheet,
+                    onClickCross = onClickCross
                 )
             }
             is TimerServiceUIState.TimerRunning -> {

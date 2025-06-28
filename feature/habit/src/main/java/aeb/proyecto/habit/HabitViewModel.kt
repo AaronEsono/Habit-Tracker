@@ -358,6 +358,12 @@ class HabitViewModel @Inject constructor(
     private fun findHabit(id:Long):Habit{
         return getHabitUseCase.getHabit(id)
     }
+
+    fun onClickTimerHabit(data:Triple<Long,String,BigDecimal>, navigate: () -> Unit) = viewModelScope.launch{
+        habitDatastoreUseCase.setTimerFromHabit(data.first, LocalDate.parse(data.second),data.third)
+        navigate()
+    }
+
 }
 
 sealed class PagerTypesUiState(){

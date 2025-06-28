@@ -55,4 +55,6 @@
     <string name="timer_linked_habit_no_data">Habit not linked</string>
     <string name="timer_linked_habit_no_habit">No habits available with a time unit</string>
 
+    <string name="timer_linked_habit_title">Select a habit to link with the timer</string>
+
 </resources>

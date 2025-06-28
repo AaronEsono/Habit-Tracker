@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import java.time.LocalDate
 
 @Composable
 fun VerticalChoseTimerScreen(
@@ -44,7 +45,9 @@ fun VerticalChoseTimerScreen(
     onButtonIntervalWorkChange: (Boolean) -> Unit,
     onButtonIntervalRestChange: (Boolean) -> Unit,
     onClickHabitButton: () -> Unit,
-    onDismissHabitBottomSheet: () -> Unit
+    onDismissHabitBottomSheet: () -> Unit,
+    onAcceptBottomSheet: (Long,LocalDate) -> Unit,
+    onClickCross:()->Unit = {}
 ){
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
 
@@ -103,7 +106,8 @@ fun VerticalChoseTimerScreen(
         HabitLinkedButton(
             modifier = Modifier.padding(top = spacing16, bottom = spacing16),
             linkedState = timerUIState.timerDataUIState.habitLinked,
-            onClickHabitLinkedButton = onClickHabitButton
+            onClickHabitLinkedButton = onClickHabitButton,
+            onClickCross = onClickCross
         )
 
         Row (
@@ -120,7 +124,9 @@ fun VerticalChoseTimerScreen(
 
     if(bottomSheetState){
         PickHabitBottomSheet(
-            onDismiss = onDismissHabitBottomSheet
+            onDismiss = onDismissHabitBottomSheet,
+            habitLinkedState = timerUIState.timerDataUIState.habitLinked,
+            onAccept = onAcceptBottomSheet
         )
     }
 

@@ -100,7 +100,11 @@ fun HabitScreen(
             onDismiss = viewModel::onDismissEdit,
             onRestart = viewModel::onRestart,
             onClick = viewModel::onClick,
-            onClickTimer = { navigateToTimer()}
+            onClickTimer = { data ->
+                viewModel.onClickTimerHabit(data){
+                    navigateToTimer()
+                }
+            }
         )
     }
 }

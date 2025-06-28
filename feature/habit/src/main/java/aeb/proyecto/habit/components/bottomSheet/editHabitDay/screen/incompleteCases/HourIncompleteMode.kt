@@ -56,7 +56,7 @@ fun HourIncompleteMode(
     leftTimes: BigDecimal,
     halfTimesLeft:BigDecimal,
     onRestart:(id:Long,date: LocalDate) -> Unit,
-    onClickTimer:(Pair<Long,String>) -> Unit = {},
+    onClickTimer:(Triple<Long,String,BigDecimal>) -> Unit = {},
     onClick:(id:Long, date: LocalDate, goalDone:BigDecimal) -> Unit
 ){
 
@@ -92,7 +92,7 @@ fun HourIncompleteMode(
             horizontalArrangement = Arrangement.Center
         ){
             TimerCard(
-                onClick = { onClickTimer(Pair(habit.id,day.date.toString())) }
+                onClick = { onClickTimer(Triple(habit.id,day.date.toString(),leftTimes)) }
             )
         }
     }

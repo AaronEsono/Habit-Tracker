@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 
@@ -295,6 +296,14 @@ class TimerViewModel @Inject constructor(
 
     fun onDismissHabitBottomSheet(){
         _bottomSheetState.update { false }
+    }
+
+    fun onAcceptBottomSheetPickHabit(id:Long, date:LocalDate) = viewModelScope.launch{
+        timerDataStoreUseCase.setHabitLinked(id,date)
+    }
+
+    fun cancelHabitLinked() = viewModelScope.launch {
+        timerDataStoreUseCase.removeHabitLinked()
     }
 
 }

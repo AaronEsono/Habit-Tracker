@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import java.time.LocalDate
 
 @Composable
 fun TimerScreen(
@@ -49,6 +50,8 @@ fun TimerScreen(
                 onCancelButton = viewModel::cancelService,
                 onClickHabitButton = viewModel::onClickHabitButton,
                 onDismissHabitBottomSheet = viewModel::onDismissHabitBottomSheet,
+                onAcceptBottomSheet = viewModel::onAcceptBottomSheetPickHabit,
+                onClickCross = viewModel::cancelHabitLinked
             )
         }
         Orientation.Landscape -> {
