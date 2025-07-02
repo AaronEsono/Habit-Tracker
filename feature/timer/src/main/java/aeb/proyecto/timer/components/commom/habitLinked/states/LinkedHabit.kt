@@ -70,7 +70,7 @@ fun LinkedHabit(
             verticalArrangement = Arrangement.Center
         ){
             LabelLargeText(linkedState.data.habit.name)
-            LabelLargeText(getTextToday(linkedState.data.day.date))
+            LabelMediumText(getTextToday(linkedState.data.day.date))
         }
 
 

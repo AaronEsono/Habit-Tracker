@@ -19,6 +19,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing32
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -74,12 +75,11 @@ fun HorizontalActiveTimerScreen(
             }
 
             timerStopWatchUIState.habitLinked?.let { habitLinked ->
-                LabelLargeText(
+                LabelMediumText(
                     stringResource(
                         R.string.timer_title_habit,habitLinked.habit.name,
                         getTextToday(habitLinked.day.date)
                     ),
-                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = spacing8),
                     color = MaterialTheme.colorScheme.onSurface,

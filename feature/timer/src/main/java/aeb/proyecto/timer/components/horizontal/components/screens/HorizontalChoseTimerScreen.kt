@@ -1,12 +1,15 @@
 package aeb.proyecto.timer.components.horizontal.components.screens
 
 import aeb.proyecto.timer.TimerUiState
+import aeb.proyecto.timer.components.commom.bottomSheet.pickHabit.PickHabitBottomSheet
 import aeb.proyecto.timer.components.commom.button.AcceptButton
+import aeb.proyecto.timer.components.commom.habitLinked.HabitLinkedButton
 import aeb.proyecto.timer.components.commom.segmentedRow.SegmentedRow
 import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.IntervalSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.StopWatchSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.TimerSegmentedScreen
 import aeb.proyecto.timer.model.SegmentedButtonOptions
+import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing32
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
@@ -27,10 +30,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import java.time.LocalDate
 
 @Composable
 fun HorizontalChoseTimerScreen(
     timerUIState: TimerUiState.Success,
+    bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
     onSecondChange: (String) -> Unit,
@@ -39,7 +44,11 @@ fun HorizontalChoseTimerScreen(
     onSetChange: (Int) -> Unit,
     onIntervalHourChange: (Triple<String,String,String>,Int) -> Unit,
     onButtonIntervalWorkChange: (Boolean) -> Unit,
-    onButtonIntervalRestChange: (Boolean) -> Unit
+    onButtonIntervalRestChange: (Boolean) -> Unit,
+    onClickHabitButton: () -> Unit,
+    onDismissHabitBottomSheet: () -> Unit,
+    onAcceptBottomSheet: (Long, LocalDate) -> Unit,
+    onClickCross:()->Unit = {}
 ){
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
 
@@ -102,10 +111,17 @@ fun HorizontalChoseTimerScreen(
                 typeTimer = timerUIState.timerDataUIState.typeTimer,
             )
 
+            HabitLinkedButton(
+                modifier = Modifier.padding(top = spacing16),
+                linkedState = timerUIState.timerDataUIState.habitLinked,
+                onClickHabitLinkedButton = onClickHabitButton,
+                onClickCross = onClickCross
+            )
+
             Row (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = spacing32),
+                    .padding(top = spacing16),
                 horizontalArrangement = Arrangement.Center
             ){
                 AcceptButton(
@@ -115,4 +131,13 @@ fun HorizontalChoseTimerScreen(
             }
         }
     }
+
+    if(bottomSheetState){
+        PickHabitBottomSheet(
+            onDismiss = onDismissHabitBottomSheet,
+            habitLinkedState = timerUIState.timerDataUIState.habitLinked,
+            onAccept = onAcceptBottomSheet
+        )
+    }
+
 }

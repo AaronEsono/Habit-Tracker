@@ -15,7 +15,7 @@ fun NoLinkedHabit(
     LabelLargeText(
         modifier = modifier,
         text = stringResource(R.string.timer_linked_habit_no_data),
-        fontSize = 16.sp,
+        fontSize = 14.sp,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
     )

@@ -13,6 +13,7 @@ android {
 dependencies {
 
     implementation(projects.core.room)
+    implementation(projects.core.datastore)
     
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

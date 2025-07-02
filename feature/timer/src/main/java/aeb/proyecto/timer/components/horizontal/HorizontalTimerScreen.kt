@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import java.time.LocalDate
 
 @Composable
 fun HorizontalTimerScreen(
@@ -31,6 +32,10 @@ fun HorizontalTimerScreen(
     onResumeButton: () -> Unit = {},
     onStopService: () -> Unit = {},
     onCancelButton: () -> Unit = {},
+    onClickHabitButton: () -> Unit = {},
+    onDismissHabitBottomSheet: () -> Unit = {},
+    onAcceptBottomSheet: (Long, LocalDate) -> Unit,
+    onClickCross:()->Unit = {}
 ){
 
     Column(
@@ -49,6 +54,7 @@ fun HorizontalTimerScreen(
                 HorizontalSuccessTimerScreen(
                     timerUIState = timerUiState,
                     timerStopWatchUIState = timerStopWatchUIState,
+                    bottomSheetState = bottomSheetState,
                     onHourChange = onHourChange,
                     onMinuteChange = onMinuteChange,
                     onSecondChange = onSecondChange,
@@ -62,6 +68,10 @@ fun HorizontalTimerScreen(
                     onResumeButton = onResumeButton,
                     onStopService = onStopService,
                     onCancelButton = onCancelButton,
+                    onClickHabitButton = onClickHabitButton,
+                    onDismissHabitBottomSheet = onDismissHabitBottomSheet,
+                    onAcceptBottomSheet = onAcceptBottomSheet,
+                    onClickCross = onClickCross
                 )
             }
         }

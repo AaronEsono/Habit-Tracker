@@ -4,11 +4,13 @@ import aeb.proyecto.timer.TimerUiState
 import aeb.proyecto.timer.model.TimerServiceUIState
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
+import java.time.LocalDate
 
 @Composable
 fun HorizontalSuccessTimerScreen(
     timerUIState: TimerUiState.Success,
     timerStopWatchUIState: TimerServiceUIState,
+    bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
     onSecondChange: (String) -> Unit,
@@ -22,6 +24,10 @@ fun HorizontalSuccessTimerScreen(
     onResumeButton: () -> Unit,
     onCancelButton: () -> Unit,
     onFinishButton: () -> Unit,
+    onClickHabitButton: () -> Unit,
+    onDismissHabitBottomSheet: () -> Unit,
+    onAcceptBottomSheet: (Long, LocalDate) -> Unit,
+    onClickCross:()->Unit = {}
 ){
     AnimatedContent(
         targetState = timerStopWatchUIState,
@@ -32,6 +38,7 @@ fun HorizontalSuccessTimerScreen(
             TimerServiceUIState.NoTimer -> {
                 HorizontalChoseTimerScreen(
                     timerUIState = timerUIState,
+                    bottomSheetState = bottomSheetState,
                     onHourChange = onHourChange,
                     onMinuteChange = onMinuteChange,
                     onSecondChange = onSecondChange,
@@ -40,7 +47,11 @@ fun HorizontalSuccessTimerScreen(
                     onSetChange = onSetChange,
                     onIntervalHourChange = onIntervalHourChange,
                     onButtonIntervalWorkChange = onButtonIntervalWorkChange,
-                    onButtonIntervalRestChange = onButtonIntervalRestChange
+                    onButtonIntervalRestChange = onButtonIntervalRestChange,
+                    onClickHabitButton = onClickHabitButton,
+                    onDismissHabitBottomSheet = onDismissHabitBottomSheet,
+                    onAcceptBottomSheet = onAcceptBottomSheet,
+                    onClickCross = onClickCross
                 )
             }
             is TimerServiceUIState.TimerRunning -> {

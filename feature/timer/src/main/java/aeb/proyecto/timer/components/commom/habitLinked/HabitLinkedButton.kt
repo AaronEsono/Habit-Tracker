@@ -3,6 +3,7 @@ package aeb.proyecto.timer.components.commom.habitLinked
 import aeb.proyecto.timer.components.commom.habitLinked.states.LinkedHabit
 import aeb.proyecto.timer.components.commom.habitLinked.states.NoLinkedHabit
 import aeb.proyecto.timer.model.HabitLinkedState
+import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
@@ -56,7 +57,7 @@ fun HabitLinkedButton(
                     }
                     HabitLinkedState.NoData -> {
                         NoLinkedHabit(
-                            modifier = Modifier.padding(start = spacing24)
+                            modifier = Modifier.padding(start = spacing12)
                         )
                     }
                 }

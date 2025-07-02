@@ -228,6 +228,7 @@ fun PickHabitBottomSheet(
 
         DatePickerDialog(
             onDismissRequest = pickHabitViewModel::closeDialog,
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             confirmButton = {
                 TextButton(onClick = {
                     val localDate = datePickerState.selectedDateMillis?.let { millis ->

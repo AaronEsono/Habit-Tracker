@@ -71,7 +71,11 @@ fun TimerScreen(
                 onFinishButton = viewModel::finishService,
                 onResumeButton = viewModel::resumeService,
                 onStopService = viewModel::stopService,
-                onCancelButton = viewModel::cancelService
+                onCancelButton = viewModel::cancelService,
+                onClickHabitButton = viewModel::onClickHabitButton,
+                onDismissHabitBottomSheet = viewModel::onDismissHabitBottomSheet,
+                onAcceptBottomSheet = viewModel::onAcceptBottomSheetPickHabit,
+                onClickCross = viewModel::cancelHabitLinked
             )
         }
     }
