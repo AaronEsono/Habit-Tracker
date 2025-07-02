@@ -30,6 +30,8 @@
     <string name="timer_start">Iniciar</string>
     <string name="timer_left">Tiempo restante: %1$s</string>
 
+    <string name="timer_title_habit">%1$s - %2$s</string>
+
     <string name="timer_button_stop">Parar</string>
     <string name="timer_button_cancel">Cancelar</string>
     <string name="timer_button_resume">Reanudar</string>

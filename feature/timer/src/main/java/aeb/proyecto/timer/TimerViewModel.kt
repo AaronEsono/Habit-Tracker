@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -82,8 +83,9 @@ class TimerViewModel @Inject constructor(
         stopWatchStateManager.elapsedTime,
         stopWatchStateManager.typeTimer,
         stopWatchStateManager.currentState,
-        stopWatchStateManager.timerString
-    ) { elapsedTime, typeTimer, currentState, timerString ->
+        stopWatchStateManager.timerString,
+        stopWatchStateManager.habitLinked
+    ) { elapsedTime, typeTimer, currentState, timerString, habitLinked ->
 
         if(currentState == StopwatchState.Idle) TimerServiceUIState.NoTimer
         else{
@@ -91,7 +93,8 @@ class TimerViewModel @Inject constructor(
                 elapsedTime = elapsedTime,
                 typeTimer = typeTimer,
                 currentState = currentState,
-                hourString = timerString
+                hourString = timerString,
+                habitLinked = habitLinked
             )
         }
 
@@ -103,7 +106,7 @@ class TimerViewModel @Inject constructor(
             initialValue = TimerServiceUIState.NoTimer
         )
 
-    val _bottomSheetState: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val _bottomSheetState: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val bottomSheetState: StateFlow<Boolean> = _bottomSheetState.asStateFlow()
 
     fun startService(){
@@ -112,18 +115,27 @@ class TimerViewModel @Inject constructor(
         val rest = getLongMillisecondsTime(data?.restHour ?: HourSelectedState.NoData)
         val interval = data?.sets ?: 1
 
+        val habitLinked = (timerData.value as? TimerUiState.Success)?.timerDataUIState?.habitLinked
+
+        val habitData:Pair<Long,String> = if(habitLinked is HabitLinkedState.Data){
+            habitLinked.data.habit.id to habitLinked.data.day.date.toString()
+        }else{
+            -1L to ""
+        }
+
+
         when(data?.typeTimer){
             SegmentedButtonOptions.StopWatch -> {
-                serviceHelper.startForegroundServiceOnStopWatch()
+                serviceHelper.startForegroundServiceOnStopWatch(habitData)
             }
             SegmentedButtonOptions.Timer -> {
-                serviceHelper.startForegroundServiceOnTimer(time)
+                serviceHelper.startForegroundServiceOnTimer(time,habitData)
             }
             SegmentedButtonOptions.Interval -> {
-                serviceHelper.startForegroundServiceOnInterval(time,rest,interval)
+                serviceHelper.startForegroundServiceOnInterval(time,rest,interval,habitData)
             }
             null -> {
-                serviceHelper.startForegroundServiceOnStopWatch()
+                serviceHelper.startForegroundServiceOnStopWatch(habitData)
             }
         }
     }

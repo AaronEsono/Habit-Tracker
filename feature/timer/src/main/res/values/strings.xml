@@ -32,6 +32,8 @@
 
     <string name="timer_dots" translatable="false">:</string>
 
+    <string name="timer_title_habit">%1$s - %2$s</string>
+
     <string name="timer_button_stop">Stop</string>
     <string name="timer_button_cancel">Cancel</string>
     <string name="timer_button_resume">Resume</string>

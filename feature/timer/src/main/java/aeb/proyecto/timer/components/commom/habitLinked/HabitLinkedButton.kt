@@ -3,10 +3,7 @@ package aeb.proyecto.timer.components.commom.habitLinked
 import aeb.proyecto.timer.components.commom.habitLinked.states.LinkedHabit
 import aeb.proyecto.timer.components.commom.habitLinked.states.NoLinkedHabit
 import aeb.proyecto.timer.model.HabitLinkedState
-import aeb.proyecto.ui.dimmens.Dimmens
-import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing24
-import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import androidx.compose.animation.AnimatedContent
@@ -19,10 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp

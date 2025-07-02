@@ -1,5 +1,7 @@
 package aeb.proyecto.stopwatch.manager
 
+import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.stopwatch.utils.longToHMS
 import aeb.proyecto.stopwatch.utils.pad
 import android.util.Log
@@ -40,6 +42,9 @@ class StopWatchStateManager @Inject constructor() {
     private var _currentState = MutableStateFlow(StopwatchState.Idle)
     val currentState: StateFlow<StopwatchState> = _currentState.asStateFlow()
 
+    private var _habitLinked = MutableStateFlow<HabitWithDay?>(null)
+    val habitLinked: StateFlow<HabitWithDay?> = _habitLinked.asStateFlow()
+
     val timerString: StateFlow<String> = elapsedTime
         .map { millis -> longToHMS(millis) }
         .stateIn(
@@ -68,6 +73,10 @@ class StopWatchStateManager @Inject constructor() {
 
     fun setRunningTimer(running:Boolean){
         _runningTimer.value = running
+    }
+
+    fun setHabitLinked(habitDay: HabitWithDay?){
+        _habitLinked.value = habitDay
     }
 
 }

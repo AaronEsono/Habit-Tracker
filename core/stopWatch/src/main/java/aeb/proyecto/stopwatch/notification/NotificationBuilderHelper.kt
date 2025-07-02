@@ -21,6 +21,7 @@ class NotificationBuilderHelper @Inject constructor(
     fun updateNotification(
         newTitle:String,
         newTime: String,
+        subText: String? = null,
         showStop: Boolean = false,
         showResume: Boolean = false,
         showCancel: Boolean = false,
@@ -29,6 +30,12 @@ class NotificationBuilderHelper @Inject constructor(
         notificationBuilder.setContentTitle(newTitle)
         notificationBuilder.setContentText(newTime)
         notificationBuilder.clearActions()
+
+        subText?.let {
+            notificationBuilder.setSubText(subText)
+        }?: run {
+            notificationBuilder.setSubText(null)
+        }
 
         if (showStop) {
             notificationBuilder.addAction(

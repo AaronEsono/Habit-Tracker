@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -51,8 +52,12 @@ fun ActiveIntervalScreen(
     val backgroundColor by animateColorAsState(
         targetValue = if (serviceState.currentState == StopwatchState.Stopped)
             MaterialTheme.colorScheme.surfaceContainer
-        else
-            MaterialTheme.colorScheme.onSurface,
+        else{
+            if(serviceState.habitLinked != null)
+                Color(serviceState.habitLinked.habit.color)
+            else
+                MaterialTheme.colorScheme.onSurface
+        },
         animationSpec = tween(durationMillis = 300),
         label = "backgroundColorAnimation"
     )
@@ -81,7 +86,7 @@ fun ActiveIntervalScreen(
         LabelLargeText(
             text = longToHMS(totalTime),
             fontSize = labelFontSize,
-            color = backgroundColor,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .offset(y = offsetY)
                 .align(Alignment.TopCenter)
@@ -91,7 +96,7 @@ fun ActiveIntervalScreen(
             text = serviceState.hourString,
             fontSize = timeFontSize,
             textAlign = TextAlign.Center,
-            color = backgroundColor,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.align(Alignment.Center)
         )
     }

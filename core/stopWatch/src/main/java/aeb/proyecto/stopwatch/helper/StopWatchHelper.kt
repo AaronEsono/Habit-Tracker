@@ -108,27 +108,32 @@ class StopWatchHelper @Inject constructor(
         context.startService(intent)
     }
 
-    fun startForegroundServiceOnStopWatch(){
+    fun startForegroundServiceOnStopWatch(habitLinked:Pair<Long,String>){
         Intent(context, StopWatchService::class.java).apply {
             this.action = ACTION_SERVICE_START_STOPWATCH
+            putExtra("habitId",habitLinked.first)
+            putExtra("habitDay",habitLinked.second)
             ContextCompat.startForegroundService(context,this)
         }
     }
 
-    fun startForegroundServiceOnTimer(time:Long){
+    fun startForegroundServiceOnTimer(time:Long,habitLinked:Pair<Long,String>){
         Intent(context,StopWatchService::class.java).apply {
             putExtra("time",time)
+            putExtra("habitId",habitLinked.first)
+            putExtra("habitDay",habitLinked.second)
             this.action = ACTION_SERVICE_START_TIMER
             ContextCompat.startForegroundService(context,this)
         }
     }
 
-    fun startForegroundServiceOnInterval(time:Long,rest:Long,interval:Int){
+    fun startForegroundServiceOnInterval(time:Long,rest:Long,interval:Int,habitLinked:Pair<Long,String>){
         Intent(context,StopWatchService::class.java).apply {
             putExtra("time",time)
             putExtra("rest",rest)
             putExtra("interval",interval)
-
+            putExtra("habitId",habitLinked.first)
+            putExtra("habitDay",habitLinked.second)
             this.action = ACTION_SERVICE_START_INTERVAL
             ContextCompat.startForegroundService(context,this)
         }

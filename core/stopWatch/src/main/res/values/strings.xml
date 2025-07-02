@@ -16,4 +16,10 @@
     <string name="service_paused">%1$s - Paused</string>
     <string name="service_finished">%1$s - Finished</string>
 
+    <string name="timer_title_habit">%1$s - %2$s</string>
+    <string name="timer_today">Today</string>
+    <string name="timer_tomorrow">Tomorrow</string>
+    <string name="timer_yesterday">Yesterday</string>
+
+
 </resources>

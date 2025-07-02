@@ -89,6 +89,17 @@ class HabitWithDailyHabitRepo @Inject constructor(
         return HabitWithDay(habit, day)
     }
 
+    fun getHabitWithDayOrNull(id:Long,date:LocalDate): HabitWithDay? {
+        val habit = habitWithDailyHabitDao.getHabitOrNull(id)
+
+        if(habit != null){
+            val day = habitWithDailyHabitDao.getDayByDate(id,date) ?: HabitDay(date = date, idHabit = id, goalDone = BigDecimal(0))
+            return HabitWithDay(habit, day)
+        }
+
+        return null
+    }
+
     fun getHabitWithTimeUnit():Flow<List<Habit>>{
         return habitWithDailyHabitDao.getAllHabits()
             .map { habits ->

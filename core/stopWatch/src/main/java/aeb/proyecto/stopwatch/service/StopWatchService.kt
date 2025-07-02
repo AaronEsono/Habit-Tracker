@@ -1,5 +1,7 @@
 package aeb.proyecto.stopwatch.service
 
+import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
 import aeb.proyecto.stopwatch.R
 import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_CANCEL
 import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_FINISH
@@ -16,8 +18,10 @@ import aeb.proyecto.stopwatch.manager.IntervalState
 import aeb.proyecto.stopwatch.manager.StopWatchStateManager
 import aeb.proyecto.stopwatch.manager.StopwatchState
 import aeb.proyecto.stopwatch.manager.TypeTimer
+import aeb.proyecto.stopwatch.model.NotificationInfo
 import aeb.proyecto.stopwatch.notification.NotificationBuilderHelper
 import aeb.proyecto.stopwatch.utils.getPausedTitle
+import aeb.proyecto.stopwatch.utils.getTextToday
 import aeb.proyecto.stopwatch.utils.prepareInitialTimerTitle
 import aeb.proyecto.stopwatch.utils.setIntervalTitle
 import android.app.NotificationChannel
@@ -43,6 +47,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 
@@ -65,6 +70,10 @@ class StopWatchService : Service(){
     @Inject
     lateinit var stateManager: StopWatchStateManager
 
+    //Room repository
+    @Inject
+    lateinit var habitWithDailyHabitRepo: HabitWithDailyHabitRepo
+
     private val binder = StopWatchBinder()
 
     private val updateInterval = 200L
@@ -72,6 +81,7 @@ class StopWatchService : Service(){
     private var notificationJob: Job? = null
 
     private val serviceJob = SupervisorJob()
+    private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
     private var mediaPlayer: MediaPlayer? = null
 
     private var wakeLock: PowerManager.WakeLock? = null
@@ -197,12 +207,18 @@ class StopWatchService : Service(){
             combine(
                 stateManager.timerString,
                 stateManager.currentState,
-                stateManager.notificationTitle
-            ) { time, currentState, title -> Triple(time, currentState, title) }
+                stateManager.notificationTitle,
+                stateManager.habitLinked
+            ) { time, currentState, title, habitLinked -> NotificationInfo(time, currentState, title, habitLinked) }
                 .distinctUntilChanged()
                 .conflate()
-                .collect { (time, state, title) ->
-                    updateNotification(title, state, time)
+                .collect { notificationInfo ->
+                    updateNotification(
+                        notificationInfo.title,
+                        notificationInfo.currentState,
+                        notificationInfo.time,
+                        notificationInfo.subText
+                    )
                 }
         }
     }
@@ -216,13 +232,16 @@ class StopWatchService : Service(){
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_SERVICE_START_STOPWATCH -> {
+                getHabitLinked(intent)
                 handleStart(TypeTimer.STOPWATCH)
             }
             ACTION_SERVICE_START_TIMER -> {
+                getHabitLinked(intent)
                 val time = intent.getLongExtra("time", 0L)
                 handleStart(TypeTimer.TIMER(time))
             }
             ACTION_SERVICE_START_INTERVAL -> {
+                getHabitLinked(intent)
                 val time = intent.getLongExtra("time",0L)
                 val rest = intent.getLongExtra("rest", 0L)
                 val interval = intent.getIntExtra("interval",1) ?: 1
@@ -242,6 +261,22 @@ class StopWatchService : Service(){
         setTimerState(type)
         startNotificationService()
         acquireWakeLock()
+    }
+
+    private fun getHabitLinked(intent: Intent){
+        val id = intent.getLongExtra("habitId",0L)
+        val dateString = intent.getStringExtra("habitDay")
+
+        val date = try {
+            LocalDate.parse(dateString)
+        }catch (e:Exception){
+            LocalDate.now()
+        }
+
+        serviceScope.launch {
+            val habitDay = habitWithDailyHabitRepo.getHabitWithDayOrNull(id,date)
+            stateManager.setHabitLinked(habitDay)
+        }
     }
 
     private fun startNotificationService(){
@@ -358,14 +393,26 @@ class StopWatchService : Service(){
     private fun updateNotification(
         title: String,
         state: StopwatchState,
-        time: String
+        time: String,
+        subtext: HabitWithDay?
     ) {
         if (state == StopwatchState.Idle) return
+
+        val subTextHabit = if (subtext != null) {
+            context.getString(
+                R.string.timer_title_habit,
+                subtext.habit.name,
+                getTextToday(subtext.day.date, context)
+            )
+        } else {
+            null
+        }
 
         val builder = when (state) {
             StopwatchState.InProgress -> notificationBuilderHelper.updateNotification(
                 newTitle = title,
                 newTime = time,
+                subText = subTextHabit,
                 showStop = true,
                 showCancel = true,
                 showFinish = false,
@@ -374,6 +421,7 @@ class StopWatchService : Service(){
             StopwatchState.Stopped -> notificationBuilderHelper.updateNotification(
                 newTitle = title,
                 newTime = time,
+                subText = subTextHabit,
                 showResume = true,
                 showCancel = true,
                 showStop = false,
@@ -382,6 +430,7 @@ class StopWatchService : Service(){
             StopwatchState.Finished -> notificationBuilderHelper.updateNotification(
                 newTitle = title,
                 newTime = time,
+                subText = subTextHabit,
                 showFinish = true,
                 showCancel = false,
                 showResume = false,
