@@ -57,6 +57,11 @@ class DataStoreManager @Inject constructor(
         //Sets Timer
         private val SETS_TIMER = intPreferencesKey("setsTimer")
 
+        //Tiempo pasado
+        private val TIME_PASSED_TIMER = longPreferencesKey("timePassedTimer")
+        //Timer habito vinculado
+        private val IS_LINKED_HABIT_AND_FINISHED = booleanPreferencesKey("isLinkedHabitAndFinished")
+
         // Por mirar
         private val CURRENT_ID = stringPreferencesKey("currentId")
         private val DATE = stringPreferencesKey("date")
@@ -115,6 +120,10 @@ class DataStoreManager @Inject constructor(
         preferences[SETS_TIMER]
     }
 
+    val timerLinkedAndFinished: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[IS_LINKED_HABIT_AND_FINISHED] ?: false
+    }
+
     suspend fun getEmailPassword() = dataStore.data.map { preferences ->
         EmailPassword(
             email = preferences[EMAIL] ?: "",
@@ -170,6 +179,26 @@ class DataStoreManager @Inject constructor(
     suspend fun getSetsTimer() = dataStore.data.map { preferences ->
         preferences[SETS_TIMER]
     }.firstOrNull()
+
+    suspend fun getTimePassedTimer() = dataStore.data.map { preferences ->
+        preferences[TIME_PASSED_TIMER]
+    }.firstOrNull()
+
+    suspend fun getIsLinkedHabitAndFinished() = dataStore.data.map { preferences ->
+        preferences[IS_LINKED_HABIT_AND_FINISHED]
+    }.firstOrNull()
+
+    suspend fun setIsLinkedHabitAndFinished(isLinked: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[IS_LINKED_HABIT_AND_FINISHED] = isLinked
+        }
+    }
+
+    suspend fun setTimePassedTimer(time: Long) {
+        dataStore.edit { preferences ->
+            preferences[TIME_PASSED_TIMER] = time
+        }
+    }
 
     suspend fun setSetsTimer(sets: Int) {
         dataStore.edit { preferences ->

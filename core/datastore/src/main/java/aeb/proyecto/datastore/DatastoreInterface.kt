@@ -25,6 +25,8 @@ interface DatastoreInterface {
 
     val timer:Flow<Int?>
 
+    val timerLinkedAndFinished:Flow<Boolean>
+
     suspend fun getEmailAndPassword():EmailPassword
 
     suspend fun getLastSearched():LastSearched
@@ -48,6 +50,14 @@ interface DatastoreInterface {
     suspend fun getRestIntervalSecondTimer():Int?
 
     suspend fun getSetsTimer():Int?
+
+    suspend fun getTimePassedTimer():Long?
+
+    suspend fun getIsLinkedHabitAndFinished():Boolean?
+
+    suspend fun setTimePassedTimer(time:Long)
+
+    suspend fun setIsLinkedHabitAndFinished(isLinked:Boolean)
 
     suspend fun setSetsTimer(sets:Int)
 

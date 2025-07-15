@@ -25,6 +25,29 @@ fun longToHMS(milliseconds: Long): String {
     return "${hours.toInt().pad()}:${minutes.toInt().pad()}:${secs.toInt().pad()}"
 }
 
+fun getSecondsPassed(milliseconds: Long, typeTimer: TypeTimer): Long {
+    val timePassed:Long = when(typeTimer){
+        TypeTimer.STOPWATCH -> {
+            longToSeconds(milliseconds)
+        }
+        is TypeTimer.TIMER -> {
+            longToSeconds(typeTimer.time - milliseconds)
+        }
+        is TypeTimer.INTERVAL -> {
+            if(typeTimer.currentInterval == 1){
+                longToSeconds(typeTimer.time - milliseconds)
+            }else{
+                longToSeconds((typeTimer.time - milliseconds) + (typeTimer.time * (typeTimer.currentInterval - 1)))
+            }
+        }
+    }
+
+    return timePassed
+}
+
+fun longToSeconds(milliseconds: Long): Long {
+    return (milliseconds / 1000)
+}
 
 fun getTextToday(date: LocalDate,context:Context):String{
     return when(date){

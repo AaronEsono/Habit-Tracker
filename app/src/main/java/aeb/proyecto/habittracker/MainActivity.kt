@@ -1,8 +1,9 @@
 package aeb.proyecto.habittracker
 
-import aeb.proyecto.habittracker.components.TopBarHabit
+import aeb.proyecto.habittracker.components.topbar.TopBarHabit
 import aeb.proyecto.habittracker.components.bottomBars.BottomNavigationHabit
 import aeb.proyecto.habittracker.components.bottomBars.bottomRail.BottomRailHabit
+import aeb.proyecto.habittracker.components.dialog.ManageDialogScreen
 import aeb.proyecto.habittracker.navigation.NavigationHabit
 import aeb.proyecto.habittracker.navigation.suiteNavigation
 import aeb.proyecto.habittracker.permissions.RequestPermissions
@@ -46,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -88,6 +90,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val mainViewModel: MainViewModel = hiltViewModel()
             val themeMode = mainViewModel.themeMode.collectAsState().value
+            val showDialogTimer = mainViewModel.showDialogTimer.collectAsStateWithLifecycle().value
+
             val navController = rememberNavController()
 
             LaunchedEffect(Unit){
@@ -96,6 +100,13 @@ class MainActivity : ComponentActivity() {
 
             HabitTrackerTheme(themeMode){
                 RequestPermissions()
+
+                ManageDialogScreen(
+                    showDialogTimer,
+                    onDismissRequest = {mainViewModel.closeDialog()},
+                    onConfirm = {mainViewModel.updateHabit()}
+                )
+
                 AppContent(navController)
             }
         }

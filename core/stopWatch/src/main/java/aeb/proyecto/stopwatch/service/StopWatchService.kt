@@ -1,5 +1,6 @@
 package aeb.proyecto.stopwatch.service
 
+import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
 import aeb.proyecto.stopwatch.R
@@ -21,6 +22,7 @@ import aeb.proyecto.stopwatch.manager.TypeTimer
 import aeb.proyecto.stopwatch.model.NotificationInfo
 import aeb.proyecto.stopwatch.notification.NotificationBuilderHelper
 import aeb.proyecto.stopwatch.utils.getPausedTitle
+import aeb.proyecto.stopwatch.utils.getSecondsPassed
 import aeb.proyecto.stopwatch.utils.getTextToday
 import aeb.proyecto.stopwatch.utils.prepareInitialTimerTitle
 import aeb.proyecto.stopwatch.utils.setIntervalTitle
@@ -73,6 +75,10 @@ class StopWatchService : Service(){
     //Room repository
     @Inject
     lateinit var habitWithDailyHabitRepo: HabitWithDailyHabitRepo
+
+    //Datastore repository
+    @Inject
+    lateinit var dataStoreInterface: DatastoreInterface
 
     private val binder = StopWatchBinder()
 
@@ -306,6 +312,7 @@ class StopWatchService : Service(){
     }
 
     private fun cancelStopwatch() {
+        checkHabitLinked()
         stateManager.setRunningTimer(false)
         stateManager.setState(StopwatchState.Idle)
         cancelAlarm()
@@ -465,6 +472,21 @@ class StopWatchService : Service(){
     private fun releaseWakeLock() {
         if (wakeLock?.isHeld == true) {
             wakeLock?.release()
+        }
+    }
+
+    private fun checkHabitLinked(){
+        if(stateManager.habitLinked.value != null){
+            //Hay habito vinculado, preguntar al usuario luego
+            val timePassedInSeconds = getSecondsPassed(stateManager.elapsedTime.value,stateManager.typeTimer.value)
+            serviceScope.launch {
+                dataStoreInterface.setTimePassedTimer(timePassedInSeconds)
+                dataStoreInterface.setIsLinkedHabitAndFinished(true)
+            }
+        }else{
+            serviceScope.launch {
+                dataStoreInterface.setIsLinkedHabitAndFinished(false)
+            }
         }
     }
 
