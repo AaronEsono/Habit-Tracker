@@ -5,4 +5,13 @@
     <string name="bottombar_stadistics">Statistics</string>
     <string name="bottombar_settins">Settings</string>
     <string name="bottombar_timer">Timer</string>
+
+    <string name="dialog_title">Would you like to save the time recorded for the habit %1$s?</string>
+    <string name="dialog_time">Elapsed time: %1$s</string>
+    <string name="dialog_date">Date: %1$s</string>
+
+    <string name="dialog_on_finish">Successfully added</string>
+
+    <string name="dialog_accept">Accept</string>
+    <string name="dialog_cancel">Cancel</string>
 </resources>

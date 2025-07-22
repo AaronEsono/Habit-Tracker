@@ -1,9 +1,10 @@
 package aeb.proyecto.habittracker
 
-import aeb.proyecto.habittracker.components.topbar.TopBarHabit
 import aeb.proyecto.habittracker.components.bottomBars.BottomNavigationHabit
 import aeb.proyecto.habittracker.components.bottomBars.bottomRail.BottomRailHabit
 import aeb.proyecto.habittracker.components.dialog.ManageDialogScreen
+import aeb.proyecto.habittracker.components.toast.ManageToastFinish
+import aeb.proyecto.habittracker.components.topbar.TopBarHabit
 import aeb.proyecto.habittracker.navigation.NavigationHabit
 import aeb.proyecto.habittracker.navigation.suiteNavigation
 import aeb.proyecto.habittracker.permissions.RequestPermissions
@@ -45,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -91,6 +93,7 @@ class MainActivity : ComponentActivity() {
             val mainViewModel: MainViewModel = hiltViewModel()
             val themeMode = mainViewModel.themeMode.collectAsState().value
             val showDialogTimer = mainViewModel.showDialogTimer.collectAsStateWithLifecycle().value
+            val toastFinishState = mainViewModel.showToast.collectAsStateWithLifecycle().value
 
             val navController = rememberNavController()
 
@@ -103,9 +106,13 @@ class MainActivity : ComponentActivity() {
 
                 ManageDialogScreen(
                     showDialogTimer,
-                    onDismissRequest = {mainViewModel.closeDialog()},
+                    onDismissRequest = { mainViewModel.closeDialog() },
                     onConfirm = {mainViewModel.updateHabit()}
                 )
+
+                ManageToastFinish(toastFinishState){
+                    mainViewModel.clearToast()
+                }
 
                 AppContent(navController)
             }

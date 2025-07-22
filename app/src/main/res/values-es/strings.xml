@@ -8,4 +8,12 @@
     <string name="bottombar_settins">Opciones</string>
     <string name="bottombar_timer">Temporizador</string>
 
+    <string name="dialog_title">¿Desea guardar el tiempo realizado en el hábito %1$s?</string>
+    <string name="dialog_time">Tiempo transcurrido: %1$s</string>
+    <string name="dialog_date">Fecha: %1$s</string>
+
+    <string name="dialog_on_finish">Añadido correctamente</string>
+
+    <string name="dialog_accept">Aceptar</string>
+    <string name="dialog_cancel">Cancelar</string>
 </resources>
