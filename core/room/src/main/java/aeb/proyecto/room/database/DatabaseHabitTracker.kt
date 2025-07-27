@@ -13,12 +13,13 @@ import aeb.proyecto.room.dao.HabitWithNotificationDao
 import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitNotification
+import aeb.proyecto.room.entities.TimeEntry
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [Habit::class, HabitDay::class,HabitNotification::class],
+    entities = [Habit::class, HabitDay::class,HabitNotification::class,TimeEntry::class],
     version = 1,
     exportSchema = false
 )
