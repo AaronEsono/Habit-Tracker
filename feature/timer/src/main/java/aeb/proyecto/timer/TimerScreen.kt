@@ -17,8 +17,7 @@ import java.time.LocalDate
 
 @Composable
 fun TimerScreen(
-    viewModel: TimerViewModel = hiltViewModel(),
-    navigateToHabitScreen: () -> Unit
+    viewModel: TimerViewModel = hiltViewModel()
 ){
 
     val timerDataUIState = viewModel.timerData.collectAsStateWithLifecycle().value

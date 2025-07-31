@@ -63,14 +63,6 @@ fun NavigationHabit(){
             }
         }
 
-        timerScreen(
-            navigateToHabit = {
-                navController.navigateToHabit{
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        inclusive = true
-                    }
-                }
-            }
-        )
+        timerScreen()
     }
 }
