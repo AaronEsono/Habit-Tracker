@@ -1,8 +1,10 @@
 package aeb.proyecto.stopwatch.service
 
 import aeb.proyecto.datastore.DatastoreInterface
+import aeb.proyecto.room.entities.TimeEntry
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
+import aeb.proyecto.room.repository.TimerEntryRepo
 import aeb.proyecto.stopwatch.R
 import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_CANCEL
 import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_FINISH
@@ -24,6 +26,7 @@ import aeb.proyecto.stopwatch.notification.NotificationBuilderHelper
 import aeb.proyecto.stopwatch.utils.getPausedTitle
 import aeb.proyecto.stopwatch.utils.getSecondsPassed
 import aeb.proyecto.stopwatch.utils.getTextToday
+import aeb.proyecto.stopwatch.utils.longToSeconds
 import aeb.proyecto.stopwatch.utils.prepareInitialTimerTitle
 import aeb.proyecto.stopwatch.utils.setIntervalTitle
 import android.app.NotificationChannel
@@ -75,6 +78,8 @@ class StopWatchService : Service(){
     //Room repository
     @Inject
     lateinit var habitWithDailyHabitRepo: HabitWithDailyHabitRepo
+    @Inject
+    lateinit var timerEntryRepo: TimerEntryRepo
 
     //Datastore repository
     @Inject
@@ -313,6 +318,7 @@ class StopWatchService : Service(){
 
     private fun cancelStopwatch() {
         checkHabitLinked()
+        setOnHistory()
         stateManager.setRunningTimer(false)
         stateManager.setState(StopwatchState.Idle)
         cancelAlarm()
@@ -487,6 +493,39 @@ class StopWatchService : Service(){
             serviceScope.launch {
                 dataStoreInterface.setIsLinkedHabitAndFinished(false)
             }
+        }
+    }
+
+    private fun setOnHistory(){
+        var timeEntry: TimeEntry
+
+        when(val type = stateManager.typeTimer.value){
+            is TypeTimer.INTERVAL -> {
+                timeEntry = TimeEntry(
+                    typeTimer = 2,
+                    time = longToSeconds(type.time),
+                    restTime = longToSeconds(type.rest),
+                    intervals = type.interval.toLong(),
+                    idHabit = stateManager.habitLinked.value?.habit?.id
+                )
+            }
+            TypeTimer.STOPWATCH -> {
+                timeEntry = TimeEntry(
+                    typeTimer = 0,
+                    idHabit = stateManager.habitLinked.value?.habit?.id
+                )
+            }
+            is TypeTimer.TIMER -> {
+                timeEntry = TimeEntry(
+                    typeTimer = 1,
+                    time = longToSeconds(type.time),
+                    idHabit = stateManager.habitLinked.value?.habit?.id
+                )
+            }
+        }
+
+        serviceScope.launch {
+            timerEntryRepo.findTimeEntry(timeEntry)
         }
     }
 

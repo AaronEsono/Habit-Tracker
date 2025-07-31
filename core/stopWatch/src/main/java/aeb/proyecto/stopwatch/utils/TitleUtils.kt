@@ -50,20 +50,3 @@ fun prepareInitialTimerTitle( stateManager: StopWatchStateManager, context: Cont
         }
     }
 }
-
-fun getFinishedTitle(stateManager: StopWatchStateManager, context: Context){
-    when(stateManager.typeTimer.value){
-        is TypeTimer.INTERVAL -> {
-            stateManager.setNotificationTitle(context.getString(R.string.service_finished,
-                context.getString(R.string.service_interval)))
-        }
-        TypeTimer.STOPWATCH -> {
-            stateManager.setNotificationTitle(context.getString(R.string.service_finished,
-                context.getString(R.string.service_stopwatch)))
-        }
-        is TypeTimer.TIMER -> {
-            stateManager.setNotificationTitle(context.getString(R.string.service_finished,
-                context.getString(R.string.service_timer)))
-        }
-    }
-}

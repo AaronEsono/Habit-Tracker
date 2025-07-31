@@ -1,8 +1,10 @@
 package aeb.proyecto.timer
 
 import aeb.proyecto.domain.usecase.timer.GetTimerDataUseCase
+import aeb.proyecto.domain.usecase.timer.TimeEntriesUseCase
 import aeb.proyecto.domain.usecase.timer.TimerData
 import aeb.proyecto.domain.usecase.timer.TimerDataStoreUseCase
+import aeb.proyecto.room.entities.relations.TimeEntryWithHabit
 import aeb.proyecto.stopwatch.helper.StopWatchHelper
 import aeb.proyecto.stopwatch.manager.StopWatchStateManager
 import aeb.proyecto.stopwatch.manager.StopwatchState
@@ -40,7 +42,8 @@ class TimerViewModel @Inject constructor(
     private val serviceHelper: StopWatchHelper,
     getTimerDataUseCase: GetTimerDataUseCase,
     private val timerDataStoreUseCase: TimerDataStoreUseCase,
-    private val stopWatchStateManager: StopWatchStateManager
+    private val stopWatchStateManager: StopWatchStateManager,
+    private val timeEntriesUseCase: TimeEntriesUseCase
 ):ViewModel(){
 
     val timerData: StateFlow<TimerUiState> = getTimerDataUseCase.timerData
@@ -104,6 +107,14 @@ class TimerViewModel @Inject constructor(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = TimerServiceUIState.NoTimer
+        )
+
+    val historyEntries: StateFlow<List<TimeEntryWithHabit>> = timeEntriesUseCase.getTimeEntries()
+        .flowOn(Dispatchers.Default)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = listOf()
         )
 
     private val _bottomSheetState: MutableStateFlow<Boolean> = MutableStateFlow(false)

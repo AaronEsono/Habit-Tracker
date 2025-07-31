@@ -36,4 +36,8 @@ object RoomModule {
     @Provides
     @Singleton
     fun provideCompleteDaoHabit(databaseHabit: DatabaseHabitTracker) = databaseHabit.entireDaoHabit()
+
+    @Provides
+    @Singleton
+    fun provideTimerEntryDao(databaseHabit: DatabaseHabitTracker) = databaseHabit.timerEntryDao()
 }
