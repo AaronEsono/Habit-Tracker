@@ -12,6 +12,7 @@ import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.model.Ty
 import aeb.proyecto.timer.model.HabitLinkedState
 import aeb.proyecto.timer.model.HourSelectedState
 import aeb.proyecto.timer.model.SegmentedButtonOptions
+import aeb.proyecto.timer.model.TimeEntryState
 import aeb.proyecto.timer.model.TimerDataUIState
 import aeb.proyecto.timer.model.TimerServiceUIState
 import aeb.proyecto.timer.model.getSegmentedButtonOptions
@@ -109,12 +110,16 @@ class TimerViewModel @Inject constructor(
             initialValue = TimerServiceUIState.NoTimer
         )
 
-    val historyEntries: StateFlow<List<TimeEntryWithHabit>> = timeEntriesUseCase.getTimeEntries()
+    val historyEntries: StateFlow<TimeEntryState> = timeEntriesUseCase.getTimeEntries()
+        .map { entries ->
+            if (entries.isEmpty()) TimeEntryState.EmptyList
+            else TimeEntryState.TimeEntries(entries)
+        }
         .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = listOf()
+            initialValue = TimeEntryState.EmptyList
         )
 
     private val _bottomSheetState: MutableStateFlow<Boolean> = MutableStateFlow(false)

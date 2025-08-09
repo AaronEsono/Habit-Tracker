@@ -5,13 +5,17 @@ import aeb.proyecto.timer.components.commom.bottomSheet.pickHabit.PickHabitBotto
 import aeb.proyecto.timer.components.commom.button.AcceptButton
 import aeb.proyecto.timer.components.commom.habitLinked.HabitLinkedButton
 import aeb.proyecto.timer.components.commom.segmentedRow.SegmentedRow
+import aeb.proyecto.timer.components.commom.timeEntry.TimeEntry
+import aeb.proyecto.timer.components.commom.timeEntry.TimeEntryHeader
 import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.IntervalSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.StopWatchSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.TimerSegmentedScreen
 import aeb.proyecto.timer.model.SegmentedButtonOptions
+import aeb.proyecto.timer.model.TimeEntryState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
+import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.animation.AnimatedContent
@@ -23,8 +27,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,6 +41,7 @@ import java.time.LocalDate
 @Composable
 fun VerticalChoseTimerScreen(
     timerUIState: TimerUiState.Success,
+    listTimeEntryState: TimeEntryState,
     bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
@@ -51,7 +59,7 @@ fun VerticalChoseTimerScreen(
 ){
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
 
-    Column {
+    Column (){
         Column (
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,30 +104,53 @@ fun VerticalChoseTimerScreen(
             }
         }
 
-        SegmentedRow(
-            modifier = Modifier.fillMaxWidth().padding(top = spacing8),
-            segmentedList = segmentedOptions,
-            onClickOption = onTypeChange,
-            typeTimer = timerUIState.timerDataUIState.typeTimer,
-        )
-
-        HabitLinkedButton(
-            modifier = Modifier.padding(top = spacing16, bottom = spacing16),
-            linkedState = timerUIState.timerDataUIState.habitLinked,
-            onClickHabitLinkedButton = onClickHabitButton,
-            onClickCross = onClickCross
-        )
-
-        Row (
+        Column (
             modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+                .padding(bottom = spacing8)
+                .verticalScroll(rememberScrollState()),
         ){
-            AcceptButton(
-                timerUIState = timerUIState,
-                onStartService = onStartService
+            SegmentedRow(
+                modifier = Modifier.fillMaxWidth().padding(top = spacing8),
+                segmentedList = segmentedOptions,
+                onClickOption = onTypeChange,
+                typeTimer = timerUIState.timerDataUIState.typeTimer,
             )
+
+            HabitLinkedButton(
+                modifier = Modifier.padding(top = spacing16, bottom = spacing16),
+                linkedState = timerUIState.timerDataUIState.habitLinked,
+                onClickHabitLinkedButton = onClickHabitButton,
+                onClickCross = onClickCross
+            )
+
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ){
+                AcceptButton(
+                    timerUIState = timerUIState,
+                    onStartService = onStartService
+                )
+            }
+
+            when(listTimeEntryState){
+                TimeEntryState.EmptyList -> Unit
+                is TimeEntryState.TimeEntries -> {
+                    val lastEntry = listTimeEntryState.timeEntries.lastOrNull()
+
+                    TimeEntryHeader(modifier = Modifier.padding(top = spacing16))
+
+                    listTimeEntryState.timeEntries.forEach { timeEntry ->
+                        TimeEntry(
+                            timeEntry,
+                            lastOne = lastEntry == timeEntry,
+                        )
+                    }
+                }
+            }
         }
+
     }
 
     if(bottomSheetState){

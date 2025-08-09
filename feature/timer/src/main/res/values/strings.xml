@@ -59,4 +59,9 @@
 
     <string name="timer_linked_habit_title">Select a habit to link with the timer</string>
 
+    <string name="timer_entry_time">%1$s min.</string>
+    <string name="timer_entry_interval">%1$s sets, (%2$s rest)</string>
+    <string name="timer_entry_habit">Habit linked: %1$s</string>
+
+    <string name="timer_history">History</string>
 </resources>

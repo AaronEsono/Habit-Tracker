@@ -56,4 +56,10 @@
     <string name="timer_linked_habit_no_habit">No hay hábitos disponibles con una unidad de tiempo</string>
 
     <string name="timer_linked_habit_title">Seleccione un hábito para vincularlo con el temporizador</string>
+
+    <string name="timer_entry_time">%1$s min</string>
+    <string name="timer_entry_interval">%1$s sets, (%2$s descanso)</string>
+    <string name="timer_entry_habit">Hábito vinculado: %1$s</string>
+
+    <string name="timer_history">Historial</string>
 </resources>

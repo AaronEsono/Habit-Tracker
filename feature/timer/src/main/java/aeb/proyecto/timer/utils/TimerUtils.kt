@@ -7,6 +7,7 @@ import aeb.proyecto.timer.R
 import aeb.proyecto.timer.model.TimerServiceUIState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import java.util.Locale
 
 @Composable
 fun getTitleActiveScreen(timerStopWatchUIState: TimerServiceUIState.TimerRunning):String{
@@ -45,5 +46,17 @@ fun getTitleActiveScreen(timerStopWatchUIState: TimerServiceUIState.TimerRunning
                 else ->  stringResource(R.string.timer_title_timer)
             }
         }
+    }
+}
+
+fun convertToHours(seconds: Long): String {
+    val hours = seconds / 3600
+    val minutes = (seconds % 3600) / 60
+    val secs = seconds % 60
+
+    return if(hours.toInt() == 0){
+        String.format(Locale.US, "%02d:%02d", minutes, secs)
+    }else{
+        String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, secs)
     }
 }

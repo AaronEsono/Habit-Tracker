@@ -23,7 +23,7 @@ fun TimerScreen(
     val timerDataUIState = viewModel.timerData.collectAsStateWithLifecycle().value
     val timerStopWatchUIState = viewModel.timerStopWatchUIState.collectAsStateWithLifecycle().value
     val bottomSheetState = viewModel.bottomSheetState.collectAsStateWithLifecycle().value
-    val historyEntries = viewModel.historyEntries.collectAsStateWithLifecycle().value
+    val timeEntryState = viewModel.historyEntries.collectAsStateWithLifecycle().value
 
     val orientation = getOrientation()
 
@@ -31,15 +31,12 @@ fun TimerScreen(
         LabelLargeText(stringResource(R.string.timer_title), fontSize = 20.sp)
     }
 
-    LaunchedEffect (Unit){
-        Log.e("History","$historyEntries")
-    }
-
     when(orientation){
         Orientation.Portrait -> {
             VerticalTimerScreen(
                 timerUiState = timerDataUIState,
                 timerStopWatchUIState = timerStopWatchUIState,
+                listTimeEntryState = timeEntryState,
                 bottomSheetState = bottomSheetState,
                 onHourChange = viewModel::onHourChange,
                 onMinuteChange = viewModel::onMinuteChange,

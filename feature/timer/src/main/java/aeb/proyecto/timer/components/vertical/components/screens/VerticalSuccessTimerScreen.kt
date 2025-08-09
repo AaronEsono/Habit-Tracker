@@ -1,6 +1,7 @@
 package aeb.proyecto.timer.components.vertical.components.screens
 
 import aeb.proyecto.timer.TimerUiState
+import aeb.proyecto.timer.model.TimeEntryState
 import aeb.proyecto.timer.model.TimerServiceUIState
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import java.time.LocalDate
 fun VerticalSuccessTimerScreen(
     timerUIState: TimerUiState.Success,
     timerStopWatchUIState: TimerServiceUIState,
+    listTimeEntryState: TimeEntryState,
     bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
@@ -39,6 +41,7 @@ fun VerticalSuccessTimerScreen(
             TimerServiceUIState.NoTimer -> {
                 VerticalChoseTimerScreen(
                     timerUIState = timerUIState,
+                    listTimeEntryState = listTimeEntryState,
                     bottomSheetState = bottomSheetState,
                     onHourChange = onHourChange,
                     onMinuteChange = onMinuteChange,
