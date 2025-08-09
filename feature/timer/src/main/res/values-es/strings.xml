@@ -62,4 +62,5 @@
     <string name="timer_entry_habit">Hábito vinculado: %1$s</string>
 
     <string name="timer_history">Historial</string>
+    <string name="timer_favorites">Favoritos</string>
 </resources>

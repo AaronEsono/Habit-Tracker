@@ -66,4 +66,12 @@ class TimerEntryRepo @Inject constructor(
         }
     }
 
+    fun changeFavorite(id:Long,favorite:Boolean){
+        timerEntryDao.updateFavoriteFromTimeEntry(id,favorite)
+    }
+
+    fun deleteTimeEntry(id:Long){
+        timerEntryDao.deleteTimeEntry(id)
+    }
+
 }

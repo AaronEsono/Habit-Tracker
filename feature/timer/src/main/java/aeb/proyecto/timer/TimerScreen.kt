@@ -54,7 +54,9 @@ fun TimerScreen(
                 onClickHabitButton = viewModel::onClickHabitButton,
                 onDismissHabitBottomSheet = viewModel::onDismissHabitBottomSheet,
                 onAcceptBottomSheet = viewModel::onAcceptBottomSheetPickHabit,
-                onClickCross = viewModel::cancelHabitLinked
+                onClickCross = viewModel::cancelHabitLinked,
+                onClickFavorite = viewModel::onClickFavorite,
+                onClickDelete = viewModel::onDeleteHistoryEntry
             )
         }
         Orientation.Landscape -> {

@@ -29,7 +29,9 @@ fun VerticalSuccessTimerScreen(
     onClickHabitButton: () -> Unit,
     onDismissHabitBottomSheet: () -> Unit,
     onAcceptBottomSheet: (Long, LocalDate) -> Unit,
-    onClickCross:()->Unit = {}
+    onClickCross:()->Unit = {},
+    onClickFavorite: (Long,Boolean) -> Unit = {_,_ ->},
+    onClickDelete: (Long) -> Unit = {_ -> },
 ){
 
     AnimatedContent(
@@ -55,7 +57,9 @@ fun VerticalSuccessTimerScreen(
                     onClickHabitButton = onClickHabitButton,
                     onDismissHabitBottomSheet = onDismissHabitBottomSheet,
                     onAcceptBottomSheet = onAcceptBottomSheet,
-                    onClickCross = onClickCross
+                    onClickCross = onClickCross,
+                    onClickFavorite = onClickFavorite,
+                    onClickDelete = onClickDelete
                 )
             }
             is TimerServiceUIState.TimerRunning -> {

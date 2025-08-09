@@ -37,7 +37,9 @@ fun VerticalTimerScreen(
     onClickHabitButton: () -> Unit = {},
     onDismissHabitBottomSheet: () -> Unit = {},
     onAcceptBottomSheet: (Long, LocalDate) -> Unit,
-    onClickCross:()->Unit = {}
+    onClickCross:()->Unit = {},
+    onClickFavorite: (Long,Boolean) -> Unit = {_,_ ->},
+    onClickDelete: (Long) -> Unit = {_ -> },
 ){
 
     Column(
@@ -74,7 +76,9 @@ fun VerticalTimerScreen(
                     onClickHabitButton = onClickHabitButton,
                     onDismissHabitBottomSheet = onDismissHabitBottomSheet,
                     onAcceptBottomSheet = onAcceptBottomSheet,
-                    onClickCross = onClickCross
+                    onClickCross = onClickCross,
+                    onClickFavorite = onClickFavorite,
+                    onClickDelete = onClickDelete
                 )
             }
         }

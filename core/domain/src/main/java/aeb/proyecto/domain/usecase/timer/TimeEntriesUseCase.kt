@@ -13,5 +13,12 @@ class TimeEntriesUseCase @Inject constructor(
         return timeEntriesRepository.getHistoryEntries()
     }
 
+    fun changeFavorite(id:Long,favorite:Boolean){
+        timeEntriesRepository.changeFavorite(id,favorite)
+    }
+
+    fun deleteTimeEntry(id:Long){
+        timeEntriesRepository.deleteTimeEntry(id)
+    }
 
 }

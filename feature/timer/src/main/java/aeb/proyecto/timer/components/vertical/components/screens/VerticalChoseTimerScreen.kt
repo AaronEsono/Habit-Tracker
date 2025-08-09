@@ -7,16 +7,12 @@ import aeb.proyecto.timer.components.commom.habitLinked.HabitLinkedButton
 import aeb.proyecto.timer.components.commom.segmentedRow.SegmentedRow
 import aeb.proyecto.timer.components.commom.timeEntry.TimeEntry
 import aeb.proyecto.timer.components.commom.timeEntry.TimeEntryHeader
-import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.IntervalSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.StopWatchSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.TimerSegmentedScreen
+import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.IntervalSegmentedScreen
 import aeb.proyecto.timer.model.SegmentedButtonOptions
 import aeb.proyecto.timer.model.TimeEntryState
-import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
-import aeb.proyecto.ui.dimmens.Dimmens.spacing20
-import aeb.proyecto.ui.dimmens.Dimmens.spacing24
-import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExitTransition
@@ -27,12 +23,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,7 +51,9 @@ fun VerticalChoseTimerScreen(
     onClickHabitButton: () -> Unit,
     onDismissHabitBottomSheet: () -> Unit,
     onAcceptBottomSheet: (Long,LocalDate) -> Unit,
-    onClickCross:()->Unit = {}
+    onClickCross:()->Unit = {},
+    onClickFavorite: (Long,Boolean) -> Unit = {_,_ ->},
+    onClickDelete: (Long) -> Unit = {_ -> },
 ){
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
 
@@ -142,10 +140,15 @@ fun VerticalChoseTimerScreen(
                     TimeEntryHeader(modifier = Modifier.padding(top = spacing16))
 
                     listTimeEntryState.timeEntries.forEach { timeEntry ->
-                        TimeEntry(
-                            timeEntry,
-                            lastOne = lastEntry == timeEntry,
-                        )
+                        key(timeEntry.timeEntry.id){
+                            TimeEntry(
+                                timeEntry,
+                                lastOne = timeEntry == lastEntry,
+                                onClickTimeEntry = {},
+                                onClickFavorite = onClickFavorite,
+                                onClickDelete = onClickDelete
+                            )
+                        }
                     }
                 }
             }

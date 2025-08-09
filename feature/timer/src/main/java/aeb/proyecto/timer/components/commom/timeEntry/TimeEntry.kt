@@ -9,6 +9,8 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -42,8 +44,8 @@ fun TimeEntry(
     timeEntry: TimeEntryWithHabit,
     lastOne: Boolean = false,
     onClickTimeEntry: () -> Unit = {},
-    onClickFavorite: () -> Unit = {},
-    onClickDelete: () -> Unit = {},
+    onClickFavorite: (Long,Boolean) -> Unit = {_,_ ->},
+    onClickDelete: (Long) -> Unit = {_ -> },
 ) {
 
     val clip = remember (lastOne){
@@ -142,11 +144,38 @@ fun TimeEntry(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.wrapContentHeight()
             ){
-                Icon(
-                    Icons.Filled.HeartBroken,
-                    contentDescription = "",
-                    modifier = Modifier.size(30.dp)
-                )
+                Crossfade(targetState = timeEntry.timeEntry.favourite, animationSpec = tween(500)) { favorite ->
+                    if (favorite) {
+                        Image(
+                            painterResource(R.drawable.im_favorite),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                                .clickable (
+                                    indication = null,
+                                    interactionSource = null
+                                ){
+                                    onClickFavorite(
+                                        timeEntry.timeEntry.id,
+                                        false
+                                    )
+                                })
+                    } else {
+                        Image(
+                            painterResource(R.drawable.im_no_favorite),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                                .clickable (
+                                    indication = null,
+                                    interactionSource = null
+                                ){
+                                    onClickFavorite(
+                                        timeEntry.timeEntry.id,
+                                        true
+                                    )
+                                },
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface))
+                    }
+                }
             }
 
             Column (
@@ -158,6 +187,12 @@ fun TimeEntry(
                     Icons.Filled.Clear,
                     contentDescription = "",
                     modifier = Modifier.size(30.dp)
+                        .clickable (
+                            indication = null,
+                            interactionSource = null
+                        ){
+                            onClickDelete(timeEntry.timeEntry.id)
+                        }
                 )
             }
         }

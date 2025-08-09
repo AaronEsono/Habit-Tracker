@@ -334,6 +334,14 @@ class TimerViewModel @Inject constructor(
         timerDataStoreUseCase.removeHabitLinked()
     }
 
+    fun onClickFavorite(id:Long,favorite:Boolean) = viewModelScope.launch (Dispatchers.IO){
+        timeEntriesUseCase.changeFavorite(id,favorite)
+    }
+
+    fun onDeleteHistoryEntry(id:Long) = viewModelScope.launch (Dispatchers.IO){
+        timeEntriesUseCase.deleteTimeEntry(id)
+    }
+
 }
 
 sealed class TimerUiState{

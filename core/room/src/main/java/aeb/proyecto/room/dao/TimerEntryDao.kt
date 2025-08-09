@@ -7,6 +7,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Dao
 interface TimerEntryDao {
@@ -114,9 +116,19 @@ interface TimerEntryDao {
             LEFT JOIN HABIT ON TIMEENTRY.idHabit = HABIT.id
             WHERE favourite = 0
             ORDER BY TIMEENTRY.lastTimeUsed DESC
-            LIMIT 10
+            LIMIT 5
     """
     )
     fun findLastTimeEntryUsed(): Flow<List<TimeEntryWithHabit>>
+
+    @Query("""
+        UPDATE TIMEENTRY SET favourite = :favorite, lastTimeUsed = :lastUsed WHERE id = :id
+    """)
+    fun updateFavoriteFromTimeEntry(id:Long,favorite:Boolean,lastUsed:LocalDateTime = LocalDateTime.now())
+
+    @Query("""
+        DELETE FROM TIMEENTRY WHERE id = :id
+    """)
+    fun deleteTimeEntry(id:Long)
 
 }
