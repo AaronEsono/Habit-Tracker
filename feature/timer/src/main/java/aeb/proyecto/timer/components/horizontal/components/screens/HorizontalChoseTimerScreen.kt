@@ -44,6 +44,7 @@ import java.time.LocalDate
 fun HorizontalChoseTimerScreen(
     timerUIState: TimerUiState.Success,
     listTimeEntryState: TimeEntryState,
+    triggerSegmentedTimer: Triple<Int,Int,Int>?,
     bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
@@ -88,6 +89,7 @@ fun HorizontalChoseTimerScreen(
                     SegmentedButtonOptions.Timer -> {
                         TimerSegmentedScreen(
                             hourSelectedState = timerUIState.timerDataUIState.hourSelected,
+                            triggerSegmentedTimer = triggerSegmentedTimer,
                             onHourChange = onHourChange,
                             onMinuteChange = onMinuteChange,
                             onSecondChange = onSecondChange

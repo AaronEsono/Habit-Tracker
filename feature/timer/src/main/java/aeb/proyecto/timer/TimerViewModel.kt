@@ -125,6 +125,9 @@ class TimerViewModel @Inject constructor(
     private val _bottomSheetState: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val bottomSheetState: StateFlow<Boolean> = _bottomSheetState.asStateFlow()
 
+    private val _triggerSegmentedTimer: MutableStateFlow<Triple<Int,Int,Int>?> = MutableStateFlow(null)
+    val triggerSegmentedTimer: StateFlow<Triple<Int,Int,Int>?> = _triggerSegmentedTimer.asStateFlow()
+
     fun startService(){
         val data = (timerData.value as? TimerUiState.Success)?.timerDataUIState
         val time = getLongMillisecondsTime(data?.hourSelected ?: HourSelectedState.NoData)
@@ -204,6 +207,7 @@ class TimerViewModel @Inject constructor(
     }
 
     fun onTypeButtonChange(value:Int) = viewModelScope.launch(Dispatchers.IO){
+        _triggerSegmentedTimer.update { null }
         timerDataStoreUseCase.saveTypeButtonTimer(value)
     }
 
@@ -344,7 +348,10 @@ class TimerViewModel @Inject constructor(
 
     fun onClickTimeEntry(id:Long) = viewModelScope.launch(Dispatchers.IO){
         val timeEntry = getTimeEntryWithHabitLinked(id)
-        timeEntriesUseCase.setDataFromTimeEntry(timeEntry)
+        timeEntriesUseCase.setDataFromTimeEntry(timeEntry){ timer ->
+            // TODO Generar nuevo estado si el triple es igual
+            _triggerSegmentedTimer.value = timer
+        }
     }
 
 

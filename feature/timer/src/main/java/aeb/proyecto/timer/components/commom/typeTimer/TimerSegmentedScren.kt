@@ -11,6 +11,7 @@ import aeb.proyecto.timer.constants.seconds
 import aeb.proyecto.timer.model.HourSelectedState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TimerSegmentedScreen(
     hourSelectedState: HourSelectedState,
+    triggerSegmentedTimer: Triple<Int,Int,Int>? = null,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
     onSecondChange: (String) -> Unit
@@ -49,6 +51,20 @@ fun TimerSegmentedScreen(
     val secondListState = rememberLazyListState(
         initialFirstVisibleItemIndex = getCenteredIndex(seconds.size, firstTimer.third)
     )
+
+    LaunchedEffect (triggerSegmentedTimer){
+        if(triggerSegmentedTimer != null){
+            scope.launch {
+                hourListState.animateScrollToItem(getCenteredIndex(hours.size, triggerSegmentedTimer.first))
+            }
+            scope.launch {
+                minuteListState.animateScrollToItem(getCenteredIndex(minutes.size, triggerSegmentedTimer.second))
+            }
+            scope.launch {
+                secondListState.animateScrollToItem(getCenteredIndex(seconds.size, triggerSegmentedTimer.third))
+            }
+        }
+    }
 
     TimerPicker(
         hourListState = hourListState,

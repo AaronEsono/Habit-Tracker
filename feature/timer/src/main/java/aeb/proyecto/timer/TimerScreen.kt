@@ -24,6 +24,7 @@ fun TimerScreen(
     val timerStopWatchUIState = viewModel.timerStopWatchUIState.collectAsStateWithLifecycle().value
     val bottomSheetState = viewModel.bottomSheetState.collectAsStateWithLifecycle().value
     val timeEntryState = viewModel.historyEntries.collectAsStateWithLifecycle().value
+    val triggerSegmentedTimer = viewModel.triggerSegmentedTimer.collectAsStateWithLifecycle().value
 
     val orientation = getOrientation()
 
@@ -38,6 +39,7 @@ fun TimerScreen(
                 timerStopWatchUIState = timerStopWatchUIState,
                 listTimeEntryState = timeEntryState,
                 bottomSheetState = bottomSheetState,
+                triggerSegmentedTimer = triggerSegmentedTimer,
                 onHourChange = viewModel::onHourChange,
                 onMinuteChange = viewModel::onMinuteChange,
                 onSecondChange = viewModel::onSecondChange,
@@ -65,6 +67,7 @@ fun TimerScreen(
                 timerUiState = timerDataUIState,
                 timerStopWatchUIState = timerStopWatchUIState,
                 listTimeEntryState = timeEntryState,
+                triggerSegmentedTimer = triggerSegmentedTimer,
                 bottomSheetState = bottomSheetState,
                 onHourChange = viewModel::onHourChange,
                 onMinuteChange = viewModel::onMinuteChange,

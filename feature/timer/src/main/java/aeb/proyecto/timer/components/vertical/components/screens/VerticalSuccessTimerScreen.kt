@@ -12,6 +12,7 @@ fun VerticalSuccessTimerScreen(
     timerUIState: TimerUiState.Success,
     timerStopWatchUIState: TimerServiceUIState,
     listTimeEntryState: TimeEntryState,
+    triggerSegmentedTimer: Triple<Int,Int,Int>?,
     bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
@@ -45,6 +46,7 @@ fun VerticalSuccessTimerScreen(
                 VerticalChoseTimerScreen(
                     timerUIState = timerUIState,
                     listTimeEntryState = listTimeEntryState,
+                    triggerSegmentedTimer = triggerSegmentedTimer,
                     bottomSheetState = bottomSheetState,
                     onHourChange = onHourChange,
                     onMinuteChange = onMinuteChange,

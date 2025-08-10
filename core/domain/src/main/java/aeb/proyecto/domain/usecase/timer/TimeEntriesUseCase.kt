@@ -25,7 +25,7 @@ class TimeEntriesUseCase @Inject constructor(
         timeEntriesRepository.deleteTimeEntry(id)
     }
 
-    suspend fun setDataFromTimeEntry(timeEntry: TimeEntryWithHabit?){
+    suspend fun setDataFromTimeEntry(timeEntry: TimeEntryWithHabit?, triggerForSegmentedTimer: (Triple<Int,Int,Int>) -> Unit){
         if(timeEntry != null){
             when(timeEntry.timeEntry.typeTimer){
                0 -> {
@@ -34,6 +34,17 @@ class TimeEntriesUseCase @Inject constructor(
                1 -> {
                    setTimerAndHabit(typeTimer = 1,habit = timeEntry.habit)
                    setTimer(timeEntry)
+
+                   timeEntry.timeEntry.time?.let { time ->
+                       val timeDivided = secondsToHms(time)
+
+                       val timeDividedInt = Triple(
+                           timeDivided.first.toInt(),
+                           timeDivided.second.toInt(),
+                           timeDivided.third.toInt()
+                       )
+                       triggerForSegmentedTimer(timeDividedInt)
+                   }
                }
                2 -> {
                    setTimerAndHabit(typeTimer = 2,habit = timeEntry.habit)
@@ -44,6 +55,7 @@ class TimeEntriesUseCase @Inject constructor(
             }
         }
     }
+
 
     private suspend fun setDataInterval(timeEntry: TimeEntryWithHabit?){
         timeEntry?.timeEntry?.intervals?.let { sets ->
