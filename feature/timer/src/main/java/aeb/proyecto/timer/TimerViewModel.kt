@@ -342,8 +342,19 @@ class TimerViewModel @Inject constructor(
         timeEntriesUseCase.deleteTimeEntry(id)
     }
 
-    fun onClickTimeEntry(id:Long){
+    fun onClickTimeEntry(id:Long) = viewModelScope.launch(Dispatchers.IO){
+        val timeEntry = getTimeEntryWithHabitLinked(id)
+        timeEntriesUseCase.setDataFromTimeEntry(timeEntry)
+    }
 
+
+    private fun getTimeEntryWithHabitLinked(id:Long):TimeEntryWithHabit?{
+        return when (historyEntries.value){
+            TimeEntryState.EmptyList -> null
+            is TimeEntryState.TimeEntries -> {
+                (historyEntries.value as TimeEntryState.TimeEntries).timeEntries.find { it.timeEntry.id == id }
+            }
+        }
     }
 
 }
