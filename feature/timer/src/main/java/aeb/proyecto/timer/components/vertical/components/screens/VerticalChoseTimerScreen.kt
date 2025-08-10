@@ -15,9 +15,13 @@ import aeb.proyecto.timer.model.TimeEntryState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -132,15 +136,24 @@ fun VerticalChoseTimerScreen(
                 )
             }
 
-            when(listTimeEntryState){
-                TimeEntryState.EmptyList -> Unit
-                is TimeEntryState.TimeEntries -> {
-                    val lastEntry = listTimeEntryState.timeEntries.lastOrNull()
+            val timeEntries = remember (listTimeEntryState){
+                if (listTimeEntryState is TimeEntryState.TimeEntries) {
+                    listTimeEntryState.timeEntries
+                } else {
+                    emptyList()
+                }
+            }
 
+            AnimatedVisibility(
+                visible = listTimeEntryState is TimeEntryState.TimeEntries,
+            ) {
+                val lastEntry = timeEntries.lastOrNull()
+
+                Column {
                     TimeEntryHeader(modifier = Modifier.padding(top = spacing16))
 
-                    listTimeEntryState.timeEntries.forEach { timeEntry ->
-                        key(timeEntry.timeEntry.id){
+                    timeEntries.forEach { timeEntry ->
+                        key(timeEntry.timeEntry.id) {
                             TimeEntry(
                                 timeEntry = timeEntry,
                                 lastOne = timeEntry == lastEntry,

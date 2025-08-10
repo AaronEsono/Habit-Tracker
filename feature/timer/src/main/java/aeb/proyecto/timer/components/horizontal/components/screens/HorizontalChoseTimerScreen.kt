@@ -18,6 +18,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing32
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -143,19 +144,26 @@ fun HorizontalChoseTimerScreen(
                 )
             }
 
-            when(listTimeEntryState){
-                TimeEntryState.EmptyList -> Unit
-                is TimeEntryState.TimeEntries -> {
-                    val lastEntry = listTimeEntryState.timeEntries.lastOrNull()
+            val timeEntries = remember (listTimeEntryState){
+                if (listTimeEntryState is TimeEntryState.TimeEntries) {
+                    listTimeEntryState.timeEntries
+                } else {
+                    emptyList()
+                }
+            }
 
-                    TimeEntryHeader(modifier = Modifier.padding(top = spacing16,
-                        start = spacing12, end = spacing12))
+            AnimatedVisibility(
+                visible = listTimeEntryState is TimeEntryState.TimeEntries,
+            ) {
+                val lastEntry = timeEntries.lastOrNull()
 
-                    listTimeEntryState.timeEntries.forEach { timeEntry ->
-                        key(timeEntry.timeEntry.id){
+                Column {
+                    TimeEntryHeader(modifier = Modifier.padding(top = spacing16))
+
+                    timeEntries.forEach { timeEntry ->
+                        key(timeEntry.timeEntry.id) {
                             TimeEntry(
-                                modifier = Modifier.padding(horizontal = spacing12),
-                                timeEntry,
+                                timeEntry = timeEntry,
                                 lastOne = timeEntry == lastEntry,
                                 onClickTimeEntry = onClickTimeEntry,
                                 onClickFavorite = onClickFavorite,
