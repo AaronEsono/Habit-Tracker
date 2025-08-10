@@ -30,6 +30,7 @@ fun VerticalSuccessTimerScreen(
     onDismissHabitBottomSheet: () -> Unit,
     onAcceptBottomSheet: (Long, LocalDate) -> Unit,
     onClickCross:()->Unit = {},
+    onClickTimeEntry: (Long) -> Unit = {},
     onClickFavorite: (Long,Boolean) -> Unit = {_,_ ->},
     onClickDelete: (Long) -> Unit = {_ -> },
 ){
@@ -58,6 +59,7 @@ fun VerticalSuccessTimerScreen(
                     onDismissHabitBottomSheet = onDismissHabitBottomSheet,
                     onAcceptBottomSheet = onAcceptBottomSheet,
                     onClickCross = onClickCross,
+                    onClickTimeEntry = onClickTimeEntry,
                     onClickFavorite = onClickFavorite,
                     onClickDelete = onClickDelete
                 )

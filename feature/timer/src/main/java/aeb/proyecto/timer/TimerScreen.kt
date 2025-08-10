@@ -55,6 +55,7 @@ fun TimerScreen(
                 onDismissHabitBottomSheet = viewModel::onDismissHabitBottomSheet,
                 onAcceptBottomSheet = viewModel::onAcceptBottomSheetPickHabit,
                 onClickCross = viewModel::cancelHabitLinked,
+                onClickTimeEntry = viewModel::onClickTimeEntry,
                 onClickFavorite = viewModel::onClickFavorite,
                 onClickDelete = viewModel::onDeleteHistoryEntry
             )
@@ -63,6 +64,7 @@ fun TimerScreen(
             HorizontalTimerScreen(
                 timerUiState = timerDataUIState,
                 timerStopWatchUIState = timerStopWatchUIState,
+                listTimeEntryState = timeEntryState,
                 bottomSheetState = bottomSheetState,
                 onHourChange = viewModel::onHourChange,
                 onMinuteChange = viewModel::onMinuteChange,
@@ -80,7 +82,10 @@ fun TimerScreen(
                 onClickHabitButton = viewModel::onClickHabitButton,
                 onDismissHabitBottomSheet = viewModel::onDismissHabitBottomSheet,
                 onAcceptBottomSheet = viewModel::onAcceptBottomSheetPickHabit,
-                onClickCross = viewModel::cancelHabitLinked
+                onClickCross = viewModel::cancelHabitLinked,
+                onClickTimeEntry = viewModel::onClickTimeEntry,
+                onClickFavorite = viewModel::onClickFavorite,
+                onClickDelete = viewModel::onDeleteHistoryEntry
             )
         }
     }

@@ -52,6 +52,7 @@ fun VerticalChoseTimerScreen(
     onDismissHabitBottomSheet: () -> Unit,
     onAcceptBottomSheet: (Long,LocalDate) -> Unit,
     onClickCross:()->Unit = {},
+    onClickTimeEntry: (Long) -> Unit = {},
     onClickFavorite: (Long,Boolean) -> Unit = {_,_ ->},
     onClickDelete: (Long) -> Unit = {_ -> },
 ){
@@ -104,7 +105,6 @@ fun VerticalChoseTimerScreen(
 
         Column (
             modifier = Modifier
-                .padding(bottom = spacing8)
                 .verticalScroll(rememberScrollState()),
         ){
             SegmentedRow(
@@ -142,9 +142,9 @@ fun VerticalChoseTimerScreen(
                     listTimeEntryState.timeEntries.forEach { timeEntry ->
                         key(timeEntry.timeEntry.id){
                             TimeEntry(
-                                timeEntry,
+                                timeEntry = timeEntry,
                                 lastOne = timeEntry == lastEntry,
-                                onClickTimeEntry = {},
+                                onClickTimeEntry = onClickTimeEntry,
                                 onClickFavorite = onClickFavorite,
                                 onClickDelete = onClickDelete
                             )

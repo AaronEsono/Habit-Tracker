@@ -4,6 +4,7 @@ import aeb.proyecto.timer.TimerUiState
 import aeb.proyecto.timer.components.commom.loading.TimerLoading
 import aeb.proyecto.timer.components.horizontal.components.screens.HorizontalSuccessTimerScreen
 import aeb.proyecto.timer.components.vertical.components.screens.VerticalSuccessTimerScreen
+import aeb.proyecto.timer.model.TimeEntryState
 import aeb.proyecto.timer.model.TimerServiceUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import java.time.LocalDate
 fun HorizontalTimerScreen(
     timerUiState: TimerUiState,
     timerStopWatchUIState: TimerServiceUIState,
+    listTimeEntryState: TimeEntryState,
     bottomSheetState:Boolean,
     onHourChange:(String) -> Unit = {},
     onMinuteChange:(String) -> Unit = {},
@@ -35,7 +37,10 @@ fun HorizontalTimerScreen(
     onClickHabitButton: () -> Unit = {},
     onDismissHabitBottomSheet: () -> Unit = {},
     onAcceptBottomSheet: (Long, LocalDate) -> Unit,
-    onClickCross:()->Unit = {}
+    onClickCross:()->Unit = {},
+    onClickTimeEntry: (Long) -> Unit = {},
+    onClickFavorite: (Long,Boolean) -> Unit = {_,_ ->},
+    onClickDelete: (Long) -> Unit = {_ -> },
 ){
 
     Column(
@@ -54,6 +59,7 @@ fun HorizontalTimerScreen(
                 HorizontalSuccessTimerScreen(
                     timerUIState = timerUiState,
                     timerStopWatchUIState = timerStopWatchUIState,
+                    listTimeEntryState = listTimeEntryState,
                     bottomSheetState = bottomSheetState,
                     onHourChange = onHourChange,
                     onMinuteChange = onMinuteChange,
@@ -71,7 +77,10 @@ fun HorizontalTimerScreen(
                     onClickHabitButton = onClickHabitButton,
                     onDismissHabitBottomSheet = onDismissHabitBottomSheet,
                     onAcceptBottomSheet = onAcceptBottomSheet,
-                    onClickCross = onClickCross
+                    onClickCross = onClickCross,
+                    onClickTimeEntry = onClickTimeEntry,
+                    onClickFavorite = onClickFavorite,
+                    onClickDelete = onClickDelete
                 )
             }
         }

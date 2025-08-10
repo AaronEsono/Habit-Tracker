@@ -1,6 +1,7 @@
 package aeb.proyecto.timer.components.horizontal.components.screens
 
 import aeb.proyecto.timer.TimerUiState
+import aeb.proyecto.timer.model.TimeEntryState
 import aeb.proyecto.timer.model.TimerServiceUIState
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import java.time.LocalDate
 fun HorizontalSuccessTimerScreen(
     timerUIState: TimerUiState.Success,
     timerStopWatchUIState: TimerServiceUIState,
+    listTimeEntryState: TimeEntryState,
     bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
@@ -27,7 +29,10 @@ fun HorizontalSuccessTimerScreen(
     onClickHabitButton: () -> Unit,
     onDismissHabitBottomSheet: () -> Unit,
     onAcceptBottomSheet: (Long, LocalDate) -> Unit,
-    onClickCross:()->Unit = {}
+    onClickCross:()->Unit = {},
+    onClickTimeEntry: (Long) -> Unit = {},
+    onClickFavorite: (Long,Boolean) -> Unit = {_,_ ->},
+    onClickDelete: (Long) -> Unit = {_ -> },
 ){
     AnimatedContent(
         targetState = timerStopWatchUIState,
@@ -38,6 +43,7 @@ fun HorizontalSuccessTimerScreen(
             TimerServiceUIState.NoTimer -> {
                 HorizontalChoseTimerScreen(
                     timerUIState = timerUIState,
+                    listTimeEntryState = listTimeEntryState,
                     bottomSheetState = bottomSheetState,
                     onHourChange = onHourChange,
                     onMinuteChange = onMinuteChange,
@@ -51,7 +57,10 @@ fun HorizontalSuccessTimerScreen(
                     onClickHabitButton = onClickHabitButton,
                     onDismissHabitBottomSheet = onDismissHabitBottomSheet,
                     onAcceptBottomSheet = onAcceptBottomSheet,
-                    onClickCross = onClickCross
+                    onClickCross = onClickCross,
+                    onClickTimeEntry = onClickTimeEntry,
+                    onClickFavorite = onClickFavorite,
+                    onClickDelete = onClickDelete
                 )
             }
             is TimerServiceUIState.TimerRunning -> {

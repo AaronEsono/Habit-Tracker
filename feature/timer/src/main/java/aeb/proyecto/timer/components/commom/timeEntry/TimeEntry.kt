@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
@@ -41,9 +42,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TimeEntry(
+    modifier: Modifier = Modifier,
     timeEntry: TimeEntryWithHabit,
     lastOne: Boolean = false,
-    onClickTimeEntry: () -> Unit = {},
+    onClickTimeEntry: (Long) -> Unit = {},
     onClickFavorite: (Long,Boolean) -> Unit = {_,_ ->},
     onClickDelete: (Long) -> Unit = {_ -> },
 ) {
@@ -58,12 +60,13 @@ fun TimeEntry(
 
     CustomRipple {
         Row (
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
+                .clip(clip)
                 .border(1.dp, MaterialTheme.colorScheme.outline,clip)
                 .background(MaterialTheme.colorScheme.primary)
-                .clickable(onClick = onClickTimeEntry)
+                .clickable(onClick = {onClickTimeEntry(timeEntry.timeEntry.id)})
                 .padding(vertical = spacing8, horizontal = spacing12),
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -134,7 +137,9 @@ fun TimeEntry(
                         stringResource(
                             R.string.timer_entry_habit,
                             habit.name
-                        )
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }

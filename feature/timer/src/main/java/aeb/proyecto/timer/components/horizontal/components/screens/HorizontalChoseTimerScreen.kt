@@ -5,10 +5,14 @@ import aeb.proyecto.timer.components.commom.bottomSheet.pickHabit.PickHabitBotto
 import aeb.proyecto.timer.components.commom.button.AcceptButton
 import aeb.proyecto.timer.components.commom.habitLinked.HabitLinkedButton
 import aeb.proyecto.timer.components.commom.segmentedRow.SegmentedRow
+import aeb.proyecto.timer.components.commom.timeEntry.TimeEntry
+import aeb.proyecto.timer.components.commom.timeEntry.TimeEntryHeader
 import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.IntervalSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.StopWatchSegmentedScreen
 import aeb.proyecto.timer.components.commom.typeTimer.TimerSegmentedScreen
 import aeb.proyecto.timer.model.SegmentedButtonOptions
+import aeb.proyecto.timer.model.TimeEntryState
+import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing32
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
@@ -26,7 +30,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +42,7 @@ import java.time.LocalDate
 @Composable
 fun HorizontalChoseTimerScreen(
     timerUIState: TimerUiState.Success,
+    listTimeEntryState: TimeEntryState,
     bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
@@ -48,7 +56,10 @@ fun HorizontalChoseTimerScreen(
     onClickHabitButton: () -> Unit,
     onDismissHabitBottomSheet: () -> Unit,
     onAcceptBottomSheet: (Long, LocalDate) -> Unit,
-    onClickCross:()->Unit = {}
+    onClickCross:()->Unit = {},
+    onClickTimeEntry: (Long) -> Unit = {},
+    onClickFavorite: (Long,Boolean) -> Unit = {_,_ ->},
+    onClickDelete: (Long) -> Unit = {_ -> },
 ){
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
 
@@ -100,7 +111,9 @@ fun HorizontalChoseTimerScreen(
         Spacer(modifier = Modifier.padding(horizontal = spacing4))
 
         Column (
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
+                .padding(top = spacing8)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
@@ -128,6 +141,29 @@ fun HorizontalChoseTimerScreen(
                     timerUIState = timerUIState,
                     onStartService = onStartService
                 )
+            }
+
+            when(listTimeEntryState){
+                TimeEntryState.EmptyList -> Unit
+                is TimeEntryState.TimeEntries -> {
+                    val lastEntry = listTimeEntryState.timeEntries.lastOrNull()
+
+                    TimeEntryHeader(modifier = Modifier.padding(top = spacing16,
+                        start = spacing12, end = spacing12))
+
+                    listTimeEntryState.timeEntries.forEach { timeEntry ->
+                        key(timeEntry.timeEntry.id){
+                            TimeEntry(
+                                modifier = Modifier.padding(horizontal = spacing12),
+                                timeEntry,
+                                lastOne = timeEntry == lastEntry,
+                                onClickTimeEntry = onClickTimeEntry,
+                                onClickFavorite = onClickFavorite,
+                                onClickDelete = onClickDelete
+                            )
+                        }
+                    }
+                }
             }
         }
     }

@@ -342,6 +342,10 @@ class TimerViewModel @Inject constructor(
         timeEntriesUseCase.deleteTimeEntry(id)
     }
 
+    fun onClickTimeEntry(id:Long){
+
+    }
+
 }
 
 sealed class TimerUiState{
