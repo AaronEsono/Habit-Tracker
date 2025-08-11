@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.flow.SharedFlow
 import java.time.LocalDate
 
 @Composable
@@ -20,7 +21,7 @@ fun VerticalTimerScreen(
     timerUiState: TimerUiState,
     timerStopWatchUIState: TimerServiceUIState,
     listTimeEntryState: TimeEntryState,
-    triggerSegmentedTimer: Triple<Int,Int,Int>?,
+    triggerSegmentedTimer: SharedFlow<Triple<Int,Int,Int>?>,
     bottomSheetState:Boolean,
     onHourChange:(String) -> Unit = {},
     onMinuteChange:(String) -> Unit = {},

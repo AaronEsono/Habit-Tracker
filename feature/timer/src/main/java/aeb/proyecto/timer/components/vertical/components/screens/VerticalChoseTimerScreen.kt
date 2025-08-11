@@ -36,13 +36,14 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.flow.SharedFlow
 import java.time.LocalDate
 
 @Composable
 fun VerticalChoseTimerScreen(
     timerUIState: TimerUiState.Success,
     listTimeEntryState: TimeEntryState,
-    triggerSegmentedTimer: Triple<Int,Int,Int>?,
+    triggerSegmentedTimer: SharedFlow<Triple<Int, Int, Int>?>,
     bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,

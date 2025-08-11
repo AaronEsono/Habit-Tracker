@@ -5,6 +5,7 @@ import aeb.proyecto.timer.model.TimeEntryState
 import aeb.proyecto.timer.model.TimerServiceUIState
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
+import kotlinx.coroutines.flow.SharedFlow
 import java.time.LocalDate
 
 @Composable
@@ -12,7 +13,7 @@ fun VerticalSuccessTimerScreen(
     timerUIState: TimerUiState.Success,
     timerStopWatchUIState: TimerServiceUIState,
     listTimeEntryState: TimeEntryState,
-    triggerSegmentedTimer: Triple<Int,Int,Int>?,
+    triggerSegmentedTimer: SharedFlow<Triple<Int, Int, Int>?>,
     bottomSheetState:Boolean,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,

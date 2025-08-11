@@ -17,12 +17,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @Composable
 fun TimerSegmentedScreen(
     hourSelectedState: HourSelectedState,
-    triggerSegmentedTimer: Triple<Int,Int,Int>? = null,
+    triggerSegmentedTimer: SharedFlow<Triple<Int, Int, Int>?>,
     onHourChange:(String) -> Unit,
     onMinuteChange:(String) -> Unit,
     onSecondChange: (String) -> Unit
@@ -52,16 +54,18 @@ fun TimerSegmentedScreen(
         initialFirstVisibleItemIndex = getCenteredIndex(seconds.size, firstTimer.third)
     )
 
-    LaunchedEffect (triggerSegmentedTimer){
-        if(triggerSegmentedTimer != null){
-            scope.launch {
-                hourListState.animateScrollToItem(getCenteredIndex(hours.size, triggerSegmentedTimer.first))
-            }
-            scope.launch {
-                minuteListState.animateScrollToItem(getCenteredIndex(minutes.size, triggerSegmentedTimer.second))
-            }
-            scope.launch {
-                secondListState.animateScrollToItem(getCenteredIndex(seconds.size, triggerSegmentedTimer.third))
+    LaunchedEffect (Unit){
+        triggerSegmentedTimer.collect{ data ->
+            if(data != null){
+                scope.launch {
+                    hourListState.animateScrollToItem(getCenteredIndex(hours.size, data.first))
+                }
+                scope.launch {
+                    minuteListState.animateScrollToItem(getCenteredIndex(minutes.size, data.second))
+                }
+                scope.launch {
+                    secondListState.animateScrollToItem(getCenteredIndex(seconds.size, data.third))
+                }
             }
         }
     }

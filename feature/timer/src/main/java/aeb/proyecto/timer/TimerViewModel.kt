@@ -21,9 +21,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -125,8 +128,9 @@ class TimerViewModel @Inject constructor(
     private val _bottomSheetState: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val bottomSheetState: StateFlow<Boolean> = _bottomSheetState.asStateFlow()
 
-    private val _triggerSegmentedTimer: MutableStateFlow<Triple<Int,Int,Int>?> = MutableStateFlow(null)
-    val triggerSegmentedTimer: StateFlow<Triple<Int,Int,Int>?> = _triggerSegmentedTimer.asStateFlow()
+    private val _triggerSegmentedTimer = MutableSharedFlow<Triple<Int, Int, Int>?>()
+    val triggerSegmentedTimer: SharedFlow<Triple<Int, Int, Int>?> = _triggerSegmentedTimer.asSharedFlow()
+
 
     fun startService(){
         val data = (timerData.value as? TimerUiState.Success)?.timerDataUIState
@@ -207,7 +211,7 @@ class TimerViewModel @Inject constructor(
     }
 
     fun onTypeButtonChange(value:Int) = viewModelScope.launch(Dispatchers.IO){
-        _triggerSegmentedTimer.update { null }
+        _triggerSegmentedTimer.emit(null)
         timerDataStoreUseCase.saveTypeButtonTimer(value)
     }
 
@@ -349,8 +353,9 @@ class TimerViewModel @Inject constructor(
     fun onClickTimeEntry(id:Long) = viewModelScope.launch(Dispatchers.IO){
         val timeEntry = getTimeEntryWithHabitLinked(id)
         timeEntriesUseCase.setDataFromTimeEntry(timeEntry){ timer ->
-            // TODO Generar nuevo estado si el triple es igual
-            _triggerSegmentedTimer.value = timer
+            viewModelScope.launch {
+                _triggerSegmentedTimer.emit(timer)
+            }
         }
     }
 

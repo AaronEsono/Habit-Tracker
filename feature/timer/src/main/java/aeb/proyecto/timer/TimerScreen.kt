@@ -1,18 +1,25 @@
 package aeb.proyecto.timer
 
+import aeb.proyecto.timer.components.commom.infinitePicker.getCenteredIndex
 import aeb.proyecto.timer.components.horizontal.HorizontalTimerScreen
 import aeb.proyecto.timer.components.vertical.VerticalTimerScreen
+import aeb.proyecto.timer.constants.hours
+import aeb.proyecto.timer.constants.minutes
+import aeb.proyecto.timer.constants.seconds
 import aeb.proyecto.ui.orientation.Orientation
 import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @Composable
@@ -24,7 +31,7 @@ fun TimerScreen(
     val timerStopWatchUIState = viewModel.timerStopWatchUIState.collectAsStateWithLifecycle().value
     val bottomSheetState = viewModel.bottomSheetState.collectAsStateWithLifecycle().value
     val timeEntryState = viewModel.historyEntries.collectAsStateWithLifecycle().value
-    val triggerSegmentedTimer = viewModel.triggerSegmentedTimer.collectAsStateWithLifecycle().value
+    val triggerSegmentedTimer = viewModel.triggerSegmentedTimer
 
     val orientation = getOrientation()
 
