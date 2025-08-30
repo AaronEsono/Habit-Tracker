@@ -23,6 +23,9 @@ import aeb.proyecto.stopwatch.manager.StopwatchState
 import aeb.proyecto.stopwatch.manager.TypeTimer
 import aeb.proyecto.stopwatch.model.NotificationInfo
 import aeb.proyecto.stopwatch.notification.NotificationBuilderHelper
+import aeb.proyecto.stopwatch.overlay.LayoutParams
+import aeb.proyecto.stopwatch.overlay.OverlayContent
+import aeb.proyecto.stopwatch.overlay.layoutMovement
 import aeb.proyecto.stopwatch.utils.getPausedTitle
 import aeb.proyecto.stopwatch.utils.getSecondsPassed
 import aeb.proyecto.stopwatch.utils.getTextToday
@@ -42,6 +45,19 @@ import android.os.SystemClock
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
+import android.view.View
+import android.view.WindowManager
+import androidx.compose.ui.platform.ComposeView
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.savedstate.SavedStateRegistry
+import androidx.savedstate.SavedStateRegistryController
+import androidx.savedstate.SavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,9 +71,11 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
+//1. Permisos, y tmb en configuracion
+//3. Pintar bien tod0
 
 @AndroidEntryPoint
-class StopWatchService : Service(){
+class StopWatchService : Service(), LifecycleOwner, SavedStateRegistryOwner{
 
     //Inyeccion de dependencias
     @Inject
@@ -85,19 +103,50 @@ class StopWatchService : Service(){
     @Inject
     lateinit var dataStoreInterface: DatastoreInterface
 
+    //Binder y tiempo de intervalos para actualizar
     private val binder = StopWatchBinder()
-
     private val updateInterval = 200L
+
+    //Coroutines
     private var timerJob: Job? = null
     private var notificationJob: Job? = null
-
     private val serviceJob = SupervisorJob()
     private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
     private var mediaPlayer: MediaPlayer? = null
 
+    // Opciones de energia
     private var wakeLock: PowerManager.WakeLock? = null
 
+    //Overlay
+    private lateinit var windowManager: WindowManager
+    private val _lifecycleRegistry = LifecycleRegistry(this)
+    private val _savedStateRegistryController: SavedStateRegistryController = SavedStateRegistryController.create(this)
+    private var overlayView: View? = null
+
     override fun onBind(intent: Intent?) = binder
+
+    override val savedStateRegistry: SavedStateRegistry = _savedStateRegistryController.savedStateRegistry
+    override val lifecycle: Lifecycle = _lifecycleRegistry
+
+    private val lifecycleObserver = object : DefaultLifecycleObserver {
+        override fun onResume(owner: LifecycleOwner) {
+            closeOverlay()
+        }
+
+        override fun onStop(owner: LifecycleOwner) {
+            startOverlay()
+        }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        _savedStateRegistryController.performAttach()
+        _savedStateRegistryController.performRestore(null)
+        _lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
+    }
 
     private fun startTimerCoroutine(){
         timerJob?.cancel()
@@ -323,6 +372,7 @@ class StopWatchService : Service(){
         stateManager.setState(StopwatchState.Idle)
         cancelAlarm()
         releaseWakeLock()
+        closeOverlay()
         stopForegroundService()
     }
 
@@ -481,6 +531,21 @@ class StopWatchService : Service(){
         }
     }
 
+    private fun startOverlay(){
+
+        _lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+        _lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+
+        overlayView = ComposeView(this).apply {
+            setViewTreeLifecycleOwner(this@StopWatchService)
+            setViewTreeSavedStateRegistryOwner(this@StopWatchService)
+            setContent { OverlayContent(stateManager = stateManager) }
+        }
+
+        layoutMovement(overlayView as ComposeView,windowManager)
+        windowManager.addView(overlayView,LayoutParams)
+    }
+
     private fun checkHabitLinked(){
         if(stateManager.habitLinked.value != null){
             //Hay habito vinculado, preguntar al usuario luego
@@ -497,7 +562,7 @@ class StopWatchService : Service(){
     }
 
     private fun setOnHistory(){
-        var timeEntry: TimeEntry
+        val timeEntry: TimeEntry
 
         when(val type = stateManager.typeTimer.value){
             is TypeTimer.INTERVAL -> {
@@ -529,14 +594,35 @@ class StopWatchService : Service(){
         }
     }
 
+    private fun closeOverlay(){
+        _lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        if(overlayView != null){
+            windowManager.removeView(overlayView)
+        }
+        overlayView = null
+    }
+
     override fun onDestroy() {
+        //Timer state
         stateManager.setRunningTimer(false)
-        timerJob?.cancel()
-        notificationJob?.cancel()
+
+        //Alarms
         cancelAlarm()
         vibrator.cancel()
+
+        //Coroutines
+        timerJob?.cancel()
+        notificationJob?.cancel()
         serviceJob.cancel()
+
+        //Wake lock
         releaseWakeLock()
+
+        //Overlay
+        closeOverlay()
+        ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
+
         super.onDestroy()
     }
+
 }
