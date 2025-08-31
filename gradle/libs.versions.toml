@@ -42,8 +42,7 @@ workRuntimeVersion = "2.10.0"
 appcompat = "1.7.0"
 material = "1.12.0"
 coreKtxVersion = "1.6.1"
-uiGraphicsAndroid = "1.7.6"
-firebaseDatabaseCollection = "18.0.1"
+lifecycleProcess = "2.8.4"
 places = "4.2.0"
 
 # ---------------------------------- Libraries
@@ -53,6 +52,9 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 
 # Kotlin
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+#Lifecycle-process
+androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "lifecycleProcess" }
 
 # AndroidX Core & Activity
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

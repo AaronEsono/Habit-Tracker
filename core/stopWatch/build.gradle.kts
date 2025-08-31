@@ -16,7 +16,8 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.ui)
 
-    implementation ("androidx.lifecycle:lifecycle-process:2.8.4")
+    // AndroidX Lifecycle
+    implementation (libs.androidx.lifecycle.process)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -24,4 +25,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //Mas iconos
+    implementation(libs.material.icons.extended)
 }

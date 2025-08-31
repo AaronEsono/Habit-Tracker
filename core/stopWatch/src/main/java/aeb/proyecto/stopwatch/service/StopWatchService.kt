@@ -13,6 +13,7 @@ import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_START_INTERVAL
 import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_START_STOPWATCH
 import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_START_TIMER
 import aeb.proyecto.stopwatch.constants.ACTION_SERVICE_STOP
+import aeb.proyecto.stopwatch.constants.CLICK_REQUEST_CODE
 import aeb.proyecto.stopwatch.constants.NOTIFICATION_CHANNEL_ID
 import aeb.proyecto.stopwatch.constants.NOTIFICATION_CHANNEL_NAME
 import aeb.proyecto.stopwatch.constants.NOTIFICATION_ID
@@ -25,7 +26,6 @@ import aeb.proyecto.stopwatch.model.NotificationInfo
 import aeb.proyecto.stopwatch.notification.NotificationBuilderHelper
 import aeb.proyecto.stopwatch.overlay.LayoutParams
 import aeb.proyecto.stopwatch.overlay.OverlayContent
-import aeb.proyecto.stopwatch.overlay.layoutMovement
 import aeb.proyecto.stopwatch.utils.getPausedTitle
 import aeb.proyecto.stopwatch.utils.getSecondsPassed
 import aeb.proyecto.stopwatch.utils.getTextToday
@@ -34,6 +34,7 @@ import aeb.proyecto.stopwatch.utils.prepareInitialTimerTitle
 import aeb.proyecto.stopwatch.utils.setIntervalTitle
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -48,6 +49,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.net.toUri
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -72,7 +74,8 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 //1. Permisos, y tmb en configuracion
-//3. Pintar bien tod0
+//2. Titulo y habit
+//3. Arreglar animacion del overlay
 
 @AndroidEntryPoint
 class StopWatchService : Service(), LifecycleOwner, SavedStateRegistryOwner{
@@ -532,17 +535,37 @@ class StopWatchService : Service(), LifecycleOwner, SavedStateRegistryOwner{
     }
 
     private fun startOverlay(){
-
         _lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
         _lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
         overlayView = ComposeView(this).apply {
             setViewTreeLifecycleOwner(this@StopWatchService)
             setViewTreeSavedStateRegistryOwner(this@StopWatchService)
-            setContent { OverlayContent(stateManager = stateManager) }
-        }
+            setContent { OverlayContent(
+                stateManager = stateManager,
+                onDrag = { dx, dy ->
+                    LayoutParams.x += dx
+                    LayoutParams.y += dy
+                    windowManager.updateViewLayout(this, LayoutParams)
+                },
+                onCloseOverlay = { closeOverlay() },
+                onOpenApp = {
+                    val clickIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        "app://main/timer".toUri()
+                    ).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        putExtra("destination", "timer")
+                    }
 
-        layoutMovement(overlayView as ComposeView,windowManager)
+                    context.startActivity(clickIntent)
+                },
+                onPaused = { stopStopwatch() },
+                onCancel = { cancelStopwatch() },
+                onResumed = { resumeStopwatch() },
+                onFinished = { finishStopWatch() }
+            ) }
+        }
         windowManager.addView(overlayView,LayoutParams)
     }
 
