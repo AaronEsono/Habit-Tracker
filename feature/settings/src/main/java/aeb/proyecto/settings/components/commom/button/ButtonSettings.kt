@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @SuppressLint("UnrememberedMutableInteractionSource")
@@ -69,7 +70,11 @@ fun ButtonSettings(
                     modifier = Modifier.weight(1f).padding(start = spacing10),
                     verticalArrangement = Arrangement.Center
                 ){
-                    TitleSmallText(stringResource(title))
+                    TitleSmallText(
+                        text = stringResource(title),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
 
                     label?.let {
                         LabelSmallText(stringResource(label),

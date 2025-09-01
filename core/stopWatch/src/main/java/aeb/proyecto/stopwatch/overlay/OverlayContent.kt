@@ -1,5 +1,6 @@
 package aeb.proyecto.stopwatch.overlay
 
+import aeb.proyecto.stopwatch.R
 import aeb.proyecto.stopwatch.manager.StopWatchStateManager
 import aeb.proyecto.stopwatch.manager.StopwatchState
 import aeb.proyecto.stopwatch.manager.TypeTimer
@@ -11,6 +12,8 @@ import aeb.proyecto.stopwatch.overlay.components.PauseButton
 import aeb.proyecto.stopwatch.overlay.components.PercentageBar
 import aeb.proyecto.stopwatch.overlay.components.ResumeButton
 import aeb.proyecto.stopwatch.overlay.utils.getPercentage
+import aeb.proyecto.stopwatch.overlay.utils.getTitle
+import aeb.proyecto.ui.date.utils.getTextToday
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
@@ -22,6 +25,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
+import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -51,8 +55,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -114,7 +120,7 @@ fun OverlayContent(
                         Icons.AutoMirrored.Filled.OpenInNew,
                         contentDescription = "",
                         tint = theme.textColor,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(22.dp)
                             .clickable (
                                 indication = null,
                                 interactionSource = null
@@ -123,13 +129,13 @@ fun OverlayContent(
                             }
                     )
 
-                    Spacer(modifier = Modifier.padding(horizontal = spacing2))
+                    Spacer(modifier = Modifier.padding(horizontal = spacing4))
 
                     Icon(
                         Icons.Filled.ArrowUpward,
                         contentDescription = "",
                         tint = theme.textColor,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(22.dp)
                             .clickable (
                                 indication = null,
                                 interactionSource = null
@@ -142,7 +148,7 @@ fun OverlayContent(
                         Icons.Filled.Clear,
                         contentDescription = "",
                         tint = theme.textColor,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(22.dp)
                             .clickable (
                                 indication = null,
                                 interactionSource = null
@@ -151,16 +157,32 @@ fun OverlayContent(
 
                 }
 
-                //Falta darle el titulo
-                LabelMediumText(
-                    text = "Temporizador",
-                    color = theme.textColor,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                AnimatedContent(
+                    targetState = getTitle(typeTimer,state)
+                ) { titleAnim ->
+                    LabelSmallText(
+                        text = titleAnim,
+                        color = theme.textColor,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                if(habitLinked != null){
+                    LabelSmallText(
+                        text = stringResource(R.string.timer_title_habit,habitLinked.habit.name, getTextToday(habitLinked.day.date)),
+                        color = theme.textColor,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
 
 
-                Spacer(modifier = Modifier.padding(vertical = spacing4))
+                Spacer(modifier = Modifier.padding(vertical = spacing2))
             }
 
             LabelMediumText(
@@ -185,12 +207,13 @@ fun OverlayContent(
             }
 
             if(expanded){
-                Row {
-                    when (state) {
-                        StopwatchState.Idle -> Unit
-                        StopwatchState.Stopped, StopwatchState.InProgress -> {
+                when (state) {
+                    StopwatchState.Idle -> Unit
+                    StopwatchState.Stopped, StopwatchState.InProgress -> {
+                        Row(modifier = Modifier.fillMaxWidth()) {
                             AnimatedContent(
-                                targetState = state
+                                targetState = state,
+                                modifier = Modifier.fillMaxWidth(0.5f)
                             ) { anim ->
                                 when (anim) {
                                     StopwatchState.Idle, StopwatchState.Finished -> Unit
@@ -198,26 +221,28 @@ fun OverlayContent(
                                         ResumeButton(
                                             color = theme.textColor,
                                             onClick = onResumed,
-                                            modifier = Modifier.weight(1f)
+                                            modifier = Modifier.fillMaxWidth()
                                         )
                                     }
-
                                     StopwatchState.InProgress -> {
                                         PauseButton(
                                             color = theme.textColor,
                                             onClick = onPaused,
-                                            modifier = Modifier.weight(1f)
+                                            modifier = Modifier.fillMaxWidth()
                                         )
                                     }
                                 }
                             }
 
-                            CancelButton(onClick = onCancel, modifier = Modifier.weight(1f))
+                            CancelButton(
+                                onClick = onCancel,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            )
                         }
-
-                        StopwatchState.Finished -> {
-                            FinishButton(color = theme.textColor, onClick = onFinished)
-                        }
+                    }
+                    StopwatchState.Finished -> {
+                        FinishButton(color = theme.textColor, onClick = onFinished)
                     }
                 }
             }

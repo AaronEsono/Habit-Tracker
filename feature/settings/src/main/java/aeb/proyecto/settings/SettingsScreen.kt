@@ -5,6 +5,7 @@ import aeb.proyecto.settings.components.vertical.VerticalSettingsScreen
 import aeb.proyecto.settings.model.DataDialog
 import aeb.proyecto.settings.model.DataResult
 import aeb.proyecto.settings.utils.openLink
+import aeb.proyecto.settings.utils.openOverlayPermissionSettings
 import aeb.proyecto.settings.utils.sendEmail
 import aeb.proyecto.ui.orientation.Orientation
 import aeb.proyecto.ui.orientation.getOrientation
@@ -39,6 +40,7 @@ fun SettingsScreen(
     val onClickTheme = { viewModel.setDataDialogMode(DataDialog.THEME) }
     val onClickLanguage = { viewModel.setDataDialogMode(DataDialog.LANGUAGE) }
     val onClickGeneralSettings = { viewModel.setDataDialogMode(DataDialog.DAY_WEEK) }
+    val onClickOverlay = { openOverlayPermissionSettings(context) }
     val onClickExport = { (if (viewModel.getCurrentUser()) onSaveScreen else onImportScreen)() }
     val onClickEmail = { sendEmail(context) }
     val onClickGithub = { uri: String -> openLink(context, uri) }
@@ -54,6 +56,7 @@ fun SettingsScreen(
                 onClickTheme = onClickTheme,
                 onClickLanguage = onClickLanguage,
                 onClickGeneralSettings = onClickGeneralSettings,
+                onClickOverlay = onClickOverlay,
                 onClickExport = onClickExport,
                 onClickEmail = onClickEmail,
                 onClickGithub = onClickGithub,
@@ -69,6 +72,7 @@ fun SettingsScreen(
                 onClickTheme = onClickTheme,
                 onClickLanguage = onClickLanguage,
                 onClickGeneralSettings = onClickGeneralSettings,
+                onClickOverlay = onClickOverlay,
                 onClickExport = onClickExport,
                 onClickEmail = onClickEmail,
                 onClickGithub = onClickGithub,

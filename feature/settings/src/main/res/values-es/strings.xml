@@ -8,8 +8,12 @@
     <string name="settings_theme">Tema</string>
 
     <string name="settings_export_import">Exportar e importar hábitos</string>
-
     <string name="settings_language">Idioma</string>
+
+    <string name="settings_overlay">Permitir superponer el temporizador</string>
+    <string name="settings_enabled">Activado</string>
+    <string name="settings_disabled">Desactivado</string>
+
     <string name="settings_email">Reporta un problema</string>
     <string name="settings_github">Código de la aplicación</string>
     <string name="settings_link">Sígueme en mis redes sociales</string>

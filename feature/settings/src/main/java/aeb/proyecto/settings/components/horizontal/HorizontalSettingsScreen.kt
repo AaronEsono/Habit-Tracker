@@ -12,6 +12,7 @@ import aeb.proyecto.settings.components.vertical.components.dialog.VerticalDialo
 import aeb.proyecto.settings.constants.SettingsConstants
 import aeb.proyecto.settings.model.DataResult
 import aeb.proyecto.settings.model.SettingsDialogState
+import aeb.proyecto.settings.utils.OnChangeOverlay
 import aeb.proyecto.ui.date.utils.getDay
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
@@ -20,6 +21,7 @@ import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleMediumText
 import aeb.proyecto.ui.theme.getTitle
 import android.os.Build
+import android.provider.Settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,7 +32,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,6 +47,7 @@ fun HorizontalSettingsScreen(
     onClickTheme: () -> Unit,
     onClickLanguage: () -> Unit,
     onClickGeneralSettings: () -> Unit,
+    onClickOverlay: () -> Unit,
     onClickExport: () -> Unit,
     onClickEmail: () -> Unit,
     onClickGithub: (String) -> Unit,
@@ -57,6 +63,10 @@ fun HorizontalSettingsScreen(
         }
 
         is SettingsUIState.Success -> {
+
+            val context = LocalContext.current
+            val overlayActivated = remember { mutableStateOf(Settings.canDrawOverlays(context)) }
+            OnChangeOverlay(overlayActivated, context)
 
             Row(
                 modifier = Modifier
@@ -101,6 +111,15 @@ fun HorizontalSettingsScreen(
                         label = getDay(settingsUIState.data.dayOfWeek),
                         leadingIcon = R.drawable.ic_calendar_day,
                         onClick = onClickGeneralSettings
+                    )
+
+                    CustomHorizontalDivider()
+
+                    ButtonSettings(
+                        title = R.string.settings_overlay,
+                        leadingIcon = R.drawable.ic_overlay,
+                        label = if(overlayActivated.value) R.string.settings_enabled else R.string.settings_disabled,
+                        onClick = onClickOverlay
                     )
 
                     CustomHorizontalDivider()

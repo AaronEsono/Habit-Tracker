@@ -45,10 +45,12 @@ import android.os.PowerManager
 import android.os.SystemClock
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.font.FontVariation
 import androidx.core.net.toUri
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -73,9 +75,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
-//1. Permisos, y tmb en configuracion
-//2. Titulo y habit
-//3. Arreglar animacion del overlay
+//1. Arreglar animacion del overlay
 
 @AndroidEntryPoint
 class StopWatchService : Service(), LifecycleOwner, SavedStateRegistryOwner{
@@ -137,7 +137,9 @@ class StopWatchService : Service(), LifecycleOwner, SavedStateRegistryOwner{
         }
 
         override fun onStop(owner: LifecycleOwner) {
-            startOverlay()
+            if(Settings.canDrawOverlays(context)){
+                startOverlay()
+            }
         }
     }
 
