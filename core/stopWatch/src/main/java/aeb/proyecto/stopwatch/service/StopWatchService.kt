@@ -30,6 +30,7 @@ import aeb.proyecto.stopwatch.utils.getPausedTitle
 import aeb.proyecto.stopwatch.utils.getSecondsPassed
 import aeb.proyecto.stopwatch.utils.getTextToday
 import aeb.proyecto.stopwatch.utils.longToSeconds
+import aeb.proyecto.stopwatch.utils.openAppIntoTimer
 import aeb.proyecto.stopwatch.utils.prepareInitialTimerTitle
 import aeb.proyecto.stopwatch.utils.setIntervalTitle
 import android.app.NotificationChannel
@@ -74,8 +75,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
-
-//1. Arreglar animacion del overlay
 
 @AndroidEntryPoint
 class StopWatchService : Service(), LifecycleOwner, SavedStateRegistryOwner{
@@ -551,17 +550,7 @@ class StopWatchService : Service(), LifecycleOwner, SavedStateRegistryOwner{
                     windowManager.updateViewLayout(this, LayoutParams)
                 },
                 onCloseOverlay = { closeOverlay() },
-                onOpenApp = {
-                    val clickIntent = Intent(
-                        Intent.ACTION_VIEW,
-                        "app://main/timer".toUri()
-                    ).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        putExtra("destination", "timer")
-                    }
-
-                    context.startActivity(clickIntent)
-                },
+                onOpenApp = { openAppIntoTimer(context) },
                 onPaused = { stopStopwatch() },
                 onCancel = { cancelStopwatch() },
                 onResumed = { resumeStopwatch() },

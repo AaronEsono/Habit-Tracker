@@ -5,8 +5,10 @@ import aeb.proyecto.stopwatch.manager.IntervalState
 import aeb.proyecto.stopwatch.manager.StopwatchState
 import aeb.proyecto.stopwatch.manager.TypeTimer
 import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.core.net.toUri
 import java.time.LocalDate
 import kotlin.text.*
 import kotlin.time.Duration
@@ -56,4 +58,16 @@ fun getTextToday(date: LocalDate,context:Context):String{
         LocalDate.now().minusDays(1) -> context.getString(R.string.timer_yesterday)
         else -> {date.toString()}
     }
+}
+
+fun openAppIntoTimer(context: Context){
+    val clickIntent = Intent(
+        Intent.ACTION_VIEW,
+        "app://main/timer".toUri()
+    ).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        putExtra("destination", "timer")
+    }
+
+    context.startActivity(clickIntent)
 }
