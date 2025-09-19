@@ -25,7 +25,7 @@ fun HorizontalHabitContentScreen(
     selectedTimeRangeUiState: TimeRangeUiState,
     selectedDate: LocalDate = LocalDate.now(),
     onClickTab: (PagerElement) -> Unit = {},
-    onBottomSheetSelected: (BottomSheetType) -> Unit = {},
+    onBottomSheetSelected: () -> Unit = {},
     onClickTimeRange: (LocalDate) -> Unit = {},
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit

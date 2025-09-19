@@ -7,7 +7,9 @@ import aeb.proyecto.domain.usecase.habit.HabitDatastoreUseCase
 import aeb.proyecto.habit.constants.rangeDays
 import aeb.proyecto.habit.constants.stopTimeOutMillis
 import aeb.proyecto.habit.model.BottomSheetType
+import aeb.proyecto.habit.model.BottomSheetUIState
 import aeb.proyecto.habit.model.DataHabit
+import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.habit.model.pager.PagerElement
 import aeb.proyecto.habit.model.pager.PagerSelected
 import aeb.proyecto.habit.model.pager.findPagerElement
@@ -67,6 +69,9 @@ class HabitViewModel @Inject constructor(
     /** Controla los estados de los dialogos y de las hojas inferiores*/
     private val _dataHabitUIState = MutableStateFlow(DataHabit())
     val dataHabitUIState:StateFlow<DataHabit> = _dataHabitUIState.asStateFlow()
+
+    private val _bottomSheetUIState = MutableStateFlow(BottomSheetUIState())
+    val bottomSheetUIState: StateFlow<BottomSheetUIState> = _bottomSheetUIState.asStateFlow()
 
     /** Día de inicio de la semana seleccionado por el usuario. */
     private val _startDayOfWeek:StateFlow<DayOfWeek?> = habitDatastoreUseCase.startDayOfWeek
@@ -230,14 +235,11 @@ class HabitViewModel @Inject constructor(
     /**
      * Cambia el bottomSheet seleccionado
      */
-    fun onBottomSheetSelected(bottomSheetType: BottomSheetType) {
-        _dataHabitUIState.update { currentState ->
+    fun onBottomSheetSelected() {
+        _bottomSheetUIState.update { currentState ->
             currentState.copy(
-                bottomSheetState = currentState
-                    .bottomSheetState.copy(
-                        type = bottomSheetType,
-                        isExpanded = true
-                    )
+                isEnabled = true,
+                typeOfBottomSheet = TypeBottomSheet.SelectDate
             )
         }
     }
@@ -246,12 +248,9 @@ class HabitViewModel @Inject constructor(
      * Cierra el bottomSheet seleccionado
      */
     fun onDismissBottomSheet(){
-        _dataHabitUIState.update { currentState ->
+        _bottomSheetUIState.update { currentState ->
             currentState.copy(
-                bottomSheetState = currentState
-                    .bottomSheetState.copy(
-                        isExpanded = false
-                    )
+                isEnabled = false,
             )
         }
     }

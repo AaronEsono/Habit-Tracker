@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun BarActionIcon(
-    onBottomSheetSelected: (BottomSheetType) -> Unit = {},
+    onBottomSheetSelected: () -> Unit = {},
 ){
 
     ProvideAppBarActions {
@@ -26,7 +26,7 @@ fun BarActionIcon(
             tint = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(end = spacing6)
                 .size(25.dp)
-                .clickable {onBottomSheetSelected(BottomSheetType.SELECT_DATE)}
+                .clickable {onBottomSheetSelected()}
         )
     }
 

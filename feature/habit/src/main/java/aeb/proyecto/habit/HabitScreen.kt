@@ -2,7 +2,7 @@ package aeb.proyecto.habit
 
 import aeb.proyecto.habit.components.bottomSheet.selectDate.BottomSheetSelectDate
 import aeb.proyecto.habit.components.common.loading.HabitLoading
-import aeb.proyecto.habit.components.navigationIcon.ActionIconHabitScreen
+import aeb.proyecto.habit.components.common.navigationIcon.ActionIconHabitScreen
 import aeb.proyecto.habit.components.common.screens.NoHabitScreen
 import aeb.proyecto.habit.components.horizontal.HorizontalHabitScreen
 import aeb.proyecto.habit.components.screen.PagerElementScreen
@@ -60,7 +60,7 @@ fun HabitScreen(
     val selectedTimeRange = viewModel.selectedTimeRangeUiState.collectAsStateWithLifecycle().value
     val filteredHabitsUiState = viewModel.habitsForSelectedTimeUiState.collectAsStateWithLifecycle().value
     val selectedDate = viewModel.selectedDate.collectAsStateWithLifecycle().value
-    val dataHabitUIState = viewModel.dataHabitUIState.collectAsStateWithLifecycle().value
+    val bottomSheetUIState = viewModel.bottomSheetUIState.collectAsStateWithLifecycle().value
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.habit_topbar), fontSize = 20.sp)
@@ -80,10 +80,12 @@ fun HabitScreen(
                 currentPagerSelected = currentPagerSelected,
                 selectedTimeRangeUiState = selectedTimeRange,
                 dateSelected = selectedDate,
+                bottomSheetUIState = bottomSheetUIState,
                 navigateToAddHabit = navigateToAddHabit,
                 onClickTab = viewModel::onPagerTypeSelected,
                 onClickTimeRange = viewModel::onClickTimeRange,
                 onBottomSheetSelected = viewModel::onBottomSheetSelected,
+                onDismissBottomSheet = viewModel::onDismissBottomSheet,
                 onLongClick = viewModel::onLongClick,
                 onClick = viewModel::onClick
             )
@@ -105,19 +107,6 @@ fun HabitScreen(
         }
     }
 
-
-    if(dataHabitUIState.bottomSheetState.isExpanded){
-        when(dataHabitUIState.bottomSheetState.type){
-            BottomSheetType.SELECT_DATE -> {
-                BottomSheetSelectDate(
-                    onDismiss = viewModel::onDismissBottomSheet,
-                    selectedDate = selectedDate,
-                    onClick = viewModel::onClickTimeRange
-                )
-            }
-        }
-    }
-//
 //    if(dataHabitUIState.showEditHabitDayBT.showEditHabitDayBT){
 //        BottomSheetEditHabitDay(
 //            habit = dataHabitUIState.showEditHabitDayBT.habit,

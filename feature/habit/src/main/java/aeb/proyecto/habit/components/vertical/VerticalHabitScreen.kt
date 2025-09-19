@@ -12,6 +12,7 @@ import aeb.proyecto.habit.components.common.screens.NoHabitScreen
 import aeb.proyecto.habit.components.screen.PagerElementScreen
 import aeb.proyecto.habit.components.vertical.components.screens.VerticalHabitContentScreen
 import aeb.proyecto.habit.model.BottomSheetType
+import aeb.proyecto.habit.model.BottomSheetUIState
 import aeb.proyecto.habit.model.pager.PagerElement
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
@@ -35,11 +36,13 @@ fun VerticalHabitScreen(
     filteredHabitsUiState: FilteredHabitsUiState,
     currentPagerSelected: CurrentPagerSelection,
     selectedTimeRangeUiState: TimeRangeUiState,
+    bottomSheetUIState: BottomSheetUIState,
     dateSelected: LocalDate = LocalDate.now(),
     navigateToAddHabit: (Long) -> Unit = {},
     onClickTab: (PagerElement) -> Unit = {},
     onClickTimeRange: (LocalDate) -> Unit = {},
-    onBottomSheetSelected: (BottomSheetType) -> Unit = {},
+    onBottomSheetSelected: () -> Unit = {},
+    onDismissBottomSheet: () -> Unit = {},
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id:Long,date: LocalDate) -> Unit
 ){
@@ -60,16 +63,14 @@ fun VerticalHabitScreen(
                         filteredHabitsUIState = filteredHabitsUiState,
                         currentPagerSelected = currentPagerSelected,
                         selectedTimeRangeUiState = selectedTimeRangeUiState,
+                        bottomSheetUIState = bottomSheetUIState,
                         selectedDate = dateSelected,
                         onClickTab = onClickTab,
                         onBottomSheetSelected = onBottomSheetSelected,
+                        onDismissBottomSheet = onDismissBottomSheet,
                         onClickTimeRange = onClickTimeRange,
                         onLongClick = onLongClick,
                         onClick = onClick
-                    )
-
-                    BarActionIcon(
-                        onBottomSheetSelected = onBottomSheetSelected
                     )
                 }
 

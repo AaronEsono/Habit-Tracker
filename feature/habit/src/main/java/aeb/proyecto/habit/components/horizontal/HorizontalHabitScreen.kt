@@ -29,7 +29,7 @@ fun HorizontalHabitScreen(
     navigateToAddHabit: (Long) -> Unit = {},
     onClickTab: (PagerElement) -> Unit = {},
     onClickTimeRange: (LocalDate) -> Unit = {},
-    onBottomSheetSelected: (BottomSheetType) -> Unit = {},
+    onBottomSheetSelected: () -> Unit = {},
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id:Long,date: LocalDate) -> Unit
 ){
@@ -56,10 +56,6 @@ fun HorizontalHabitScreen(
                         onClickTimeRange = onClickTimeRange,
                         onLongClick = onLongClick,
                         onClick = onClick
-                    )
-
-                    BarActionIcon(
-                        onBottomSheetSelected = onBottomSheetSelected
                     )
                 }
 

@@ -1,14 +1,9 @@
-package aeb.proyecto.habit.components.navigationIcon
+package aeb.proyecto.habit.components.common.navigationIcon
 
-import aeb.proyecto.habit.R
 import aeb.proyecto.ui.date.utils.getTextToday
-import aeb.proyecto.ui.dimmens.Dimmens.spacing12
-import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
-import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
-import aeb.proyecto.ui.month.getAvrMonth
 import aeb.proyecto.ui.text.LabelLargeText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
@@ -20,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 

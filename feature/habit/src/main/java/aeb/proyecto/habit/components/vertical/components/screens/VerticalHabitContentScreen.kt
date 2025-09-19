@@ -3,10 +3,13 @@ package aeb.proyecto.habit.components.vertical.components.screens
 import aeb.proyecto.habit.CurrentPagerSelection
 import aeb.proyecto.habit.FilteredHabitsUiState
 import aeb.proyecto.habit.TimeRangeUiState
+import aeb.proyecto.habit.components.bottomSheet.selectDate.BottomSheetSelectDate
 import aeb.proyecto.habit.components.common.button.BarActionIcon
 import aeb.proyecto.habit.components.common.pager.PageSelected
 import aeb.proyecto.habit.components.common.timeRange.TimeRangeHabit
 import aeb.proyecto.habit.model.BottomSheetType
+import aeb.proyecto.habit.model.BottomSheetUIState
+import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.habit.model.pager.PagerElement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,9 +25,11 @@ fun VerticalHabitContentScreen(
     filteredHabitsUIState: FilteredHabitsUiState,
     currentPagerSelected: CurrentPagerSelection,
     selectedTimeRangeUiState: TimeRangeUiState,
+    bottomSheetUIState: BottomSheetUIState,
     selectedDate: LocalDate = LocalDate.now(),
     onClickTab: (PagerElement) -> Unit = {},
-    onBottomSheetSelected: (BottomSheetType) -> Unit = {},
+    onBottomSheetSelected: () -> Unit = {},
+    onDismissBottomSheet: () -> Unit = {},
     onClickTimeRange: (LocalDate) -> Unit = {},
     onLongClick: (id:Long,date:LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
@@ -51,6 +56,19 @@ fun VerticalHabitContentScreen(
         )
 
         HorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
+    }
+
+    if(bottomSheetUIState.isEnabled){
+        when(bottomSheetUIState.typeOfBottomSheet){
+            is TypeBottomSheet.EditHabitDay -> {}
+            TypeBottomSheet.SelectDate -> {
+                BottomSheetSelectDate(
+                    onDismiss = onDismissBottomSheet,
+                    selectedDate = selectedDate,
+                    onClick = onClickTimeRange
+                )
+            }
+        }
     }
 
 }

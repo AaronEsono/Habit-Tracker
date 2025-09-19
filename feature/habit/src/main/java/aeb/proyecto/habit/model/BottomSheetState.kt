@@ -5,8 +5,6 @@ data class BottomSheetState(
     val type: BottomSheetType = BottomSheetType.SELECT_DATE,
 )
 
-
-
 enum class BottomSheetType{
     SELECT_DATE
 }
