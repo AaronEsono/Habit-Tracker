@@ -2,11 +2,11 @@ package aeb.proyecto.login.components.vertical
 
 import aeb.proyecto.login.LoginUIState
 import aeb.proyecto.login.R
-import aeb.proyecto.login.components.commom.button.LoginButton
-import aeb.proyecto.login.components.commom.button.LoginGoogleButton
-import aeb.proyecto.login.components.commom.loading.LoginLoading
-import aeb.proyecto.login.components.commom.textField.LoginSecureTextField
-import aeb.proyecto.login.components.commom.textField.LoginTextField
+import aeb.proyecto.login.components.common.button.LoginButton
+import aeb.proyecto.login.components.common.button.LoginGoogleButton
+import aeb.proyecto.login.components.common.loading.LoginLoading
+import aeb.proyecto.login.components.common.textField.LoginSecureTextField
+import aeb.proyecto.login.components.common.textField.LoginTextField
 import aeb.proyecto.login.components.vertical.components.bottomSheet.VerticalLoginBottomSheet
 import aeb.proyecto.login.model.BottomSheetState
 import aeb.proyecto.login.model.DataLoginScreen

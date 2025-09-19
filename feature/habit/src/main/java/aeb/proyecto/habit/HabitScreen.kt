@@ -1,20 +1,22 @@
 package aeb.proyecto.habit
 
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.BottomSheetEditHabitDay
 import aeb.proyecto.habit.components.bottomSheet.selectDate.BottomSheetSelectDate
-import aeb.proyecto.habit.components.loading.HabitLoading
+import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.components.navigationIcon.ActionIconHabitScreen
-import aeb.proyecto.habit.components.screen.NoHabitScreen
+import aeb.proyecto.habit.components.common.screens.NoHabitScreen
+import aeb.proyecto.habit.components.horizontal.HorizontalHabitScreen
 import aeb.proyecto.habit.components.screen.PagerElementScreen
+import aeb.proyecto.habit.components.vertical.VerticalHabitScreen
 import aeb.proyecto.habit.model.BottomSheetType
 import aeb.proyecto.habit.model.pager.PagerElement
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
+import aeb.proyecto.ui.orientation.Orientation
+import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,6 +53,8 @@ fun HabitScreen(
     navigateToTimer : () -> Unit
 ){
 
+    val orientation = getOrientation()
+
     val pagerTypesUIState = viewModel.availablePagerTypesUiState.collectAsStateWithLifecycle().value
     val currentPagerSelected = viewModel.currentPagerType.collectAsStateWithLifecycle().value
     val selectedTimeRange = viewModel.selectedTimeRangeUiState.collectAsStateWithLifecycle().value
@@ -67,19 +71,40 @@ fun HabitScreen(
         selectedDate = selectedDate
     )
 
-    HabitScreen(
-        pagerTypesUIState = pagerTypesUIState,
-        filteredHabitsUiState = filteredHabitsUiState,
-        currentPagerSelected = currentPagerSelected,
-        selectedTimeRangeUiState = selectedTimeRange,
-        dateSelected = selectedDate,
-        navigateToAddHabit = navigateToAddHabit,
-        onClickTab = viewModel::onPagerTypeSelected,
-        onClickTimeRange = viewModel::onClickTimeRange,
-        onBottomSheetSelected = viewModel::onBottomSheetSelected,
-        onLongClick = viewModel::onLongClick,
-        onClick = viewModel::onClick
-    )
+
+    when(orientation){
+        Orientation.Portrait -> {
+            VerticalHabitScreen(
+                pagerTypesUIState = pagerTypesUIState,
+                filteredHabitsUiState = filteredHabitsUiState,
+                currentPagerSelected = currentPagerSelected,
+                selectedTimeRangeUiState = selectedTimeRange,
+                dateSelected = selectedDate,
+                navigateToAddHabit = navigateToAddHabit,
+                onClickTab = viewModel::onPagerTypeSelected,
+                onClickTimeRange = viewModel::onClickTimeRange,
+                onBottomSheetSelected = viewModel::onBottomSheetSelected,
+                onLongClick = viewModel::onLongClick,
+                onClick = viewModel::onClick
+            )
+        }
+        Orientation.Landscape -> {
+            HorizontalHabitScreen(
+                pagerTypesUIState = pagerTypesUIState,
+                filteredHabitsUiState = filteredHabitsUiState,
+                currentPagerSelected = currentPagerSelected,
+                selectedTimeRangeUiState = selectedTimeRange,
+                dateSelected = selectedDate,
+                navigateToAddHabit = navigateToAddHabit,
+                onClickTab = viewModel::onPagerTypeSelected,
+                onClickTimeRange = viewModel::onClickTimeRange,
+                onBottomSheetSelected = viewModel::onBottomSheetSelected,
+                onLongClick = viewModel::onLongClick,
+                onClick = viewModel::onClick
+            )
+        }
+    }
+
 
     if(dataHabitUIState.bottomSheetState.isExpanded){
         when(dataHabitUIState.bottomSheetState.type){
@@ -92,21 +117,21 @@ fun HabitScreen(
             }
         }
     }
-
-    if(dataHabitUIState.showEditHabitDayBT.showEditHabitDayBT){
-        BottomSheetEditHabitDay(
-            habit = dataHabitUIState.showEditHabitDayBT.habit,
-            habitDay = dataHabitUIState.showEditHabitDayBT.habitDay,
-            onDismiss = viewModel::onDismissEdit,
-            onRestart = viewModel::onRestart,
-            onClick = viewModel::onClick,
-            onClickTimer = { data ->
-                viewModel.onClickTimerHabit(data){
-                    navigateToTimer()
-                }
-            }
-        )
-    }
+//
+//    if(dataHabitUIState.showEditHabitDayBT.showEditHabitDayBT){
+//        BottomSheetEditHabitDay(
+//            habit = dataHabitUIState.showEditHabitDayBT.habit,
+//            habitDay = dataHabitUIState.showEditHabitDayBT.habitDay,
+//            onDismiss = viewModel::onDismissEdit,
+//            onRestart = viewModel::onRestart,
+//            onClick = viewModel::onClick,
+//            onClickTimer = { data ->
+//                viewModel.onClickTimerHabit(data){
+//                    navigateToTimer()
+//                }
+//            }
+//        )
+//    }
 }
 
 @Composable

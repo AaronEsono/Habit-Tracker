@@ -8,7 +8,7 @@ import aeb.proyecto.room.entities.relations.TimeEntryWithHabit
 import aeb.proyecto.stopwatch.helper.StopWatchHelper
 import aeb.proyecto.stopwatch.manager.StopWatchStateManager
 import aeb.proyecto.stopwatch.manager.StopwatchState
-import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.model.TypePickState
+import aeb.proyecto.timer.components.common.typeTimer.intervalSegmented.model.TypePickState
 import aeb.proyecto.timer.model.HabitLinkedState
 import aeb.proyecto.timer.model.HourSelectedState
 import aeb.proyecto.timer.model.SegmentedButtonOptions
@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart

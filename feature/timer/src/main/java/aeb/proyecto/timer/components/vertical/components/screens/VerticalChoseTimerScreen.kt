@@ -1,15 +1,15 @@
 package aeb.proyecto.timer.components.vertical.components.screens
 
 import aeb.proyecto.timer.TimerUiState
-import aeb.proyecto.timer.components.commom.bottomSheet.pickHabit.PickHabitBottomSheet
-import aeb.proyecto.timer.components.commom.button.AcceptButton
-import aeb.proyecto.timer.components.commom.habitLinked.HabitLinkedButton
-import aeb.proyecto.timer.components.commom.segmentedRow.SegmentedRow
-import aeb.proyecto.timer.components.commom.timeEntry.TimeEntry
-import aeb.proyecto.timer.components.commom.timeEntry.TimeEntryHeader
-import aeb.proyecto.timer.components.commom.typeTimer.StopWatchSegmentedScreen
-import aeb.proyecto.timer.components.commom.typeTimer.TimerSegmentedScreen
-import aeb.proyecto.timer.components.commom.typeTimer.intervalSegmented.IntervalSegmentedScreen
+import aeb.proyecto.timer.components.common.bottomSheet.pickHabit.PickHabitBottomSheet
+import aeb.proyecto.timer.components.common.button.AcceptButton
+import aeb.proyecto.timer.components.common.habitLinked.HabitLinkedButton
+import aeb.proyecto.timer.components.common.segmentedRow.SegmentedRow
+import aeb.proyecto.timer.components.common.timeEntry.TimeEntry
+import aeb.proyecto.timer.components.common.timeEntry.TimeEntryHeader
+import aeb.proyecto.timer.components.common.typeTimer.StopWatchSegmentedScreen
+import aeb.proyecto.timer.components.common.typeTimer.TimerSegmentedScreen
+import aeb.proyecto.timer.components.common.typeTimer.intervalSegmented.IntervalSegmentedScreen
 import aeb.proyecto.timer.model.SegmentedButtonOptions
 import aeb.proyecto.timer.model.TimeEntryState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
@@ -19,9 +19,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,7 +1,7 @@
 package aeb.proyecto.save.components.vertical.components.bottomSheet
 
-import aeb.proyecto.save.components.commom.button.BottomSheetFilledButton
-import aeb.proyecto.save.components.commom.button.BottomSheetOutLinedButton
+import aeb.proyecto.save.components.common.button.BottomSheetFilledButton
+import aeb.proyecto.save.components.common.button.BottomSheetOutLinedButton
 import aeb.proyecto.save.model.DataBottomSheet
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12

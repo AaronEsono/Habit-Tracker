@@ -4,9 +4,9 @@ import aeb.proyecto.language.model.returnStringValue
 import aeb.proyecto.settings.BuildConfig
 import aeb.proyecto.settings.R
 import aeb.proyecto.settings.SettingsUIState
-import aeb.proyecto.settings.components.commom.button.ButtonSettings
-import aeb.proyecto.settings.components.commom.divider.CustomHorizontalDivider
-import aeb.proyecto.settings.components.commom.loading.SettingsLoading
+import aeb.proyecto.settings.components.common.button.ButtonSettings
+import aeb.proyecto.settings.components.common.divider.CustomHorizontalDivider
+import aeb.proyecto.settings.components.common.loading.SettingsLoading
 import aeb.proyecto.settings.components.vertical.components.dialog.VerticalDialogSettings
 import aeb.proyecto.settings.constants.SettingsConstants
 import aeb.proyecto.settings.model.DataResult

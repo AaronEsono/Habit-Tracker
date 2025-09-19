@@ -3,9 +3,9 @@ package aeb.proyecto.save.components.vertical
 import aeb.proyecto.save.CustomSpacerSave
 import aeb.proyecto.save.R
 import aeb.proyecto.save.SaveUIState
-import aeb.proyecto.save.components.commom.button.SaveButton
-import aeb.proyecto.save.components.commom.card.CardSave
-import aeb.proyecto.save.components.commom.loading.SaveScreenLoading
+import aeb.proyecto.save.components.common.button.SaveButton
+import aeb.proyecto.save.components.common.card.CardSave
+import aeb.proyecto.save.components.common.loading.SaveScreenLoading
 import aeb.proyecto.save.components.vertical.components.bottomSheet.VerticalSaveBottomSheet
 import aeb.proyecto.save.model.BottomSheetState
 import aeb.proyecto.save.model.DataSaveScreen

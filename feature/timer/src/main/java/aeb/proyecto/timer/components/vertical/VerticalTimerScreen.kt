@@ -1,8 +1,7 @@
 package aeb.proyecto.timer.components.vertical
 
-import aeb.proyecto.room.entities.relations.TimeEntryWithHabit
 import aeb.proyecto.timer.TimerUiState
-import aeb.proyecto.timer.components.commom.loading.TimerLoading
+import aeb.proyecto.timer.components.common.loading.TimerLoading
 import aeb.proyecto.timer.components.vertical.components.screens.VerticalSuccessTimerScreen
 import aeb.proyecto.timer.model.TimeEntryState
 import aeb.proyecto.timer.model.TimerServiceUIState

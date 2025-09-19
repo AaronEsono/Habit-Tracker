@@ -1,9 +1,9 @@
 package aeb.proyecto.login.components.vertical.components.bottomSheet
 
 import aeb.proyecto.login.R
-import aeb.proyecto.login.components.commom.button.BottomSheetFilledButton
-import aeb.proyecto.login.components.commom.button.BottomSheetOutFilledButton
-import aeb.proyecto.login.components.commom.textField.LoginTextField
+import aeb.proyecto.login.components.common.button.BottomSheetFilledButton
+import aeb.proyecto.login.components.common.button.BottomSheetOutFilledButton
+import aeb.proyecto.login.components.common.textField.LoginTextField
 import aeb.proyecto.login.model.DataLoginBottomSheet
 import aeb.proyecto.login.utils.isButtonEnabled
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
