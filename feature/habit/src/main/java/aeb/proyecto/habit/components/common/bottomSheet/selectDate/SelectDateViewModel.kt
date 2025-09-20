@@ -1,4 +1,4 @@
-package aeb.proyecto.habit.components.bottomSheet.selectDate
+package aeb.proyecto.habit.components.common.bottomSheet.selectDate
 
 import aeb.proyecto.language.provider.RegionFirstDayProvider
 import aeb.proyecto.ui.calendar.model.CalendarUIState
@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject
 
@@ -33,9 +32,8 @@ class SelectDateViewModel @Inject constructor(
             flow {
                 val dates = calendarDataSource.getDates(
                     firstDayProvider.getFirstDayOfWeekByLocale(),
-                    yearMonth,
-                    ::getDataSelectDate
-                )
+                    yearMonth
+                ) { _ -> Unit }
                 emit(CalendarUIState(dates))
             }
         }.stateIn(
@@ -51,8 +49,4 @@ class SelectDateViewModel @Inject constructor(
     fun initMonth(){
         _yearMonth.update { YearMonth.now() }
     }
-}
-
-private fun getDataSelectDate(date:LocalDate):Unit{
-    return Unit
 }

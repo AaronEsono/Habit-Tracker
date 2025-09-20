@@ -1,6 +1,5 @@
 package aeb.proyecto.habit
 
-import aeb.proyecto.habit.components.bottomSheet.selectDate.BottomSheetSelectDate
 import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.components.common.navigationIcon.ActionIconHabitScreen
 import aeb.proyecto.habit.components.common.screens.NoHabitScreen
@@ -96,11 +95,13 @@ fun HabitScreen(
                 filteredHabitsUiState = filteredHabitsUiState,
                 currentPagerSelected = currentPagerSelected,
                 selectedTimeRangeUiState = selectedTimeRange,
+                bottomSheetUIState = bottomSheetUIState,
                 dateSelected = selectedDate,
                 navigateToAddHabit = navigateToAddHabit,
                 onClickTab = viewModel::onPagerTypeSelected,
                 onClickTimeRange = viewModel::onClickTimeRange,
                 onBottomSheetSelected = viewModel::onBottomSheetSelected,
+                onDismissBottomSheet = viewModel::onDismissBottomSheet,
                 onLongClick = viewModel::onLongClick,
                 onClick = viewModel::onClick
             )

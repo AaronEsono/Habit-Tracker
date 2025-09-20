@@ -1,10 +1,8 @@
-package aeb.proyecto.habit.components.bottomSheet.selectDate.day
+package aeb.proyecto.habit.components.common.bottomSheet.selectDate
 
 import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
-import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
-import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
