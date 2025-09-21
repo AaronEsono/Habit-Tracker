@@ -1,12 +1,10 @@
-package aeb.proyecto.habit.components.screen.typeHabits
+package aeb.proyecto.habit.components.vertical.components.screens.typeHabit
 
-import aeb.proyecto.habit.components.card.habit.CardHabit
+import aeb.proyecto.habit.components.common.habitCards.dailyCard.DailyCard
+import aeb.proyecto.habit.components.common.habitCards.dailyCard.WeeklyCard
+import aeb.proyecto.habit.utils.cardHabitPadding
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
-import aeb.proyecto.ui.dimmens.Dimmens.spacing10
-import aeb.proyecto.ui.dimmens.Dimmens.spacing80
-import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -23,12 +21,13 @@ import kotlinx.coroutines.delay
 import java.time.LocalDate
 
 @Composable
-fun DailyHabitsScreen(
+fun VerticalWeeklyHabitScreen(
     selectedDate: LocalDate,
     habits: List<HabitWithDailyHabit>,
-    onLongClick: (id:Long,date:LocalDate) -> Unit,
+    onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
-) {
+){
+
     val visibleItems = remember { mutableStateListOf<Int>() }
 
     // Hash de los IDs de los hábitos (solo cambia si cambian los hábitos que ves)
@@ -57,7 +56,7 @@ fun DailyHabitsScreen(
                 enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
                 exit = fadeOut()
             ) {
-                CardHabit(
+                WeeklyCard(
                     habit = habits[index],
                     modifier = Modifier.cardHabitPadding(
                         index,
@@ -70,15 +69,5 @@ fun DailyHabitsScreen(
             }
         }
     }
-}
 
-fun Modifier.cardHabitPadding(index:Int, lastElement:Boolean = false):Modifier{
-    return if(lastElement){
-        if(index == 0)
-            padding(bottom = spacing80, top = spacing12)
-        else
-            padding(bottom = spacing80)
-    }else{
-        if (index == 0) padding(top = spacing12, bottom = spacing10) else padding(bottom = spacing10)
-    }
 }

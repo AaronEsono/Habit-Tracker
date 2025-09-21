@@ -4,9 +4,12 @@ import aeb.proyecto.habit.CurrentPagerSelection
 import aeb.proyecto.habit.FilteredHabitsUiState
 import aeb.proyecto.habit.TimeRangeUiState
 import aeb.proyecto.habit.components.common.button.BarActionIcon
+import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.components.common.pager.PageSelected
 import aeb.proyecto.habit.components.common.timeRange.TimeRangeHabit
 import aeb.proyecto.habit.components.vertical.components.bottomSheet.selectDate.VerticalSelectDateBottomSheet
+import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalDailyHabitScreen
+import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalWeeklyHabitScreen
 import aeb.proyecto.habit.model.BottomSheetUIState
 import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.habit.model.pager.PagerElement
@@ -55,6 +58,35 @@ fun VerticalHabitContentScreen(
         )
 
         HorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
+
+        when(filteredHabitsUIState){
+            is FilteredHabitsUiState.Loading, is FilteredHabitsUiState.Error, is FilteredHabitsUiState.Empty -> {
+                HabitLoading()
+            }
+            is FilteredHabitsUiState.Success -> {
+                if(currentPagerSelected is CurrentPagerSelection.Selected){
+                    when(currentPagerSelected.pagerSelected.pagerElement){
+                        PagerElement.DAILY -> {
+                            VerticalDailyHabitScreen(
+                                selectedDate, filteredHabitsUIState.habits,
+                                onLongClick = onLongClick,
+                                onClick = onClick
+                            )
+                        }
+                        PagerElement.WEEKLY -> {
+                            VerticalWeeklyHabitScreen(
+                                selectedDate, filteredHabitsUIState.habits,
+                                onLongClick = onLongClick,
+                                onClick = onClick
+                            )
+                        }
+                        PagerElement.MONTHLY -> Unit
+                        PagerElement.RECURRING -> Unit
+                    }
+                }
+            }
+        }
+
     }
 
     if(bottomSheetUIState.isEnabled){

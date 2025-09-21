@@ -1,10 +1,11 @@
-package aeb.proyecto.habit.components.card.habit
+package aeb.proyecto.habit.components.common.habitCards.dailyCard
 
 import aeb.proyecto.habit.R
-import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
+import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
+import aeb.proyecto.habit.components.common.habitCards.utils.getUnitTitle
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
-import aeb.proyecto.room.model.classes.UnitHabit
-import aeb.proyecto.room.utils.convertFromSeconds
+import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
@@ -51,25 +52,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CardHabit(
+fun DailyCard(
     modifier: Modifier = Modifier,
     selectedDate:LocalDate,
     habit: HabitWithDailyHabit,
-    onClick: (id:Long,date:LocalDate) -> Unit,
-    onLongClick: (id:Long,date:LocalDate) -> Unit
-) {
+    onClick: (id:Long,date: LocalDate) -> Unit,
+    onLongClick: (id:Long,date: LocalDate) -> Unit
+){
 
     val habitDaySelected = remember (habit){
         getSelected(selectedDate,habit.dailyHabits)
     }
 
-    // Porcentaje del progreso del día
     val currentProgress = remember(habitDaySelected) {
         try {
             habitDaySelected
@@ -98,6 +97,7 @@ fun CardHabit(
         animatedProgress >= 1f -> "check"
         else -> "progress"
     }
+
 
     ElevatedCard(
         modifier = modifier
@@ -236,42 +236,6 @@ fun CardHabit(
                     }
                 }
             }
-        }
-    }
-}
-
-fun getUnitTitle(unitHabit: UnitHabit, timesDone: BigDecimal): Int {
-    return when(unitHabit){
-        UnitHabit.MINUTES -> {
-            if (timesDone <= BigDecimal(60)) unitHabit.title else unitHabit.titlePlural
-        }
-        UnitHabit.HOURS -> {
-            if (timesDone <= BigDecimal(3600)) unitHabit.title else unitHabit.titlePlural
-        }
-        else -> {
-            if (timesDone == BigDecimal(1)) unitHabit.title else unitHabit.titlePlural
-        }
-    }
-}
-
-fun getSelected(dateSelected:LocalDate,dailyHabits:List<HabitDay>):HabitDay?{
-    return dailyHabits.find {date -> date.date == dateSelected}
-}
-
-fun getTextTotal(goal: BigDecimal?, unit: UnitHabit): String {
-    return when (unit) {
-        UnitHabit.HOURS -> {
-            val date = convertFromSeconds(goal?:BigDecimal.ZERO,unit)
-            "${date.first}:${date.second}"
-        }
-
-        UnitHabit.MINUTES -> {
-            val date = convertFromSeconds(goal?:BigDecimal.ZERO,unit)
-            "${date.first}:${date.second}"
-        }
-
-        else -> {
-            goal?.toPlainString() ?: "0"
         }
     }
 }
