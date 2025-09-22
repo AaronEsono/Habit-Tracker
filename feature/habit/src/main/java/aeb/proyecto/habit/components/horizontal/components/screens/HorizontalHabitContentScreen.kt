@@ -4,9 +4,11 @@ import aeb.proyecto.habit.CurrentPagerSelection
 import aeb.proyecto.habit.FilteredHabitsUiState
 import aeb.proyecto.habit.TimeRangeUiState
 import aeb.proyecto.habit.components.common.button.BarActionIcon
+import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.components.common.pager.PageSelected
 import aeb.proyecto.habit.components.common.timeRange.TimeRangeHabit
 import aeb.proyecto.habit.components.horizontal.components.bottomSheet.selectDate.HorizontalSelectDateBottomSheet
+import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalDailyHabitScreen
 import aeb.proyecto.habit.components.vertical.components.bottomSheet.selectDate.VerticalSelectDateBottomSheet
 import aeb.proyecto.habit.model.BottomSheetType
 import aeb.proyecto.habit.model.BottomSheetUIState
@@ -58,6 +60,28 @@ fun HorizontalHabitContentScreen(
         )
 
         HorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
+
+        when(filteredHabitsUIState){
+            is FilteredHabitsUiState.Loading, is FilteredHabitsUiState.Error, is FilteredHabitsUiState.Empty -> {
+                HabitLoading()
+            }
+            is FilteredHabitsUiState.Success -> {
+                if(currentPagerSelected is CurrentPagerSelection.Selected){
+                    when(currentPagerSelected.pagerSelected.pagerElement){
+                        PagerElement.DAILY -> {
+                            HorizontalDailyHabitScreen(
+                                selectedDate, filteredHabitsUIState.habits,
+                                onLongClick = onLongClick,
+                                onClick = onClick
+                            )
+                        }
+                        PagerElement.WEEKLY -> Unit
+                        PagerElement.MONTHLY -> Unit
+                        PagerElement.RECURRING -> Unit
+                    }
+                }
+            }
+        }
 
     }
 
