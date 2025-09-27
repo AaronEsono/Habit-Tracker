@@ -67,7 +67,6 @@ fun VerticalConfigureHabitBottomSheet(
         ) {
 
             /**Informacion y cerrar bottomSheet*/
-            /**Informacion y cerrar bottomSheet*/
             Row (
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
