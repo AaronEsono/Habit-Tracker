@@ -1,17 +1,14 @@
-package aeb.proyecto.habit.components.bottomSheet.editHabitDay.screen
+package aeb.proyecto.habit.components.common.bottomSheet.configureHabit.screen
 
 import aeb.proyecto.habit.R
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.utils.isValidInput
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.ui.constants.getContrastColor
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing14
-import aeb.proyecto.ui.dimmens.Dimmens.spacing16
-import aeb.proyecto.ui.dimmens.Dimmens.spacing20
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
-import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
@@ -22,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
@@ -33,14 +29,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.math.BigDecimal
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestartDay(
-    habit: Habit,
-    habitDay: HabitDay,
+    habitWithDay: HabitWithDay,
     coroutineScope: CoroutineScope,
     onDismiss: () -> Unit = {},
     sheetState: SheetState,
@@ -91,7 +85,7 @@ fun RestartDay(
                 onClick = {
                     coroutineScope.launch {
                         coroutineScope.launch {
-                            onRestart(habit.id,habitDay.date)
+                            onRestart(habitWithDay.habit.id,habitWithDay.day.date)
                             sheetState.hide()
                             onDismiss()
                         }
@@ -99,12 +93,12 @@ fun RestartDay(
                 },
                 shape = RoundedCornerShape(spacing8),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(habit.color)
+                    containerColor = Color(habitWithDay.habit.color)
                 )
             ) {
                 LabelLargeText(
                     stringResource(R.string.habit_accept),
-                    color = getContrastColor(Color(habit.color))
+                    color = getContrastColor(Color(habitWithDay.habit.color))
                 )
             }
         }

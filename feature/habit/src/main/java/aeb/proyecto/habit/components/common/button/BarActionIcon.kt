@@ -1,7 +1,6 @@
 package aeb.proyecto.habit.components.common.button
 
 import aeb.proyecto.habit.R
-import aeb.proyecto.habit.model.BottomSheetType
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarActions
 import androidx.compose.foundation.clickable

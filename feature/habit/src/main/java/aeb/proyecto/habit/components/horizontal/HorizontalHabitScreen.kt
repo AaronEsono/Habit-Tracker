@@ -5,12 +5,9 @@ import aeb.proyecto.habit.FilteredHabitsUiState
 import aeb.proyecto.habit.PagerTypesUiState
 import aeb.proyecto.habit.TimeRangeUiState
 import aeb.proyecto.habit.components.common.button.AddHabitButton
-import aeb.proyecto.habit.components.common.button.BarActionIcon
 import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.components.common.screens.NoHabitScreen
 import aeb.proyecto.habit.components.horizontal.components.screens.HorizontalHabitContentScreen
-import aeb.proyecto.habit.components.vertical.components.screens.VerticalHabitContentScreen
-import aeb.proyecto.habit.model.BottomSheetType
 import aeb.proyecto.habit.model.BottomSheetUIState
 import aeb.proyecto.habit.model.pager.PagerElement
 import androidx.compose.foundation.layout.Box

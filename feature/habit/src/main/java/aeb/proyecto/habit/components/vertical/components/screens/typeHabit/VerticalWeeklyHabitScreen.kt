@@ -1,7 +1,7 @@
 package aeb.proyecto.habit.components.vertical.components.screens.typeHabit
 
-import aeb.proyecto.habit.components.common.habitCards.dailyCard.DailyCard
-import aeb.proyecto.habit.components.common.habitCards.dailyCard.WeeklyCard
+import aeb.proyecto.habit.TimeRangeUiState
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.WeeklyCard
 import aeb.proyecto.habit.utils.cardHabitPadding
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
@@ -22,7 +22,7 @@ import java.time.LocalDate
 
 @Composable
 fun VerticalWeeklyHabitScreen(
-    selectedDate: LocalDate,
+    weekTimeRange: TimeRangeUiState.Weekly,
     habits: List<HabitWithDailyHabit>,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
@@ -62,7 +62,9 @@ fun VerticalWeeklyHabitScreen(
                         index,
                         lastElement = index == habits.size - 1
                     ),
-                    selectedDate = selectedDate,
+                    startOfWeek = weekTimeRange.startOfWeek,
+                    endOfWeek = weekTimeRange.endOfWeek,
+                    selectedDate = LocalDate.now(),
                     onLongClick = onLongClick,
                     onClick = onClick
                 )

@@ -15,6 +15,8 @@
     <string name="habit_day_monthly">%1$s %2$s</string>
     <string name="habit_action_icon">%1$s %2$s %3$s</string>
 
+    <string name="habit_week_goal_subtitle">%1$s %2$s al día</string>
+
     <string name="habit_cancel">Cancelar</string>
     <string name="habit_today_title">Ir a hoy</string>
 

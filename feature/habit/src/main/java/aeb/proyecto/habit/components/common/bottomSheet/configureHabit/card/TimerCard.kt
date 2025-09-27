@@ -1,10 +1,8 @@
-package aeb.proyecto.habit.components.bottomSheet.editHabitDay.card
+package aeb.proyecto.habit.components.common.bottomSheet.configureHabit.card
 
 import aeb.proyecto.habit.R
-import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
-import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import java.math.BigDecimal
 import java.time.LocalDate
 
 @Composable
@@ -30,6 +31,9 @@ fun VerticalHabitScreen(
     onClickTimeRange: (LocalDate) -> Unit = {},
     onBottomSheetSelected: () -> Unit = {},
     onDismissBottomSheet: () -> Unit = {},
+    onRestart: (id:Long,date:LocalDate) -> Unit = { _, _ -> },
+    onClickConfigureHabit:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit,
+    onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id:Long,date: LocalDate) -> Unit
 ){
@@ -54,6 +58,9 @@ fun VerticalHabitScreen(
                         selectedDate = dateSelected,
                         onClickTab = onClickTab,
                         onBottomSheetSelected = onBottomSheetSelected,
+                        onRestart = onRestart,
+                        onClickConfigureHabit = onClickConfigureHabit,
+                        onClickTimer = onClickTimer,
                         onDismissBottomSheet = onDismissBottomSheet,
                         onClickTimeRange = onClickTimeRange,
                         onLongClick = onLongClick,

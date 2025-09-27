@@ -46,7 +46,6 @@ fun HabitScreen(
         selectedDate = selectedDate
     )
 
-
     when(orientation){
         Orientation.Portrait -> {
             VerticalHabitScreen(
@@ -60,6 +59,13 @@ fun HabitScreen(
                 onClickTab = viewModel::onPagerTypeSelected,
                 onClickTimeRange = viewModel::onClickTimeRange,
                 onBottomSheetSelected = viewModel::onBottomSheetSelected,
+                onRestart = viewModel::onRestart,
+                onClickTimer = { data ->
+                    viewModel.onClickTimerHabit(data){
+                        navigateToTimer()
+                    }
+                },
+                onClickConfigureHabit = viewModel::onClickConfigureHabit,
                 onDismissBottomSheet = viewModel::onDismissBottomSheet,
                 onLongClick = viewModel::onLongClick,
                 onClick = viewModel::onClick
@@ -83,19 +89,4 @@ fun HabitScreen(
             )
         }
     }
-
-//    if(dataHabitUIState.showEditHabitDayBT.showEditHabitDayBT){
-//        BottomSheetEditHabitDay(
-//            habit = dataHabitUIState.showEditHabitDayBT.habit,
-//            habitDay = dataHabitUIState.showEditHabitDayBT.habitDay,
-//            onDismiss = viewModel::onDismissEdit,
-//            onRestart = viewModel::onRestart,
-//            onClick = viewModel::onClick,
-//            onClickTimer = { data ->
-//                viewModel.onClickTimerHabit(data){
-//                    navigateToTimer()
-//                }
-//            }
-//        )
-//    }
 }

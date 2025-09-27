@@ -1,15 +1,15 @@
-package aeb.proyecto.habit.components.bottomSheet.editHabitDay.screen.incompleteCases
+package aeb.proyecto.habit.components.common.bottomSheet.configureHabit.screen.incompleteCases
 
 import aeb.proyecto.habit.R
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.button.ButtonEditDay
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.card.TimerCard
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.rowButton.RowButton
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.textField.TextFieldEditHabit
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.utils.isHourInputValid
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.utils.isValidInput
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.utils.passToHour
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.card.TimerCard
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.rowButton.RowButton
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.utils.isHourInputValid
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.utils.passToHour
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.button.ButtonConfigureHabit
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.textField.TextFieldConfigureHabit
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.model.classes.listTime
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
@@ -31,7 +31,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
@@ -51,8 +50,7 @@ import java.time.LocalDate
 
 @Composable
 fun HourIncompleteMode(
-    habit: Habit,
-    day: HabitDay,
+    habitWithDay: HabitWithDay,
     leftTimes: BigDecimal,
     halfTimesLeft:BigDecimal,
     onRestart:(id:Long,date: LocalDate) -> Unit,
@@ -60,8 +58,16 @@ fun HourIncompleteMode(
     onClick:(id:Long, date: LocalDate, goalDone:BigDecimal) -> Unit
 ){
 
-    val leftTimesToHour = remember {passToHour(leftTimes, habit.unit)}
-    val halfTimesLeftToHour = remember {passToHour(halfTimesLeft, habit.unit)}
+    val habit = remember(habitWithDay){
+        habitWithDay.habit
+    }
+
+    val day = remember (habitWithDay){
+        habitWithDay.day
+    }
+
+    val leftTimesToHour = remember { passToHour(leftTimes, habit.unit) }
+    val halfTimesLeftToHour = remember { passToHour(halfTimesLeft, habit.unit) }
 
     val focusManager = LocalFocusManager.current
 
@@ -108,7 +114,7 @@ fun HourIncompleteMode(
         verticalAlignment = Alignment.CenterVertically
     ){
 
-        ButtonEditDay(
+        ButtonConfigureHabit(
             modifier = Modifier.weight(1f),
             text = halfTimesLeftToHour
         ) {
@@ -118,7 +124,7 @@ fun HourIncompleteMode(
 
         Spacer(modifier = Modifier.padding(horizontal = spacing12))
 
-        ButtonEditDay(
+        ButtonConfigureHabit(
             modifier = Modifier
                 .weight(1f),
             text = leftTimesToHour
@@ -138,7 +144,7 @@ fun HourIncompleteMode(
         Column (
             modifier = Modifier.weight(1f)
         ){
-            TextFieldEditHabit(
+            TextFieldConfigureHabit(
                 modifier = Modifier.height(50.dp),
                 textFieldState = firstTextFieldState,
                 focusManager = focusManager,
@@ -162,7 +168,7 @@ fun HourIncompleteMode(
         Column (
             modifier = Modifier.weight(1f)
         ){
-            TextFieldEditHabit(
+            TextFieldConfigureHabit(
                 modifier = Modifier.height(50.dp),
                 textFieldState = secondTextFieldState,
                 focusManager = focusManager,
@@ -192,7 +198,8 @@ fun HourIncompleteMode(
         isEnabled = isHourInputValid(firstTextFieldState,secondTextFieldState),
         color = Color(habit.color),
         onClick = { onClick(habit.id, day.date,
-            convertToBigDecimal(firstTextFieldState, secondTextFieldState, habit.unit))},
+            convertToBigDecimal(firstTextFieldState, secondTextFieldState, habit.unit)
+        )},
         onClickRestart = { onRestart(habit.id, day.date) }
     )
 }

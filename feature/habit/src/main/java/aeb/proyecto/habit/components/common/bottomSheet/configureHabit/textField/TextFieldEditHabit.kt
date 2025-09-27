@@ -1,4 +1,4 @@
-package aeb.proyecto.habit.components.bottomSheet.editHabitDay.textField
+package aeb.proyecto.habit.components.common.bottomSheet.configureHabit.textField
 
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
@@ -30,7 +30,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 
 @Composable
-fun TextFieldEditHabit(
+fun TextFieldConfigureHabit(
     modifier: Modifier = Modifier,
     textFieldState: TextFieldState = rememberTextFieldState(),
     label: @Composable (TextFieldLabelScope.() -> Unit)? = null,

@@ -1,7 +1,6 @@
-package aeb.proyecto.habit.components.bottomSheet.editHabitDay.rowButton
+package aeb.proyecto.habit.components.common.bottomSheet.configureHabit.rowButton
 
 import aeb.proyecto.habit.R
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.utils.isValidInput
 import aeb.proyecto.ui.constants.getContrastColor
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
@@ -20,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import java.math.BigDecimal
 
 @Composable
 fun RowButton(

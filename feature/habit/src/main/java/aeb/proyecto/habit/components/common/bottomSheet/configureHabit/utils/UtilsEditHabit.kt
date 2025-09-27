@@ -1,4 +1,4 @@
-package aeb.proyecto.habit.components.bottomSheet.editHabitDay.utils
+package aeb.proyecto.habit.components.common.bottomSheet.configureHabit.utils
 
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.model.classes.listTime

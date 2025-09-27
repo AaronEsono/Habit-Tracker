@@ -1,13 +1,14 @@
-package aeb.proyecto.habit.components.bottomSheet.editHabitDay.screen.incompleteCases
+package aeb.proyecto.habit.components.common.bottomSheet.configureHabit.screen.incompleteCases
 
 import aeb.proyecto.habit.R
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.button.ButtonEditDay
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.card.TimerCard
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.rowButton.RowButton
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.textField.TextFieldEditHabit
-import aeb.proyecto.habit.components.bottomSheet.editHabitDay.utils.isValidInput
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.card.TimerCard
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.rowButton.RowButton
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.utils.isValidInput
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.button.ButtonConfigureHabit
+import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.textField.TextFieldConfigureHabit
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.room.model.classes.listTime
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
@@ -34,14 +35,21 @@ import java.time.LocalDate
 
 @Composable
 fun UnitIncompleteMode(
-    habit: Habit,
-    day: HabitDay,
+    habitWithDay: HabitWithDay,
     leftTimes:BigDecimal,
     halfTimesLeft:BigDecimal,
     onRestart:(id:Long,date: LocalDate) -> Unit,
     onClickTimer:(Triple<Long,String,BigDecimal>) -> Unit = {},
     onClick:(id:Long, date: LocalDate, goalDone:BigDecimal) -> Unit
 ){
+
+    val habit = remember (habitWithDay){
+        habitWithDay.habit
+    }
+
+    val day = remember (habitWithDay){
+        habitWithDay.day
+    }
 
     val textFieldState = rememberTextFieldState(initialText = "1")
     IsOnlyDigit(textFieldState,habit.unit)
@@ -83,14 +91,14 @@ fun UnitIncompleteMode(
         verticalAlignment = Alignment.CenterVertically
     ){
 
-        ButtonEditDay(
+        ButtonConfigureHabit(
             modifier = Modifier.weight(1f),
             text = halfTimesLeft.toPlainString()
         ) {
             textFieldState.edit { replace(0,length,halfTimesLeft.toPlainString()) }
         }
 
-        ButtonEditDay(
+        ButtonConfigureHabit(
             modifier = Modifier.weight(1f).padding(start = spacing12),
             text = leftTimes.toPlainString()
         ) {
@@ -99,7 +107,7 @@ fun UnitIncompleteMode(
     }
 
     /** Introducción de unidades */
-    TextFieldEditHabit(
+    TextFieldConfigureHabit(
         modifier = Modifier.padding(top = spacing10, bottom = spacing4),
         textFieldState = textFieldState,
         focusManager = focusManager,

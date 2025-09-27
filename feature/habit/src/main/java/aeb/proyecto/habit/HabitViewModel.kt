@@ -6,9 +6,7 @@ import aeb.proyecto.domain.usecase.habit.GetTypesOfHabitUseCase
 import aeb.proyecto.domain.usecase.habit.HabitDatastoreUseCase
 import aeb.proyecto.habit.constants.rangeDays
 import aeb.proyecto.habit.constants.stopTimeOutMillis
-import aeb.proyecto.habit.model.BottomSheetType
 import aeb.proyecto.habit.model.BottomSheetUIState
-import aeb.proyecto.habit.model.DataHabit
 import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.habit.model.pager.PagerElement
 import aeb.proyecto.habit.model.pager.PagerSelected
@@ -18,11 +16,11 @@ import aeb.proyecto.habit.utils.initializeSelectedTypeIfNeeded
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
+import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.room.model.classes.DAILY_TAG
 import aeb.proyecto.room.model.classes.MONTHLY_TAG
 import aeb.proyecto.room.model.classes.RECURRING_TAG
 import aeb.proyecto.room.model.classes.WEEKLY_TAG
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -65,10 +63,6 @@ class HabitViewModel @Inject constructor(
     /** Tipo de hábito seleccionado por el usuario, reflejado en la pantalla con un tabRow. */
     private val _currentPagerType  = MutableStateFlow<CurrentPagerSelection>(CurrentPagerSelection.Uninitialized)
     val currentPagerType : StateFlow<CurrentPagerSelection> = _currentPagerType.asStateFlow()
-
-    /** Controla los estados de los dialogos y de las hojas inferiores*/
-    private val _dataHabitUIState = MutableStateFlow(DataHabit())
-    val dataHabitUIState:StateFlow<DataHabit> = _dataHabitUIState.asStateFlow()
 
     private val _bottomSheetUIState = MutableStateFlow(BottomSheetUIState())
     val bottomSheetUIState: StateFlow<BottomSheetUIState> = _bottomSheetUIState.asStateFlow()
@@ -262,24 +256,10 @@ class HabitViewModel @Inject constructor(
         val habit = findHabit(id)
         val habitDay = findDay(id,date) ?: HabitDay(id = habit.id, date = date)
 
-        _dataHabitUIState.update { currentState ->
+        _bottomSheetUIState.update { currentState ->
             currentState.copy(
-                showEditHabitDayBT = currentState
-                    .showEditHabitDayBT.copy(
-                        showEditHabitDayBT = true,
-                        habit = habit,
-                        habitDay = habitDay
-                    )
-            )
-        }
-    }
-
-    fun onDismissEdit(){
-        _dataHabitUIState.update { currentState ->
-            currentState.copy(
-                showEditHabitDayBT = currentState.showEditHabitDayBT.copy(
-                    showEditHabitDayBT = false
-                )
+                isEnabled = true,
+                typeOfBottomSheet = TypeBottomSheet.EditHabitDay(HabitWithDay(habit,habitDay))
             )
         }
     }
@@ -287,7 +267,7 @@ class HabitViewModel @Inject constructor(
     /**
      *  Permite editar un dailyHabit
      */
-    fun onClick(id:Long,date: LocalDate,goalDone: BigDecimal) = viewModelScope.launch (Dispatchers.IO){
+    fun onClickConfigureHabit(id:Long,date: LocalDate,goalDone: BigDecimal) = viewModelScope.launch (Dispatchers.IO){
         val habit = findHabit(id)
         val habitDay = findDay(id,date)
 
