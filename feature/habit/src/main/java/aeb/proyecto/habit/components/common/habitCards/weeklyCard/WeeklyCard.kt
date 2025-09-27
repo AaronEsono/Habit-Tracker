@@ -2,17 +2,13 @@ package aeb.proyecto.habit.components.common.habitCards.weeklyCard
 
 import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
-import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
-import aeb.proyecto.habit.components.common.habitCards.utils.getUnitTitle
-import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
-import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
-import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -33,7 +29,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -56,6 +51,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.math.RoundingMode
 import java.time.LocalDate
+
+//poner racha
+// poner el otro modo de la semana
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -84,6 +82,12 @@ fun WeeklyCard(
             0f
         }
     }
+
+    val daysCompleted = remember(habit){
+        daysCompletedOnAWeek(habit, startOfWeek)
+    }
+
+    val prueba = timesCompletedInAEntireWeek(habit,startOfWeek)
 
     // Para animar el progreso
     val animatedProgress by animateFloatAsState(
@@ -172,22 +176,48 @@ fun WeeklyCard(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.End
                 ) {
-                    LabelSmallText(
-                        "0/3 días",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    if((habit.habit.typeHabit as TypeHabit.Weekly).weeklyGoal){
+                        // Meta única
+                        LabelSmallText(
+                            stringResource(
+                                R.string.habit_week_goal_title_unique,
+                                prueba.toString(),
+                                habit.habit.goal.toString()
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
 
-                    //Cambiarlo, ponerlo bien
-                    LabelSmallText(
-                        stringResource(
-                            R.string.habit_week_goal_subtitle,
-                            habit.habit.goal.toString(),
-                            stringResource(habit.habit.unit.title)
-                        ),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                        LabelSmallText(
+                            stringResource(
+                                R.string.habit_week_goal_subtitle_unique,
+                                stringResource(habit.habit.unit.titlePlural)
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }else{
+                        // Meta separada por dias
+                        LabelSmallText(
+                            stringResource(
+                                R.string.habit_week_goal_title,
+                                daysCompleted.toString(),
+                                (habit.habit.typeHabit as TypeHabit.Weekly).numberDays.toString(),
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        LabelSmallText(
+                            stringResource(
+                                R.string.habit_week_goal_subtitle,
+                                habit.habit.goal.toString(),
+                                stringResource(habit.habit.unit.title)
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
 
                 // Progresion
@@ -253,7 +283,8 @@ fun WeeklyCard(
                         getHabitDayFromADate(
                             habit,
                             startOfWeek.plusDays(it.toLong())
-                        )
+                        ),
+                        onClick = onClick
                     )
                 }
             }

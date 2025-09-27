@@ -6,7 +6,9 @@ import aeb.proyecto.ui.constants.getContrastColor
 import aeb.proyecto.ui.date.utils.getAvr
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
+import aeb.proyecto.ui.dimmens.Dimmens.spacing3
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
+import aeb.proyecto.ui.text.BodySmallText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.animation.AnimatedContent
@@ -16,6 +18,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -39,10 +42,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import java.math.RoundingMode
 import java.time.DayOfWeek
+import java.time.LocalDate
 
 @Composable
 fun WeeklyDay(
-    habitWithDay: HabitWithDay
+    habitWithDay: HabitWithDay,
+    onClick: (id:Long,date: LocalDate) -> Unit,
 ){
 
     val dayOfWeek = remember (habitWithDay){
@@ -52,8 +57,8 @@ fun WeeklyDay(
     val currentProgress = remember(habitWithDay) {
         try {
             habitWithDay
-                .habit.goal
-                .divide(habitWithDay.day.goalDone, 4, RoundingMode.HALF_UP)
+                .day.goalDone
+                .divide(habitWithDay.habit.goal, 4, RoundingMode.HALF_UP)
                 ?.toFloat()
                 ?.coerceIn(0f, 1f) ?: 0f
         } catch (e: ArithmeticException) {
@@ -81,7 +86,10 @@ fun WeeklyDay(
     )
 
     Column (
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable {
+            onClick(habitWithDay.habit.id, habitWithDay.day.date)
+        }
     ){
 
         LabelMediumText(stringResource(getAvr(dayOfWeek)))
@@ -125,5 +133,9 @@ fun WeeklyDay(
                 }
             }
         }
+
+//        Spacer(modifier = Modifier.padding(vertical = spacing3))
+//
+//        BodySmallText("120")
     }
 }

@@ -342,7 +342,6 @@ class HabitViewModel @Inject constructor(
         habitDatastoreUseCase.setTimerFromHabit(data.first, LocalDate.parse(data.second),data.third)
         navigate()
     }
-
 }
 
 sealed class PagerTypesUiState(){

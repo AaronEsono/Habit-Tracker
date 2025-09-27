@@ -99,7 +99,7 @@ fun VerticalHabitContentScreen(
         when(bottomSheetUIState.typeOfBottomSheet){
             is TypeBottomSheet.EditHabitDay -> {
                 VerticalConfigureHabitBottomSheet(
-                    habitWithDay = (bottomSheetUIState.typeOfBottomSheet as TypeBottomSheet.EditHabitDay).habitWithDay,
+                    habitWithDay = bottomSheetUIState.typeOfBottomSheet.habitWithDay,
                     onDismiss = onDismissBottomSheet,
                     onRestart = onRestart,
                     onClickTimer = onClickTimer,
