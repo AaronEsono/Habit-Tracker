@@ -72,19 +72,23 @@ fun VerticalHabitContentScreen(
                 if(currentPagerSelected is CurrentPagerSelection.Selected){
                     when(currentPagerSelected.pagerSelected.pagerElement){
                         PagerElement.DAILY -> {
-                            VerticalDailyHabitScreen(
-                                selectedDate, filteredHabitsUIState.habits,
-                                onLongClick = onLongClick,
-                                onClick = onClick
-                            )
+                            if(selectedTimeRangeUiState is TimeRangeUiState.Daily){
+                                VerticalDailyHabitScreen(
+                                    selectedDate, filteredHabitsUIState.habits,
+                                    onLongClick = onLongClick,
+                                    onClick = onClick
+                                )
+                            }
                         }
                         PagerElement.WEEKLY -> {
-                            VerticalWeeklyHabitScreen(
-                                selectedTimeRangeUiState as TimeRangeUiState.Weekly,
-                                filteredHabitsUIState.habits,
-                                onLongClick = onLongClick,
-                                onClick = onClick
-                            )
+                            if(selectedTimeRangeUiState is TimeRangeUiState.Weekly){
+                                VerticalWeeklyHabitScreen(
+                                    selectedTimeRangeUiState,
+                                    filteredHabitsUIState.habits,
+                                    onLongClick = onLongClick,
+                                    onClick = onClick
+                                )
+                            }
                         }
                         PagerElement.MONTHLY -> Unit
                         PagerElement.RECURRING -> Unit

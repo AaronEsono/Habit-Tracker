@@ -66,11 +66,13 @@ fun HorizontalHabitContentScreen(
                 if(currentPagerSelected is CurrentPagerSelection.Selected){
                     when(currentPagerSelected.pagerSelected.pagerElement){
                         PagerElement.DAILY -> {
-                            HorizontalDailyHabitScreen(
-                                selectedDate, filteredHabitsUIState.habits,
-                                onLongClick = onLongClick,
-                                onClick = onClick
-                            )
+                            if(selectedTimeRangeUiState is TimeRangeUiState.Daily){
+                                HorizontalDailyHabitScreen(
+                                    selectedDate, filteredHabitsUIState.habits,
+                                    onLongClick = onLongClick,
+                                    onClick = onClick
+                                )
+                            }
                         }
                         PagerElement.WEEKLY -> Unit
                         PagerElement.MONTHLY -> Unit
