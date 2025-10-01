@@ -1,10 +1,13 @@
 package aeb.proyecto.habit.components.vertical.components.screens.typeHabit
 
 import aeb.proyecto.habit.TimeRangeUiState
-import aeb.proyecto.habit.components.common.habitCards.weeklyCard.WeeklyCard
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.separateGoal.SeparateWeeklyCard
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.uniqueGoal.UniqueWeeklyCard
 import aeb.proyecto.habit.utils.cardHabitPadding
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
+import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import aeb.proyecto.ui.text.LabelLargeText
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -50,24 +53,43 @@ fun VerticalWeeklyHabitScreen(
             count = habits.size,
             key = { habits[it].habit.id }
         ) { index ->
-
             AnimatedVisibility(
                 visible = visibleItems.contains(index),
                 enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
                 exit = fadeOut()
             ) {
-                WeeklyCard(
-                    habit = habits[index],
-                    modifier = Modifier.cardHabitPadding(
-                        index,
-                        lastElement = index == habits.size - 1
-                    ),
-                    startOfWeek = weekTimeRange.startOfWeek,
-                    endOfWeek = weekTimeRange.endOfWeek,
-                    selectedDate = LocalDate.now(),
-                    onLongClick = onLongClick,
-                    onClick = onClick
-                )
+                if(habits[index].habit.typeHabit is TypeHabit.Weekly){
+                    val habit = habits[index]
+                    val typeHabit = habit.habit.typeHabit as TypeHabit.Weekly
+
+                    if(typeHabit.weeklyGoal){
+                        UniqueWeeklyCard(
+                            habit = habit,
+                            modifier = Modifier.cardHabitPadding(
+                                index,
+                                lastElement = index == habits.size - 1
+                            ),
+                            startOfWeek = weekTimeRange.startOfWeek,
+                            endOfWeek = weekTimeRange.endOfWeek,
+                            selectedDate = LocalDate.now(),
+                            onLongClick = onLongClick,
+                            onClick = onClick
+                        )
+                    }else{
+                        SeparateWeeklyCard(
+                            habit = habit,
+                            modifier = Modifier.cardHabitPadding(
+                                index,
+                                lastElement = index == habits.size - 1
+                            ),
+                            startOfWeek = weekTimeRange.startOfWeek,
+                            endOfWeek = weekTimeRange.endOfWeek,
+                            selectedDate = LocalDate.now(),
+                            onLongClick = onLongClick,
+                            onClick = onClick
+                        )
+                    }
+                }
             }
         }
     }

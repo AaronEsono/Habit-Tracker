@@ -1,14 +1,12 @@
-package aeb.proyecto.habit.components.common.habitCards.weeklyCard
+package aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.separateGoal
 
-import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
+import aeb.proyecto.habit.R
 import aeb.proyecto.room.entities.relations.HabitWithDay
-import aeb.proyecto.ui.constants.getContrastColor
 import aeb.proyecto.ui.date.utils.getAvr
-import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing3
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
-import aeb.proyecto.ui.text.BodySmallText
+import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.animation.AnimatedContent
@@ -17,7 +15,6 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,13 +36,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import java.math.RoundingMode
 import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
-fun WeeklyDay(
+fun SeparateWeeklyDay(
     habitWithDay: HabitWithDay,
     onClick: (id:Long,date: LocalDate) -> Unit,
 ){
@@ -87,12 +85,15 @@ fun WeeklyDay(
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable {
+        modifier = Modifier.clickable(
+            interactionSource = null,
+            indication = null
+        ) {
             onClick(habitWithDay.habit.id, habitWithDay.day.date)
         }
     ){
 
-        LabelMediumText(stringResource(getAvr(dayOfWeek)))
+        LabelLargeText(stringResource(getAvr(dayOfWeek)))
 
         Spacer(modifier = Modifier.padding(vertical = spacing2))
 
@@ -134,8 +135,16 @@ fun WeeklyDay(
             }
         }
 
-//        Spacer(modifier = Modifier.padding(vertical = spacing3))
-//
-//        BodySmallText("120")
+        Spacer(modifier = Modifier.padding(top = spacing4))
+
+        LabelSmallText(
+            stringResource(
+                R.string.habit_week_day_goal,
+                habitWithDay.day.goalDone,
+                habitWithDay.habit.goal
+            ),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }

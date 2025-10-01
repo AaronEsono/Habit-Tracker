@@ -1,15 +1,20 @@
-package aeb.proyecto.habit.components.common.habitCards.weeklyCard
+package aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.separateGoal
 
 import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.daysCompletedOnAWeek
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.getHabitDayFromADate
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
+import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
+import aeb.proyecto.ui.text.TitleSmallText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -46,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,7 +63,7 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun WeeklyCard(
+fun SeparateWeeklyCard(
     modifier: Modifier = Modifier,
     startOfWeek: LocalDate,
     endOfWeek: LocalDate,
@@ -86,8 +92,6 @@ fun WeeklyCard(
     val daysCompleted = remember(habit){
         daysCompletedOnAWeek(habit, startOfWeek)
     }
-
-    val prueba = timesCompletedInAEntireWeek(habit,startOfWeek)
 
     // Para animar el progreso
     val animatedProgress by animateFloatAsState(
@@ -176,48 +180,18 @@ fun WeeklyCard(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.End
                 ) {
-                    if((habit.habit.typeHabit as TypeHabit.Weekly).weeklyGoal){
-                        // Meta única
-                        LabelSmallText(
-                            stringResource(
-                                R.string.habit_week_goal_title_unique,
-                                prueba.toString(),
-                                habit.habit.goal.toString()
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-
-                        LabelSmallText(
-                            stringResource(
-                                R.string.habit_week_goal_subtitle_unique,
-                                stringResource(habit.habit.unit.titlePlural)
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }else{
-                        // Meta separada por dias
-                        LabelSmallText(
-                            stringResource(
-                                R.string.habit_week_goal_title,
-                                daysCompleted.toString(),
-                                (habit.habit.typeHabit as TypeHabit.Weekly).numberDays.toString(),
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-
-                        LabelSmallText(
-                            stringResource(
-                                R.string.habit_week_goal_subtitle,
-                                habit.habit.goal.toString(),
+                    LabelMediumText(
+                        stringResource(
+                            R.string.habit_week_goal_subtitle,
+                            habit.habit.goal.toString(),
+                            if(habit.habit.goal.toInt() <= 1)
                                 stringResource(habit.habit.unit.title)
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
+                            else
+                                stringResource(habit.habit.unit.titlePlural)
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
 
                 // Progresion
@@ -279,7 +253,7 @@ fun WeeklyCard(
                 horizontalArrangement = Arrangement.SpaceAround,
             ){
                 repeat(7) {
-                    WeeklyDay(
+                    SeparateWeeklyDay(
                         getHabitDayFromADate(
                             habit,
                             startOfWeek.plusDays(it.toLong())
@@ -288,6 +262,19 @@ fun WeeklyCard(
                     )
                 }
             }
+
+            // Meta separada por dias
+            TitleSmallText(
+                stringResource(
+                    R.string.habit_week_goal_title,
+                    daysCompleted.toString(),
+                    (habit.habit.typeHabit as TypeHabit.Weekly).numberDays.toString(),
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = spacing4,bottom = spacing12).fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
         }
     }
 
