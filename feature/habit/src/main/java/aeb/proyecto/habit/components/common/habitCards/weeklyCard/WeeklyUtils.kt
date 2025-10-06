@@ -34,3 +34,7 @@ fun timesCompletedInAEntireWeek(habits: HabitWithDailyHabit, startOfWeek: LocalD
         it.goalDone
     }
 }
+
+fun calculatePercentage(completed: BigDecimal, total: BigDecimal): Float{
+    return completed.divide(total).toFloat()
+}

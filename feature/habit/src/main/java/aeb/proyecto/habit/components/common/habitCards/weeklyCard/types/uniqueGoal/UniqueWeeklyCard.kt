@@ -2,7 +2,10 @@ package aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.uniqueG
 
 import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.calculatePercentage
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.getHabitDayFromADate
 import aeb.proyecto.habit.components.common.habitCards.weeklyCard.timesCompletedInAEntireWeek
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.separateGoal.SeparateWeeklyDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
@@ -40,9 +43,11 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -51,13 +56,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.math.RoundingMode
 import java.time.LocalDate
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun UniqueWeeklyCard(
     modifier: Modifier = Modifier,
@@ -86,6 +92,15 @@ fun UniqueWeeklyCard(
     }
 
     val goalWeekCompleted = timesCompletedInAEntireWeek(habit, startOfWeek)
+
+    val animatedProgressLinear by animateFloatAsState(
+        targetValue = calculatePercentage(goalWeekCompleted,habit.habit.goal),
+        animationSpec = tween(
+            durationMillis = 500,
+            easing = FastOutSlowInEasing
+        ),
+        label = "progressAnimation"
+    )
 
     // Para animar el progreso
     val animatedProgress by animateFloatAsState(
@@ -175,7 +190,7 @@ fun UniqueWeeklyCard(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.End
                 ) {
-                    LabelSmallText(
+                    LabelMediumText(
                         stringResource(
                             R.string.habit_week_goal_title_unique,
                             habit.habit.goal.toString(),
@@ -245,16 +260,47 @@ fun UniqueWeeklyCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = spacing16, end = spacing16, bottom = spacing8, top = spacing4)
-                    .height(10.dp),
-                progress = { 0.5f },
+                    .height(12.dp),
+                progress = {animatedProgressLinear},
                 color = Color(habit.habit.color),
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
                 gapSize = 0.dp,
                 drawStopIndicator = {}
             )
 
+            LabelLargeText(
+                text = stringResource(
+                    R.string.habit_week_unique_goal_completed,
+                    goalWeekCompleted.toString(),
+                    habit.habit.goal.toString(),
+                    if(habit.habit.goal.toInt() <= 1){
+                        stringResource(habit.habit.unit.title)
+                    }else{
+                        stringResource(habit.habit.unit.titlePlural)
+                    }
+                ),
+                modifier = Modifier.fillMaxWidth().padding(bottom = spacing8),
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = spacing8, start = spacing12, end = spacing12),
+                horizontalArrangement = Arrangement.SpaceAround,
+            ){
+                repeat(7) {
+                    UniqueWeeklyDay(
+                        getHabitDayFromADate(
+                            habit,
+                            startOfWeek.plusDays(it.toLong())
+                        ),
+                        onClick = onClick
+                    )
+                }
+            }
         }
-
     }
-
 }

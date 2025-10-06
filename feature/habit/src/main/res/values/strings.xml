@@ -18,6 +18,7 @@
     <string name="habit_week_goal_title">%1$s/%2$s days completed</string>
     <string name="habit_week_goal_title_unique">%1$s %2$s/week</string>
     <string name="habit_week_day_goal">%1$s/%2$s</string>
+    <string name="habit_week_unique_goal_completed">%1$s/%2$s %3$s</string>
 
     <string name="habit_action_icon">%2$s %1$s %3$s</string>
 
