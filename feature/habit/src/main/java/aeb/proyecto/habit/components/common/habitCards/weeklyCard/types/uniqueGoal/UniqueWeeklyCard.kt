@@ -75,21 +75,21 @@ fun UniqueWeeklyCard(
     onLongClick: (id:Long,date: LocalDate) -> Unit
 ){
 
-    val habitDaySelected = remember (habit){
-        getSelected(selectedDate,habit.dailyHabits)
-    }
-
-    val currentProgress = remember(habitDaySelected) {
-        try {
-            habitDaySelected
-                ?.goalDone
-                ?.divide(habit.habit.goal, 4, RoundingMode.HALF_UP)
-                ?.toFloat()
-                ?.coerceIn(0f, 1f) ?: 0f
-        } catch (e: ArithmeticException) {
-            0f
-        }
-    }
+//    val habitDaySelected = remember (habit){
+//        getSelected(selectedDate,habit.dailyHabits)
+//    }
+//
+//    val currentProgress = remember(habitDaySelected) {
+//        try {
+//            habitDaySelected
+//                ?.goalDone
+//                ?.divide(habit.habit.goal, 4, RoundingMode.HALF_UP)
+//                ?.toFloat()
+//                ?.coerceIn(0f, 1f) ?: 0f
+//        } catch (e: ArithmeticException) {
+//            0f
+//        }
+//    }
 
     val goalWeekCompleted = timesCompletedInAEntireWeek(habit, startOfWeek)
 
@@ -104,7 +104,7 @@ fun UniqueWeeklyCard(
 
     // Para animar el progreso
     val animatedProgress by animateFloatAsState(
-        targetValue = currentProgress,
+        targetValue = animatedProgressLinear,
         animationSpec = tween(
             durationMillis = 500,
             easing = FastOutSlowInEasing
@@ -256,6 +256,23 @@ fun UniqueWeeklyCard(
                 }
             }
 
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = spacing8, start = spacing12, end = spacing12),
+                horizontalArrangement = Arrangement.SpaceAround,
+            ){
+                repeat(7) {
+                    UniqueWeeklyDay(
+                        getHabitDayFromADate(
+                            habit,
+                            startOfWeek.plusDays(it.toLong())
+                        ),
+                        onClick = onClick
+                    )
+                }
+            }
+
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -284,23 +301,6 @@ fun UniqueWeeklyCard(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = spacing8, start = spacing12, end = spacing12),
-                horizontalArrangement = Arrangement.SpaceAround,
-            ){
-                repeat(7) {
-                    UniqueWeeklyDay(
-                        getHabitDayFromADate(
-                            habit,
-                            startOfWeek.plusDays(it.toLong())
-                        ),
-                        onClick = onClick
-                    )
-                }
-            }
         }
     }
 }

@@ -52,37 +52,6 @@ fun UniqueWeeklyDay(
         habitWithDay.day.date.dayOfWeek ?: DayOfWeek.MONDAY
     }
 
-    val currentProgress = remember(habitWithDay) {
-        try {
-            habitWithDay
-                .day.goalDone
-                .divide(habitWithDay.habit.goal, 4, RoundingMode.HALF_UP)
-                ?.toFloat()
-                ?.coerceIn(0f, 1f) ?: 0f
-        } catch (e: ArithmeticException) {
-            0f
-        }
-    }
-
-    // Para animar el progreso
-    val animatedProgress by animateFloatAsState(
-        targetValue = currentProgress,
-        animationSpec = tween(
-            durationMillis = 500,
-            easing = FastOutSlowInEasing
-        ),
-        label = "progressAnimation"
-    )
-
-    val animatedColor by animateColorAsState(
-        targetValue = if (currentProgress >= 1f) {
-            Color(habitWithDay.habit.color).copy(alpha = 0.5f)
-        } else {
-            MaterialTheme.colorScheme.background
-        },
-        label = "colorAnim"
-    )
-
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.clickable(
@@ -100,7 +69,7 @@ fun UniqueWeeklyDay(
         Box(
             modifier = Modifier
                 .clip(CircleShape)
-                .background(animatedColor)
+                .background(MaterialTheme.colorScheme.background)
                 .border(1.dp,MaterialTheme.colorScheme.surfaceVariant, CircleShape)
                 .size(40.dp)
         ){
@@ -108,14 +77,10 @@ fun UniqueWeeklyDay(
                 modifier = Modifier.align(Alignment.Center))
         }
 
-        Spacer(modifier = Modifier.padding(top = spacing4))
+        Spacer(modifier = Modifier.padding(top = spacing2))
 
         LabelSmallText(
-            stringResource(
-                R.string.habit_week_day_goal,
-                habitWithDay.day.goalDone,
-                habitWithDay.habit.goal
-            ),
+            text = habitWithDay.day.goalDone.toString(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
