@@ -75,22 +75,6 @@ fun UniqueWeeklyCard(
     onLongClick: (id:Long,date: LocalDate) -> Unit
 ){
 
-//    val habitDaySelected = remember (habit){
-//        getSelected(selectedDate,habit.dailyHabits)
-//    }
-//
-//    val currentProgress = remember(habitDaySelected) {
-//        try {
-//            habitDaySelected
-//                ?.goalDone
-//                ?.divide(habit.habit.goal, 4, RoundingMode.HALF_UP)
-//                ?.toFloat()
-//                ?.coerceIn(0f, 1f) ?: 0f
-//        } catch (e: ArithmeticException) {
-//            0f
-//        }
-//    }
-
     val goalWeekCompleted = timesCompletedInAEntireWeek(habit, startOfWeek)
 
     val animatedProgressLinear by animateFloatAsState(
@@ -102,20 +86,10 @@ fun UniqueWeeklyCard(
         label = "progressAnimation"
     )
 
-    // Para animar el progreso
-    val animatedProgress by animateFloatAsState(
-        targetValue = animatedProgressLinear,
-        animationSpec = tween(
-            durationMillis = 500,
-            easing = FastOutSlowInEasing
-        ),
-        label = "progressAnimation"
-    )
-
     // Control de estado visual
     val visualState = when {
-        animatedProgress == 0f -> "add"
-        animatedProgress >= 1f -> "check"
+        animatedProgressLinear == 0f -> "add"
+        animatedProgressLinear >= 1f -> "check"
         else -> "progress"
     }
 
@@ -244,7 +218,7 @@ fun UniqueWeeklyCard(
 
                             "progress" -> {
                                 CircularProgressIndicator(
-                                    progress = { animatedProgress },
+                                    progress = { animatedProgressLinear },
                                     color = Color(habit.habit.color),
                                     trackColor = MaterialTheme.colorScheme.surfaceVariant,
                                     strokeWidth = 2.dp,
@@ -281,7 +255,7 @@ fun UniqueWeeklyCard(
                 progress = {animatedProgressLinear},
                 color = Color(habit.habit.color),
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
-                gapSize = 0.dp,
+                gapSize = (-10).dp,
                 drawStopIndicator = {}
             )
 

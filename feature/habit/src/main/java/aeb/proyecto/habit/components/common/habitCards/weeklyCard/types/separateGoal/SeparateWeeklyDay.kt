@@ -144,7 +144,8 @@ fun SeparateWeeklyDay(
                 habitWithDay.habit.goal
             ),
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.scrim
         )
     }
 }

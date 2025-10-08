@@ -82,7 +82,8 @@ fun UniqueWeeklyDay(
         LabelSmallText(
             text = habitWithDay.day.goalDone.toString(),
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.scrim
         )
     }
 
