@@ -2,7 +2,7 @@
 
     <string name="habit_topbar">Hábitos</string>
 
-    <string name="habit_loading">Cargado...</string>
+    <string name="habit_loading">Cargando…</string>
 
     <string name="habit_no_habit">Todavía no tienes hábitos registrados. Para crear uno, pulsa sobre el botón de abajo a la derecha.</string>
 

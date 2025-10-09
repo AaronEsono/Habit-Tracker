@@ -22,7 +22,7 @@ fun Modifier.cardHabitPadding(index:Int, lastElement:Boolean = false): Modifier 
 
 fun Modifier.cardHabitPaddingHorizontal(index:Int, lastElement:Boolean = false): Modifier {
     return if(lastElement){
-        if(index == 0)
+        if(index == 0 || index == 1)
             padding(bottom = spacing80, top = spacing12)
         else
             padding(bottom = spacing80)
