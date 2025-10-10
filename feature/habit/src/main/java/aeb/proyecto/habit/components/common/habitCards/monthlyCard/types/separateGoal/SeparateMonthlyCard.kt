@@ -1,5 +1,6 @@
 package aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.separateGoal
 
+import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.getDates
 import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
 import aeb.proyecto.room.entities.HabitDay
@@ -17,6 +18,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
 import android.util.Log
 import androidx.compose.animation.AnimatedContent
@@ -57,6 +59,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -185,7 +188,26 @@ fun SeparateMonthlyCard(
                     }
                 }
 
-                // Faltan las metas
+                // Metas
+                Column(
+                    modifier = Modifier
+                        .padding(end = spacing12, start = spacing6),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.End
+                ) {
+                    LabelMediumText(
+                        stringResource(
+                            R.string.habit_week_goal_subtitle,
+                            habit.habit.goal.toString(),
+                            if(habit.habit.goal.toInt() <= 1)
+                                stringResource(habit.habit.unit.title)
+                            else
+                                stringResource(habit.habit.unit.titlePlural)
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
 
                 // Progresion
                 Box(
@@ -240,7 +262,7 @@ fun SeparateMonthlyCard(
             }
 
             CalendarDays(
-                Modifier.padding(start = spacing8, end = spacing8, top = spacing4),
+                Modifier.padding(start = spacing8, end = spacing8, top = spacing2),
                 startDay = firstDayOfWeek
             )
 
