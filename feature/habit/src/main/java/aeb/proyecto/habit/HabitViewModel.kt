@@ -75,6 +75,8 @@ class HabitViewModel @Inject constructor(
         initialValue = null
     )
 
+    val startDayOfWeek: StateFlow<DayOfWeek?> = _startDayOfWeek
+
     /**
      * Reúne los distintos tipos de hábitos que tiene el usuario.
      * Filtra y ordena los tipos para luego mostrarlos en pantalla.

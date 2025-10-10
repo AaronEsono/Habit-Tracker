@@ -10,6 +10,7 @@ import aeb.proyecto.habit.components.common.timeRange.TimeRangeHabit
 import aeb.proyecto.habit.components.vertical.components.bottomSheet.configureHabit.VerticalConfigureHabitBottomSheet
 import aeb.proyecto.habit.components.vertical.components.bottomSheet.selectDate.VerticalSelectDateBottomSheet
 import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalDailyHabitScreen
+import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalMonthlyHabitScreen
 import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalWeeklyHabitScreen
 import aeb.proyecto.habit.model.BottomSheetUIState
 import aeb.proyecto.habit.model.TypeBottomSheet
@@ -21,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import java.math.BigDecimal
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
@@ -30,6 +32,7 @@ fun VerticalHabitContentScreen(
     currentPagerSelected: CurrentPagerSelection,
     selectedTimeRangeUiState: TimeRangeUiState,
     bottomSheetUIState: BottomSheetUIState,
+    startDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     selectedDate: LocalDate = LocalDate.now(),
     onClickTab: (PagerElement) -> Unit = {},
     onBottomSheetSelected: () -> Unit = {},
@@ -90,7 +93,17 @@ fun VerticalHabitContentScreen(
                                 )
                             }
                         }
-                        PagerElement.MONTHLY -> Unit
+                        PagerElement.MONTHLY -> {
+                            if(selectedTimeRangeUiState is TimeRangeUiState.Monthly){
+                                VerticalMonthlyHabitScreen(
+                                    timeRange = selectedTimeRangeUiState,
+                                    startDayOfWeek = startDayOfWeek,
+                                    filteredHabitsUIState.habits,
+                                    onLongClick = onLongClick,
+                                    onClick = onClick
+                                )
+                            }
+                        }
                         PagerElement.RECURRING -> Unit
                     }
                 }

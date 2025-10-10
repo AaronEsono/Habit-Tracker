@@ -16,15 +16,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import java.time.DayOfWeek
 
 @Composable
 fun CalendarDays(
     modifier: Modifier = Modifier,
-    horizontalPadding:Dp = 0.dp
+    horizontalPadding:Dp = 0.dp,
+    startDay: DayOfWeek? = null
 ) {
 
     val context = LocalContext.current
-    val firstDay by remember { mutableStateOf(getFirstDayOfWeekByLocale(context)) }
+    val firstDay by remember { mutableStateOf(startDay ?: getFirstDayOfWeekByLocale(context)) }
 
     Row(
         modifier = modifier.fillMaxWidth(),

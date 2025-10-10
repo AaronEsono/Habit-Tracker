@@ -36,6 +36,7 @@ fun HabitScreen(
     val filteredHabitsUiState = viewModel.habitsForSelectedTimeUiState.collectAsStateWithLifecycle().value
     val selectedDate = viewModel.selectedDate.collectAsStateWithLifecycle().value
     val bottomSheetUIState = viewModel.bottomSheetUIState.collectAsStateWithLifecycle().value
+    val startDayOfWeek = viewModel.startDayOfWeek.collectAsStateWithLifecycle().value
 
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.habit_topbar), fontSize = 20.sp)
@@ -53,6 +54,7 @@ fun HabitScreen(
                 filteredHabitsUiState = filteredHabitsUiState,
                 currentPagerSelected = currentPagerSelected,
                 selectedTimeRangeUiState = selectedTimeRange,
+                startDayOfWeek = startDayOfWeek,
                 dateSelected = selectedDate,
                 bottomSheetUIState = bottomSheetUIState,
                 navigateToAddHabit = navigateToAddHabit,

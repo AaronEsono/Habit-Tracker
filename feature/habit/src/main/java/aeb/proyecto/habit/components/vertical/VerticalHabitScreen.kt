@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import java.math.BigDecimal
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
@@ -25,6 +26,7 @@ fun VerticalHabitScreen(
     currentPagerSelected: CurrentPagerSelection,
     selectedTimeRangeUiState: TimeRangeUiState,
     bottomSheetUIState: BottomSheetUIState,
+    startDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     dateSelected: LocalDate = LocalDate.now(),
     navigateToAddHabit: (Long) -> Unit = {},
     onClickTab: (PagerElement) -> Unit = {},
@@ -54,6 +56,7 @@ fun VerticalHabitScreen(
                         filteredHabitsUIState = filteredHabitsUiState,
                         currentPagerSelected = currentPagerSelected,
                         selectedTimeRangeUiState = selectedTimeRangeUiState,
+                        startDayOfWeek = startDayOfWeek,
                         bottomSheetUIState = bottomSheetUIState,
                         selectedDate = dateSelected,
                         onClickTab = onClickTab,
