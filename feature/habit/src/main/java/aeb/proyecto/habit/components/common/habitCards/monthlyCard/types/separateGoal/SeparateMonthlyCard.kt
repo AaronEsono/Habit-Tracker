@@ -262,28 +262,19 @@ fun SeparateMonthlyCard(
             }
 
             CalendarDays(
-                Modifier.padding(start = spacing8, end = spacing8, top = spacing2),
+                Modifier.padding(start = spacing8, end = spacing8),
                 startDay = firstDayOfWeek
             )
 
-            // Aqui se sigue
             CalendarContent(
                 modifier = Modifier.padding(start = spacing8, end = spacing8, top = spacing2, bottom = spacing8),
                 dates = datesOfTheMonth.dates
             ) { item, modifier ->
-                Box(
-                    modifier =
-                        modifier
-                            .padding(horizontal = spacing4, vertical = spacing2)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary)
-                            .aspectRatio(1f)
-                ){
-                    LabelLargeText(
-                        item?.dateOfMonth?.dayOfMonth.toString(),
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
+                SeparateGoalDayCard(
+                    modifier = modifier,
+                    day = item?.dateOfMonth,
+                    habitDay = item?.data
+                )
             }
 
         }
