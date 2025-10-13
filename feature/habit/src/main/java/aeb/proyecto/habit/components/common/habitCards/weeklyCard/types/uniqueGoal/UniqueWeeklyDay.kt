@@ -52,6 +52,11 @@ fun UniqueWeeklyDay(
         habitWithDay.day.date.dayOfWeek ?: DayOfWeek.MONDAY
     }
 
+    val isDayOfWeek = remember(habitWithDay){
+        habitWithDay.day.date.dayOfWeek == LocalDate.now().dayOfWeek
+    }
+
+
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.clickable(
@@ -69,7 +74,13 @@ fun UniqueWeeklyDay(
         Box(
             modifier = Modifier
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.background)
+                .background(
+                    if(isDayOfWeek){
+                        MaterialTheme.colorScheme.surfaceVariant
+                    }else{
+                        MaterialTheme.colorScheme.background
+                    }
+                )
                 .border(1.dp,MaterialTheme.colorScheme.surfaceVariant, CircleShape)
                 .size(40.dp)
         ){

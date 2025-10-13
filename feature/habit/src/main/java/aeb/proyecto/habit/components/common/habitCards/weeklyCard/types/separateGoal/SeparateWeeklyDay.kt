@@ -52,6 +52,10 @@ fun SeparateWeeklyDay(
         habitWithDay.day.date.dayOfWeek ?: DayOfWeek.MONDAY
     }
 
+    val isDayOfWeek = remember(habitWithDay){
+        habitWithDay.day.date.dayOfWeek == LocalDate.now().dayOfWeek
+    }
+
     val currentProgress = remember(habitWithDay) {
         try {
             habitWithDay
@@ -78,7 +82,11 @@ fun SeparateWeeklyDay(
         targetValue = if (currentProgress >= 1f) {
             Color(habitWithDay.habit.color).copy(alpha = 0.5f)
         } else {
-            MaterialTheme.colorScheme.background
+            if(isDayOfWeek){
+                MaterialTheme.colorScheme.surfaceVariant
+            }else{
+                MaterialTheme.colorScheme.background
+            }
         },
         label = "colorAnim"
     )

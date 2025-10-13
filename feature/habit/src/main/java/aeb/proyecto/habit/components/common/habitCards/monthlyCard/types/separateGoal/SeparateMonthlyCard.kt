@@ -267,12 +267,13 @@ fun SeparateMonthlyCard(
             )
 
             CalendarContent(
-                modifier = Modifier.padding(start = spacing8, end = spacing8, top = spacing2, bottom = spacing8),
+                modifier = Modifier.padding(start = spacing12, end = spacing12, top = spacing2, bottom = spacing10),
                 dates = datesOfTheMonth.dates
             ) { item, modifier ->
                 SeparateGoalDayCard(
                     modifier = modifier,
                     day = item?.dateOfMonth,
+                    monthSelected = startOfMonth,
                     habitDay = item?.data
                 )
             }
