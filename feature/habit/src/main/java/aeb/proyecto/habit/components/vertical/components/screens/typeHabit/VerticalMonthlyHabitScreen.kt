@@ -2,6 +2,7 @@ package aeb.proyecto.habit.components.vertical.components.screens.typeHabit
 
 import aeb.proyecto.habit.TimeRangeUiState
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.separateGoal.SeparateMonthlyCard
+import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.uniqueGoal.UniqueMonthlyCard
 import aeb.proyecto.habit.utils.cardHabitPadding
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.TypeHabit
@@ -66,7 +67,18 @@ fun VerticalMonthlyHabitScreen (
                     val typeHabit = habit.habit.typeHabit as TypeHabit.Monthly
 
                     if(typeHabit.monthlyGoal){
-                        // Por hacer
+                        UniqueMonthlyCard(
+                            habit = habit,
+                            modifier = Modifier.cardHabitPadding(
+                                index,
+                                lastElement = index == habits.size - 1
+                            ),
+                            startOfMonth = timeRange.startOfMonth,
+                            firstDayOfWeek = startDayOfWeek,
+                            selectedDate = LocalDate.now(),
+                            onLongClick = onLongClick,
+                            onClick = onClick
+                        )
                     }else{
                         SeparateMonthlyCard(
                             habit = habit,

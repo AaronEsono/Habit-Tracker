@@ -52,8 +52,8 @@ fun UniqueWeeklyDay(
         habitWithDay.day.date.dayOfWeek ?: DayOfWeek.MONDAY
     }
 
-    val isDayOfWeek = remember(habitWithDay){
-        habitWithDay.day.date.dayOfWeek == LocalDate.now().dayOfWeek
+    val isToday = remember(habitWithDay){
+        habitWithDay.day.date == LocalDate.now()
     }
 
 
@@ -75,7 +75,7 @@ fun UniqueWeeklyDay(
             modifier = Modifier
                 .clip(CircleShape)
                 .background(
-                    if(isDayOfWeek){
+                    if(isToday){
                         MaterialTheme.colorScheme.surfaceVariant
                     }else{
                         MaterialTheme.colorScheme.background

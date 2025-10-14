@@ -1,10 +1,15 @@
 package aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.separateGoal
 
 import aeb.proyecto.habit.R
+import aeb.proyecto.habit.components.common.habitCards.monthlyCard.daysCompletedOnAMonth
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.getDates
+import aeb.proyecto.habit.components.common.habitCards.monthlyCard.numberOfDaysToComplete
 import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.daysCompletedOnAWeek
 import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
+import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.calendar.content.CalendarContent
 import aeb.proyecto.ui.calendar.content.CalendarDays
 import aeb.proyecto.ui.calendar.content.CalendarHeader
@@ -20,6 +25,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
+import aeb.proyecto.ui.text.TitleSmallText
 import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -61,6 +67,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -82,12 +89,16 @@ fun SeparateMonthlyCard(
     onLongClick: (id:Long,date: LocalDate) -> Unit
 ){
 
-    val datesOfTheMonth: CalendarUIState<HabitDay> = remember(
+    val datesOfTheMonth: CalendarUIState<HabitWithDay> = remember(
         startOfMonth, firstDayOfWeek, habit
     ) {
         getDates(
             startOfMonth, firstDayOfWeek, habit
         )
+    }
+
+    val daysCompleted = remember(habit){
+        daysCompletedOnAMonth(habit, startOfMonth)
     }
 
     val habitDaySelected = remember (habit){
@@ -267,17 +278,36 @@ fun SeparateMonthlyCard(
             )
 
             CalendarContent(
-                modifier = Modifier.padding(start = spacing12, end = spacing12, top = spacing2, bottom = spacing10),
+                modifier = Modifier.padding(start = spacing12, end = spacing12, top = spacing2, bottom = spacing4),
                 dates = datesOfTheMonth.dates
             ) { item, modifier ->
-                SeparateGoalDayCard(
-                    modifier = modifier,
-                    day = item?.dateOfMonth,
-                    monthSelected = startOfMonth,
-                    habitDay = item?.data
-                )
+                if(item != null){
+                    SeparateGoalDayCard(
+                        modifier = modifier,
+                        day = item.dateOfMonth,
+                        monthSelected = startOfMonth,
+                        habitWithDay = item.data,
+                        onClick = onClick,
+                        onLongClick = onLongClick
+                    )
+                }
             }
 
+
+            TitleSmallText(
+                stringResource(
+                    R.string.habit_week_goal_title,
+                    daysCompleted.toString(),
+                    numberOfDaysToComplete(
+                        (habit.habit.typeHabit as TypeHabit.Monthly).numberTimes,
+                        startOfMonth
+                    ).toString()
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(bottom = spacing12).fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
