@@ -109,8 +109,8 @@ fun SeparateGoalDayCard(
             .background(animatedColor)
             .aspectRatio(1f)
             .combinedClickable(
-                onClick = { onClick(habitWithDay.habit.id, day ?: LocalDate.now()) },
-                onLongClick = { onLongClick(habitWithDay.habit.id, day ?: LocalDate.now()) }
+                onClick = { if(!notInMonth) {onClick(habitWithDay.habit.id, day ?: LocalDate.now())} },
+                onLongClick = { if(!notInMonth){onLongClick(habitWithDay.habit.id, day ?: LocalDate.now())} }
             ),
     ){
         if(!notInMonth){

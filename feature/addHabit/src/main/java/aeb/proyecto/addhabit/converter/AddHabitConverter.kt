@@ -7,6 +7,7 @@ import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.utils.convertFromSeconds
 import aeb.proyecto.room.utils.convertToSeconds
+import android.util.Log
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -15,6 +16,7 @@ import java.math.RoundingMode
 import java.time.LocalDate
 
 fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
+    Log.d("HabitScreen", habitScreen.toString())
     return HabitWithNotification(
         Habit(
             name = habitScreen.nameTextField.text.toString(),
@@ -31,7 +33,7 @@ fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
             typeHabit = when(habitScreen.typeHabit){
                 aeb.proyecto.addhabit.constants.TypeHabit.DAILY -> { TypeHabit.Daily }
                 aeb.proyecto.addhabit.constants.TypeHabit.WEEKLY -> { TypeHabit.Weekly(habitScreen.numberOfDaysWeek, habitScreen.weeklyGoal) }
-                aeb.proyecto.addhabit.constants.TypeHabit.MONTHLY -> { TypeHabit.Monthly(habitScreen.numberOfDaysMonth, habitScreen.weeklyGoal) }
+                aeb.proyecto.addhabit.constants.TypeHabit.MONTHLY -> { TypeHabit.Monthly(habitScreen.numberOfDaysMonth, habitScreen.monthlyGoal) }
                 aeb.proyecto.addhabit.constants.TypeHabit.CYCLIC -> { TypeHabit.Recurring(habitScreen.dateRecurringStartDate, habitScreen.intervalTextFieldState.text.toString().toInt()) }
             }
         ),
