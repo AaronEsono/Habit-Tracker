@@ -1,44 +1,70 @@
 package aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.uniqueGoal
 
-import aeb.proyecto.habit.components.common.habitCards.monthlyCard.daysCompletedOnAMonth
+import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.getDates
-import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
+import aeb.proyecto.habit.components.common.habitCards.monthlyCard.timesCompletedInAEntireMonth
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.calculatePercentage
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.ui.calendar.content.CalendarContent
+import aeb.proyecto.ui.calendar.content.CalendarDays
 import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
+import aeb.proyecto.ui.dimmens.Dimmens.spacing16
+import aeb.proyecto.ui.dimmens.Dimmens.spacing2
+import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UniqueMonthlyCard(
     modifier: Modifier = Modifier,
@@ -46,9 +72,27 @@ fun UniqueMonthlyCard(
     firstDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     selectedDate: LocalDate,
     habit: HabitWithDailyHabit,
-    onClick: (id:Long,date: LocalDate) -> Unit,
-    onLongClick: (id:Long,date: LocalDate) -> Unit
-){
+    onClick: (id: Long, date: LocalDate) -> Unit,
+    onLongClick: (id: Long, date: LocalDate) -> Unit
+) {
+
+    val goalMonthCompleted = timesCompletedInAEntireMonth(habit, startOfMonth)
+
+    val animatedProgressLinear by animateFloatAsState(
+        targetValue = calculatePercentage(goalMonthCompleted, habit.habit.goal),
+        animationSpec = tween(
+            durationMillis = 500,
+            easing = FastOutSlowInEasing
+        ),
+        label = "progressAnimation"
+    )
+
+    // Control de estado visual
+    val visualState = when {
+        animatedProgressLinear == 0f -> "add"
+        animatedProgressLinear >= 1f -> "check"
+        else -> "progress"
+    }
 
     val datesOfTheMonth: CalendarUIState<HabitWithDay> = remember(
         startOfMonth, firstDayOfWeek, habit
@@ -72,9 +116,9 @@ fun UniqueMonthlyCard(
             containerColor = MaterialTheme.colorScheme.surfaceTint
         )
     ) {
-        Column (
+        Column(
             verticalArrangement = Arrangement.Center
-        ){
+        ) {
 
             Row(
                 modifier = Modifier
@@ -124,9 +168,129 @@ fun UniqueMonthlyCard(
                     }
                 }
 
+                // Metas
+                Column(
+                    modifier = Modifier
+                        .padding(end = spacing12, start = spacing6),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.End
+                ) {
+                    LabelMediumText(
+                        stringResource(
+                            R.string.habit_month_goal_title_unique,
+                            habit.habit.goal.toString(),
+                            if(habit.habit.goal.toInt() <= 1)
+                                stringResource(habit.habit.unit.title)
+                            else
+                                stringResource(habit.habit.unit.titlePlural)
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                // Progresion
+                Box(
+                    modifier = Modifier
+                        .size(45.dp)
+                        .clip(RoundedCornerShape(spacing8))
+                        .background(MaterialTheme.colorScheme.background)
+                        .combinedClickable(
+                            onClick = { onClick(habit.habit.id, selectedDate) },
+                            onLongClick = { onLongClick(habit.habit.id, selectedDate) }
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AnimatedContent(
+                        targetState = visualState,
+                        transitionSpec = {
+                            fadeIn(tween(250)) togetherWith fadeOut(tween(250))
+                        },
+                        label = "Content Transition"
+                    ) { state ->
+                        when (state) {
+                            "add" -> {
+                                Icon(
+                                    Icons.Filled.Add,
+                                    contentDescription = "add habit",
+                                    tint = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.fillMaxSize(0.8f),
+                                )
+                            }
+
+                            "check" -> {
+                                Icon(
+                                    Icons.Filled.Check,
+                                    contentDescription = "check habit",
+                                    tint = Color(habit.habit.color),
+                                    modifier = Modifier.fillMaxSize(0.8f)
+                                )
+                            }
+
+                            "progress" -> {
+                                CircularProgressIndicator(
+                                    progress = { animatedProgressLinear },
+                                    color = Color(habit.habit.color),
+                                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                                    strokeWidth = 2.dp,
+                                    modifier = Modifier.fillMaxSize(0.8f)
+                                )
+                            }
+                        }
+                    }
+                }
             }
 
-        }
+            CalendarDays(
+                Modifier.padding(start = spacing8, end = spacing8),
+                startDay = firstDayOfWeek
+            )
 
+            CalendarContent(
+                modifier = Modifier.padding(start = spacing12, end = spacing12, top = spacing2, bottom = spacing4),
+                dates = datesOfTheMonth.dates
+            ) { item, modifier ->
+                if(item != null){
+                    UniqueGoalMonthDayCard(
+                        modifier = modifier,
+                        day = item.dateOfMonth,
+                        monthSelected = startOfMonth,
+                        habitWithDay = item.data,
+                        onClick = onClick,
+                        onLongClick = onLongClick
+                    )
+                }
+            }
+
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = spacing16, end = spacing16, bottom = spacing8, top = spacing4)
+                    .height(12.dp),
+                progress = {animatedProgressLinear},
+                color = Color(habit.habit.color),
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                gapSize = (-10).dp,
+                drawStopIndicator = {}
+            )
+
+            LabelLargeText(
+                text = stringResource(
+                    R.string.habit_week_unique_goal_completed,
+                    goalMonthCompleted.stripTrailingZeros().toString(),
+                    habit.habit.goal.toString(),
+                    if(habit.habit.goal.toInt() <= 1){
+                        stringResource(habit.habit.unit.title)
+                    }else{
+                        stringResource(habit.habit.unit.titlePlural)
+                    }
+                ),
+                modifier = Modifier.fillMaxWidth().padding(bottom = spacing8),
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+        }
     }
 }

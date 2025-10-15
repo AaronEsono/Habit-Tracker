@@ -5,19 +5,14 @@ import aeb.proyecto.habit.components.common.habitCards.monthlyCard.daysCompleted
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.getDates
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.numberOfDaysToComplete
 import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
-import aeb.proyecto.habit.components.common.habitCards.weeklyCard.daysCompletedOnAWeek
-import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.calendar.content.CalendarContent
 import aeb.proyecto.ui.calendar.content.CalendarDays
-import aeb.proyecto.ui.calendar.content.CalendarHeader
 import aeb.proyecto.ui.calendar.model.CalendarUIState
-import aeb.proyecto.ui.calendar.source.CalendarDataSource
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
-import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
@@ -26,7 +21,6 @@ import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
 import aeb.proyecto.ui.text.TitleSmallText
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -42,12 +36,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -58,7 +50,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -66,7 +57,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -74,7 +64,6 @@ import androidx.compose.ui.unit.sp
 import java.math.RoundingMode
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.YearMonth
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -282,7 +271,7 @@ fun SeparateMonthlyCard(
                 dates = datesOfTheMonth.dates
             ) { item, modifier ->
                 if(item != null){
-                    SeparateGoalDayCard(
+                    SeparateGoalMonthDayCard(
                         modifier = modifier,
                         day = item.dateOfMonth,
                         monthSelected = startOfMonth,

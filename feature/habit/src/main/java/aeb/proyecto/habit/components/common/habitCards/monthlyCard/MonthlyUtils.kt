@@ -45,3 +45,13 @@ fun numberOfDaysToComplete(goalToDo: Int, startOfMonth: LocalDate):Int{
     val daysInThisMonth = startOfMonth.lengthOfMonth()
     return if(daysInThisMonth < goalToDo) daysInThisMonth else goalToDo
 }
+
+fun timesCompletedInAEntireMonth(habits: HabitWithDailyHabit, startOfMonth: LocalDate):BigDecimal{
+    val daysInThisMonth = startOfMonth.lengthOfMonth()
+
+    return habits.dailyHabits.filter {
+        it.date in startOfMonth..startOfMonth.plusDays(daysInThisMonth.toLong())
+    }.sumOf {
+        it.goalDone
+    }
+}

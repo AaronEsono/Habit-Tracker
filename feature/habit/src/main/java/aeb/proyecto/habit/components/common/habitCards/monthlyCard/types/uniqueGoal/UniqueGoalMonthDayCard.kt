@@ -1,11 +1,9 @@
-package aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.separateGoal
+package aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.uniqueGoal
 
-import aeb.proyecto.habit.R
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.text.LabelMediumText
-import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -15,8 +13,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -34,18 +30,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import java.math.RoundingMode
 import java.time.LocalDate
 
-// Poner modo desactivado
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SeparateGoalDayCard(
+fun UniqueGoalMonthDayCard(
     modifier: Modifier = Modifier,
     day: LocalDate? = LocalDate.now(),
     monthSelected: LocalDate = LocalDate.now(),
@@ -146,4 +137,5 @@ fun SeparateGoalDayCard(
             }
         }
     }
+
 }

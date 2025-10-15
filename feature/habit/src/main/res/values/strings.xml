@@ -20,6 +20,8 @@
     <string name="habit_week_day_goal">%1$s/%2$s</string>
     <string name="habit_week_unique_goal_completed">%1$s/%2$s %3$s</string>
 
+    <string name="habit_month_goal_title_unique">%1$s %2$s/month</string>
+
     <string name="habit_action_icon">%2$s %1$s %3$s</string>
 
     <string name="habit_cancel">Cancel</string>
