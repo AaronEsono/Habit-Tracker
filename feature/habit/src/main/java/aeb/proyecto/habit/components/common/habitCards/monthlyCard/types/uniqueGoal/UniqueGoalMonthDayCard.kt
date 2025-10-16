@@ -115,27 +115,7 @@ fun UniqueGoalMonthDayCard(
             )
         }
 
-        AnimatedContent(
-            targetState = animatedProgress,
-            modifier = Modifier.align(Alignment.Center)
-        ) { animatedProgressAnim ->
-            when(animatedProgressAnim){
-                1f -> {
-                    Icon(
-                        Icons.Filled.Check,
-                        contentDescription = "check habit",
-                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                        modifier = Modifier
-                            .fillMaxSize(0.8f)
-                            .align(Alignment.Center)
-                    )
-                }
-                else -> {
-                    LabelMediumText(day?.dayOfMonth.toString(),
-                        modifier = Modifier.align(Alignment.Center))
-                }
-            }
-        }
+        LabelMediumText(day?.dayOfMonth.toString(),
+            modifier = Modifier.align(Alignment.Center))
     }
-
 }

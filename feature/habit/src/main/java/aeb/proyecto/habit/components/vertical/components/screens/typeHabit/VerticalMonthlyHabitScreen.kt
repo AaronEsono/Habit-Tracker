@@ -25,6 +25,8 @@ import kotlinx.coroutines.delay
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+// Mirar, tanto en semanal como en mensual
+// Si los habitos con tarea unica es mejor poner el circulo alrededor con su color
 @Composable
 fun VerticalMonthlyHabitScreen (
     timeRange: TimeRangeUiState.Monthly,

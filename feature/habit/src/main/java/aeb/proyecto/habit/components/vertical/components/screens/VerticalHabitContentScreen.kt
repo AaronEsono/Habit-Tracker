@@ -11,6 +11,7 @@ import aeb.proyecto.habit.components.vertical.components.bottomSheet.configureHa
 import aeb.proyecto.habit.components.vertical.components.bottomSheet.selectDate.VerticalSelectDateBottomSheet
 import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalDailyHabitScreen
 import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalMonthlyHabitScreen
+import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalRecurringHabitScreen
 import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalWeeklyHabitScreen
 import aeb.proyecto.habit.model.BottomSheetUIState
 import aeb.proyecto.habit.model.TypeBottomSheet
@@ -104,7 +105,15 @@ fun VerticalHabitContentScreen(
                                 )
                             }
                         }
-                        PagerElement.RECURRING -> Unit
+                        PagerElement.RECURRING -> {
+                            if(selectedTimeRangeUiState is TimeRangeUiState.Recurring){
+                                VerticalRecurringHabitScreen(
+                                    selectedDate, filteredHabitsUIState.habits,
+                                    onLongClick = onLongClick,
+                                    onClick = onClick
+                                )
+                            }
+                        }
                     }
                 }
             }
