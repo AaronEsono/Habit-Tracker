@@ -1,6 +1,7 @@
 package aeb.proyecto.habit.components.common.habitCards.recurringCard
 
 import aeb.proyecto.habit.R
+import aeb.proyecto.habit.components.common.habitCards.recurringCard.utils.isDayActiveForRecurringHabit
 import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
 import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
 import aeb.proyecto.habit.components.common.habitCards.utils.getUnitTitle
@@ -66,6 +67,10 @@ fun RecurringCard(
 
     val habitDaySelected = remember(habit) {
         getSelected(selectedDate, habit.dailyHabits)
+    }
+
+    val isDayActive = remember (selectedDate){
+        isDayActiveForRecurringHabit(habit.habit,selectedDate)
     }
 
     val currentProgress = remember(habitDaySelected) {
@@ -235,5 +240,10 @@ fun RecurringCard(
                 }
             }
         }
+
+        if(isDayActive){
+            LabelLargeText("Holi")
+        }
+
     }
 }
