@@ -23,6 +23,9 @@
 
     <string name="habit_month_goal_title_unique">%1$s %2$s/mes</string>
 
+    <string name="habit_recurring_label_plural">Faltan %1$s días</string>
+    <string name="habit_recurring_label_singular">Falta 1 día</string>
+
     <string name="habit_cancel">Cancelar</string>
     <string name="habit_today_title">Ir a hoy</string>
 

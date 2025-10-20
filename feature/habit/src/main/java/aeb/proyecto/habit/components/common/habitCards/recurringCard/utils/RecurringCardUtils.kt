@@ -5,16 +5,11 @@ import aeb.proyecto.room.model.classes.TypeHabit
 import java.time.LocalDate
 import kotlin.math.absoluteValue
 
-fun isDayActiveForRecurringHabit(habit: Habit, selectedDate: LocalDate): Boolean{
-    val type = habit.typeHabit
+fun isDayActiveForRecurringHabit(habit: Habit, selectedDate: LocalDate): Int{
+    val type = habit.typeHabit as? TypeHabit.Recurring ?: return -1
 
-    return if(type is TypeHabit.Recurring){
-        val startDate = type.date
-        val interval = type.interval
-        val intervalOfDays = (selectedDate.toEpochDay() - startDate.toEpochDay()).toInt().absoluteValue
+    val daysBetween = (selectedDate.toEpochDay() - type.date.toEpochDay()).toInt().absoluteValue
+    val reminder = daysBetween % type.interval
 
-        intervalOfDays % interval == 0
-    }else{
-        false
-    }
+    return if (reminder == 0) 0 else type.interval - reminder
 }
