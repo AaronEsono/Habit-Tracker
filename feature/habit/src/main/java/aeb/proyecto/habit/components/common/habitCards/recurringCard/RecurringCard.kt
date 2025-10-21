@@ -6,7 +6,6 @@ import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
 import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
 import aeb.proyecto.habit.components.common.habitCards.utils.getUnitTitle
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
-import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
@@ -16,6 +15,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
+import android.text.Layout
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -249,7 +249,7 @@ fun RecurringCard(
                 }
             }
 
-            if (isDayActive != 0) {
+            if(isDayActive != 0){
                 LabelSmallText(
                     if (isDayActive == 1) {
                         stringResource(R.string.habit_recurring_label_singular)
@@ -261,9 +261,9 @@ fun RecurringCard(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = spacing16, bottom = spacing1)
+                        .padding(start = spacing16, bottom = spacing4)
                         .align(Alignment.BottomStart),
-                    fontSize = 12.sp
+                    fontSize = 10.sp
                 )
 
                 HorizontalDivider(
@@ -275,8 +275,6 @@ fun RecurringCard(
                     thickness = 2.dp
                 )
             }
-
-
         }
     }
 }
