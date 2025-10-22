@@ -21,6 +21,7 @@ import aeb.proyecto.room.model.classes.DAILY_TAG
 import aeb.proyecto.room.model.classes.MONTHLY_TAG
 import aeb.proyecto.room.model.classes.RECURRING_TAG
 import aeb.proyecto.room.model.classes.WEEKLY_TAG
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -66,6 +67,8 @@ class HabitViewModel @Inject constructor(
 
     private val _bottomSheetUIState = MutableStateFlow(BottomSheetUIState())
     val bottomSheetUIState: StateFlow<BottomSheetUIState> = _bottomSheetUIState.asStateFlow()
+
+    private val _prueba = MutableStateFlow<Boolean>(false)
 
     /** Día de inicio de la semana seleccionado por el usuario. */
     private val _startDayOfWeek:StateFlow<DayOfWeek?> = habitDatastoreUseCase.startDayOfWeek
@@ -134,9 +137,13 @@ class HabitViewModel @Inject constructor(
 
                 RECURRING_TAG-> {
                     val prevRange = (previousState as? TimeRangeUiState.Recurring)?.days.orEmpty()
+                    Log.e("RECURRING_TAG", "prevRange: $prevRange")
+                    Log.e("RECURRING_TAG", "prevRange: $previousState")
                     if (date in prevRange) {
+                        Log.e("RECURRING_TAG", "adios")
                         previousState // No actualizar el rango
                     } else {
+                        Log.e("RECURRING_TAG", "hola")
                         val newDays = rangeDays.map { date.plusDays(it.toLong()) }
                         TimeRangeUiState.Recurring(newDays)
                     }
@@ -225,6 +232,7 @@ class HabitViewModel @Inject constructor(
      * Cambia la fecha seleccionada.
      */
     fun onClickTimeRange(date:LocalDate){
+        _prueba.update { true }
         _selectedDate.update { date }
     }
 

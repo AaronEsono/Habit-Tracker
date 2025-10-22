@@ -23,6 +23,10 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -249,7 +253,16 @@ fun RecurringCard(
                 }
             }
 
-            if(isDayActive != 0){
+
+            androidx.compose.animation.AnimatedVisibility(
+                visible = isDayActive != 0,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = spacing16, bottom = spacing4)
+                    .align(Alignment.BottomStart),
+                enter = fadeIn(tween(250)) + slideInVertically { it / 2 },
+                exit = fadeOut(tween(200)) + slideOutVertically { it / 2 },
+            ){
                 LabelSmallText(
                     if (isDayActive == 1) {
                         stringResource(R.string.habit_recurring_label_singular)
@@ -260,17 +273,23 @@ fun RecurringCard(
                         )
                     },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = spacing16, bottom = spacing4)
-                        .align(Alignment.BottomStart),
+                        .fillMaxWidth(),
                     fontSize = 10.sp
                 )
+            }
 
+            androidx.compose.animation.AnimatedVisibility(
+                visible = isDayActive != 0,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing12)
+                    .align(Alignment.Center),
+                enter = fadeIn(tween(200)) + scaleIn(initialScale = 0.8f),
+                exit = fadeOut(tween(150)) + scaleOut(targetScale = 0.8f),
+            ){
                 HorizontalDivider(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = spacing12)
-                        .align(Alignment.Center),
+                        .fillMaxWidth(),
                     color = MaterialTheme.colorScheme.scrim,
                     thickness = 2.dp
                 )
