@@ -274,7 +274,8 @@ fun RecurringCard(
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    fontSize = 10.sp
+                    fontSize = 10.sp,
+                    color = MaterialTheme.colorScheme.outline
                 )
             }
 
