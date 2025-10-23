@@ -32,7 +32,7 @@ import java.time.LocalDate
 fun MonthlyTimeRange(
     startOfMonth: LocalDate,
     endOfMonth: LocalDate,
-    onClick: (LocalDate) -> Unit
+    onClick: (LocalDate, Boolean) -> Unit
 ){
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -51,7 +51,7 @@ fun MonthlyTimeRange(
                 .clickable (
                     interactionSource = interactionSource,
                     indication = null
-                ){ onClick(startOfMonth.minusMonths(1))}
+                ){ onClick(startOfMonth.minusMonths(1), false)}
         )
 
         Column (
@@ -81,7 +81,7 @@ fun MonthlyTimeRange(
                 .clickable (
                     interactionSource = interactionSource,
                     indication = null
-                ){ onClick(endOfMonth.plusMonths(1))}
+                ){ onClick(endOfMonth.plusMonths(1),false)}
         )
     }
 

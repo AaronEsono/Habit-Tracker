@@ -34,7 +34,7 @@ import java.time.LocalDate
 fun WeeklyTimeRange(
     startOfWeek:LocalDate,
     endOfWeek:LocalDate,
-    onClick:(LocalDate) -> Unit,
+    onClick:(LocalDate, Boolean) -> Unit,
 ){
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -53,7 +53,7 @@ fun WeeklyTimeRange(
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null
-                ) { onClick(startOfWeek.minusDays(7)) }
+                ) { onClick(startOfWeek.minusDays(7), false) }
         )
 
         Column (
@@ -89,7 +89,7 @@ fun WeeklyTimeRange(
                 .clickable (
                     interactionSource = interactionSource,
                     indication = null
-                ){ onClick(startOfWeek.plusDays(7)) }
+                ){ onClick(startOfWeek.plusDays(7), false) }
         )
     }
 

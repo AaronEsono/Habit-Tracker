@@ -39,7 +39,7 @@ fun HorizontalSelectDateBottomSheet(
     viewModel: SelectDateViewModel = hiltViewModel(),
     selectedDate: LocalDate,
     onDismiss: () -> Unit = {},
-    onClick: (LocalDate) -> Unit = {}
+    onClick: (LocalDate, Boolean) -> Unit = {_,_ ->}
 ){
 
     val scope = rememberCoroutineScope()
@@ -88,7 +88,7 @@ fun HorizontalSelectDateBottomSheet(
                         isSelectedDate = date.dateOfMonth == selectedDate,
                         enabled = it.dateOfMonth.isInYearMonth(yearMonth),
                         onClick = { date ->
-                            onClick(date)
+                            onClick(date,true)
                             scope.launch {
                                 sheetState.hide()
                                 onDismiss()

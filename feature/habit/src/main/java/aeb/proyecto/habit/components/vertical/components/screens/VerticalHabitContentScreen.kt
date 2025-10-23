@@ -41,7 +41,7 @@ fun VerticalHabitContentScreen(
     onRestart: (id:Long,date:LocalDate) -> Unit = { _, _ -> },
     onClickConfigureHabit:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit,
     onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
-    onClickTimeRange: (LocalDate) -> Unit = {},
+    onClickTimeRange: (LocalDate, Boolean) -> Unit = {_,_ ->},
     onLongClick: (id:Long,date:LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
 ){

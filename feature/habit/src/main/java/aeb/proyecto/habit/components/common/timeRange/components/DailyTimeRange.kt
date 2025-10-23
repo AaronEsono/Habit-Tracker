@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -22,7 +24,7 @@ fun DailyTimeRange(
     selectedDate:LocalDate,
     numberOfElements:Int = 8,
     daysOnRange:List<LocalDate>,
-    onClick: (LocalDate) -> Unit = {}
+    onClick: (LocalDate, Boolean) -> Unit = {_,_ -> }
 ){
 
     val screenWidthDp  = LocalConfiguration.current.screenWidthDp.dp
@@ -31,9 +33,14 @@ fun DailyTimeRange(
         val totalSpacing = horizontalPadding * (numberOfElements - 1)
         (screenWidthDp - totalSpacing) / numberOfElements
     }
-    val state = rememberLazyListState(
-        initialFirstVisibleItemIndex = daysOnRange.indexOf(selectedDate) - (numberOfElements / 2).coerceAtLeast(0) + 1
-    )
+
+    val state = remember(daysOnRange) {
+        LazyListState(
+            firstVisibleItemIndex =
+                (daysOnRange.indexOf(selectedDate) - (numberOfElements / 2).coerceAtLeast(0) + 1)
+                    .coerceAtLeast(0)
+        )
+    }
 
     LazyRow (
         state = state,

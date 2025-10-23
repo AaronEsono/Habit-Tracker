@@ -31,7 +31,7 @@ fun HorizontalHabitContentScreen(
     onClickTab: (PagerElement) -> Unit = {},
     onBottomSheetSelected: () -> Unit = {},
     onDismissBottomSheet: () -> Unit = {},
-    onClickTimeRange: (LocalDate) -> Unit = {},
+    onClickTimeRange: (LocalDate, Boolean) -> Unit = { _, _ ->},
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
 ) {

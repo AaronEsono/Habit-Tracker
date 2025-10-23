@@ -33,7 +33,7 @@ fun RowButtonSelectDate(
     scope: CoroutineScope,
     sheetState: SheetState,
     onDismiss: () -> Unit = {},
-    onClick: (LocalDate) -> Unit = {}
+    onClick: (LocalDate, Boolean) -> Unit = {_,_ ->}
 ){
 
     Row (
@@ -59,7 +59,7 @@ fun RowButtonSelectDate(
         CustomRipple {
             Button(
                 onClick = {
-                    onClick(LocalDate.now())
+                    onClick(LocalDate.now(),true)
                     scope.launch {
                         sheetState.hide()
                         onDismiss()

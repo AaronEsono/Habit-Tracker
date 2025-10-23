@@ -32,7 +32,7 @@ fun DayCard(
     modifier:Modifier = Modifier,
     date:LocalDate,
     isSelected:Boolean = false,
-    onClick: (LocalDate) -> Unit = {}
+    onClick: (LocalDate, Boolean) -> Unit = {_,_ -> }
 ){
 
     Box(
@@ -40,7 +40,7 @@ fun DayCard(
             .clip(RoundedCornerShape(spacing12))
             .boxBackgroundSelected(isSelected)
             .padding(top = spacing4)
-            .clickable { onClick(date) }
+            .clickable { onClick(date,false) }
     ) {
         Column(
             modifier = modifier,

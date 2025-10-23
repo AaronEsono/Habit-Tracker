@@ -15,7 +15,7 @@ import java.time.LocalDate
 fun TimeRangeHabit(
     selectedTimeRangeUiState: TimeRangeUiState,
     selectedDate: LocalDate = LocalDate.now(),
-    onClickTimeRange: (LocalDate) -> Unit = {},
+    onClickTimeRange: (LocalDate, Boolean) -> Unit = {_,_ ->},
 ){
 
     val orientation = getOrientation()

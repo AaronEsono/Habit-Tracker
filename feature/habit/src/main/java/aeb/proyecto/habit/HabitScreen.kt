@@ -91,7 +91,4 @@ fun HabitScreen(
             )
         }
     }
-
-    //Prueba
-
 }

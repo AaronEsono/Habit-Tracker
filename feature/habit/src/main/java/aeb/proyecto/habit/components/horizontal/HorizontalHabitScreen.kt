@@ -27,7 +27,7 @@ fun HorizontalHabitScreen(
     dateSelected: LocalDate = LocalDate.now(),
     navigateToAddHabit: (Long) -> Unit = {},
     onClickTab: (PagerElement) -> Unit = {},
-    onClickTimeRange: (LocalDate) -> Unit = {},
+    onClickTimeRange: (LocalDate, Boolean) -> Unit = {_,_ ->},
     onBottomSheetSelected: () -> Unit = {},
     onDismissBottomSheet: () -> Unit = {},
     onLongClick: (id:Long,date: LocalDate) -> Unit,
