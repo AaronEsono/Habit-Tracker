@@ -1,4 +1,4 @@
-package aeb.proyecto.habit.components.vertical.components.screens.typeHabit
+package aeb.proyecto.habit.components.horizontal.components.screens.typeHabit
 
 import aeb.proyecto.habit.TimeRangeUiState
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.separateGoal.SeparateMonthlyCard
@@ -6,9 +6,10 @@ import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.uniqueG
 import aeb.proyecto.habit.utils.cardHabitPadding
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.TypeHabit
+import aeb.proyecto.ui.dimmens.Dimmens.spacing12
+import aeb.proyecto.ui.dimmens.Dimmens.spacing20
+import aeb.proyecto.ui.dimmens.Dimmens.spacing32
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
-import aeb.proyecto.ui.text.LabelLargeText
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -26,7 +27,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
-fun VerticalMonthlyHabitScreen (
+fun HorizontalMonthlyHabitScreen(
     timeRange: TimeRangeUiState.Monthly,
     startDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     habits: List<HabitWithDailyHabit>,
@@ -75,6 +76,7 @@ fun VerticalMonthlyHabitScreen (
                                 lastElement = index == habits.size - 1
                             ),
                             startOfMonth = timeRange.startOfMonth,
+                            horizontalDayPadding = spacing12,
                             firstDayOfWeek = startDayOfWeek,
                             selectedDate = LocalDate.now(),
                             onLongClick = onLongClick,
@@ -88,6 +90,7 @@ fun VerticalMonthlyHabitScreen (
                                 lastElement = index == habits.size - 1
                             ),
                             startOfMonth = timeRange.startOfMonth,
+                            horizontalDayPadding = spacing12,
                             firstDayOfWeek = startDayOfWeek,
                             selectedDate = LocalDate.now(),
                             onLongClick = onLongClick,
@@ -98,6 +101,5 @@ fun VerticalMonthlyHabitScreen (
             }
         }
     }
-
 
 }

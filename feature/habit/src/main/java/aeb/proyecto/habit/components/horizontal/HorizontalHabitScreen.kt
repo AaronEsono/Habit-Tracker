@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import java.math.BigDecimal
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
@@ -24,12 +26,16 @@ fun HorizontalHabitScreen(
     currentPagerSelected: CurrentPagerSelection,
     selectedTimeRangeUiState: TimeRangeUiState,
     bottomSheetUIState: BottomSheetUIState,
+    startDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     dateSelected: LocalDate = LocalDate.now(),
     navigateToAddHabit: (Long) -> Unit = {},
     onClickTab: (PagerElement) -> Unit = {},
     onClickTimeRange: (LocalDate, Boolean) -> Unit = {_,_ ->},
     onBottomSheetSelected: () -> Unit = {},
     onDismissBottomSheet: () -> Unit = {},
+    onRestart: (id:Long,date:LocalDate) -> Unit = { _, _ -> },
+    onClickConfigureHabit:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit,
+    onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id:Long,date: LocalDate) -> Unit
 ){
@@ -51,10 +57,14 @@ fun HorizontalHabitScreen(
                         currentPagerSelected = currentPagerSelected,
                         selectedTimeRangeUiState = selectedTimeRangeUiState,
                         bottomSheetUIState = bottomSheetUIState,
+                        startDayOfWeek = startDayOfWeek,
                         selectedDate = dateSelected,
                         onClickTab = onClickTab,
                         onBottomSheetSelected = onBottomSheetSelected,
                         onDismissBottomSheet = onDismissBottomSheet,
+                        onRestart = onRestart,
+                        onClickConfigureHabit = onClickConfigureHabit,
+                        onClickTimer = onClickTimer,
                         onClickTimeRange = onClickTimeRange,
                         onLongClick = onLongClick,
                         onClick = onClick

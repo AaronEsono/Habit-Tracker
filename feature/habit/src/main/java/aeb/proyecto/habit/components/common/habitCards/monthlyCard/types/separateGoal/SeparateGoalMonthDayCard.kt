@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import java.math.RoundingMode
 import java.time.LocalDate
@@ -43,6 +44,7 @@ fun SeparateGoalMonthDayCard(
     day: LocalDate? = LocalDate.now(),
     monthSelected: LocalDate = LocalDate.now(),
     habitWithDay: HabitWithDay?,
+    horizontalPadding: Dp = spacing4,
     onClick: (id:Long,date: LocalDate) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit
 ){
@@ -96,7 +98,7 @@ fun SeparateGoalMonthDayCard(
 
     Box(
         modifier = modifier
-            .padding(horizontal = spacing4, vertical = spacing2)
+            .padding(horizontal = horizontalPadding, vertical = spacing2)
             .clip(CircleShape)
             .alpha(if (notInMonth) 0.3f else 1f)
             .background(animatedColor)

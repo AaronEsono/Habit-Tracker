@@ -1,6 +1,7 @@
 package aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.uniqueGoal
 
 import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.text.LabelMediumText
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import java.math.RoundingMode
 import java.time.LocalDate
@@ -40,6 +42,7 @@ fun UniqueGoalMonthDayCard(
     modifier: Modifier = Modifier,
     day: LocalDate? = LocalDate.now(),
     monthSelected: LocalDate = LocalDate.now(),
+    horizontalPadding: Dp = spacing4,
     habitWithDay: HabitWithDay?,
     onClick: (id:Long,date: LocalDate) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit
@@ -94,7 +97,7 @@ fun UniqueGoalMonthDayCard(
 
     Box(
         modifier = modifier
-            .padding(horizontal = spacing4, vertical = spacing2)
+            .padding(horizontal = horizontalPadding, vertical = spacing2)
             .clip(CircleShape)
             .alpha(if (notInMonth) 0.3f else 1f)
             .background(animatedColor)

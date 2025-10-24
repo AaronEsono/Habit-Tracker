@@ -59,6 +59,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.DayOfWeek
@@ -70,6 +71,7 @@ fun UniqueMonthlyCard(
     modifier: Modifier = Modifier,
     startOfMonth: LocalDate,
     firstDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
+    horizontalDayPadding: Dp = spacing4,
     selectedDate: LocalDate,
     habit: HabitWithDailyHabit,
     onClick: (id: Long, date: LocalDate) -> Unit,
@@ -255,6 +257,7 @@ fun UniqueMonthlyCard(
                         modifier = modifier,
                         day = item.dateOfMonth,
                         monthSelected = startOfMonth,
+                        horizontalPadding = horizontalDayPadding,
                         habitWithDay = item.data,
                         onClick = onClick,
                         onLongClick = onLongClick

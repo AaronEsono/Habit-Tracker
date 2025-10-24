@@ -9,6 +9,12 @@ import aeb.proyecto.habit.components.common.pager.PageSelected
 import aeb.proyecto.habit.components.common.timeRange.TimeRangeHabit
 import aeb.proyecto.habit.components.horizontal.components.bottomSheet.selectDate.HorizontalSelectDateBottomSheet
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalDailyHabitScreen
+import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalMonthlyHabitScreen
+import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalRecurringHabitScreen
+import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalWeeklyHabitScreen
+import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalMonthlyHabitScreen
+import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalRecurringHabitScreen
+import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalWeeklyHabitScreen
 import aeb.proyecto.habit.model.BottomSheetUIState
 import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.habit.model.pager.PagerElement
@@ -18,6 +24,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import java.math.BigDecimal
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
@@ -27,10 +35,14 @@ fun HorizontalHabitContentScreen(
     currentPagerSelected: CurrentPagerSelection,
     selectedTimeRangeUiState: TimeRangeUiState,
     bottomSheetUIState: BottomSheetUIState,
+    startDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     selectedDate: LocalDate = LocalDate.now(),
     onClickTab: (PagerElement) -> Unit = {},
     onBottomSheetSelected: () -> Unit = {},
     onDismissBottomSheet: () -> Unit = {},
+    onRestart: (id:Long,date:LocalDate) -> Unit = { _, _ -> },
+    onClickConfigureHabit:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit,
+    onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
     onClickTimeRange: (LocalDate, Boolean) -> Unit = { _, _ ->},
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
@@ -74,9 +86,36 @@ fun HorizontalHabitContentScreen(
                                 )
                             }
                         }
-                        PagerElement.WEEKLY -> Unit
-                        PagerElement.MONTHLY -> Unit
-                        PagerElement.RECURRING -> Unit
+                        PagerElement.WEEKLY -> {
+                            if(selectedTimeRangeUiState is TimeRangeUiState.Weekly){
+                                HorizontalWeeklyHabitScreen(
+                                    selectedTimeRangeUiState,
+                                    filteredHabitsUIState.habits,
+                                    onLongClick = onLongClick,
+                                    onClick = onClick
+                                )
+                            }
+                        }
+                        PagerElement.MONTHLY -> {
+                            if(selectedTimeRangeUiState is TimeRangeUiState.Monthly){
+                                HorizontalMonthlyHabitScreen(
+                                    timeRange = selectedTimeRangeUiState,
+                                    startDayOfWeek = startDayOfWeek,
+                                    filteredHabitsUIState.habits,
+                                    onLongClick = onLongClick,
+                                    onClick = onClick
+                                )
+                            }
+                        }
+                        PagerElement.RECURRING -> {
+                            if(selectedTimeRangeUiState is TimeRangeUiState.Recurring){
+                                HorizontalRecurringHabitScreen(
+                                    selectedDate, filteredHabitsUIState.habits,
+                                    onLongClick = onLongClick,
+                                    onClick = onClick
+                                )
+                            }
+                        }
                     }
                 }
             }

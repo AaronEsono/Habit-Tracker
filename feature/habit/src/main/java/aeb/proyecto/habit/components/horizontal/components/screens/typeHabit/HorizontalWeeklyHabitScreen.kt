@@ -1,14 +1,12 @@
-package aeb.proyecto.habit.components.vertical.components.screens.typeHabit
+package aeb.proyecto.habit.components.horizontal.components.screens.typeHabit
 
 import aeb.proyecto.habit.TimeRangeUiState
-import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.separateGoal.SeparateMonthlyCard
-import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.uniqueGoal.UniqueMonthlyCard
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.separateGoal.SeparateWeeklyCard
+import aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.uniqueGoal.UniqueWeeklyCard
 import aeb.proyecto.habit.utils.cardHabitPadding
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
-import aeb.proyecto.ui.text.LabelLargeText
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -22,13 +20,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
-import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
-fun VerticalMonthlyHabitScreen (
-    timeRange: TimeRangeUiState.Monthly,
-    startDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
+fun HorizontalWeeklyHabitScreen(
+    weekTimeRange: TimeRangeUiState.Weekly,
     habits: List<HabitWithDailyHabit>,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
@@ -52,43 +48,41 @@ fun VerticalMonthlyHabitScreen (
             .fillMaxSize()
             .padding(horizontal = spacing8)
     ) {
-
         items(
             count = habits.size,
             key = { habits[it].habit.id }
         ) { index ->
-
             AnimatedVisibility(
                 visible = visibleItems.contains(index),
                 enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
                 exit = fadeOut()
             ) {
-                if(habits[index].habit.typeHabit is TypeHabit.Monthly){
+                if(habits[index].habit.typeHabit is TypeHabit.Weekly){
                     val habit = habits[index]
-                    val typeHabit = habit.habit.typeHabit as TypeHabit.Monthly
+                    val typeHabit = habit.habit.typeHabit as TypeHabit.Weekly
 
-                    if(typeHabit.monthlyGoal){
-                        UniqueMonthlyCard(
+                    if(typeHabit.weeklyGoal){
+                        UniqueWeeklyCard(
                             habit = habit,
                             modifier = Modifier.cardHabitPadding(
                                 index,
                                 lastElement = index == habits.size - 1
                             ),
-                            startOfMonth = timeRange.startOfMonth,
-                            firstDayOfWeek = startDayOfWeek,
+                            startOfWeek = weekTimeRange.startOfWeek,
+                            endOfWeek = weekTimeRange.endOfWeek,
                             selectedDate = LocalDate.now(),
                             onLongClick = onLongClick,
                             onClick = onClick
                         )
                     }else{
-                        SeparateMonthlyCard(
+                        SeparateWeeklyCard(
                             habit = habit,
                             modifier = Modifier.cardHabitPadding(
                                 index,
                                 lastElement = index == habits.size - 1
                             ),
-                            startOfMonth = timeRange.startOfMonth,
-                            firstDayOfWeek = startDayOfWeek,
+                            startOfWeek = weekTimeRange.startOfWeek,
+                            endOfWeek = weekTimeRange.endOfWeek,
                             selectedDate = LocalDate.now(),
                             onLongClick = onLongClick,
                             onClick = onClick
@@ -98,6 +92,5 @@ fun VerticalMonthlyHabitScreen (
             }
         }
     }
-
 
 }

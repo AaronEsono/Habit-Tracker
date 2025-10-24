@@ -80,11 +80,19 @@ fun HabitScreen(
                 currentPagerSelected = currentPagerSelected,
                 selectedTimeRangeUiState = selectedTimeRange,
                 bottomSheetUIState = bottomSheetUIState,
+                startDayOfWeek = startDayOfWeek,
                 dateSelected = selectedDate,
                 navigateToAddHabit = navigateToAddHabit,
                 onClickTab = viewModel::onPagerTypeSelected,
                 onClickTimeRange = viewModel::onClickTimeRange,
                 onBottomSheetSelected = viewModel::onBottomSheetSelected,
+                onRestart = viewModel::onRestart,
+                onClickTimer = { data ->
+                    viewModel.onClickTimerHabit(data){
+                        navigateToTimer()
+                    }
+                },
+                onClickConfigureHabit = viewModel::onClickConfigureHabit,
                 onDismissBottomSheet = viewModel::onDismissBottomSheet,
                 onLongClick = viewModel::onLongClick,
                 onClick = viewModel::onClick

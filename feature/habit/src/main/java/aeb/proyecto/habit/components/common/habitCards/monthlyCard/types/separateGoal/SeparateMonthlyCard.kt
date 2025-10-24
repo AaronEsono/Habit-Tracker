@@ -59,6 +59,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.math.RoundingMode
@@ -73,6 +74,7 @@ fun SeparateMonthlyCard(
     startOfMonth: LocalDate,
     firstDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     selectedDate: LocalDate,
+    horizontalDayPadding: Dp = spacing4,
     habit: HabitWithDailyHabit,
     onClick: (id:Long,date: LocalDate) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit
@@ -275,6 +277,7 @@ fun SeparateMonthlyCard(
                         modifier = modifier,
                         day = item.dateOfMonth,
                         monthSelected = startOfMonth,
+                        horizontalPadding = horizontalDayPadding,
                         habitWithDay = item.data,
                         onClick = onClick,
                         onLongClick = onLongClick
