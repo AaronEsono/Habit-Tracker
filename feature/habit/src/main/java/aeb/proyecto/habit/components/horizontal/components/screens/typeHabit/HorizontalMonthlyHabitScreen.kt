@@ -3,20 +3,27 @@ package aeb.proyecto.habit.components.horizontal.components.screens.typeHabit
 import aeb.proyecto.habit.TimeRangeUiState
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.separateGoal.SeparateMonthlyCard
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.uniqueGoal.UniqueMonthlyCard
+import aeb.proyecto.habit.components.common.habitCards.recurringCard.RecurringCard
 import aeb.proyecto.habit.utils.cardHabitPadding
+import aeb.proyecto.habit.utils.cardHabitPaddingHorizontal
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.TypeHabit
+import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
 import aeb.proyecto.ui.dimmens.Dimmens.spacing32
+import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
@@ -48,49 +55,51 @@ fun HorizontalMonthlyHabitScreen(
         }
     }
 
-    LazyColumn(
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = spacing8)
+            .padding(start = spacing8, end = spacing8),
+        horizontalArrangement = Arrangement.spacedBy(spacing10),
+        verticalArrangement = Arrangement.spacedBy(spacing10)
     ) {
-
         items(
             count = habits.size,
             key = { habits[it].habit.id }
         ) { index ->
-
             AnimatedVisibility(
                 visible = visibleItems.contains(index),
                 enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
                 exit = fadeOut()
             ) {
-                if(habits[index].habit.typeHabit is TypeHabit.Monthly){
+                if (habits[index].habit.typeHabit is TypeHabit.Monthly) {
                     val habit = habits[index]
                     val typeHabit = habit.habit.typeHabit as TypeHabit.Monthly
 
-                    if(typeHabit.monthlyGoal){
+                    if (typeHabit.monthlyGoal) {
                         UniqueMonthlyCard(
                             habit = habit,
-                            modifier = Modifier.cardHabitPadding(
+                            modifier = Modifier.cardHabitPaddingHorizontal(
                                 index,
                                 lastElement = index == habits.size - 1
                             ),
                             startOfMonth = timeRange.startOfMonth,
-                            horizontalDayPadding = spacing12,
+                            horizontalDayPadding = spacing4,
                             firstDayOfWeek = startDayOfWeek,
                             selectedDate = LocalDate.now(),
                             onLongClick = onLongClick,
                             onClick = onClick
                         )
-                    }else{
+                    } else {
                         SeparateMonthlyCard(
                             habit = habit,
-                            modifier = Modifier.cardHabitPadding(
+                            modifier = Modifier.cardHabitPaddingHorizontal(
                                 index,
                                 lastElement = index == habits.size - 1
                             ),
                             startOfMonth = timeRange.startOfMonth,
-                            horizontalDayPadding = spacing12,
+                            horizontalDayPadding = spacing4,
                             firstDayOfWeek = startDayOfWeek,
                             selectedDate = LocalDate.now(),
                             onLongClick = onLongClick,
@@ -101,5 +110,4 @@ fun HorizontalMonthlyHabitScreen(
             }
         }
     }
-
 }

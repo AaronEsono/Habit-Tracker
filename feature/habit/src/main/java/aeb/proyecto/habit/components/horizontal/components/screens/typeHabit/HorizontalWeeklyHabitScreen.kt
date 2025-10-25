@@ -1,19 +1,27 @@
 package aeb.proyecto.habit.components.horizontal.components.screens.typeHabit
 
 import aeb.proyecto.habit.TimeRangeUiState
+import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.separateGoal.SeparateMonthlyCard
+import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.uniqueGoal.UniqueMonthlyCard
 import aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.separateGoal.SeparateWeeklyCard
 import aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.uniqueGoal.UniqueWeeklyCard
 import aeb.proyecto.habit.utils.cardHabitPadding
+import aeb.proyecto.habit.utils.cardHabitPaddingHorizontal
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.TypeHabit
+import aeb.proyecto.ui.dimmens.Dimmens.spacing10
+import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
@@ -26,9 +34,9 @@ import java.time.LocalDate
 fun HorizontalWeeklyHabitScreen(
     weekTimeRange: TimeRangeUiState.Weekly,
     habits: List<HabitWithDailyHabit>,
-    onLongClick: (id:Long,date: LocalDate) -> Unit,
+    onLongClick: (id: Long, date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
-){
+) {
 
     val visibleItems = remember { mutableStateListOf<Int>() }
 
@@ -43,10 +51,17 @@ fun HorizontalWeeklyHabitScreen(
         }
     }
 
-    LazyColumn(
+    //TODO hacer que las cartas semanales respondan al weight
+    //TODO Arreglar el padding en los semanales y verticales dependiendo de que modo sean
+    // Por ejemplo, los retos unicos ocupan mas a lo largo, arreglar
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = spacing8)
+            .padding(start = spacing8, end = spacing8),
+        horizontalArrangement = Arrangement.spacedBy(spacing10),
+        verticalArrangement = Arrangement.spacedBy(spacing10)
     ) {
         items(
             count = habits.size,
@@ -57,14 +72,14 @@ fun HorizontalWeeklyHabitScreen(
                 enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
                 exit = fadeOut()
             ) {
-                if(habits[index].habit.typeHabit is TypeHabit.Weekly){
+                if (habits[index].habit.typeHabit is TypeHabit.Weekly) {
                     val habit = habits[index]
                     val typeHabit = habit.habit.typeHabit as TypeHabit.Weekly
 
-                    if(typeHabit.weeklyGoal){
+                    if (typeHabit.weeklyGoal) {
                         UniqueWeeklyCard(
                             habit = habit,
-                            modifier = Modifier.cardHabitPadding(
+                            modifier = Modifier.cardHabitPaddingHorizontal(
                                 index,
                                 lastElement = index == habits.size - 1
                             ),
@@ -74,10 +89,10 @@ fun HorizontalWeeklyHabitScreen(
                             onLongClick = onLongClick,
                             onClick = onClick
                         )
-                    }else{
+                    } else {
                         SeparateWeeklyCard(
                             habit = habit,
-                            modifier = Modifier.cardHabitPadding(
+                            modifier = Modifier.cardHabitPaddingHorizontal(
                                 index,
                                 lastElement = index == habits.size - 1
                             ),
