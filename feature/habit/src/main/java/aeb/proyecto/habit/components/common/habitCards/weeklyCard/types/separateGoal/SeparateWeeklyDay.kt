@@ -19,7 +19,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -36,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import java.math.RoundingMode
@@ -44,6 +47,7 @@ import java.time.LocalDate
 
 @Composable
 fun SeparateWeeklyDay(
+    modifier: Modifier = Modifier,
     habitWithDay: HabitWithDay,
     onClick: (id:Long,date: LocalDate) -> Unit,
 ){
@@ -93,7 +97,7 @@ fun SeparateWeeklyDay(
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable(
+        modifier = modifier.clickable(
             interactionSource = null,
             indication = null
         ) {
@@ -101,28 +105,35 @@ fun SeparateWeeklyDay(
         }
     ){
 
-        LabelLargeText(stringResource(getAvr(dayOfWeek)))
+        LabelLargeText(
+            stringResource(getAvr(dayOfWeek))
+        )
 
         Spacer(modifier = Modifier.padding(vertical = spacing2))
 
         Box(
             modifier = Modifier
+                .fillMaxSize()
                 .clip(CircleShape)
                 .background(animatedColor)
-                .size(40.dp)
+                .aspectRatio(1f)
         ){
             CircularProgressIndicator(
                 progress = { animatedProgress },
                 color = Color(habitWithDay.habit.color),
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
                 strokeWidth = 2.dp,
-                modifier = Modifier.fillMaxSize().align(Alignment.Center),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.Center),
                 gapSize = 0.dp
             )
 
             AnimatedContent(
                 targetState = animatedProgress,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.Center)
             ) { animatedProgressAnim ->
                 when(animatedProgressAnim){
                     1f -> {
@@ -131,13 +142,16 @@ fun SeparateWeeklyDay(
                             contentDescription = "check habit",
                             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                             modifier = Modifier
-                                .fillMaxSize(0.8f)
+                                .fillMaxSize(0.5f)
                                 .align(Alignment.Center)
                         )
                     }
                     else -> {
-                        LabelMediumText(habitWithDay.day.date.dayOfMonth.toString(),
-                            modifier = Modifier.align(Alignment.Center))
+                        LabelMediumText(
+                            habitWithDay.day.date.dayOfMonth.toString(),
+                            modifier = Modifier.align(Alignment.Center),
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
             }
