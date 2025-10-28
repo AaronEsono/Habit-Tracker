@@ -6,6 +6,8 @@ import aeb.proyecto.ui.date.utils.getAvr
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing3
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
+import aeb.proyecto.ui.orientation.Orientation
+import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
@@ -41,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import java.math.RoundingMode
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -51,6 +54,8 @@ fun SeparateWeeklyDay(
     habitWithDay: HabitWithDay,
     onClick: (id:Long,date: LocalDate) -> Unit,
 ){
+
+    val orientation = getOrientation()
 
     val dayOfWeek = remember (habitWithDay){
         habitWithDay.day.date.dayOfWeek ?: DayOfWeek.MONDAY
@@ -105,9 +110,14 @@ fun SeparateWeeklyDay(
         }
     ){
 
-        LabelLargeText(
-            stringResource(getAvr(dayOfWeek))
-        )
+        when(orientation){
+            Orientation.Portrait -> {
+                LabelLargeText(stringResource(getAvr(dayOfWeek)))
+            }
+            Orientation.Landscape -> {
+                LabelSmallText(stringResource(getAvr(dayOfWeek)))
+            }
+        }
 
         Spacer(modifier = Modifier.padding(vertical = spacing2))
 
@@ -132,7 +142,6 @@ fun SeparateWeeklyDay(
             AnimatedContent(
                 targetState = animatedProgress,
                 modifier = Modifier
-                    .fillMaxSize()
                     .align(Alignment.Center)
             ) { animatedProgressAnim ->
                 when(animatedProgressAnim){
@@ -142,7 +151,7 @@ fun SeparateWeeklyDay(
                             contentDescription = "check habit",
                             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                             modifier = Modifier
-                                .fillMaxSize(0.5f)
+                                .fillMaxSize(0.75f)
                                 .align(Alignment.Center)
                         )
                     }

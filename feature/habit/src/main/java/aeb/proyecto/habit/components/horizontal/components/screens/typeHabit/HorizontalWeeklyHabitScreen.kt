@@ -51,7 +51,7 @@ fun HorizontalWeeklyHabitScreen(
         }
     }
 
-    //TODO hacer que las cartas semanales respondan al weight
+    //TODO Arreglar el labelTitle de las cartas semanales
     //TODO Arreglar el padding en los semanales y verticales dependiendo de que modo sean
     // Por ejemplo, los retos unicos ocupan mas a lo largo, arreglar
 

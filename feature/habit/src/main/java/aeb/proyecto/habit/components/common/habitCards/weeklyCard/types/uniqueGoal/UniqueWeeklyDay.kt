@@ -5,6 +5,8 @@ import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.ui.date.utils.getAvr
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
+import aeb.proyecto.ui.orientation.Orientation
+import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
@@ -19,6 +21,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -44,9 +47,12 @@ import java.time.LocalDate
 
 @Composable
 fun UniqueWeeklyDay(
+    modifier: Modifier = Modifier,
     habitWithDay: HabitWithDay,
     onClick: (id:Long,date: LocalDate) -> Unit,
 ){
+
+    val orientation = getOrientation()
 
     val dayOfWeek = remember (habitWithDay){
         habitWithDay.day.date.dayOfWeek ?: DayOfWeek.MONDAY
@@ -59,7 +65,7 @@ fun UniqueWeeklyDay(
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable(
+        modifier = modifier.clickable(
             interactionSource = null,
             indication = null
         ) {
@@ -67,12 +73,20 @@ fun UniqueWeeklyDay(
         }
     ){
 
-        LabelLargeText(stringResource(getAvr(dayOfWeek)))
+        when(orientation){
+            Orientation.Portrait -> {
+                LabelLargeText(stringResource(getAvr(dayOfWeek)))
+            }
+            Orientation.Landscape -> {
+                LabelSmallText(stringResource(getAvr(dayOfWeek)))
+            }
+        }
 
         Spacer(modifier = Modifier.padding(vertical = spacing2))
 
         Box(
             modifier = Modifier
+                .fillMaxSize()
                 .clip(CircleShape)
                 .background(
                     if(isToday){
@@ -82,7 +96,7 @@ fun UniqueWeeklyDay(
                     }
                 )
                 .border(1.dp,MaterialTheme.colorScheme.surfaceVariant, CircleShape)
-                .size(40.dp)
+                .aspectRatio(1f)
         ){
             LabelMediumText(habitWithDay.day.date.dayOfMonth.toString(),
                 modifier = Modifier.align(Alignment.Center))

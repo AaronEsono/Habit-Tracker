@@ -234,10 +234,11 @@ fun UniqueWeeklyCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = spacing8, start = spacing12, end = spacing12),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.spacedBy(spacing12),
             ){
                 repeat(7) {
                     UniqueWeeklyDay(
+                        modifier = Modifier.weight(1f),
                         getHabitDayFromADate(
                             habit,
                             startOfWeek.plusDays(it.toLong())
