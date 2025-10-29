@@ -7,11 +7,13 @@ import aeb.proyecto.habit.components.common.button.BarActionIcon
 import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.components.common.pager.PageSelected
 import aeb.proyecto.habit.components.common.timeRange.TimeRangeHabit
+import aeb.proyecto.habit.components.horizontal.components.bottomSheet.configureHabit.HorizontalConfigureHabitBottomSheet
 import aeb.proyecto.habit.components.horizontal.components.bottomSheet.selectDate.HorizontalSelectDateBottomSheet
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalDailyHabitScreen
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalMonthlyHabitScreen
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalRecurringHabitScreen
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalWeeklyHabitScreen
+import aeb.proyecto.habit.components.vertical.components.bottomSheet.configureHabit.VerticalConfigureHabitBottomSheet
 import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalMonthlyHabitScreen
 import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalRecurringHabitScreen
 import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalWeeklyHabitScreen
@@ -125,7 +127,15 @@ fun HorizontalHabitContentScreen(
 
     if(bottomSheetUIState.isEnabled){
         when(bottomSheetUIState.typeOfBottomSheet){
-            is TypeBottomSheet.EditHabitDay -> {}
+            is TypeBottomSheet.EditHabitDay -> {
+                HorizontalConfigureHabitBottomSheet(
+                    habitWithDay = bottomSheetUIState.typeOfBottomSheet.habitWithDay,
+                    onDismiss = onDismissBottomSheet,
+                    onRestart = onRestart,
+                    onClickTimer = onClickTimer,
+                    onClick = onClickConfigureHabit
+                )
+            }
             TypeBottomSheet.SelectDate -> {
                 HorizontalSelectDateBottomSheet(
                     onDismiss = onDismissBottomSheet,

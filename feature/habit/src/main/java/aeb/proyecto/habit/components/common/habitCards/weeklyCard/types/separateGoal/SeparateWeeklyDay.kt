@@ -115,7 +115,11 @@ fun SeparateWeeklyDay(
                 LabelLargeText(stringResource(getAvr(dayOfWeek)))
             }
             Orientation.Landscape -> {
-                LabelSmallText(stringResource(getAvr(dayOfWeek)))
+                LabelMediumText(
+                    stringResource(getAvr(dayOfWeek)),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
 
@@ -158,8 +162,7 @@ fun SeparateWeeklyDay(
                     else -> {
                         LabelMediumText(
                             habitWithDay.day.date.dayOfMonth.toString(),
-                            modifier = Modifier.align(Alignment.Center),
-                            textAlign = TextAlign.Center
+                            modifier = Modifier.align(Alignment.Center)
                         )
                     }
                 }

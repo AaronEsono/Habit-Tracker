@@ -78,7 +78,11 @@ fun UniqueWeeklyDay(
                 LabelLargeText(stringResource(getAvr(dayOfWeek)))
             }
             Orientation.Landscape -> {
-                LabelSmallText(stringResource(getAvr(dayOfWeek)))
+                LabelMediumText(
+                    stringResource(getAvr(dayOfWeek)),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
 
@@ -89,17 +93,19 @@ fun UniqueWeeklyDay(
                 .fillMaxSize()
                 .clip(CircleShape)
                 .background(
-                    if(isToday){
+                    if (isToday) {
                         MaterialTheme.colorScheme.surfaceVariant
-                    }else{
+                    } else {
                         MaterialTheme.colorScheme.background
                     }
                 )
-                .border(1.dp,MaterialTheme.colorScheme.surfaceVariant, CircleShape)
+                .border(1.dp, MaterialTheme.colorScheme.surfaceVariant, CircleShape)
                 .aspectRatio(1f)
         ){
-            LabelMediumText(habitWithDay.day.date.dayOfMonth.toString(),
-                modifier = Modifier.align(Alignment.Center))
+            LabelMediumText(
+                habitWithDay.day.date.dayOfMonth.toString(),
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
 
         Spacer(modifier = Modifier.padding(top = spacing2))
