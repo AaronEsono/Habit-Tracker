@@ -34,6 +34,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestartDay(
+    modifier: Modifier = Modifier,
     habitWithDay: HabitWithDay,
     coroutineScope: CoroutineScope,
     onDismiss: () -> Unit = {},
@@ -54,7 +55,7 @@ fun RestartDay(
 
     /** Botones */
     Row (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = spacing12, top = spacing10),
         verticalAlignment = Alignment.CenterVertically
