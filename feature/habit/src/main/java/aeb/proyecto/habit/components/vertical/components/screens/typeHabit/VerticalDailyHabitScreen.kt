@@ -23,6 +23,7 @@ import java.time.LocalDate
 fun VerticalDailyHabitScreen(
     selectedDate: LocalDate,
     habits: List<HabitWithDailyHabit>,
+    onClickCard: (id: Long) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
 ){
@@ -63,6 +64,7 @@ fun VerticalDailyHabitScreen(
                     ),
                     selectedDate = selectedDate,
                     onLongClick = onLongClick,
+                    onClickCard = onClickCard,
                     onClick = onClick
                 )
             }

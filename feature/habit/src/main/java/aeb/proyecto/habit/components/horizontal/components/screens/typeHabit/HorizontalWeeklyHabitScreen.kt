@@ -1,16 +1,12 @@
 package aeb.proyecto.habit.components.horizontal.components.screens.typeHabit
 
 import aeb.proyecto.habit.TimeRangeUiState
-import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.separateGoal.SeparateMonthlyCard
-import aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.uniqueGoal.UniqueMonthlyCard
 import aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.separateGoal.SeparateWeeklyCard
 import aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.uniqueGoal.UniqueWeeklyCard
-import aeb.proyecto.habit.utils.cardHabitPadding
 import aeb.proyecto.habit.utils.cardHabitPaddingHorizontal
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
-import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -19,7 +15,6 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
@@ -34,6 +29,7 @@ import java.time.LocalDate
 fun HorizontalWeeklyHabitScreen(
     weekTimeRange: TimeRangeUiState.Weekly,
     habits: List<HabitWithDailyHabit>,
+    onClickCard: (id: Long) -> Unit,
     onLongClick: (id: Long, date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
 ) {
@@ -82,6 +78,7 @@ fun HorizontalWeeklyHabitScreen(
                             startOfWeek = weekTimeRange.startOfWeek,
                             endOfWeek = weekTimeRange.endOfWeek,
                             selectedDate = LocalDate.now(),
+                            onClickCard = onClickCard,
                             onLongClick = onLongClick,
                             onClick = onClick
                         )
@@ -95,6 +92,7 @@ fun HorizontalWeeklyHabitScreen(
                             startOfWeek = weekTimeRange.startOfWeek,
                             endOfWeek = weekTimeRange.endOfWeek,
                             selectedDate = LocalDate.now(),
+                            onClickCard = onClickCard,
                             onLongClick = onLongClick,
                             onClick = onClick
                         )

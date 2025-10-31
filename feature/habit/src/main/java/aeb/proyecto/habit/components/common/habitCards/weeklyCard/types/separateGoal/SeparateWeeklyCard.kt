@@ -25,6 +25,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -69,6 +70,7 @@ fun SeparateWeeklyCard(
     endOfWeek: LocalDate,
     selectedDate: LocalDate,
     habit: HabitWithDailyHabit,
+    onClickCard: (id: Long) -> Unit,
     onClick: (id:Long,date: LocalDate) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit
 ){
@@ -117,7 +119,13 @@ fun SeparateWeeklyCard(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 shape = RoundedCornerShape(spacing12)
-            ),
+            )
+            .clickable(
+                interactionSource = null,
+                indication = null
+            ){
+                onClickCard(habit.habit.id)
+            },
         shape = RoundedCornerShape(spacing12),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceTint

@@ -42,6 +42,7 @@ fun VerticalHabitContentScreen(
     onClickConfigureHabit:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit,
     onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
     onClickTimeRange: (LocalDate, Boolean) -> Unit = {_,_ ->},
+    onClickCard: (id: Long) -> Unit,
     onLongClick: (id:Long,date:LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
 ){
@@ -79,6 +80,7 @@ fun VerticalHabitContentScreen(
                             if(selectedTimeRangeUiState is TimeRangeUiState.Daily){
                                 VerticalDailyHabitScreen(
                                     selectedDate, filteredHabitsUIState.habits,
+                                    onClickCard = onClickCard,
                                     onLongClick = onLongClick,
                                     onClick = onClick
                                 )
@@ -89,6 +91,7 @@ fun VerticalHabitContentScreen(
                                 VerticalWeeklyHabitScreen(
                                     selectedTimeRangeUiState,
                                     filteredHabitsUIState.habits,
+                                    onClickCard = onClickCard,
                                     onLongClick = onLongClick,
                                     onClick = onClick
                                 )
@@ -100,6 +103,7 @@ fun VerticalHabitContentScreen(
                                     timeRange = selectedTimeRangeUiState,
                                     startDayOfWeek = startDayOfWeek,
                                     filteredHabitsUIState.habits,
+                                    onClickCard = onClickCard,
                                     onLongClick = onLongClick,
                                     onClick = onClick
                                 )
@@ -109,6 +113,7 @@ fun VerticalHabitContentScreen(
                             if(selectedTimeRangeUiState is TimeRangeUiState.Recurring){
                                 VerticalRecurringHabitScreen(
                                     selectedDate, filteredHabitsUIState.habits,
+                                    onClickCard = onClickCard,
                                     onLongClick = onLongClick,
                                     onClick = onClick
                                 )

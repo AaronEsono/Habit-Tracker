@@ -13,6 +13,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -23,6 +24,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -61,6 +64,7 @@ fun DailyCard(
     modifier: Modifier = Modifier,
     selectedDate:LocalDate,
     habit: HabitWithDailyHabit,
+    onClickCard: (id: Long) -> Unit,
     onClick: (id:Long,date: LocalDate) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit
 ){
@@ -98,7 +102,6 @@ fun DailyCard(
         else -> "progress"
     }
 
-
     ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
@@ -106,7 +109,13 @@ fun DailyCard(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 shape = RoundedCornerShape(spacing12)
-            ),
+            )
+            .clickable(
+                interactionSource = null,
+                indication = null
+            ){
+                onClickCard(habit.habit.id)
+            },
         shape = RoundedCornerShape(spacing12),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceTint

@@ -31,6 +31,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -76,6 +77,7 @@ fun SeparateMonthlyCard(
     selectedDate: LocalDate,
     horizontalDayPadding: Dp = spacing4,
     habit: HabitWithDailyHabit,
+    onClickCard: (id: Long) -> Unit,
     onClick: (id:Long,date: LocalDate) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit
 ){
@@ -132,7 +134,13 @@ fun SeparateMonthlyCard(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 shape = RoundedCornerShape(spacing12)
-            ),
+            )
+            .clickable(
+                indication = null,
+                interactionSource = null
+            ){
+                onClickCard(habit.habit.id)
+            },
         shape = RoundedCornerShape(spacing12),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceTint

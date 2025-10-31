@@ -27,6 +27,7 @@ import java.time.LocalDate
 fun VerticalWeeklyHabitScreen(
     weekTimeRange: TimeRangeUiState.Weekly,
     habits: List<HabitWithDailyHabit>,
+    onClickCard: (id: Long) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
 ){
@@ -72,6 +73,7 @@ fun VerticalWeeklyHabitScreen(
                             startOfWeek = weekTimeRange.startOfWeek,
                             endOfWeek = weekTimeRange.endOfWeek,
                             selectedDate = LocalDate.now(),
+                            onClickCard = onClickCard,
                             onLongClick = onLongClick,
                             onClick = onClick
                         )
@@ -85,6 +87,7 @@ fun VerticalWeeklyHabitScreen(
                             startOfWeek = weekTimeRange.startOfWeek,
                             endOfWeek = weekTimeRange.endOfWeek,
                             selectedDate = LocalDate.now(),
+                            onClickCard = onClickCard,
                             onLongClick = onLongClick,
                             onClick = onClick
                         )

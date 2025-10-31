@@ -30,6 +30,7 @@ fun VerticalMonthlyHabitScreen (
     timeRange: TimeRangeUiState.Monthly,
     startDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     habits: List<HabitWithDailyHabit>,
+    onClickCard: (id: Long) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
 ){
@@ -77,6 +78,7 @@ fun VerticalMonthlyHabitScreen (
                             startOfMonth = timeRange.startOfMonth,
                             firstDayOfWeek = startDayOfWeek,
                             selectedDate = LocalDate.now(),
+                            onClickCard = onClickCard,
                             onLongClick = onLongClick,
                             onClick = onClick
                         )
@@ -90,6 +92,7 @@ fun VerticalMonthlyHabitScreen (
                             startOfMonth = timeRange.startOfMonth,
                             firstDayOfWeek = startDayOfWeek,
                             selectedDate = LocalDate.now(),
+                            onClickCard = onClickCard,
                             onLongClick = onLongClick,
                             onClick = onClick
                         )

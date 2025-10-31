@@ -7,7 +7,9 @@ import aeb.proyecto.ui.orientation.Orientation
 import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
+import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,6 +49,8 @@ fun HabitScreen(
         selectedDate = selectedDate
     )
 
+    val context = LocalContext.current
+
     when(orientation){
         Orientation.Portrait -> {
             VerticalHabitScreen(
@@ -69,6 +73,9 @@ fun HabitScreen(
                 },
                 onClickConfigureHabit = viewModel::onClickConfigureHabit,
                 onDismissBottomSheet = viewModel::onDismissBottomSheet,
+                onClickCard = {id ->
+                    Toast.makeText(context, "Click en $id", Toast.LENGTH_SHORT).show()
+                },
                 onLongClick = viewModel::onLongClick,
                 onClick = viewModel::onClick
             )
@@ -94,6 +101,7 @@ fun HabitScreen(
                 },
                 onClickConfigureHabit = viewModel::onClickConfigureHabit,
                 onDismissBottomSheet = viewModel::onDismissBottomSheet,
+                onClickCard = {id -> },
                 onLongClick = viewModel::onLongClick,
                 onClick = viewModel::onClick
             )

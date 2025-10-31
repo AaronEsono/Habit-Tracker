@@ -13,10 +13,6 @@ import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.Hor
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalMonthlyHabitScreen
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalRecurringHabitScreen
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalWeeklyHabitScreen
-import aeb.proyecto.habit.components.vertical.components.bottomSheet.configureHabit.VerticalConfigureHabitBottomSheet
-import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalMonthlyHabitScreen
-import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalRecurringHabitScreen
-import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalWeeklyHabitScreen
 import aeb.proyecto.habit.model.BottomSheetUIState
 import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.habit.model.pager.PagerElement
@@ -46,6 +42,7 @@ fun HorizontalHabitContentScreen(
     onClickConfigureHabit:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit,
     onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
     onClickTimeRange: (LocalDate, Boolean) -> Unit = { _, _ ->},
+    onClickCard: (id:Long) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
 ) {
@@ -83,6 +80,7 @@ fun HorizontalHabitContentScreen(
                             if(selectedTimeRangeUiState is TimeRangeUiState.Daily){
                                 HorizontalDailyHabitScreen(
                                     selectedDate, filteredHabitsUIState.habits,
+                                    onClickCard = onClickCard,
                                     onLongClick = onLongClick,
                                     onClick = onClick
                                 )
@@ -93,6 +91,7 @@ fun HorizontalHabitContentScreen(
                                 HorizontalWeeklyHabitScreen(
                                     selectedTimeRangeUiState,
                                     filteredHabitsUIState.habits,
+                                    onClickCard = onClickCard,
                                     onLongClick = onLongClick,
                                     onClick = onClick
                                 )
@@ -104,6 +103,7 @@ fun HorizontalHabitContentScreen(
                                     timeRange = selectedTimeRangeUiState,
                                     startDayOfWeek = startDayOfWeek,
                                     filteredHabitsUIState.habits,
+                                    onClickCard = onClickCard,
                                     onLongClick = onLongClick,
                                     onClick = onClick
                                 )
@@ -113,6 +113,7 @@ fun HorizontalHabitContentScreen(
                             if(selectedTimeRangeUiState is TimeRangeUiState.Recurring){
                                 HorizontalRecurringHabitScreen(
                                     selectedDate, filteredHabitsUIState.habits,
+                                    onClickCard = onClickCard,
                                     onLongClick = onLongClick,
                                     onClick = onClick
                                 )

@@ -36,6 +36,7 @@ fun VerticalHabitScreen(
     onRestart: (id:Long,date:LocalDate) -> Unit = { _, _ -> },
     onClickConfigureHabit:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit,
     onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
+    onClickCard: (id: Long) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id:Long,date: LocalDate) -> Unit
 ){
@@ -66,6 +67,7 @@ fun VerticalHabitScreen(
                         onClickTimer = onClickTimer,
                         onDismissBottomSheet = onDismissBottomSheet,
                         onClickTimeRange = onClickTimeRange,
+                        onClickCard = onClickCard,
                         onLongClick = onLongClick,
                         onClick = onClick
                     )

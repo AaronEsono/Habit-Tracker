@@ -1,6 +1,5 @@
 package aeb.proyecto.habit.components.horizontal.components.screens.typeHabit
 
-import aeb.proyecto.habit.components.common.habitCards.dailyCard.DailyCard
 import aeb.proyecto.habit.components.common.habitCards.recurringCard.RecurringCard
 import aeb.proyecto.habit.utils.cardHabitPaddingHorizontal
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
@@ -27,6 +26,7 @@ import java.time.LocalDate
 fun HorizontalRecurringHabitScreen(
     selectedDate: LocalDate,
     habits: List<HabitWithDailyHabit>,
+    onClickCard:(id:Long) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit
 ){
@@ -67,6 +67,7 @@ fun HorizontalRecurringHabitScreen(
                         lastElement = index == habits.size - 1
                     ),
                     selectedDate = selectedDate,
+                    onClickCard = onClickCard,
                     onLongClick = onLongClick,
                     onClick = onClick
                 )
