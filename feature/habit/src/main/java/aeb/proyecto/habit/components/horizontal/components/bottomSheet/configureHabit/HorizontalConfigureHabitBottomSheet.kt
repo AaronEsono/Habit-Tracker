@@ -3,6 +3,7 @@ package aeb.proyecto.habit.components.horizontal.components.bottomSheet.configur
 import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.card.CardDayConfigureHabit
 import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.screen.IncompleteDay
 import aeb.proyecto.habit.components.common.bottomSheet.configureHabit.screen.RestartDay
+import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
 import aeb.proyecto.ui.date.utils.getTextToday
@@ -44,7 +45,7 @@ import java.time.LocalDate
 @Composable
 fun HorizontalConfigureHabitBottomSheet(
     habitWithDay: HabitWithDay,
-    onDismiss: () -> Unit = {},
+    onDismiss: (typeBottomSheet: TypeBottomSheet) -> Unit = {},
     onRestart:(id:Long,date: LocalDate) -> Unit,
     onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
     onClick:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit
@@ -61,7 +62,7 @@ fun HorizontalConfigureHabitBottomSheet(
 
     CustomBottomSheet (
         sheetState = sheetState,
-        onDismiss = onDismiss
+        onDismiss = { onDismiss(TypeBottomSheet.ConfigureHabit(enabled = false)) }
     ){
         Column(
             modifier = Modifier
@@ -115,7 +116,7 @@ fun HorizontalConfigureHabitBottomSheet(
                         .clickable {
                             coroutineScope.launch {
                                 sheetState.hide()
-                                onDismiss()
+                                onDismiss(TypeBottomSheet.ConfigureHabit(enabled = false))
                             }
                         }
                 )
@@ -130,7 +131,7 @@ fun HorizontalConfigureHabitBottomSheet(
                         coroutineScope = coroutineScope,
                         sheetState = sheetState,
                         onRestart = onRestart,
-                        onDismiss = onDismiss
+                        onDismiss = {onDismiss(TypeBottomSheet.ConfigureHabit(enabled = false))}
                     )
                 }
                 else -> {
@@ -140,21 +141,21 @@ fun HorizontalConfigureHabitBottomSheet(
                             coroutineScope.launch {
                                 onClickTimer(Triple(id,date,leftTimes))
                                 sheetState.hide()
-                                onDismiss()
+                                onDismiss(TypeBottomSheet.ConfigureHabit(enabled = false))
                             }
                         },
                         onRestart = { id, date ->
                             coroutineScope.launch {
                                 onRestart(id,date)
                                 sheetState.hide()
-                                onDismiss()
+                                onDismiss(TypeBottomSheet.ConfigureHabit(enabled = false))
                             }
                         },
                         onClick = { id, date, goalDone ->
                             coroutineScope.launch {
                                 onClick(id,date,goalDone)
                                 sheetState.hide()
-                                onDismiss()
+                                onDismiss(TypeBottomSheet.ConfigureHabit(enabled = false))
                             }
                         }
                     )

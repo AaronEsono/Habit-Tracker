@@ -8,6 +8,7 @@ import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.components.common.pager.PageSelected
 import aeb.proyecto.habit.components.common.timeRange.TimeRangeHabit
 import aeb.proyecto.habit.components.vertical.components.bottomSheet.configureHabit.VerticalConfigureHabitBottomSheet
+import aeb.proyecto.habit.components.vertical.components.bottomSheet.editHabit.VerticalEditHabitBottomSheet
 import aeb.proyecto.habit.components.vertical.components.bottomSheet.selectDate.VerticalSelectDateBottomSheet
 import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalDailyHabitScreen
 import aeb.proyecto.habit.components.vertical.components.screens.typeHabit.VerticalMonthlyHabitScreen
@@ -36,8 +37,8 @@ fun VerticalHabitContentScreen(
     startDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     selectedDate: LocalDate = LocalDate.now(),
     onClickTab: (PagerElement) -> Unit = {},
-    onBottomSheetSelected: () -> Unit = {},
-    onDismissBottomSheet: () -> Unit = {},
+    onBottomSheetSelectDateSelected: () -> Unit = {},
+    onDismissBottomSheet: (typeBottomSheet: TypeBottomSheet) -> Unit = {},
     onRestart: (id:Long,date:LocalDate) -> Unit = { _, _ -> },
     onClickConfigureHabit:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit,
     onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
@@ -48,7 +49,7 @@ fun VerticalHabitContentScreen(
 ){
 
     BarActionIcon(
-        onBottomSheetSelected = onBottomSheetSelected
+        onBottomSheetSelected = onBottomSheetSelectDateSelected
     )
 
     Column (
@@ -123,28 +124,31 @@ fun VerticalHabitContentScreen(
                 }
             }
         }
-
     }
 
-    if(bottomSheetUIState.isEnabled){
-        when(bottomSheetUIState.typeOfBottomSheet){
-            is TypeBottomSheet.EditHabitDay -> {
-                VerticalConfigureHabitBottomSheet(
-                    habitWithDay = bottomSheetUIState.typeOfBottomSheet.habitWithDay,
-                    onDismiss = onDismissBottomSheet,
-                    onRestart = onRestart,
-                    onClickTimer = onClickTimer,
-                    onClick = onClickConfigureHabit
-                )
-            }
-            TypeBottomSheet.SelectDate -> {
-                VerticalSelectDateBottomSheet(
-                    onDismiss = onDismissBottomSheet,
-                    selectedDate = selectedDate,
-                    onClick = onClickTimeRange
-                )
-            }
-        }
+
+    if(bottomSheetUIState.enabledConfigureHabitState.enabled){
+        VerticalConfigureHabitBottomSheet(
+            habitWithDay = bottomSheetUIState.enabledConfigureHabitState.habitWithDay,
+            onDismiss = onDismissBottomSheet,
+            onRestart = onRestart,
+            onClickTimer = onClickTimer,
+            onClick = onClickConfigureHabit
+        )
+    }
+
+    if(bottomSheetUIState.enabledSelectDateState.enabled){
+        VerticalSelectDateBottomSheet(
+            onDismiss = onDismissBottomSheet,
+            selectedDate = selectedDate,
+            onClick = onClickTimeRange
+        )
+    }
+
+    if(bottomSheetUIState.enabledEditHabitState.enabled){
+        VerticalEditHabitBottomSheet(
+            onDismiss = onDismissBottomSheet,
+        )
     }
 
 }

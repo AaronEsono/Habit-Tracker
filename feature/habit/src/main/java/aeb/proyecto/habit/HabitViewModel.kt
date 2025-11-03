@@ -235,11 +235,10 @@ class HabitViewModel @Inject constructor(
     /**
      * Cambia el bottomSheet seleccionado
      */
-    fun onBottomSheetSelected() {
+    fun onBottomSheetSelectDateSelected() {
         _bottomSheetUIState.update { currentState ->
             currentState.copy(
-                isEnabled = true,
-                typeOfBottomSheet = TypeBottomSheet.SelectDate
+                enabledSelectDateState = TypeBottomSheet.SelectDate(true),
             )
         }
     }
@@ -247,11 +246,29 @@ class HabitViewModel @Inject constructor(
     /**
      * Cierra el bottomSheet seleccionado
      */
-    fun onDismissBottomSheet(){
-        _bottomSheetUIState.update { currentState ->
-            currentState.copy(
-                isEnabled = false,
-            )
+    fun onDismissBottomSheet(typeBottomSheet: TypeBottomSheet){
+        when(typeBottomSheet){
+            is TypeBottomSheet.ConfigureHabit -> {
+                _bottomSheetUIState.update { currentState ->
+                    currentState.copy(
+                        enabledConfigureHabitState = TypeBottomSheet.ConfigureHabit(enabled =false)
+                    )
+                }
+            }
+            is TypeBottomSheet.SelectDate -> {
+                _bottomSheetUIState.update { currentState ->
+                    currentState.copy(
+                        enabledSelectDateState = TypeBottomSheet.SelectDate(false),
+                    )
+                }
+            }
+            is TypeBottomSheet.EditHabit -> {
+                _bottomSheetUIState.update { currentState ->
+                    currentState.copy(
+                        enabledEditHabitState = TypeBottomSheet.EditHabit(enabled = false),
+                    )
+                }
+            }
         }
     }
 
@@ -264,8 +281,15 @@ class HabitViewModel @Inject constructor(
 
         _bottomSheetUIState.update { currentState ->
             currentState.copy(
-                isEnabled = true,
-                typeOfBottomSheet = TypeBottomSheet.EditHabitDay(HabitWithDay(habit,habitDay))
+                enabledConfigureHabitState = TypeBottomSheet.ConfigureHabit(enabled =true, habitWithDay = HabitWithDay(habit,habitDay))
+            )
+        }
+    }
+
+    fun onClickCard(id:Long){
+        _bottomSheetUIState.update { currentState ->
+            currentState.copy(
+                enabledEditHabitState = TypeBottomSheet.EditHabit(enabled = true, idHabit = id)
             )
         }
     }

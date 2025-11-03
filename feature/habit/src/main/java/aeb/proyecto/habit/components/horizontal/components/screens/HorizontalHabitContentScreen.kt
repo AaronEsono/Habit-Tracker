@@ -36,8 +36,8 @@ fun HorizontalHabitContentScreen(
     startDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     selectedDate: LocalDate = LocalDate.now(),
     onClickTab: (PagerElement) -> Unit = {},
-    onBottomSheetSelected: () -> Unit = {},
-    onDismissBottomSheet: () -> Unit = {},
+    onBottomSheetSelectDateSelected: () -> Unit = {},
+    onDismissBottomSheet: (typeBottomSheet: TypeBottomSheet) -> Unit = {},
     onRestart: (id:Long,date:LocalDate) -> Unit = { _, _ -> },
     onClickConfigureHabit:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit,
     onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
@@ -48,7 +48,7 @@ fun HorizontalHabitContentScreen(
 ) {
 
     BarActionIcon(
-        onBottomSheetSelected = onBottomSheetSelected
+        onBottomSheetSelected = onBottomSheetSelectDateSelected
     )
 
     Column (
@@ -123,29 +123,25 @@ fun HorizontalHabitContentScreen(
                 }
             }
         }
-
     }
 
-    if(bottomSheetUIState.isEnabled){
-        when(bottomSheetUIState.typeOfBottomSheet){
-            is TypeBottomSheet.EditHabitDay -> {
-                HorizontalConfigureHabitBottomSheet(
-                    habitWithDay = bottomSheetUIState.typeOfBottomSheet.habitWithDay,
-                    onDismiss = onDismissBottomSheet,
-                    onRestart = onRestart,
-                    onClickTimer = onClickTimer,
-                    onClick = onClickConfigureHabit
-                )
-            }
-            TypeBottomSheet.SelectDate -> {
-                HorizontalSelectDateBottomSheet(
-                    onDismiss = onDismissBottomSheet,
-                    selectedDate = selectedDate,
-                    onClick = onClickTimeRange
-                )
-            }
-        }
+
+    if(bottomSheetUIState.enabledConfigureHabitState.enabled){
+        HorizontalConfigureHabitBottomSheet(
+            habitWithDay = bottomSheetUIState.enabledConfigureHabitState.habitWithDay,
+            onDismiss = onDismissBottomSheet,
+            onRestart = onRestart,
+            onClickTimer = onClickTimer,
+            onClick = onClickConfigureHabit
+        )
     }
 
+    if(bottomSheetUIState.enabledSelectDateState.enabled){
+        HorizontalSelectDateBottomSheet(
+            onDismiss = onDismissBottomSheet,
+            selectedDate = selectedDate,
+            onClick = onClickTimeRange
+        )
+    }
 }
 

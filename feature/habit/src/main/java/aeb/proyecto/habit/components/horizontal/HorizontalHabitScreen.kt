@@ -9,6 +9,7 @@ import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.components.common.screens.NoHabitScreen
 import aeb.proyecto.habit.components.horizontal.components.screens.HorizontalHabitContentScreen
 import aeb.proyecto.habit.model.BottomSheetUIState
+import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.habit.model.pager.PagerElement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,8 +32,8 @@ fun HorizontalHabitScreen(
     navigateToAddHabit: (Long) -> Unit = {},
     onClickTab: (PagerElement) -> Unit = {},
     onClickTimeRange: (LocalDate, Boolean) -> Unit = {_,_ ->},
-    onBottomSheetSelected: () -> Unit = {},
-    onDismissBottomSheet: () -> Unit = {},
+    onBottomSheetSelectDateSelected: () -> Unit = {},
+    onDismissBottomSheet: (typeBottomSheet: TypeBottomSheet) -> Unit = {},
     onRestart: (id:Long,date:LocalDate) -> Unit = { _, _ -> },
     onClickConfigureHabit:(id:Long, date: LocalDate, goalDone: BigDecimal) -> Unit,
     onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
@@ -61,7 +62,7 @@ fun HorizontalHabitScreen(
                         startDayOfWeek = startDayOfWeek,
                         selectedDate = dateSelected,
                         onClickTab = onClickTab,
-                        onBottomSheetSelected = onBottomSheetSelected,
+                        onBottomSheetSelectDateSelected = onBottomSheetSelectDateSelected,
                         onDismissBottomSheet = onDismissBottomSheet,
                         onRestart = onRestart,
                         onClickConfigureHabit = onClickConfigureHabit,

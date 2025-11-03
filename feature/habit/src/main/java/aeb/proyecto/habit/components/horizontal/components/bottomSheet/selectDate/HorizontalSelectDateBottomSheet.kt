@@ -3,6 +3,7 @@ package aeb.proyecto.habit.components.horizontal.components.bottomSheet.selectDa
 import aeb.proyecto.habit.components.common.bottomSheet.selectDate.CalendarDayButton
 import aeb.proyecto.habit.components.common.bottomSheet.selectDate.RowButtonSelectDate
 import aeb.proyecto.habit.components.common.bottomSheet.selectDate.SelectDateViewModel
+import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
 import aeb.proyecto.ui.calendar.content.CalendarContent
 import aeb.proyecto.ui.calendar.content.CalendarDays
@@ -38,7 +39,7 @@ import java.time.LocalDate
 fun HorizontalSelectDateBottomSheet(
     viewModel: SelectDateViewModel = hiltViewModel(),
     selectedDate: LocalDate,
-    onDismiss: () -> Unit = {},
+    onDismiss: (typeBottomSheet: TypeBottomSheet) -> Unit = {},
     onClick: (LocalDate, Boolean) -> Unit = {_,_ ->}
 ){
 
@@ -53,7 +54,7 @@ fun HorizontalSelectDateBottomSheet(
     }
 
     CustomBottomSheet(
-        onDismiss = onDismiss,
+        onDismiss = { onDismiss(TypeBottomSheet.SelectDate(false))},
         sheetState = sheetState
     ) {
         Column (
@@ -91,7 +92,7 @@ fun HorizontalSelectDateBottomSheet(
                             onClick(date,true)
                             scope.launch {
                                 sheetState.hide()
-                                onDismiss()
+                                onDismiss(TypeBottomSheet.SelectDate(false))
                             }
                         }
                     )
@@ -102,7 +103,7 @@ fun HorizontalSelectDateBottomSheet(
                 modifier = Modifier.padding(horizontal = spacing16),
                 scope = scope,
                 sheetState = sheetState,
-                onDismiss = onDismiss,
+                onDismiss = { onDismiss(TypeBottomSheet.SelectDate(false))},
                 onClick = onClick
             )
         }

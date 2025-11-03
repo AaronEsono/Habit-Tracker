@@ -64,7 +64,7 @@ fun HabitScreen(
                 navigateToAddHabit = navigateToAddHabit,
                 onClickTab = viewModel::onPagerTypeSelected,
                 onClickTimeRange = viewModel::onClickTimeRange,
-                onBottomSheetSelected = viewModel::onBottomSheetSelected,
+                onBottomSheetSelectDateSelected = viewModel::onBottomSheetSelectDateSelected,
                 onRestart = viewModel::onRestart,
                 onClickTimer = { data ->
                     viewModel.onClickTimerHabit(data){
@@ -73,9 +73,7 @@ fun HabitScreen(
                 },
                 onClickConfigureHabit = viewModel::onClickConfigureHabit,
                 onDismissBottomSheet = viewModel::onDismissBottomSheet,
-                onClickCard = {id ->
-                    Toast.makeText(context, "Click en $id", Toast.LENGTH_SHORT).show()
-                },
+                onClickCard = viewModel::onClickCard,
                 onLongClick = viewModel::onLongClick,
                 onClick = viewModel::onClick
             )
@@ -92,7 +90,7 @@ fun HabitScreen(
                 navigateToAddHabit = navigateToAddHabit,
                 onClickTab = viewModel::onPagerTypeSelected,
                 onClickTimeRange = viewModel::onClickTimeRange,
-                onBottomSheetSelected = viewModel::onBottomSheetSelected,
+                onBottomSheetSelectDateSelected = viewModel::onBottomSheetSelectDateSelected,
                 onRestart = viewModel::onRestart,
                 onClickTimer = { data ->
                     viewModel.onClickTimerHabit(data){
@@ -101,7 +99,7 @@ fun HabitScreen(
                 },
                 onClickConfigureHabit = viewModel::onClickConfigureHabit,
                 onDismissBottomSheet = viewModel::onDismissBottomSheet,
-                onClickCard = {id -> },
+                onClickCard = viewModel::onClickCard,
                 onLongClick = viewModel::onLongClick,
                 onClick = viewModel::onClick
             )
