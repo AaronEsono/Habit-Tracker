@@ -147,6 +147,7 @@ fun VerticalHabitContentScreen(
 
     if(bottomSheetUIState.enabledEditHabitState.enabled){
         VerticalEditHabitBottomSheet(
+            idHabit = bottomSheetUIState.enabledEditHabitState.idHabit,
             onDismiss = onDismissBottomSheet,
         )
     }
