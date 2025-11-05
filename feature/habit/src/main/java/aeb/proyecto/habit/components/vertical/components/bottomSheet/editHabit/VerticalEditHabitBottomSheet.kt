@@ -10,6 +10,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -18,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -50,7 +52,7 @@ fun VerticalEditHabitBottomSheet(
                 Column (
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(vertical = spacing8)
+                    modifier = Modifier.padding(vertical = spacing8).height(200.dp)
                 ){
                     HabitLoading()
                 }
@@ -59,7 +61,10 @@ fun VerticalEditHabitBottomSheet(
                 Column {
                     when(bottomSheetState.habit.typeHabit){
                         TypeHabit.Daily -> {
-                            DailyHabitCard(bottomSheetState.habit) { }
+                            DailyHabitCard(
+                                habit = bottomSheetState.habit,
+                                onDismissBottomSheet = {  }
+                            )
                         }
                         is TypeHabit.Monthly -> TODO()
                         is TypeHabit.Recurring -> TODO()
