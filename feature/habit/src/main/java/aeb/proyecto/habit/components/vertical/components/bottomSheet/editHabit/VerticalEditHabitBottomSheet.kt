@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +64,12 @@ fun VerticalEditHabitBottomSheet(
                         TypeHabit.Daily -> {
                             DailyHabitCard(
                                 habit = bottomSheetState.habit,
-                                onDismissBottomSheet = {  }
+                                onDismissBottomSheet = {
+                                    coroutineScope.launch {
+                                        sheetState.hide()
+                                        onDismiss(TypeBottomSheet.EditHabit())
+                                    }
+                                }
                             )
                         }
                         is TypeHabit.Monthly -> TODO()

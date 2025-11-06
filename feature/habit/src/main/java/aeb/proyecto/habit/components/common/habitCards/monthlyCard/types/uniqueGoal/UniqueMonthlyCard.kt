@@ -3,6 +3,8 @@ package aeb.proyecto.habit.components.common.habitCards.monthlyCard.types.unique
 import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.getDates
 import aeb.proyecto.habit.components.common.habitCards.monthlyCard.timesCompletedInAEntireMonth
+import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
+import aeb.proyecto.habit.components.common.habitCards.utils.getUnitTitle
 import aeb.proyecto.habit.components.common.habitCards.weeklyCard.calculatePercentage
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
@@ -187,12 +189,9 @@ fun UniqueMonthlyCard(
                 ) {
                     LabelMediumText(
                         stringResource(
-                            R.string.habit_month_goal_title_unique,
-                            habit.habit.goal.toString(),
-                            if(habit.habit.goal.toInt() <= 1)
-                                stringResource(habit.habit.unit.title)
-                            else
-                                stringResource(habit.habit.unit.titlePlural)
+                            R.string.habit_week_goal_subtitle,
+                            getTextTotal(habit.habit.goal, habit.habit.unit),
+                            stringResource(getUnitTitle(habit.habit.unit, habit.habit.goal)),
                         ),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis

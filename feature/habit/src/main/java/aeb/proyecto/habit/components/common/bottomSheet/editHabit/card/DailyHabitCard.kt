@@ -1,16 +1,18 @@
 package aeb.proyecto.habit.components.common.bottomSheet.editHabit.card
 
 import aeb.proyecto.habit.R
+import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
+import aeb.proyecto.habit.components.common.habitCards.utils.getUnitTitle
+import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
+import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
-import aeb.proyecto.ui.dimmens.Dimmens.spacing6
+import aeb.proyecto.ui.dimmens.Dimmens.spacing5
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
-import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleMediumText
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,13 +36,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DailyHabitCard(
     habit: Habit,
-    onDismissBottomSheet: () -> Unit,
+    onDismissBottomSheet: (typeBottomSheet: TypeBottomSheet) -> Unit,
 ){
 
     Row (
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = spacing12, end = spacing12, top = spacing4),
+            .padding(start = spacing12, end = spacing12, top = spacing2),
         verticalAlignment = Alignment.CenterVertically,
     ){
 
@@ -53,11 +55,10 @@ fun DailyHabitCard(
             tint = Color(habit.color)
         )
 
-        Spacer(modifier = Modifier.padding(horizontal = spacing6))
+        Spacer(modifier = Modifier.padding(horizontal = spacing5))
 
         Column (
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalArrangement = Arrangement.Center
         ){
             TitleMediumText(
                 text = habit.name,
@@ -65,32 +66,19 @@ fun DailyHabitCard(
                 overflow = TextOverflow.Ellipsis
             )
 
-            habit.description?.let { text ->
-                if(text.isNotEmpty()){
-                    Spacer(modifier = Modifier.padding(vertical = spacing1))
-
-                    LabelMediumText(
-                        text = text,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            }
+            LabelMediumText(
+                stringResource(
+                    R.string.habit_week_goal_subtitle,
+                    getTextTotal(habit.goal, habit.unit),
+                    stringResource(getUnitTitle(habit.unit, habit.goal)),
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = spacing1)
+            )
         }
 
         Spacer(modifier = Modifier.weight(1f))
-
-        LabelLargeText(
-            text = stringResource(
-                R.string.habit_day_bt,
-                habit.goal.toString(),
-                if (habit.goal.toInt() <= 1) stringResource(habit.unit.title) else stringResource(habit.unit.titlePlural)
-            ),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-
-        Spacer(modifier = Modifier.padding(horizontal = spacing6))
 
         Icon(
             Icons.Filled.Clear,
@@ -101,7 +89,7 @@ fun DailyHabitCard(
                     interactionSource = null,
                     indication = null
                 ) {
-                    onDismissBottomSheet()
+                    onDismissBottomSheet(TypeBottomSheet.EditHabit())
                 },
             tint = MaterialTheme.colorScheme.onSurface
         )

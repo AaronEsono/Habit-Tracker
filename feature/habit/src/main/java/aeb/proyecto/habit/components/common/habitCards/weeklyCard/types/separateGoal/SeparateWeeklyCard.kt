@@ -2,6 +2,8 @@ package aeb.proyecto.habit.components.common.habitCards.weeklyCard.types.separat
 
 import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.common.habitCards.utils.getSelected
+import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
+import aeb.proyecto.habit.components.common.habitCards.utils.getUnitTitle
 import aeb.proyecto.habit.components.common.habitCards.weeklyCard.daysCompletedOnAWeek
 import aeb.proyecto.habit.components.common.habitCards.weeklyCard.getHabitDayFromADate
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
@@ -191,11 +193,8 @@ fun SeparateWeeklyCard(
                     LabelMediumText(
                         stringResource(
                             R.string.habit_week_goal_subtitle,
-                            habit.habit.goal.toString(),
-                            if(habit.habit.goal.toInt() <= 1)
-                                stringResource(habit.habit.unit.title)
-                            else
-                                stringResource(habit.habit.unit.titlePlural)
+                            getTextTotal(habit.habit.goal, habit.habit.unit),
+                            stringResource(getUnitTitle(habit.habit.unit, habit.habit.goal)),
                         ),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
