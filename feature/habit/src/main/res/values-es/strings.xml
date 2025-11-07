@@ -12,6 +12,8 @@
     <string name="pager_element_recurring">Cíclicos</string>
 
     <string name="habit_day_bt">%1$s %2$s al día</string>
+    <string name="habit_week_unique_bt">%1$s %2$s a la semana</string>
+    <string name="habit_week_repeat_bt">%1$s %2$s, %3$s %4$s a la semana</string>
 
     <string name="habit_day_weekly">%1$s, %2$s %3$s  -  %4$s, %5$s %6$s</string>
     <string name="habit_day_monthly">%1$s %2$s</string>

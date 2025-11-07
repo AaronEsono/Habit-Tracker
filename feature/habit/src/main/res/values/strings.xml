@@ -12,6 +12,8 @@
     <string name="pager_element_recurring">Recurring</string>
 
     <string name="habit_day_bt">%1$s %2$s per day</string>
+    <string name="habit_week_unique_bt">%1$s %2$s per week</string>
+    <string name="habit_week_repeat_bt">%1$s %2$s, %3$s %4$s per week</string>
 
     <string name="habit_day_weekly">%1$s, %3$s %2$s  -  %4$s, %6$s %5$s</string>
     <string name="habit_day_monthly">%1$s %2$s</string>

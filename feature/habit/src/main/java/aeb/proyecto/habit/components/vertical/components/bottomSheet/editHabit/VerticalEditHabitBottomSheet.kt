@@ -1,13 +1,13 @@
 package aeb.proyecto.habit.components.vertical.components.bottomSheet.editHabit
 
-import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.DailyHabitCard
+import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.daily.DailyHabitCard
+import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.weekly.WeeklyHabitCard
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.state.EditHabitState
 import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
-import aeb.proyecto.ui.text.LabelLargeText
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -41,8 +41,6 @@ fun VerticalEditHabitBottomSheet(
 
     val bottomSheetState = verticalEditHabitVM.bottomSheetState.collectAsStateWithLifecycle().value
 
-    //TODO NO VA AL EL SUCCESS, ARREGLAR
-
     CustomBottomSheet (
         sheetState = sheetState,
         onDismiss = { onDismiss(TypeBottomSheet.EditHabit()) },
@@ -62,19 +60,33 @@ fun VerticalEditHabitBottomSheet(
                 Column {
                     when(bottomSheetState.habit.typeHabit){
                         TypeHabit.Daily -> {
-                            DailyHabitCard(
-                                habit = bottomSheetState.habit,
-                                onDismissBottomSheet = {
-                                    coroutineScope.launch {
-                                        sheetState.hide()
-                                        onDismiss(TypeBottomSheet.EditHabit())
+                            if(bottomSheetState.habit.typeHabit is TypeHabit.Daily){
+                                DailyHabitCard(
+                                    habit = bottomSheetState.habit,
+                                    onDismissBottomSheet = {
+                                        coroutineScope.launch {
+                                            sheetState.hide()
+                                            onDismiss(TypeBottomSheet.EditHabit())
+                                        }
                                     }
-                                }
-                            )
+                                )
+                            }
                         }
                         is TypeHabit.Monthly -> TODO()
                         is TypeHabit.Recurring -> TODO()
-                        is TypeHabit.Weekly -> TODO()
+                        is TypeHabit.Weekly -> {
+                            if (bottomSheetState.habit.typeHabit is TypeHabit.Weekly){
+                                WeeklyHabitCard(
+                                    habit = bottomSheetState.habit,
+                                    onDismissBottomSheet = {
+                                        coroutineScope.launch {
+                                            sheetState.hide()
+                                            onDismiss(TypeBottomSheet.EditHabit())
+                                        }
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }

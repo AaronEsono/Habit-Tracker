@@ -1,4 +1,4 @@
-package aeb.proyecto.habit.components.common.bottomSheet.editHabit.card
+package aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.daily
 
 import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
@@ -8,7 +8,6 @@ import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
-import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing5
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelMediumText
@@ -68,7 +67,7 @@ fun DailyHabitCard(
 
             LabelMediumText(
                 stringResource(
-                    R.string.habit_week_goal_subtitle,
+                    R.string.habit_day_bt,
                     getTextTotal(habit.goal, habit.unit),
                     stringResource(getUnitTitle(habit.unit, habit.goal)),
                 ),
