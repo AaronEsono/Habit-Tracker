@@ -1,4 +1,4 @@
-package aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.weekly
+package aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.recurring
 
 import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
@@ -35,13 +35,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun WeeklyHabitCard(
+fun RecurringHabitCard(
     habit: Habit,
     onDismissBottomSheet: (typeBottomSheet: TypeBottomSheet) -> Unit,
 ){
 
     val typeHabit = remember(habit) {
-        habit.typeHabit as TypeHabit.Weekly
+        habit.typeHabit as TypeHabit.Recurring
     }
 
     Row (
@@ -72,24 +72,19 @@ fun WeeklyHabitCard(
             )
 
             LabelMediumText(
-                if(typeHabit.weeklyGoal){
-                    stringResource(
-                        R.string.habit_week_unique_bt,
-                        getTextTotal(habit.goal, habit.unit),
-                        stringResource(getUnitTitle(habit.unit, habit.goal)))
-                }else{
-                    //Cambiar este
-                    stringResource(
-                        R.string.habit_week_repeat_bt,
+                if(typeHabit.interval == 1){
+                    stringResource(R.string.habit_recurring_singular_bt,
                         getTextTotal(habit.goal, habit.unit),
                         stringResource(getUnitTitle(habit.unit, habit.goal)),
-                        typeHabit.numberDays.toString(),
-                        if (typeHabit.numberDays == 1) stringResource(R.string.habit_day) else stringResource(
-                            R.string.habit_days
-                        )
                     )
-                }
-                ,
+                }else {
+                    stringResource(
+                        R.string.habit_recurring_plural_bt,
+                        getTextTotal(habit.goal, habit.unit),
+                        stringResource(getUnitTitle(habit.unit, habit.goal)),
+                        typeHabit.interval.toString()
+                    )
+                },
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(top = spacing1)

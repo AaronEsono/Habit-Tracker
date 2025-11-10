@@ -6,6 +6,9 @@
 
     <string name="habit_no_habit">You haven’t added any habits yet. Tap the button in the bottom right to create one.</string>
 
+    <string name="habit_day">day</string>
+    <string name="habit_days">days</string>
+
     <string name="pager_element_daily">Dailies</string>
     <string name="pager_element_weekly">Weeklies</string>
     <string name="pager_element_monthly">Monthlies</string>
@@ -14,6 +17,10 @@
     <string name="habit_day_bt">%1$s %2$s per day</string>
     <string name="habit_week_unique_bt">%1$s %2$s per week</string>
     <string name="habit_week_repeat_bt">%1$s %2$s, %3$s %4$s per week</string>
+    <string name="habit_month_unique_bt">%1$s %2$s per month</string>
+    <string name="habit_month_repeat_bt">%1$s %2$s, %3$s %4$s per month</string>
+    <string name="habit_recurring_plural_bt">%1$s %2$s, every %3$s days</string>
+    <string name="habit_recurring_singular_bt">%1$s %2$s every day</string>
 
     <string name="habit_day_weekly">%1$s, %3$s %2$s  -  %4$s, %6$s %5$s</string>
     <string name="habit_day_monthly">%1$s %2$s</string>

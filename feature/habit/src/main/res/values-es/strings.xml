@@ -6,6 +6,9 @@
 
     <string name="habit_no_habit">Todavía no tienes hábitos registrados. Para crear uno, pulsa sobre el botón de abajo a la derecha.</string>
 
+    <string name="habit_day">día</string>
+    <string name="habit_days">días</string>
+
     <string name="pager_element_daily">Diarios</string>
     <string name="pager_element_weekly">Semanales</string>
     <string name="pager_element_monthly">Mensuales</string>
@@ -14,6 +17,10 @@
     <string name="habit_day_bt">%1$s %2$s al día</string>
     <string name="habit_week_unique_bt">%1$s %2$s a la semana</string>
     <string name="habit_week_repeat_bt">%1$s %2$s, %3$s %4$s a la semana</string>
+    <string name="habit_month_unique_bt">%1$s %2$s al mes</string>
+    <string name="habit_month_repeat_bt">%1$s %2$s, %3$s %4$s al mes</string>
+    <string name="habit_recurring_plural_bt">%1$s %2$s, cada %3$s días</string>
+    <string name="habit_recurring_singular_bt">%1$s %2$s cada día</string>
 
     <string name="habit_day_weekly">%1$s, %2$s %3$s  -  %4$s, %5$s %6$s</string>
     <string name="habit_day_monthly">%1$s %2$s</string>

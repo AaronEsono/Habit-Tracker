@@ -1,4 +1,4 @@
-package aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.weekly
+package aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.monthly
 
 import aeb.proyecto.habit.R
 import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
@@ -35,13 +35,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun WeeklyHabitCard(
+fun MonthlyHabitCard(
     habit: Habit,
     onDismissBottomSheet: (typeBottomSheet: TypeBottomSheet) -> Unit,
 ){
 
     val typeHabit = remember(habit) {
-        habit.typeHabit as TypeHabit.Weekly
+        habit.typeHabit as TypeHabit.Monthly
     }
 
     Row (
@@ -72,19 +72,19 @@ fun WeeklyHabitCard(
             )
 
             LabelMediumText(
-                if(typeHabit.weeklyGoal){
+                if(typeHabit.monthlyGoal){
                     stringResource(
-                        R.string.habit_week_unique_bt,
+                        R.string.habit_month_unique_bt,
                         getTextTotal(habit.goal, habit.unit),
                         stringResource(getUnitTitle(habit.unit, habit.goal)))
                 }else{
                     //Cambiar este
                     stringResource(
-                        R.string.habit_week_repeat_bt,
+                        R.string.habit_month_repeat_bt,
                         getTextTotal(habit.goal, habit.unit),
                         stringResource(getUnitTitle(habit.unit, habit.goal)),
-                        typeHabit.numberDays.toString(),
-                        if (typeHabit.numberDays == 1) stringResource(R.string.habit_day) else stringResource(
+                        typeHabit.numberTimes.toString(),
+                        if (typeHabit.numberTimes == 1) stringResource(R.string.habit_day) else stringResource(
                             R.string.habit_days
                         )
                     )

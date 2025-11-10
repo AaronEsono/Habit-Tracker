@@ -1,6 +1,8 @@
 package aeb.proyecto.habit.components.vertical.components.bottomSheet.editHabit
 
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.daily.DailyHabitCard
+import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.monthly.MonthlyHabitCard
+import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.recurring.RecurringHabitCard
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.weekly.WeeklyHabitCard
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.state.EditHabitState
 import aeb.proyecto.habit.components.common.loading.HabitLoading
@@ -72,8 +74,32 @@ fun VerticalEditHabitBottomSheet(
                                 )
                             }
                         }
-                        is TypeHabit.Monthly -> TODO()
-                        is TypeHabit.Recurring -> TODO()
+                        is TypeHabit.Monthly -> {
+                            if(bottomSheetState.habit.typeHabit is TypeHabit.Monthly){
+                                MonthlyHabitCard(
+                                    habit = bottomSheetState.habit,
+                                    onDismissBottomSheet = {
+                                        coroutineScope.launch {
+                                            sheetState.hide()
+                                            onDismiss(TypeBottomSheet.EditHabit())
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                        is TypeHabit.Recurring -> {
+                            if(bottomSheetState.habit.typeHabit is TypeHabit.Recurring){
+                                RecurringHabitCard(
+                                    habit = bottomSheetState.habit,
+                                    onDismissBottomSheet = {
+                                        coroutineScope.launch {
+                                            sheetState.hide()
+                                            onDismiss(TypeBottomSheet.EditHabit())
+                                        }
+                                    }
+                                )
+                            }
+                        }
                         is TypeHabit.Weekly -> {
                             if (bottomSheetState.habit.typeHabit is TypeHabit.Weekly){
                                 WeeklyHabitCard(
@@ -91,5 +117,8 @@ fun VerticalEditHabitBottomSheet(
                 }
             }
         }
+
+        //Se sigue aqui
+
     }
 }
