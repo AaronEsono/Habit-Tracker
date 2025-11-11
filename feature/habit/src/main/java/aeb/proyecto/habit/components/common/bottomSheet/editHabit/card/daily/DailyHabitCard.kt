@@ -41,7 +41,7 @@ fun DailyHabitCard(
     Row (
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = spacing12, end = spacing12, top = spacing2),
+            .padding(top = spacing2),
         verticalAlignment = Alignment.CenterVertically,
     ){
 
@@ -49,7 +49,6 @@ fun DailyHabitCard(
             habit.icon,
             contentDescription = "icon habit bottomSheet",
             modifier = Modifier
-                .padding(start = spacing8)
                 .size(35.dp),
             tint = Color(habit.color)
         )

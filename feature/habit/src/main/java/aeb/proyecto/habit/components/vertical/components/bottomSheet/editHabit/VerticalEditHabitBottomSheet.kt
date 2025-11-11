@@ -1,5 +1,6 @@
 package aeb.proyecto.habit.components.vertical.components.bottomSheet.editHabit
 
+import aeb.proyecto.habit.components.common.bottomSheet.editHabit.buttons.ButtonsRow
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.daily.DailyHabitCard
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.monthly.MonthlyHabitCard
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.recurring.RecurringHabitCard
@@ -9,9 +10,15 @@ import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
+import aeb.proyecto.ui.dimmens.Dimmens.spacing12
+import aeb.proyecto.ui.dimmens.Dimmens.spacing16
+import aeb.proyecto.ui.dimmens.Dimmens.spacing2
+import aeb.proyecto.ui.dimmens.Dimmens.spacing4
+import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,6 +54,7 @@ fun VerticalEditHabitBottomSheet(
         sheetState = sheetState,
         onDismiss = { onDismiss(TypeBottomSheet.EditHabit()) },
     ){
+        // Cabecera
         when(bottomSheetState){
             is EditHabitState.Error -> Unit
             EditHabitState.Loading -> {
@@ -59,7 +67,9 @@ fun VerticalEditHabitBottomSheet(
                 }
             }
             is EditHabitState.Success -> {
-                Column {
+                Column (
+                    modifier = Modifier.padding(horizontal = spacing16)
+                ){
                     when(bottomSheetState.habit.typeHabit){
                         TypeHabit.Daily -> {
                             if(bottomSheetState.habit.typeHabit is TypeHabit.Daily){
@@ -114,11 +124,14 @@ fun VerticalEditHabitBottomSheet(
                             }
                         }
                     }
+
+                    Spacer(modifier = Modifier.padding(vertical = spacing4))
+
+                    //Botones
+                    ButtonsRow()
+
                 }
             }
         }
-
-        //Se sigue aqui
-
     }
 }
