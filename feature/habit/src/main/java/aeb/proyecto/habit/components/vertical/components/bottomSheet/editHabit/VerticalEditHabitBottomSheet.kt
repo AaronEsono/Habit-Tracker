@@ -38,7 +38,8 @@ import kotlinx.coroutines.launch
 fun VerticalEditHabitBottomSheet(
     idHabit:Long,
     verticalEditHabitVM: VerticalEditHabitVM = hiltViewModel(),
-    onDismiss: (typeBottomSheet: TypeBottomSheet) -> Unit = {}
+    onDismiss: (typeBottomSheet: TypeBottomSheet) -> Unit = {},
+    onClickEdit: (id:Long) -> Unit = {}
 ){
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -128,7 +129,15 @@ fun VerticalEditHabitBottomSheet(
                     Spacer(modifier = Modifier.padding(vertical = spacing4))
 
                     //Botones
-                    ButtonsRow()
+                    ButtonsRow(
+                        onClickEdit = {
+                            coroutineScope.launch {
+                                onClickEdit(bottomSheetState.habit.id)
+                                sheetState.hide()
+                                onDismiss(TypeBottomSheet.EditHabit())
+                            }
+                        }
+                    )
 
                 }
             }

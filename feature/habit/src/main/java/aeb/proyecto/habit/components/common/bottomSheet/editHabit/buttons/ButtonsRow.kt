@@ -5,6 +5,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +29,9 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun ButtonsRow() {
+fun ButtonsRow(
+    onClickEdit: () -> Unit
+) {
 
     Row(
         modifier = Modifier.fillMaxWidth()
@@ -41,6 +44,12 @@ fun ButtonsRow() {
                 .clip(RoundedCornerShape(spacing8))
                 .background(MaterialTheme.colorScheme.background)
                 .size(35.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = null
+                ){
+                    onClickEdit()
+                }
         ) {
             Icon(
                 Icons.Filled.Edit,

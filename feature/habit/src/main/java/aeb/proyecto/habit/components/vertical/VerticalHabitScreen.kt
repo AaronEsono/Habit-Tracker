@@ -39,7 +39,8 @@ fun VerticalHabitScreen(
     onClickTimer: (Triple<Long,String, BigDecimal>) -> Unit,
     onClickCard: (id: Long) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
-    onClick: (id:Long,date: LocalDate) -> Unit
+    onClick: (id:Long,date: LocalDate) -> Unit,
+    onClickEdit: (id:Long) -> Unit,
 ){
 
     Box(modifier = Modifier.fillMaxSize()){
@@ -70,7 +71,8 @@ fun VerticalHabitScreen(
                         onClickTimeRange = onClickTimeRange,
                         onClickCard = onClickCard,
                         onLongClick = onLongClick,
-                        onClick = onClick
+                        onClick = onClick,
+                        onClickEdit = onClickEdit,
                     )
                 }
 

@@ -45,7 +45,8 @@ fun VerticalHabitContentScreen(
     onClickTimeRange: (LocalDate, Boolean) -> Unit = {_,_ ->},
     onClickCard: (id: Long) -> Unit,
     onLongClick: (id:Long,date:LocalDate) -> Unit,
-    onClick: (id: Long, date: LocalDate) -> Unit
+    onClick: (id: Long, date: LocalDate) -> Unit,
+    onClickEdit: (id: Long) -> Unit,
 ){
 
     BarActionIcon(
@@ -149,6 +150,7 @@ fun VerticalHabitContentScreen(
         VerticalEditHabitBottomSheet(
             idHabit = bottomSheetUIState.enabledEditHabitState.idHabit,
             onDismiss = onDismissBottomSheet,
+            onClickEdit = onClickEdit
         )
     }
 

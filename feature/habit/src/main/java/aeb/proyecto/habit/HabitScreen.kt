@@ -9,6 +9,7 @@ import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
@@ -75,7 +76,10 @@ fun HabitScreen(
                 onDismissBottomSheet = viewModel::onDismissBottomSheet,
                 onClickCard = viewModel::onClickCard,
                 onLongClick = viewModel::onLongClick,
-                onClick = viewModel::onClick
+                onClick = viewModel::onClick,
+                onClickEdit = { id ->
+                    navigateToAddHabit(id)
+                }
             )
         }
         Orientation.Landscape -> {
