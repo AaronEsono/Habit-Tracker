@@ -39,7 +39,8 @@ fun VerticalEditHabitBottomSheet(
     idHabit:Long,
     verticalEditHabitVM: VerticalEditHabitVM = hiltViewModel(),
     onDismiss: (typeBottomSheet: TypeBottomSheet) -> Unit = {},
-    onClickEdit: (id:Long) -> Unit = {}
+    onClickEdit: (id:Long) -> Unit = {},
+    onClickDelete: (id:Long, color: Int) -> Unit = {_,_ ->},
 ){
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -135,6 +136,11 @@ fun VerticalEditHabitBottomSheet(
                                 onClickEdit(bottomSheetState.habit.id)
                                 sheetState.hide()
                                 onDismiss(TypeBottomSheet.EditHabit())
+                            }
+                        },
+                        onClickDelete = {
+                            coroutineScope.launch {
+                                onClickDelete(bottomSheetState.habit.id, bottomSheetState.habit.color)
                             }
                         }
                     )

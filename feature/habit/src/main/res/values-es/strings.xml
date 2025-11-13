@@ -40,6 +40,9 @@
     <string name="habit_cancel">Cancelar</string>
     <string name="habit_today_title">Ir a hoy</string>
 
+    <string name="bt_delete_title">Borrar</string>
+    <string name="bt_delete_subtitle">¿Seguro que quieres borrar el hábito? Perderás todo el progreso.</string>
+
     <string name="habit_yesterday">Ayer</string>
     <string name="habit_today">Hoy</string>
     <string name="habit_tomorrow">Mañana</string>

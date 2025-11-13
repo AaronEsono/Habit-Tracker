@@ -269,6 +269,13 @@ class HabitViewModel @Inject constructor(
                     )
                 }
             }
+            is TypeBottomSheet.DeleteHabit -> {
+                _bottomSheetUIState.update { currentState ->
+                    currentState.copy(
+                        enabledDeleteHabitState = TypeBottomSheet.DeleteHabit(enabled = false),
+                    )
+                }
+            }
         }
     }
 
@@ -352,6 +359,14 @@ class HabitViewModel @Inject constructor(
      */
     fun onRestart(id:Long,date: LocalDate) = viewModelScope.launch (Dispatchers.IO){
         getDailyHabitUseCase.deleteHabitDay(id,date)
+    }
+
+    fun onClickDelete(id:Long, color:Int) {
+        _bottomSheetUIState.update { currentState ->
+            currentState.copy(
+                enabledDeleteHabitState = TypeBottomSheet.DeleteHabit(enabled = true, id = id, color = color)
+            )
+        }
     }
 
     /**

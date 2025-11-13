@@ -3,6 +3,7 @@ package aeb.proyecto.habit.components.vertical.components.screens
 import aeb.proyecto.habit.CurrentPagerSelection
 import aeb.proyecto.habit.FilteredHabitsUiState
 import aeb.proyecto.habit.TimeRangeUiState
+import aeb.proyecto.habit.components.common.bottomSheet.deleteHabit.DeleteHabitBottomSheet
 import aeb.proyecto.habit.components.common.button.BarActionIcon
 import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.components.common.pager.PageSelected
@@ -47,6 +48,7 @@ fun VerticalHabitContentScreen(
     onLongClick: (id:Long,date:LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit,
     onClickEdit: (id: Long) -> Unit,
+    onClickDelete: (id:Long, color: Int) -> Unit = {_,_ ->},
 ){
 
     BarActionIcon(
@@ -150,7 +152,21 @@ fun VerticalHabitContentScreen(
         VerticalEditHabitBottomSheet(
             idHabit = bottomSheetUIState.enabledEditHabitState.idHabit,
             onDismiss = onDismissBottomSheet,
-            onClickEdit = onClickEdit
+            onClickEdit = onClickEdit,
+            onClickDelete = onClickDelete
+        )
+    }
+
+    if(bottomSheetUIState.enabledDeleteHabitState.enabled){
+        DeleteHabitBottomSheet(
+            colorButton = bottomSheetUIState.enabledDeleteHabitState.color,
+            onDismiss = { onDismissBottomSheet(TypeBottomSheet.DeleteHabit()) },
+            onAcceptDelete = {
+                onDismissBottomSheet(TypeBottomSheet.EditHabit())
+                onDismissBottomSheet(TypeBottomSheet.DeleteHabit())
+
+                // Faltaria borrar el habito de room
+            }
         )
     }
 

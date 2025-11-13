@@ -30,7 +30,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ButtonsRow(
-    onClickEdit: () -> Unit
+    onClickEdit: () -> Unit,
+    onClickDelete: () -> Unit,
 ) {
 
     Row(
@@ -70,6 +71,12 @@ fun ButtonsRow(
                 .clip(RoundedCornerShape(spacing8))
                 .background(MaterialTheme.colorScheme.background)
                 .size(35.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = null
+                ){
+                    onClickDelete()
+                }
         ) {
             Icon(
                 Icons.Filled.Delete,
