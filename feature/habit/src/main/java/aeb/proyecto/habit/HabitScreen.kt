@@ -80,7 +80,8 @@ fun HabitScreen(
                 onClickEdit = { id ->
                     navigateToAddHabit(id)
                 },
-                onClickDelete = viewModel::onClickDelete
+                onClickDelete = viewModel::onClickDelete,
+                onAcceptDeleteHabit = viewModel::onAcceptDeleteHabit,
             )
         }
         Orientation.Landscape -> {

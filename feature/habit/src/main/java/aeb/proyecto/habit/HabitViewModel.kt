@@ -361,6 +361,10 @@ class HabitViewModel @Inject constructor(
         getDailyHabitUseCase.deleteHabitDay(id,date)
     }
 
+    fun onAcceptDeleteHabit(id:Long) = viewModelScope.launch (Dispatchers.IO){
+        getDailyHabitUseCase.deleteHabit(id)
+    }
+
     fun onClickDelete(id:Long, color:Int) {
         _bottomSheetUIState.update { currentState ->
             currentState.copy(

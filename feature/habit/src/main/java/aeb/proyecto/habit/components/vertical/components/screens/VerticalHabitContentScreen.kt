@@ -49,6 +49,7 @@ fun VerticalHabitContentScreen(
     onClick: (id: Long, date: LocalDate) -> Unit,
     onClickEdit: (id: Long) -> Unit,
     onClickDelete: (id:Long, color: Int) -> Unit = {_,_ ->},
+    onAcceptDeleteHabit:(id:Long) -> Unit,
 ){
 
     BarActionIcon(
@@ -165,7 +166,7 @@ fun VerticalHabitContentScreen(
                 onDismissBottomSheet(TypeBottomSheet.EditHabit())
                 onDismissBottomSheet(TypeBottomSheet.DeleteHabit())
 
-                // Faltaria borrar el habito de room
+                onAcceptDeleteHabit(bottomSheetUIState.enabledDeleteHabitState.id)
             }
         )
     }

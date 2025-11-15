@@ -35,7 +35,7 @@ interface HabitWithDailyHabitDao {
 
     @Transaction
     @Query("DELETE FROM Habit WHERE id = :habitId")
-    suspend fun deleteHabit(habitId: Long)
+    fun deleteHabit(habitId: Long)
 
     @Transaction
     @Query("SELECT * FROM HABIT")

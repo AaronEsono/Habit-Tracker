@@ -35,4 +35,9 @@ class GetDailyHabitUseCase @Inject constructor(
     fun deleteHabitDay(id:Long,date:LocalDate){
         habitWithDailyHabitRepo.deleteHabitDay(id,date)
     }
+
+    fun deleteHabit(id:Long){
+        habitWithDailyHabitRepo.deleteHabit(id)
+    }
+
 }

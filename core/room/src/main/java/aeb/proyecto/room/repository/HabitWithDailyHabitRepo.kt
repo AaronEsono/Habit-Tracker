@@ -35,7 +35,7 @@ class HabitWithDailyHabitRepo @Inject constructor(
         habitWithDailyHabitDao.updateDailyHabit(dailyHabit)
     }
 
-    suspend fun deleteHabit(habitId: Long) {
+    fun deleteHabit(habitId: Long) {
         habitWithDailyHabitDao.deleteHabit(habitId)
     }
 

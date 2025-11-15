@@ -42,6 +42,7 @@ fun VerticalHabitScreen(
     onClick: (id:Long,date: LocalDate) -> Unit,
     onClickEdit: (id:Long) -> Unit,
     onClickDelete: (id:Long, color: Int) -> Unit = {_,_ ->},
+    onAcceptDeleteHabit:(id:Long) -> Unit,
 ){
 
     Box(modifier = Modifier.fillMaxSize()){
@@ -74,7 +75,8 @@ fun VerticalHabitScreen(
                         onLongClick = onLongClick,
                         onClick = onClick,
                         onClickEdit = onClickEdit,
-                        onClickDelete = onClickDelete
+                        onClickDelete = onClickDelete,
+                        onAcceptDeleteHabit = onAcceptDeleteHabit
                     )
                 }
 
