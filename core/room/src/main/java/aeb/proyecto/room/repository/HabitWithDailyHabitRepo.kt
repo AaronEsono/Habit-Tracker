@@ -74,6 +74,13 @@ class HabitWithDailyHabitRepo @Inject constructor(
         }
     }
 
+    fun getHabitWithDailyHabitsByDateToDate(id:Long, startDate: LocalDate, endDate: LocalDate): HabitWithDailyHabit{
+        val habit = habitWithDailyHabitDao.getHabit(id)
+        val dailyHabits = habitWithDailyHabitDao.getDailyHabitsByDateRangeById(id,startDate,endDate)
+
+        return HabitWithDailyHabit(habit = habit, dailyHabits = dailyHabits.toMutableList())
+    }
+
     fun getHabit(id:Long):Habit{
         return habitWithDailyHabitDao.getHabit(id)
     }

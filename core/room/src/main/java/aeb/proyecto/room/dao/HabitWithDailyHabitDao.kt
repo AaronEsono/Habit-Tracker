@@ -47,6 +47,9 @@ interface HabitWithDailyHabitDao {
     @Query("SELECT * FROM HabitDay WHERE date BETWEEN :startDate AND :endDate")
     fun getDailyHabitsByDateRange(startDate: LocalDate, endDate: LocalDate): Flow<List<HabitDay>>
 
+    @Query("SELECT * FROM HabitDay WHERE date BETWEEN :startDate AND :endDate AND idHabit = :id")
+    fun getDailyHabitsByDateRangeById(id:Long, startDate: LocalDate, endDate: LocalDate): List<HabitDay>
+
     @Query("SELECT * FROM HabitDay WHERE date = :date AND idHabit = :idHabit")
     fun getHabitDay(date: LocalDate, idHabit: Long): HabitDay?
 

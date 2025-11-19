@@ -20,6 +20,10 @@ class GetDailyHabitUseCase @Inject constructor(
         return habitWithDailyHabitRepo.getHabitWithDailyHabitsByDateAndType(from, to, tag)
     }
 
+    fun getHabitWithDailyHabitsByDate(id:Long,from: LocalDate,to:LocalDate): HabitWithDailyHabit {
+        return habitWithDailyHabitRepo.getHabitWithDailyHabitsByDateToDate(id,from,to)
+    }
+
     fun getDailyHabitByDate(id:Long,date:LocalDate): HabitDay?{
         return habitWithDailyHabitRepo.getHabitDay(date,id)
     }

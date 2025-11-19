@@ -6,15 +6,19 @@ import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.monthly.M
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.recurring.RecurringHabitCard
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.weekly.WeeklyHabitCard
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.state.EditHabitState
+import aeb.proyecto.habit.components.common.bottomSheet.editHabit.vm.EditHabitVM
 import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
+import aeb.proyecto.ui.calendar.content.CalendarDays
+import aeb.proyecto.ui.calendar.content.CalendarHeader
+import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
-import aeb.proyecto.ui.dimmens.Dimmens.spacing2
+import aeb.proyecto.ui.dimmens.Dimmens.spacing20
+import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
-import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +26,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,12 +37,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VerticalEditHabitBottomSheet(
+    verticalEditHabitVM: EditHabitVM = hiltViewModel(),
     idHabit:Long,
-    verticalEditHabitVM: VerticalEditHabitVM = hiltViewModel(),
+    startDayOfWeek: DayOfWeek? = DayOfWeek.MONDAY,
     onDismiss: (typeBottomSheet: TypeBottomSheet) -> Unit = {},
     onClickEdit: (id:Long) -> Unit = {},
     onClickDelete: (id:Long, color: Int) -> Unit = {_,_ ->},
@@ -46,8 +53,14 @@ fun VerticalEditHabitBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
+    val yearMonth = verticalEditHabitVM.yearMonth.collectAsStateWithLifecycle().value
+    val day = verticalEditHabitVM.startDayOfWeek.collectAsStateWithLifecycle(null).value
+    val calendarDays = verticalEditHabitVM.calendarDays.collectAsStateWithLifecycle().value
+
+
     LaunchedEffect(Unit) {
         verticalEditHabitVM.getIdHabit(idHabit)
+        verticalEditHabitVM.setDay(startDayOfWeek)
     }
 
     val bottomSheetState = verticalEditHabitVM.bottomSheetState.collectAsStateWithLifecycle().value
@@ -143,6 +156,29 @@ fun VerticalEditHabitBottomSheet(
                                 onClickDelete(bottomSheetState.habit.id, bottomSheetState.habit.color)
                             }
                         }
+                    )
+
+                    CalendarHeader(
+                        yearMonth = yearMonth,
+                        modifier = Modifier.padding(top = spacing16, bottom = spacing16),
+                        onPreviousMonthButtonClicked = { yearMonth ->
+                            verticalEditHabitVM.onMonthButtonClicked(yearMonth)
+                        },
+                        onNextMonthButtonClicked = { yearMonth ->
+                            verticalEditHabitVM.onMonthButtonClicked(yearMonth)
+                        }
+                    )
+
+                    //Traer del datastore el dia
+                    CalendarDays(
+                        modifier = Modifier.padding(horizontal = spacing8),
+                        horizontalPadding = spacing12,
+                        startDay = day,
+                    )
+
+                    // Se sigue por aqui
+                    Text(
+                        calendarDays.toString()
                     )
 
                 }

@@ -153,6 +153,7 @@ fun VerticalHabitContentScreen(
         VerticalEditHabitBottomSheet(
             idHabit = bottomSheetUIState.enabledEditHabitState.idHabit,
             onDismiss = onDismissBottomSheet,
+            startDayOfWeek = startDayOfWeek,
             onClickEdit = onClickEdit,
             onClickDelete = onClickDelete
         )
@@ -165,7 +166,6 @@ fun VerticalHabitContentScreen(
             onAcceptDelete = {
                 onDismissBottomSheet(TypeBottomSheet.EditHabit())
                 onDismissBottomSheet(TypeBottomSheet.DeleteHabit())
-
                 onAcceptDeleteHabit(bottomSheetUIState.enabledDeleteHabitState.id)
             }
         )
