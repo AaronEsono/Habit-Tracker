@@ -1,6 +1,7 @@
 package aeb.proyecto.habit.components.vertical.components.bottomSheet.editHabit
 
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.buttons.ButtonsRow
+import aeb.proyecto.habit.components.common.bottomSheet.editHabit.calendar.CalendarDateEditHabit
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.daily.DailyHabitCard
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.monthly.MonthlyHabitCard
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.card.recurring.RecurringHabitCard
@@ -9,17 +10,21 @@ import aeb.proyecto.habit.components.common.bottomSheet.editHabit.state.EditHabi
 import aeb.proyecto.habit.components.common.bottomSheet.editHabit.vm.EditHabitVM
 import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.model.TypeBottomSheet
+import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.ui.bottomsheet.CustomBottomSheet
+import aeb.proyecto.ui.calendar.content.CalendarContent
 import aeb.proyecto.ui.calendar.content.CalendarDays
 import aeb.proyecto.ui.calendar.content.CalendarHeader
 import aeb.proyecto.ui.dimmens.Dimmens.spacing10
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
+import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing20
 import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -38,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -169,18 +175,32 @@ fun VerticalEditHabitBottomSheet(
                         }
                     )
 
-                    //Traer del datastore el dia
                     CalendarDays(
                         modifier = Modifier.padding(horizontal = spacing8),
                         horizontalPadding = spacing12,
                         startDay = day,
                     )
 
-                    // Se sigue por aqui
-                    Text(
-                        calendarDays.toString()
-                    )
+                    Spacer(modifier = Modifier.padding(vertical = spacing4))
 
+                    CalendarContent(
+                        dates = calendarDays.dates,
+                        horizontalPadding = spacing8,
+                        verticalPadding = spacing2
+                    ) { item, modifier ->
+                        if(item != null){
+                            CalendarDateEditHabit(
+                                modifier = modifier,
+                                day = item.dateOfMonth,
+                                monthSelected = yearMonth.atEndOfMonth(),
+                                habitWithDay = item.data,
+                                onClick = { id, date ->},
+                                onLongClick = { id, date ->}
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.padding(vertical = spacing8))
                 }
             }
         }
