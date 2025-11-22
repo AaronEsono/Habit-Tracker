@@ -1,5 +1,6 @@
 package aeb.proyecto.habit.components.common.bottomSheet.editHabit.calendar
 
+import aeb.proyecto.habit.components.common.habitCards.utils.getTextTotal
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
@@ -114,7 +115,7 @@ fun CalendarDateEditHabit(
                     Spacer(modifier = Modifier.padding(horizontal = spacing1))
 
                     LabelSmallText(
-                        text = habitWithDay.day.goalDone.toString(),
+                        text = getTextTotal(habitWithDay.day.goalDone,habitWithDay.habit.unit),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 9.sp,

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,6 +20,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -42,37 +45,45 @@ class EditHabitVM @Inject constructor(
     private val _startDayOfWeek: MutableStateFlow<DayOfWeek?> = MutableStateFlow(null)
     val startDayOfWeek: Flow<DayOfWeek?> = _startDayOfWeek.asStateFlow()
 
-    val calendarDays: StateFlow<CalendarUIState<HabitWithDay>> = combine(
-        idHabit, yearMonth, startDayOfWeek
-    ) { idHabit, yearMonth, startDayOfWeek ->
-
-        if (idHabit == null) {
-            return@combine CalendarUIState(emptyList())
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val calendarDays: StateFlow<CalendarUIState<HabitWithDay>> =
+        combine(idHabit, yearMonth, startDayOfWeek) { idHabit, yearMonth, startDayOfWeek ->
+            Triple(idHabit, yearMonth, startDayOfWeek)
         }
+            .flatMapLatest { (idHabit, yearMonth, startDayOfWeek) ->
 
-        val startDate = yearMonth.atDay(1)
-        val endDate = yearMonth.atEndOfMonth()
+                if (idHabit == null) {
+                    return@flatMapLatest flowOf(CalendarUIState(emptyList()))
+                }
 
-        val habitWithDailyHabits = getDailyHabitUseCase
-            .getHabitWithDailyHabitsByDate(idHabit, startDate, endDate)
+                val start = yearMonth.atDay(1)
+                val end = yearMonth.atEndOfMonth()
 
-        val days = CalendarDataSource().getDates(
-            startDayOfWeek ?: DayOfWeek.MONDAY,
-            yearMonth
-        ) { date ->
-            HabitWithDay(
-                habit = habitWithDailyHabits.habit,
-                day = getSelected(date, habitWithDailyHabits.dailyHabits) ?: HabitDay()
+                getDailyHabitUseCase
+                    .getHabitWithDailyHabitsByDate(idHabit, start, end)
+                    .map { habitWithDailyHabits ->
+
+                        val days = CalendarDataSource().getDates(
+                            startDayOfWeek ?: DayOfWeek.MONDAY,
+                            yearMonth
+                        ) { date ->
+                            HabitWithDay(
+                                habit = habitWithDailyHabits.habit,
+                                day = habitWithDailyHabits.dailyHabits
+                                    .find { it.date == date }
+                                    ?: HabitDay()
+                            )
+                        }
+
+                        CalendarUIState(days)
+                    }
+            }
+            .flowOn(Dispatchers.IO)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = CalendarUIState(emptyList())
             )
-        }
-
-        CalendarUIState(days)
-    }.flowOn(Dispatchers.IO)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Companion.WhileSubscribed(5000),
-            initialValue = CalendarUIState(emptyList())
-        )
 
     fun getIdHabit(id:Long){
         _idHabit.value = id
