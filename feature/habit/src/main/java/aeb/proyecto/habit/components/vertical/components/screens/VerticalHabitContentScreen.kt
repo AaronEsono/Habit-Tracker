@@ -155,7 +155,9 @@ fun VerticalHabitContentScreen(
             onDismiss = onDismissBottomSheet,
             startDayOfWeek = startDayOfWeek,
             onClickEdit = onClickEdit,
-            onClickDelete = onClickDelete
+            onClickDelete = onClickDelete,
+            onClick = onClick,
+            onLongClick = onLongClick
         )
     }
 

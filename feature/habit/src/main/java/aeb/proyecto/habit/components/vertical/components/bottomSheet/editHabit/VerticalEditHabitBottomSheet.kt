@@ -54,6 +54,8 @@ fun VerticalEditHabitBottomSheet(
     onDismiss: (typeBottomSheet: TypeBottomSheet) -> Unit = {},
     onClickEdit: (id:Long) -> Unit = {},
     onClickDelete: (id:Long, color: Int) -> Unit = {_,_ ->},
+    onLongClick: (id:Long,date:LocalDate) -> Unit,
+    onClick: (id: Long, date: LocalDate) -> Unit,
 ){
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -194,8 +196,8 @@ fun VerticalEditHabitBottomSheet(
                                 day = item.dateOfMonth,
                                 monthSelected = yearMonth.atEndOfMonth(),
                                 habitWithDay = item.data,
-                                onClick = { id, date ->},
-                                onLongClick = { id, date ->}
+                                onClick = onClick,
+                                onLongClick = onLongClick
                             )
                         }
                     }
