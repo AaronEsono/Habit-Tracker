@@ -3,16 +3,19 @@ package aeb.proyecto.habit.components.horizontal.components.screens
 import aeb.proyecto.habit.CurrentPagerSelection
 import aeb.proyecto.habit.FilteredHabitsUiState
 import aeb.proyecto.habit.TimeRangeUiState
+import aeb.proyecto.habit.components.common.bottomSheet.deleteHabit.DeleteHabitBottomSheet
 import aeb.proyecto.habit.components.common.button.BarActionIcon
 import aeb.proyecto.habit.components.common.loading.HabitLoading
 import aeb.proyecto.habit.components.common.pager.PageSelected
 import aeb.proyecto.habit.components.common.timeRange.TimeRangeHabit
 import aeb.proyecto.habit.components.horizontal.components.bottomSheet.configureHabit.HorizontalConfigureHabitBottomSheet
+import aeb.proyecto.habit.components.horizontal.components.bottomSheet.editHabit.HorizontalEditHabitBottomSheet
 import aeb.proyecto.habit.components.horizontal.components.bottomSheet.selectDate.HorizontalSelectDateBottomSheet
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalDailyHabitScreen
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalMonthlyHabitScreen
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalRecurringHabitScreen
 import aeb.proyecto.habit.components.horizontal.components.screens.typeHabit.HorizontalWeeklyHabitScreen
+import aeb.proyecto.habit.components.vertical.components.bottomSheet.editHabit.VerticalEditHabitBottomSheet
 import aeb.proyecto.habit.model.BottomSheetUIState
 import aeb.proyecto.habit.model.TypeBottomSheet
 import aeb.proyecto.habit.model.pager.PagerElement
@@ -44,7 +47,10 @@ fun HorizontalHabitContentScreen(
     onClickTimeRange: (LocalDate, Boolean) -> Unit = { _, _ ->},
     onClickCard: (id:Long) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit,
-    onClick: (id: Long, date: LocalDate) -> Unit
+    onClick: (id: Long, date: LocalDate) -> Unit,
+    onClickEdit: (id: Long) -> Unit,
+    onClickDelete: (id:Long, color: Int) -> Unit = {_,_ ->},
+    onAcceptDeleteHabit:(id:Long) -> Unit,
 ) {
 
     BarActionIcon(
@@ -136,11 +142,35 @@ fun HorizontalHabitContentScreen(
         )
     }
 
+    if(bottomSheetUIState.enabledEditHabitState.enabled){
+        HorizontalEditHabitBottomSheet(
+            idHabit = bottomSheetUIState.enabledEditHabitState.idHabit,
+            onDismiss = onDismissBottomSheet,
+            startDayOfWeek = startDayOfWeek,
+            onClickEdit = onClickEdit,
+            onClickDelete = onClickDelete,
+            onClick = onClick,
+            onLongClick = onLongClick
+        )
+    }
+
     if(bottomSheetUIState.enabledSelectDateState.enabled){
         HorizontalSelectDateBottomSheet(
             onDismiss = onDismissBottomSheet,
             selectedDate = selectedDate,
             onClick = onClickTimeRange
+        )
+    }
+
+    if(bottomSheetUIState.enabledDeleteHabitState.enabled){
+        DeleteHabitBottomSheet(
+            colorButton = bottomSheetUIState.enabledDeleteHabitState.color,
+            onDismiss = { onDismissBottomSheet(TypeBottomSheet.DeleteHabit()) },
+            onAcceptDelete = {
+                onDismissBottomSheet(TypeBottomSheet.EditHabit())
+                onDismissBottomSheet(TypeBottomSheet.DeleteHabit())
+                onAcceptDeleteHabit(bottomSheetUIState.enabledDeleteHabitState.id)
+            }
         )
     }
 }

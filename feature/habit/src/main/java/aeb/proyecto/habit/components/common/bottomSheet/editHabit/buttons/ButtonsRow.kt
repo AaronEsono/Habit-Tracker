@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 fun ButtonsRow(
     onClickEdit: () -> Unit,
     onClickDelete: () -> Unit,
+    sizeButton: Dp = 35.dp
 ) {
 
     Row(
@@ -44,7 +46,7 @@ fun ButtonsRow(
             modifier = Modifier
                 .clip(RoundedCornerShape(spacing8))
                 .background(MaterialTheme.colorScheme.background)
-                .size(35.dp)
+                .size(sizeButton)
                 .clickable(
                     indication = null,
                     interactionSource = null
@@ -70,7 +72,7 @@ fun ButtonsRow(
             modifier = Modifier
                 .clip(RoundedCornerShape(spacing8))
                 .background(MaterialTheme.colorScheme.background)
-                .size(35.dp)
+                .size(sizeButton)
                 .clickable(
                     indication = null,
                     interactionSource = null

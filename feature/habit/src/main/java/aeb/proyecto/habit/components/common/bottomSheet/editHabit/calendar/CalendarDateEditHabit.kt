@@ -34,6 +34,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.LocalDate
@@ -45,6 +47,9 @@ fun CalendarDateEditHabit(
     day: LocalDate? = LocalDate.now(),
     monthSelected: LocalDate = LocalDate.now(),
     habitWithDay: HabitWithDay?,
+    sizeCircle: Dp = 5.dp,
+    fontSize: TextUnit = 9.sp,
+    fontSizeDay: TextUnit = 13.sp,
     onClick: (id:Long,date: LocalDate) -> Unit,
     onLongClick: (id:Long,date: LocalDate) -> Unit
 ){
@@ -67,7 +72,7 @@ fun CalendarDateEditHabit(
             .clip(RoundedCornerShape(spacing12))
             .aspectRatio(1f)
             .alpha(if (notInMonth) 0.3f else 1f)
-            .background(if(isToday) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.background)
+            .background(if(isToday) MaterialTheme.colorScheme.scrim else MaterialTheme.colorScheme.background)
             .combinedClickable(
                 onClick = {
                     if (!notInMonth) {
@@ -85,7 +90,8 @@ fun CalendarDateEditHabit(
         LabelMediumText(
             day?.dayOfMonth.toString(),
             modifier = Modifier.align(Alignment.Center),
-            color = if(isToday) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurface
+            color = if(isToday) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurface,
+            fontSize = fontSizeDay
         )
 
 
@@ -94,7 +100,7 @@ fun CalendarDateEditHabit(
                 modifier = Modifier
                     .padding(bottom = spacing1)
                     .clip(RoundedCornerShape(spacing12))
-                    .fillMaxWidth(0.85f)
+                    .fillMaxWidth(0.8f)
                     .background(if(isToday) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.background)
                     .border(1.dp, if(isToday) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurface, RoundedCornerShape(spacing12))
                     .align(Alignment.BottomCenter)
@@ -108,7 +114,7 @@ fun CalendarDateEditHabit(
                         modifier = Modifier
                             .padding(spacing1)
                             .clip(CircleShape)
-                            .size(5.dp)
+                            .size(sizeCircle)
                             .background(Color(habitWithDay.habit.color))
                     ){}
 
@@ -118,7 +124,7 @@ fun CalendarDateEditHabit(
                         text = getTextTotal(habitWithDay.day.goalDone,habitWithDay.habit.unit),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        fontSize = 9.sp,
+                        fontSize = fontSize,
                         color = if(isToday) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurface
                     )
                 }

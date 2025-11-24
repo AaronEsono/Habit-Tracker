@@ -107,7 +107,12 @@ fun HabitScreen(
                 onDismissBottomSheet = viewModel::onDismissBottomSheet,
                 onClickCard = viewModel::onClickCard,
                 onLongClick = viewModel::onLongClick,
-                onClick = viewModel::onClick
+                onClick = viewModel::onClick,
+                onClickEdit = { id ->
+                    navigateToAddHabit(id)
+                },
+                onClickDelete = viewModel::onClickDelete,
+                onAcceptDeleteHabit = viewModel::onAcceptDeleteHabit,
             )
         }
     }
