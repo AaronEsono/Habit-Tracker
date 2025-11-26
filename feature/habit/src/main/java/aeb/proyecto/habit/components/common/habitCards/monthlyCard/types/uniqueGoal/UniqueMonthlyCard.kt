@@ -189,7 +189,7 @@ fun UniqueMonthlyCard(
                 ) {
                     LabelMediumText(
                         stringResource(
-                            R.string.habit_week_goal_subtitle,
+                            R.string.habit_month_unique_bt,
                             getTextTotal(habit.habit.goal, habit.habit.unit),
                             stringResource(getUnitTitle(habit.habit.unit, habit.habit.goal)),
                         ),
@@ -287,7 +287,7 @@ fun UniqueMonthlyCard(
             LabelLargeText(
                 text = stringResource(
                     R.string.habit_week_unique_goal_completed,
-                    goalMonthCompleted.stripTrailingZeros().toString(),
+                    goalMonthCompleted.toString(),
                     habit.habit.goal.toString(),
                     if(habit.habit.goal.toInt() <= 1){
                         stringResource(habit.habit.unit.title)

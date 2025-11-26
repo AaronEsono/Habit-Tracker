@@ -54,6 +54,7 @@ fun HorizontalEditHabitBottomSheet(
     onLongClick: (id:Long,date:LocalDate) -> Unit,
     onClick: (id: Long, date: LocalDate) -> Unit,
 ){
+
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 

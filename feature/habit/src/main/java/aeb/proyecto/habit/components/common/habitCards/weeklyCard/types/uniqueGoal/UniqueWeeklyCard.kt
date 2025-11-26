@@ -176,7 +176,7 @@ fun UniqueWeeklyCard(
                 ) {
                     LabelMediumText(
                         stringResource(
-                            R.string.habit_week_goal_subtitle,
+                            R.string.habit_week_goal_title_unique,
                             getTextTotal(habit.habit.goal, habit.habit.unit),
                             stringResource(getUnitTitle(habit.habit.unit, habit.habit.goal)),
                         ),
