@@ -27,6 +27,8 @@ interface DatastoreInterface {
 
     val timerLinkedAndFinished:Flow<Boolean>
 
+    val habitSelected: Flow<Long?>
+
     suspend fun getEmailAndPassword():EmailPassword
 
     suspend fun getLastSearched():LastSearched
@@ -54,6 +56,8 @@ interface DatastoreInterface {
     suspend fun getTimePassedTimer():Long?
 
     suspend fun getIsLinkedHabitAndFinished():Boolean?
+
+    suspend fun setHabitSelected(id:Long)
 
     suspend fun setTimePassedTimer(time:Long)
 

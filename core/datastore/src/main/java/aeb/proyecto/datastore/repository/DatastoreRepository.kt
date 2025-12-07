@@ -62,6 +62,10 @@ class DatastoreRepository @Inject constructor(
     override val timerLinkedAndFinished: Flow<Boolean>
         get() = dataStoreManager.timerLinkedAndFinished
 
+
+    override val habitSelected: Flow<Long?>
+        get() = dataStoreManager.habitSelected
+
     override suspend fun getEmailAndPassword(): EmailPassword {
         return dataStoreManager.getEmailPassword()
     }
@@ -116,6 +120,10 @@ class DatastoreRepository @Inject constructor(
 
     override suspend fun getIsLinkedHabitAndFinished(): Boolean? {
         return dataStoreManager.getIsLinkedHabitAndFinished()
+    }
+
+    override suspend fun setHabitSelected(id: Long) {
+        dataStoreManager.setHabitSelected(id)
     }
 
     override suspend fun setTimePassedTimer(time: Long) {

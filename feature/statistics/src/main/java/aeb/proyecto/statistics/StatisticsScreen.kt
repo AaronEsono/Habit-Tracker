@@ -1,11 +1,13 @@
 package aeb.proyecto.statistics
 
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun StatisticsScreen(
@@ -16,9 +18,32 @@ fun StatisticsScreen(
         LabelLargeText(stringResource(R.string.topbar_habit), fontSize = 20.sp)
     }
 
+    val statisticsState = viewModel.statisticsState.collectAsStateWithLifecycle().value
+
     StatisticsScreen(
         onClick = {}
     )
+
+    LabelMediumText(statisticsState.toString())
+
+    // Vertical
+    // 1. Linea horizontal que separe los hábitos. Se muestran en círculos con su nombre e icono.
+    // Abajo, el nombre del hábito
+
+    // 2. Nombre habito y descripcion abajo
+
+    // 3. Calendario con los días completados
+
+    // 4. Sistema de recuadros con los días a lo habitKit
+
+    // 5. Sistema de conteo de completados por mes, hacer detalle
+
+    // 6. Sistema de conteo de completados por hora, hacer detalle, en este hacer histórico?
+
+    // 7. Dos recuadros, en uno mostrar los completados total, y en otro la racha actual y la mejor racha
+    // A lo mejor las rachas separarlos en dos
+
+    // 8. Rueda donde se muestren: completados, a medio completar, no hecho
 
 }
 

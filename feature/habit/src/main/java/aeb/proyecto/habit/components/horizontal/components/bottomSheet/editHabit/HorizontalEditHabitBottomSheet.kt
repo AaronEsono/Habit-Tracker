@@ -62,7 +62,6 @@ fun HorizontalEditHabitBottomSheet(
     val day = verticalEditHabitVM.startDayOfWeek.collectAsStateWithLifecycle(null).value
     val calendarDays = verticalEditHabitVM.calendarDays.collectAsStateWithLifecycle().value
 
-
     LaunchedEffect(Unit) {
         verticalEditHabitVM.getIdHabit(idHabit)
         verticalEditHabitVM.setDay(startDayOfWeek)

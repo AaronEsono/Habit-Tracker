@@ -114,5 +114,13 @@ class HabitWithDailyHabitRepo @Inject constructor(
             }
     }
 
+    fun getAllHabits(): Flow<List<Habit>>{
+        return habitWithDailyHabitDao.getAllHabits()
+    }
+
+    fun getHabitWithDailyHabit(id:Long): HabitWithDailyHabit{
+        return habitWithDailyHabitDao.getHabitWithDailyHabits(id)
+    }
+
 }
 

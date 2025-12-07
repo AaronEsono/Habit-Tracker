@@ -29,6 +29,9 @@ class DataStoreManager @Inject constructor(
         private val LANGUAGE = stringPreferencesKey("language")
         private val DAY_START_WEEK = stringPreferencesKey("dayStartWeek")
 
+        // Statistics
+        private val HABIT_SELECTED = longPreferencesKey("habitSelected")
+
         //Login Screen
         private val EMAIL = stringPreferencesKey("email")
         private val PASSWORD = stringPreferencesKey("password")
@@ -124,6 +127,10 @@ class DataStoreManager @Inject constructor(
         preferences[IS_LINKED_HABIT_AND_FINISHED] ?: false
     }
 
+    val habitSelected: Flow<Long?> = dataStore.data.map { preferences ->
+        preferences[HABIT_SELECTED]
+    }
+
     suspend fun getEmailPassword() = dataStore.data.map { preferences ->
         EmailPassword(
             email = preferences[EMAIL] ?: "",
@@ -187,6 +194,12 @@ class DataStoreManager @Inject constructor(
     suspend fun getIsLinkedHabitAndFinished() = dataStore.data.map { preferences ->
         preferences[IS_LINKED_HABIT_AND_FINISHED]
     }.firstOrNull()
+
+    suspend fun setHabitSelected(id: Long) {
+        dataStore.edit { preferences ->
+            preferences[HABIT_SELECTED] = id
+        }
+    }
 
     suspend fun setIsLinkedHabitAndFinished(isLinked: Boolean) {
         dataStore.edit { preferences ->
