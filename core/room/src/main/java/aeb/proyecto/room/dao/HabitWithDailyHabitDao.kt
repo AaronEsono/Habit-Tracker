@@ -61,7 +61,7 @@ interface HabitWithDailyHabitDao {
     fun getHabit(id:Long):Habit
 
     @Query("SELECT * FROM Habit WHERE id = :id")
-    fun getHabitFlow(id:Long): Flow<Habit>
+    fun getHabitFlow(id:Long): Flow<Habit?>
 
     @Query("SELECT * FROM Habit WHERE id = :id")
     fun getHabitOrNull(id:Long):Habit?

@@ -20,7 +20,7 @@ class GetDailyHabitUseCase @Inject constructor(
         return habitWithDailyHabitRepo.getHabitWithDailyHabitsByDateAndType(from, to, tag)
     }
 
-    fun getHabitWithDailyHabitsByDate(id:Long,from: LocalDate,to:LocalDate): Flow<HabitWithDailyHabit> {
+    fun getHabitWithDailyHabitsByDate(id:Long,from: LocalDate,to:LocalDate): Flow<HabitWithDailyHabit?> {
         return habitWithDailyHabitRepo.getHabitWithDailyHabitsByDateToDate(id,from,to)
     }
 

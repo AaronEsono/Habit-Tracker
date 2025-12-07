@@ -63,19 +63,24 @@ class EditHabitVM @Inject constructor(
                     .getHabitWithDailyHabitsByDate(idHabit, start, end)
                     .map { habitWithDailyHabits ->
 
-                        val days = CalendarDataSource().getDates(
-                            startDayOfWeek ?: DayOfWeek.MONDAY,
-                            yearMonth
-                        ) { date ->
-                            HabitWithDay(
-                                habit = habitWithDailyHabits.habit,
-                                day = habitWithDailyHabits.dailyHabits
-                                    .find { it.date == date }
-                                    ?: HabitDay()
-                            )
+                        if(habitWithDailyHabits != null){
+                            val days = CalendarDataSource().getDates(
+                                startDayOfWeek ?: DayOfWeek.MONDAY,
+                                yearMonth
+                            ) { date ->
+                                HabitWithDay(
+                                    habit = habitWithDailyHabits.habit,
+                                    day = habitWithDailyHabits.dailyHabits
+                                        .find { it.date == date }
+                                        ?: HabitDay()
+                                )
+                            }
+
+                            CalendarUIState(days)
+                        }else{
+                            CalendarUIState(emptyList())
                         }
 
-                        CalendarUIState(days)
                     }
             }
             .flowOn(Dispatchers.IO)

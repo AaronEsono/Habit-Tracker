@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -25,10 +26,6 @@ class StatisticsViewModel @Inject constructor(
     private val getHabitSelectedUseCase: GetHabitSelectedUseCase
 ) : ViewModel() {
 
-
-    // PONER LOADING
-    // ARREGLAR EL ERROR AL BORRAR EL HABITO
-
     val statisticsState: StateFlow<StatisticsState> = combine(
         getHabitsStatisticsUseCase.getAllHabits(),
         getHabitSelectedUseCase.getHabitSelected()
@@ -44,6 +41,12 @@ class StatisticsViewModel @Inject constructor(
 
                 StatisticsState.Success(StatisticsSuccessState.Habits(habits, habitWithDailyHabit))
             }
+        }
+        .onStart {
+            StatisticsState.Loading
+        }
+        .catch {
+            StatisticsState.Error("Error")
         }
         .flowOn(Dispatchers.IO)
         .stateIn(

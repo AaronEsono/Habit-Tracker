@@ -6,6 +6,7 @@ import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.room.model.classes.listTime
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -72,12 +73,14 @@ class HabitWithDailyHabitRepo @Inject constructor(
         }
     }
 
-    fun getHabitWithDailyHabitsByDateToDate(id:Long, startDate: LocalDate, endDate: LocalDate): Flow<HabitWithDailyHabit>{
+    fun getHabitWithDailyHabitsByDateToDate(id:Long, startDate: LocalDate, endDate: LocalDate): Flow<HabitWithDailyHabit?>{
         return combine(
             habitWithDailyHabitDao.getHabitFlow(id),
             habitWithDailyHabitDao.getDailyHabitsByDateRangeById(id,startDate,endDate)
         ) { habit, dailyHabits ->
-            HabitWithDailyHabit(habit = habit, dailyHabits = dailyHabits.toMutableList())
+            habit?.let {
+                HabitWithDailyHabit(habit = habit, dailyHabits = dailyHabits.toMutableList())
+            }
         }
     }
 
