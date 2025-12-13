@@ -26,7 +26,7 @@ class StatisticsViewModel @Inject constructor(
     private val getHabitSelectedUseCase: GetHabitSelectedUseCase
 ) : ViewModel() {
 
-    // Mirar el foreing key de los habitos semanales que esta dando problmas
+    // Poner flow que escuche
 
     val statisticsState: StateFlow<StatisticsState> = combine(
         getHabitsStatisticsUseCase.getAllHabits(),

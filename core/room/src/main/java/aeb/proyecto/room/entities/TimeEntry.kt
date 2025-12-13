@@ -11,6 +11,8 @@ import java.time.LocalDateTime
             entity = Habit::class,
             parentColumns = ["id"],
             childColumns = ["idHabit"],
+            onDelete = ForeignKey.CASCADE, //elimina dailyHabits si se elimina el habit
+            onUpdate = ForeignKey.CASCADE // actualiza dailyHabits si se actualiza el habit
         )
     ]
 )

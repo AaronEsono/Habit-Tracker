@@ -4,6 +4,7 @@ import aeb.proyecto.domain.usecase.habit.HabitDatastoreUseCase
 import aeb.proyecto.habit.CurrentPagerSelection
 import aeb.proyecto.habit.model.pager.PagerElement
 import aeb.proyecto.habit.model.pager.PagerSelected
+import android.util.Log
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -17,26 +18,34 @@ suspend fun initializeSelectedTypeIfNeeded(
     updateSelected: (CurrentPagerSelection) -> Unit,
 ): Boolean {
     return try {
-        if (selectedType.value is CurrentPagerSelection.Uninitialized) {
-            val savedTag = habitDatastoreUseCase.getTypeSelected() ?: "Daily"
-            var pageElement = sortedTypes.find { it.tag == savedTag }
+        val current = selectedType.value
 
-            if (pageElement == null && sortedTypes.isNotEmpty()) {
-                pageElement = sortedTypes.first()
-                habitDatastoreUseCase.setSelectedHabitType(pageElement.tag)
+        val selectedElement = when (current) {
+            is CurrentPagerSelection.Selected -> {
+                sortedTypes.find { it.tag == current.pagerSelected.pagerElement.tag }
             }
+            else -> null
+        }
 
-            pageElement?.let {
-                updateSelected(
-                    CurrentPagerSelection.Selected(
-                        PagerSelected(
-                            pagerElement = it,
-                            index = sortedTypes.indexOf(it)
-                        )
+        val finalElement = selectedElement
+            ?: run {
+                val savedTag = habitDatastoreUseCase.getTypeSelected()
+                sortedTypes.find { it.tag == savedTag }
+            }
+            ?: sortedTypes.firstOrNull()
+
+        finalElement?.let {
+            habitDatastoreUseCase.setSelectedHabitType(it.tag)
+            updateSelected(
+                CurrentPagerSelection.Selected(
+                    PagerSelected(
+                        pagerElement = it,
+                        index = sortedTypes.indexOf(it)
                     )
                 )
-            }
+            )
         }
+
         true
     } catch (e: Exception) {
         false

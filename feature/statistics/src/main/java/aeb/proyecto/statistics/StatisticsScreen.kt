@@ -1,5 +1,8 @@
 package aeb.proyecto.statistics
 
+import aeb.proyecto.statistics.components.vertical.VerticalStatisticsScreen
+import aeb.proyecto.ui.orientation.Orientation
+import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
@@ -18,13 +21,21 @@ fun StatisticsScreen(
         LabelLargeText(stringResource(R.string.topbar_habit), fontSize = 20.sp)
     }
 
+    val orientation = getOrientation()
     val statisticsState = viewModel.statisticsState.collectAsStateWithLifecycle().value
 
     StatisticsScreen(
         onClick = {}
     )
 
-    LabelMediumText(statisticsState.toString())
+    when(orientation){
+        Orientation.Portrait -> {
+            VerticalStatisticsScreen(
+                statisticsState = statisticsState
+            )
+        }
+        Orientation.Landscape -> {}
+    }
 
     // Vertical
     // 1. Linea horizontal que separe los hábitos. Se muestran en círculos con su nombre e icono.
