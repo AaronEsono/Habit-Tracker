@@ -3,4 +3,6 @@
 
     <string name="statistics_loading">Loading…</string>
 
+    <string name="statistics_no_content">You don’t have any habits yet. Create one to start seeing your statistics!</string>
+
 </resources>

@@ -14,7 +14,7 @@ class GetHabitsStatisticsUseCase @Inject constructor(
         return habitWithDailyHabitRepo.getAllHabits()
     }
 
-    fun getHabitWithDailyHabit(id:Long): HabitWithDailyHabit {
+    fun getHabitWithDailyHabit(id:Long): Flow<HabitWithDailyHabit?> {
         return habitWithDailyHabitRepo.getHabitWithDailyHabit(id)
     }
 

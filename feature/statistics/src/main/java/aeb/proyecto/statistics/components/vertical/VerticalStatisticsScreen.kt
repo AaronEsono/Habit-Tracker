@@ -1,6 +1,7 @@
 package aeb.proyecto.statistics.components.vertical
 
 import aeb.proyecto.statistics.components.common.loading.StatisticsLoading
+import aeb.proyecto.statistics.components.vertical.screens.NoContentVerticalStatisticsScreen
 import aeb.proyecto.statistics.model.StatisticsState
 import aeb.proyecto.statistics.model.StatisticsSuccessState
 import aeb.proyecto.ui.text.LabelMediumText
@@ -22,7 +23,7 @@ fun VerticalStatisticsScreen(
         is StatisticsState.Success -> {
             when(statisticsState.state){
                 StatisticsSuccessState.Empty -> {
-                    LabelMediumText("No hay na!")
+                    NoContentVerticalStatisticsScreen()
                 }
                 is StatisticsSuccessState.Habits ->{
                     Column (

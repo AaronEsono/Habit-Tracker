@@ -43,7 +43,7 @@ interface HabitWithDailyHabitDao {
 
     @Transaction
     @Query("SELECT * FROM HABIT where id = :id")
-    fun getHabitWithDailyHabits(id:Long): HabitWithDailyHabit
+    fun getHabitWithDailyHabits(id:Long): Flow<HabitWithDailyHabit?>
 
     @Query("SELECT DISTINCT typeHabit FROM Habit")
     fun getExistingTypesHabit():Flow<List<TypeHabit>>
