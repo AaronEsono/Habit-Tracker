@@ -1,6 +1,7 @@
 package aeb.proyecto.statistics.components.vertical
 
 import aeb.proyecto.statistics.components.common.loading.StatisticsLoading
+import aeb.proyecto.statistics.components.vertical.screens.ContentVerticalStatisticsScreen
 import aeb.proyecto.statistics.components.vertical.screens.NoContentVerticalStatisticsScreen
 import aeb.proyecto.statistics.model.StatisticsState
 import aeb.proyecto.statistics.model.StatisticsSuccessState
@@ -26,15 +27,10 @@ fun VerticalStatisticsScreen(
                     NoContentVerticalStatisticsScreen()
                 }
                 is StatisticsSuccessState.Habits ->{
-                    Column (
-                        modifier = Modifier.fillMaxSize()
-                    ){
-                        LabelMediumText(statisticsState.state.habits.toString())
-
-                        LabelMediumText("AAAAAAAAAAAAAA")
-
-                        LabelMediumText(statisticsState.state.habitSelected.toString())
-                    }
+                    ContentVerticalStatisticsScreen(
+                        habits = statisticsState.state.habits,
+                        habitSelected = statisticsState.state.habitSelected
+                    )
                 }
             }
         }
