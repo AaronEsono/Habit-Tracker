@@ -31,7 +31,8 @@ fun StatisticsScreen(
     when(orientation){
         Orientation.Portrait -> {
             VerticalStatisticsScreen(
-                statisticsState = statisticsState
+                statisticsState = statisticsState,
+                onCLickCard = viewModel::onCLickCard
             )
         }
         Orientation.Landscape -> {}

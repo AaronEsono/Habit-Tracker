@@ -22,12 +22,13 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
     private val getHabitsStatisticsUseCase: GetHabitsStatisticsUseCase,
-    getHabitSelectedUseCase: GetHabitSelectedUseCase
+    private val getHabitSelectedUseCase: GetHabitSelectedUseCase
 ) : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -80,5 +81,10 @@ class StatisticsViewModel @Inject constructor(
                 initialValue = StatisticsState.Loading
             )
 
+
+
+    fun onCLickCard(id:Long) = viewModelScope.launch(Dispatchers.IO){
+        getHabitSelectedUseCase.setHabitSelected(id)
+    }
 
 }

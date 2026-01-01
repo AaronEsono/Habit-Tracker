@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun VerticalStatisticsScreen(
     statisticsState: StatisticsState,
+    onCLickCard: (id:Long) -> Unit
 ){
 
     when(statisticsState){
@@ -29,7 +30,8 @@ fun VerticalStatisticsScreen(
                 is StatisticsSuccessState.Habits ->{
                     ContentVerticalStatisticsScreen(
                         habits = statisticsState.state.habits,
-                        habitSelected = statisticsState.state.habitSelected
+                        habitSelected = statisticsState.state.habitSelected,
+                        onClickCard = onCLickCard
                     )
                 }
             }

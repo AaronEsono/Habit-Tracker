@@ -12,4 +12,8 @@ class GetHabitSelectedUseCase @Inject constructor(
         return datastore.habitSelected
     }
 
+    suspend fun setHabitSelected(id:Long){
+        datastore.setHabitSelected(id)
+    }
+
 }
