@@ -52,7 +52,9 @@ fun ContentVerticalStatisticsScreen(
 
         HorizontalDivider(color = MaterialTheme.colorScheme.outline, thickness = spacing2)
 
-        LabelMediumText(habitSelected.toString())
+        VerticalHabitSelectedScreen(
+            habitSelected = habitSelected
+        )
     }
 
 }

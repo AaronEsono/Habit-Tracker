@@ -39,10 +39,10 @@ fun StatisticsScreen(
     }
 
     // Vertical
-    // 1. Linea horizontal que separe los hábitos. Se muestran en círculos con su nombre e icono.
-    // Abajo, el nombre del hábito
+    // 1. Linea horizontal que separe los hábitos. Se muestran en círculos con su nombre e icono. ---- HECHO
+    // Abajo, el nombre del hábito ----- HECHO
 
-    // 2. Nombre habito y descripcion abajo
+    // 2. Nombre habito y descripcion abajo ----- HECHO
 
     // 3. Calendario con los días completados
 
