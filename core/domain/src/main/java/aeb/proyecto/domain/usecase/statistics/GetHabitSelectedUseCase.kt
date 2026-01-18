@@ -16,4 +16,8 @@ class GetHabitSelectedUseCase @Inject constructor(
         datastore.setHabitSelected(id)
     }
 
+    fun getDaySelected(): Flow<String?>{
+        return datastore.dayOfWeek
+    }
+
 }

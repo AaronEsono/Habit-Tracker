@@ -4,6 +4,7 @@ import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.repository.HabitWithDailyHabitRepo
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 import javax.inject.Inject
 
 class GetHabitsStatisticsUseCase @Inject constructor(
@@ -16,6 +17,10 @@ class GetHabitsStatisticsUseCase @Inject constructor(
 
     fun getHabitWithDailyHabit(id:Long): Flow<HabitWithDailyHabit?> {
         return habitWithDailyHabitRepo.getHabitWithDailyHabit(id)
+    }
+
+    fun getHabitWithDailyHabitsByDate(id:Long,from: LocalDate,to:LocalDate): Flow<HabitWithDailyHabit?> {
+        return habitWithDailyHabitRepo.getHabitWithDailyHabitsByDateToDate(id,from,to)
     }
 
 }

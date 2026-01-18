@@ -2,7 +2,9 @@ package aeb.proyecto.statistics.components.vertical.screens
 
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
+import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.statistics.components.common.card.HeaderCard
+import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
@@ -19,12 +21,18 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import java.time.DayOfWeek
+import java.time.YearMonth
 
 @Composable
 fun ContentVerticalStatisticsScreen(
     habits: List<Habit>,
     habitSelected: HabitWithDailyHabit,
-    onClickCard: (id:Long) -> Unit
+    yearMonth: YearMonth,
+    startDayOfWeek: DayOfWeek,
+    calendarUIState: CalendarUIState<HabitWithDay>,
+    onClickCard: (id:Long) -> Unit,
+    onMonthChange: (YearMonth) -> Unit
 ){
 
     Column (
@@ -53,7 +61,11 @@ fun ContentVerticalStatisticsScreen(
         HorizontalDivider(color = MaterialTheme.colorScheme.outline, thickness = spacing2)
 
         VerticalHabitSelectedScreen(
-            habitSelected = habitSelected
+            habitSelected = habitSelected,
+            yearMonth = yearMonth,
+            startDayOfWeek = startDayOfWeek,
+            calendarUIState = calendarUIState,
+            onMonthChange = onMonthChange
         )
     }
 

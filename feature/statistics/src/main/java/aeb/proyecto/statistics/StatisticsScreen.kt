@@ -23,16 +23,19 @@ fun StatisticsScreen(
 
     val orientation = getOrientation()
     val statisticsState = viewModel.statisticsState.collectAsStateWithLifecycle().value
-
-    StatisticsScreen(
-        onClick = {}
-    )
+    val yearMonth = viewModel.yearMonth.collectAsStateWithLifecycle().value
+    val calendarState = viewModel.calendarUIState.collectAsStateWithLifecycle().value
+    val startDayOfWeek = viewModel.dayOfWeek.collectAsStateWithLifecycle().value
 
     when(orientation){
         Orientation.Portrait -> {
             VerticalStatisticsScreen(
                 statisticsState = statisticsState,
-                onCLickCard = viewModel::onCLickCard
+                yearMonth = yearMonth,
+                startDayOfWeek = startDayOfWeek,
+                calendarUIState = calendarState,
+                onCLickCard = viewModel::onCLickCard,
+                onMonthChange = viewModel::onMonthButtonClicked
             )
         }
         Orientation.Landscape -> {}
@@ -55,13 +58,6 @@ fun StatisticsScreen(
     // 7. Dos recuadros, en uno mostrar los completados total, y en otro la racha actual y la mejor racha
     // A lo mejor las rachas separarlos en dos
 
-    // 8. Rueda donde se muestren: completados, a medio completar, no hecho
-
-}
-
-@Composable
-internal fun StatisticsScreen(
-    onClick: () -> Unit
-){
+    // 8. Rueda donde se muestren: completados, a medio completar, no hecho, porcentaje
 
 }
