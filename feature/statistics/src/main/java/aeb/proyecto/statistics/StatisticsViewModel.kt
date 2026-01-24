@@ -116,8 +116,7 @@ class StatisticsViewModel @Inject constructor(
             Triple(yearMonth, startDayOfWeek, statisticsState)
         }
             .flatMapLatest { (yearMonth, startDayOfWeek, statisticsState) ->
-                flow<CalendarUIState<HabitWithDay>> {
-
+                flow {
                     when(statisticsState){
                         is StatisticsState.Error, StatisticsState.Loading -> {
                             emit(CalendarUIState(emptyList()))
@@ -140,7 +139,7 @@ class StatisticsViewModel @Inject constructor(
                                     )
                                 }
 
-                                CalendarUIState(days)
+                                emit(CalendarUIState(days))
                             }
                         }
                     }

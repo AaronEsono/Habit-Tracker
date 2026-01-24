@@ -5,10 +5,8 @@ import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.statistics.components.common.calendar.StatisticsCalendar
 import aeb.proyecto.statistics.components.common.header.HeaderTitle
 import aeb.proyecto.ui.calendar.model.CalendarUIState
-import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
-import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -43,6 +41,7 @@ fun VerticalHabitSelectedScreen(
             modifier = Modifier.padding(horizontal = spacing4),
             yearMonth = yearMonth,
             startDayOfWeek = startDayOfWeek,
+            calendarUIState = calendarUIState,
             onMonthChange = onMonthChange
         )
 
