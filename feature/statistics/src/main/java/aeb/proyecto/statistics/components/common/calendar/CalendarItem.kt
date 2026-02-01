@@ -1,15 +1,26 @@
 package aeb.proyecto.statistics.components.common.calendar
 
 import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.room.model.classes.UnitHabit
+import aeb.proyecto.statistics.utils.getTextTotal
 import aeb.proyecto.ui.constants.getContrastColor
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing12
+import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.text.LabelMediumText
+import aeb.proyecto.ui.text.LabelSmallText
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -19,7 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import java.time.LocalDate
 
 // Poner la cantidad exacta, si se ha hecho, en los dias correspondientes
@@ -71,6 +84,42 @@ fun CalendarItem(
             day.dayOfMonth.toString(),
             color = getContrastColor(color)
         )
+
+        if(goalDone > 0){
+            Box(
+                modifier = Modifier
+                    .padding(bottom = spacing1)
+                    .clip(RoundedCornerShape(spacing12))
+                    .fillMaxWidth(0.8f)
+                    .background(MaterialTheme.colorScheme.surfaceTint)
+                    .border(1.dp, MaterialTheme.colorScheme.onSurface, RoundedCornerShape(spacing12))
+                    .align(Alignment.BottomCenter)
+            ){
+                Row (
+                    modifier = Modifier.padding(horizontal = spacing4).fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Box(
+                        modifier = Modifier
+                            .padding(spacing1)
+                            .clip(CircleShape)
+                            .size(5.dp)
+                            .background(Color(habitWithDay?.habit?.color ?: 0))
+                    ){}
+
+                    Spacer(modifier = Modifier.padding(horizontal = spacing1))
+
+                    LabelSmallText(
+                        text = getTextTotal(habitWithDay?.day?.goalDone,habitWithDay?.habit?.unit ?: UnitHabit.SESSIONS),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        fontSize = 9.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+        }
     }
 
 }

@@ -47,7 +47,7 @@ fun StatisticsScreen(
 
     // 2. Nombre habito y descripcion abajo ----- HECHO
 
-    // 3. Calendario con los días completados
+    // 3. Calendario con los días completados ----- HECHO
 
     // 4. Sistema de recuadros con los días a lo habitKit
 
