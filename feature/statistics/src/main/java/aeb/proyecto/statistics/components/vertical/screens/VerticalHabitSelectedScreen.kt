@@ -4,9 +4,11 @@ import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.statistics.components.common.calendar.StatisticsCalendar
 import aeb.proyecto.statistics.components.common.header.HeaderTitle
+import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
+import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -22,6 +24,7 @@ import java.time.YearMonth
 @Composable
 fun VerticalHabitSelectedScreen(
     habitSelected: HabitWithDailyHabit,
+    boxUIState: List<BoxUIState>,
     yearMonth: YearMonth,
     startDayOfWeek: DayOfWeek,
     calendarUIState: CalendarUIState<HabitWithDay>,
@@ -47,6 +50,5 @@ fun VerticalHabitSelectedScreen(
             calendarUIState = calendarUIState,
             onMonthChange = onMonthChange
         )
-
     }
 }

@@ -5,6 +5,9 @@ import aeb.proyecto.domain.usecase.statistics.GetHabitsStatisticsUseCase
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.statistics.model.BoxUIState
+import aeb.proyecto.statistics.model.DayBoxState
+import aeb.proyecto.statistics.model.NUMBER_OF_DAYS
 import aeb.proyecto.statistics.model.StatisticsState
 import aeb.proyecto.statistics.model.StatisticsSuccessState
 import aeb.proyecto.ui.calendar.model.CalendarUIState
@@ -31,9 +34,12 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject
+import kotlin.collections.emptyList
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
@@ -153,6 +159,74 @@ class StatisticsViewModel @Inject constructor(
                 initialValue = CalendarUIState(emptyList())
             )
 
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val boxUIState: StateFlow<List<BoxUIState>> =
+        combine(
+            dayOfWeek,
+            statisticsState
+        ) { startDayOfWeek, statisticsState ->
+            Pair(startDayOfWeek, statisticsState)
+        }
+            .flatMapLatest { (startDayOfWeek, statisticsState) ->
+                flow {
+                    val today = LocalDate.now()
+
+                    when(statisticsState){
+                        is StatisticsState.Error, StatisticsState.Loading -> {
+                            emit(emptyList<BoxUIState>())
+                        }
+                        is StatisticsState.Success -> {
+                            if(statisticsState.state is StatisticsSuccessState.Empty){
+                                emit(emptyList<BoxUIState>())
+                            }else{
+
+                                val dailyHabits = (statisticsState.state as StatisticsSuccessState.Habits)
+                                    .habitSelected
+                                    .dailyHabits
+                                    .associateBy { it.date }
+
+                                val goal = statisticsState.state.habitSelected.habit.goal
+
+
+                                val result = (0 until NUMBER_OF_DAYS).map { offset ->
+                                    val day = today.minusDays(offset.toLong())
+                                    val dailyHabit = dailyHabits[day]
+
+                                    val dayState = when {
+                                        dailyHabit == null || dailyHabit.goalDone.compareTo(BigDecimal.ZERO) == 0 ->
+                                            DayBoxState.NotDone
+
+                                        dailyHabit.goalDone.compareTo(goal) == 0 ->
+                                            DayBoxState.Done
+
+                                        dailyHabit.goalDone > BigDecimal.ZERO &&
+                                                dailyHabit.goalDone < goal ->
+                                            DayBoxState.Uncompleted
+
+                                        else ->
+                                            DayBoxState.Done
+                                    }
+
+                                    BoxUIState(
+                                        day = day,
+                                        dayState = dayState
+                                    )
+                                }
+
+                                emit(result)
+                            }
+                        }
+                    }
+
+                }
+            }
+            .flowOn(Dispatchers.IO)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
 
 
     fun onCLickCard(id:Long) = viewModelScope.launch(Dispatchers.IO){

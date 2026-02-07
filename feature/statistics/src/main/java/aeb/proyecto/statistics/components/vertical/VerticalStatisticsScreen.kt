@@ -4,6 +4,7 @@ import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.statistics.components.common.loading.StatisticsLoading
 import aeb.proyecto.statistics.components.vertical.screens.ContentVerticalStatisticsScreen
 import aeb.proyecto.statistics.components.vertical.screens.NoContentVerticalStatisticsScreen
+import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.statistics.model.StatisticsState
 import aeb.proyecto.statistics.model.StatisticsSuccessState
 import aeb.proyecto.ui.calendar.model.CalendarUIState
@@ -18,6 +19,7 @@ import java.time.YearMonth
 @Composable
 fun VerticalStatisticsScreen(
     statisticsState: StatisticsState,
+    boxUIState: List<BoxUIState>,
     yearMonth: YearMonth,
     startDayOfWeek: DayOfWeek,
     calendarUIState: CalendarUIState<HabitWithDay>,
@@ -38,6 +40,7 @@ fun VerticalStatisticsScreen(
                 is StatisticsSuccessState.Habits ->{
                     ContentVerticalStatisticsScreen(
                         habits = statisticsState.state.habits,
+                        boxUIState = boxUIState,
                         habitSelected = statisticsState.state.habitSelected,
                         yearMonth = yearMonth,
                         startDayOfWeek = startDayOfWeek,
