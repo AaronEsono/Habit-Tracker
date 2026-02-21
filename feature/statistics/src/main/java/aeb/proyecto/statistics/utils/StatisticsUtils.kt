@@ -4,6 +4,8 @@ import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.utils.convertFromSeconds
 import java.math.BigDecimal
 
+val TOTAL_DAYS = 365
+
 fun getTextTotal(goal: BigDecimal?, unit: UnitHabit): String {
     return when (unit) {
         UnitHabit.HOURS -> {

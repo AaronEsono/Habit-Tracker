@@ -2,6 +2,7 @@ package aeb.proyecto.statistics.components.vertical.screens
 
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.statistics.components.common.boxDays.StatisticsBoxDays
 import aeb.proyecto.statistics.components.common.calendar.StatisticsCalendar
 import aeb.proyecto.statistics.components.common.header.HeaderTitle
 import aeb.proyecto.statistics.model.BoxUIState
@@ -21,6 +22,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import java.time.DayOfWeek
 import java.time.YearMonth
 
@@ -38,6 +40,8 @@ fun VerticalHabitSelectedScreen(
 
     BoxWithConstraints {
         val headerHeight = maxHeight * 0.07f
+        val boxHeight = maxHeight * 0.2f
+
 
         Column (
             modifier = Modifier
@@ -59,6 +63,15 @@ fun VerticalHabitSelectedScreen(
                 startDayOfWeek = startDayOfWeek,
                 calendarUIState = calendarUIState,
                 onMonthChange = onMonthChange
+            )
+
+            Spacer(modifier = Modifier.padding(vertical = spacing4))
+
+            StatisticsBoxDays(
+                modifier = Modifier.height(boxHeight),
+                yearMonth = yearMonth,
+                colorHabit = Color(habitSelected.habit.color),
+                startDayOfWeek = startDayOfWeek,
             )
         }
     }
