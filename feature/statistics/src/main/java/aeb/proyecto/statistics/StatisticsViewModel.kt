@@ -214,7 +214,7 @@ class StatisticsViewModel @Inject constructor(
                                     )
                                 }
 
-                                emit(result)
+                                emit(result.asReversed())
                             }
                         }
                     }

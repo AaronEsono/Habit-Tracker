@@ -69,6 +69,7 @@ fun VerticalHabitSelectedScreen(
 
             StatisticsBoxDays(
                 modifier = Modifier.height(boxHeight),
+                boxUIState = boxUIState,
                 yearMonth = yearMonth,
                 colorHabit = Color(habitSelected.habit.color),
                 startDayOfWeek = startDayOfWeek,

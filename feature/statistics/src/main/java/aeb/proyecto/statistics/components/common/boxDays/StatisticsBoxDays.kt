@@ -1,6 +1,7 @@
 package aeb.proyecto.statistics.components.common.boxDays
 
-import aeb.proyecto.statistics.utils.TOTAL_DAYS
+import aeb.proyecto.statistics.model.BoxUIState
+import aeb.proyecto.statistics.model.DayBoxState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import android.annotation.SuppressLint
@@ -10,18 +11,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,20 +33,25 @@ import androidx.compose.ui.unit.dp
 import java.time.DayOfWeek
 import java.time.YearMonth
 
+
+//Faltaria por hacer el dia de la semana
+
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun StatisticsBoxDays(
     modifier: Modifier = Modifier,
+    boxUIState: List<BoxUIState>,
     yearMonth: YearMonth,
     colorHabit: Color,
     startDayOfWeek: DayOfWeek,
-    totalDays: Int = TOTAL_DAYS,
     verticalSpacing: Dp = spacing4,
     horizontalSpacing: Dp = spacing4
-){
+) {
+
+    val weeks = remember (boxUIState){ boxUIState.chunked(7) }
 
     val listState = rememberLazyListState(
-        initialFirstVisibleItemIndex = totalDays - 1
+        initialFirstVisibleItemIndex = (weeks.size - 1).coerceAtLeast(0)
     )
 
     Box(
@@ -76,25 +83,47 @@ fun StatisticsBoxDays(
                 modifier = Modifier.fillMaxSize(),
                 state = listState,
                 horizontalArrangement = Arrangement.spacedBy(horizontalSpacing),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                items(
+                    items = weeks,
+                    key = { week -> week.hashCode()}
+                ) { week ->
 
-                items(totalDays) {
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(verticalSpacing),
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.spacedBy(
+                            verticalSpacing,
+                            Alignment.CenterVertically
+                        ),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        repeat(7) {
+
+                        week.forEach { box ->
                             Box(
                                 modifier = Modifier
                                     .size(squareSize)
                                     .clip(RoundedCornerShape(4.dp))
-                                    .background(colorHabit.copy(alpha = 0.5f))
+                                    .background(
+                                        when (box.dayState) {
+                                            DayBoxState.Done -> colorHabit
+                                            DayBoxState.NotDone -> colorHabit.copy(alpha = 0.1f)
+                                            DayBoxState.Uncompleted -> colorHabit.copy(alpha = 0.4f)
+                                        }
+                                    )
                             )
                         }
+
+                        val emptyDays = 7 - week.size
+
+                        repeat(emptyDays) {
+                            Spacer(Modifier.size(squareSize))
+                        }
                     }
+
                 }
             }
+
         }
     }
 
