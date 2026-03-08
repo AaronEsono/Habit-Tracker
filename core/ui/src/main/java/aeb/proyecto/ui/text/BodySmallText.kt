@@ -40,5 +40,6 @@ fun BodySmallText(
         overflow = overflow,
         maxLines = maxLines,
         minLines = minLines,
+        softWrap = softWrap
     )
 }

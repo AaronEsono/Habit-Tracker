@@ -1,6 +1,5 @@
 package aeb.proyecto.statistics.components.common.boxDays
 
-import aeb.proyecto.statistics.R
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.statistics.model.DayBoxState
 import aeb.proyecto.statistics.utils.getWeeks
@@ -8,21 +7,20 @@ import aeb.proyecto.statistics.utils.label
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
-import aeb.proyecto.ui.text.BodySmallText
-import aeb.proyecto.ui.text.LabelSmallText
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,8 +29,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,15 +38,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import java.time.DayOfWeek
-import java.time.YearMonth
 
 
 //Faltaria por hacer cuadrar el tamaño de los textos de los dias
+// Idea, intentarlo cuadrar con el height, mirar los sp, si son muy pequeños, setearlos a uno mas grande, un minimo posible
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
@@ -107,7 +103,7 @@ fun StatisticsBoxDays(
             val density = LocalDensity.current
 
             val textSize = with(density) {
-                (squareSize * 0.85f).toSp()
+                (squareSize * 0.7f).toSp()
             }
 
             Row(
@@ -115,13 +111,18 @@ fun StatisticsBoxDays(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column (
-                    modifier = Modifier.fillMaxHeight().fillMaxWidth(0.05f),
+                    modifier = Modifier.fillMaxHeight().width(IntrinsicSize.Min),
                     verticalArrangement = Arrangement.spacedBy(
                         verticalSpacing,
                         Alignment.CenterVertically
                     ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
+
+                    LaunchedEffect(Unit) {
+                        Log.e("TextFontSize",textSize.value.toString())
+                    }
+
                     orderedDays.forEach { day ->
                         TextDayWeek(
                             text = stringResource(day.label()),

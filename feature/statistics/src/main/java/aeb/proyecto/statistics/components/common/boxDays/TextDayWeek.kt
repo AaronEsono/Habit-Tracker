@@ -1,19 +1,17 @@
 package aeb.proyecto.statistics.components.common.boxDays
 
-import aeb.proyecto.ui.text.BodySmallText
-import androidx.annotation.Size
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun TextDayWeek(
@@ -22,19 +20,27 @@ fun TextDayWeek(
     textSize: TextUnit,
     size: Dp
 ){
-
     Box(
-        modifier = Modifier.height(size),
-        contentAlignment = Alignment.Center
+        modifier = modifier
+            .height(size),
+        contentAlignment = Alignment.Center,
     ) {
-        BodySmallText(
+        Text(
             text = text,
-            modifier = modifier.height(size).fillMaxWidth().align(Alignment.Center),
-            maxLines = 1,
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontSize = textSize,
+                // Esto elimina el padding interno de la fuente que causa el desvío vertical
+                platformStyle = PlatformTextStyle(
+                    includeFontPadding = false
+                ),
+                // Forzamos que la altura de línea sea igual al tamaño del texto
+                lineHeight = textSize
+            ),
             textAlign = TextAlign.Center,
-            overflow = TextOverflow.Ellipsis,
-            fontSize = textSize,
+            maxLines = 1,
+            overflow = TextOverflow.Visible,
         )
+
     }
 
 }
