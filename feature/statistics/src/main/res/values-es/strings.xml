@@ -5,4 +5,12 @@
 
     <string name="statistics_no_content">Aún no tienes hábitos creados. ¡Crea uno para comenzar a ver tus estadísticas!</string>
 
+    <string name="statistics_abr_mon">Lun</string>
+    <string name="statistics_abr_tue">Mar</string>
+    <string name="statistics_abr_wed">Mié</string>
+    <string name="statistics_abr_thu">Jue</string>
+    <string name="statistics_abr_fri">Vie</string>
+    <string name="statistics_abr_sat">Sáb</string>
+    <string name="statistics_abr_sun">Dom</string>
+
 </resources>

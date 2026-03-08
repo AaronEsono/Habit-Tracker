@@ -67,13 +67,14 @@ fun VerticalHabitSelectedScreen(
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
-            StatisticsBoxDays(
-                modifier = Modifier.height(boxHeight),
-                boxUIState = boxUIState,
-                yearMonth = yearMonth,
-                colorHabit = Color(habitSelected.habit.color),
-                startDayOfWeek = startDayOfWeek,
-            )
+            if(boxUIState.isNotEmpty()){
+                StatisticsBoxDays(
+                    modifier = Modifier.height(boxHeight),
+                    boxUIState = boxUIState,
+                    colorHabit = Color(habitSelected.habit.color),
+                    startDayOfWeek = startDayOfWeek,
+                )
+            }
         }
     }
 

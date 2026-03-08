@@ -24,7 +24,8 @@ fun BodySmallText(
     textAlign: TextAlign? = null,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1
+    minLines: Int = 1,
+    softWrap: Boolean = true
 ) {
     Text(
         text,
@@ -38,6 +39,6 @@ fun BodySmallText(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        minLines = minLines
+        minLines = minLines,
     )
 }

@@ -5,4 +5,12 @@
 
     <string name="statistics_no_content">You don’t have any habits yet. Create one to start seeing your statistics!</string>
 
+    <string name="statistics_abr_mon">Mon</string>
+    <string name="statistics_abr_tue">Tue</string>
+    <string name="statistics_abr_wed">Wed</string>
+    <string name="statistics_abr_thu">Thu</string>
+    <string name="statistics_abr_fri">Fri</string>
+    <string name="statistics_abr_sat">Sat</string>
+    <string name="statistics_abr_sun">Sun</string>
+
 </resources>
