@@ -39,8 +39,8 @@ fun VerticalHabitSelectedScreen(
 
 
     BoxWithConstraints {
-        val headerHeight = maxHeight * 0.07f
-        val boxHeight = maxHeight * 0.2f
+        val headerHeight = maxHeight * 0.1f
+        val boxHeight = maxHeight * 0.25f
 
 
         Column (

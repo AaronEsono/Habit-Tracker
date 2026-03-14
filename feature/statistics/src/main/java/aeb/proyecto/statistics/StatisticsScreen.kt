@@ -51,7 +51,7 @@ fun StatisticsScreen(
 
     // 3. Calendario con los días completados ----- HECHO
 
-    // 4. Sistema de recuadros con los días a lo habitKit
+    // 4. Sistema de recuadros con los días a lo habitKit ----- HECHO
 
     // 5. Sistema de conteo de completados por mes, hacer detalle
 

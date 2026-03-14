@@ -66,7 +66,7 @@ fun HeaderCard(
                 imageVector = habit.icon,
                 contentDescription = "Icon header",
                 modifier = Modifier
-                    .fillMaxSize(0.65f)
+                    .fillMaxSize(0.75f)
                     .align(Alignment.Center),
                 tint = Color(habit.color)
             )

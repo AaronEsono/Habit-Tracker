@@ -42,7 +42,7 @@ fun ContentVerticalStatisticsScreen(
     ){
 
         LazyRow(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.075f).padding(horizontal = spacing8),
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.1f).padding(horizontal = spacing8),
             horizontalArrangement = Arrangement.spacedBy(spacing8)
         ){
             items(

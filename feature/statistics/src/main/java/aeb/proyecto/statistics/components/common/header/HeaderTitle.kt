@@ -5,11 +5,14 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelSmallText
+import aeb.proyecto.ui.text.TitleLargeText
 import aeb.proyecto.ui.text.TitleMediumText
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -25,17 +28,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun HeaderTitle(
     modifier: Modifier = Modifier,
     habit: Habit
 ) {
 
-    Box(
+    BoxWithConstraints(
         modifier = modifier
             .padding(horizontal = spacing4)
             .clip(RoundedCornerShape(spacing6))
@@ -44,12 +49,18 @@ fun HeaderTitle(
             .fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
+        val density = LocalDensity.current
+        val textSize = with(density) {
+            (maxHeight * 0.45f).toSp()
+        }
 
-        TitleMediumText(
+
+        TitleLargeText(
             text = habit.name,
             textAlign = TextAlign.Center,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            fontSize = textSize
         )
 
         Row(
