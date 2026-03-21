@@ -4,7 +4,6 @@ import aeb.proyecto.statistics.components.vertical.VerticalStatisticsScreen
 import aeb.proyecto.ui.orientation.Orientation
 import aeb.proyecto.ui.orientation.getOrientation
 import aeb.proyecto.ui.text.LabelLargeText
-import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.topbar.providers.ProvideAppBarTitle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource

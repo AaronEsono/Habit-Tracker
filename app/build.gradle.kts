@@ -12,7 +12,7 @@ plugins {
 
 android {
     namespace = "aeb.proyecto.habittracker"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "aeb.proyecto.habittracker"
@@ -54,13 +54,15 @@ android {
         unitTests.isIncludeAndroidResources = true
     }
 
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
+    }
+
     buildFeatures{
         compose = true
         buildConfig = true
-    }
-
-    kotlinOptions{
-        jvmTarget = "11"
     }
 
     composeOptions {

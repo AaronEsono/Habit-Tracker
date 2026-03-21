@@ -4,6 +4,7 @@ import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.statistics.components.common.boxDays.StatisticsBoxDays
 import aeb.proyecto.statistics.components.common.calendar.StatisticsCalendar
+import aeb.proyecto.statistics.components.common.graphics.monthGraphics.MonthGraphics
 import aeb.proyecto.statistics.components.common.header.HeaderTitle
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.ui.calendar.model.CalendarUIState
@@ -75,6 +76,10 @@ fun VerticalHabitSelectedScreen(
                     startDayOfWeek = startDayOfWeek,
                 )
             }
+
+            Spacer(modifier = Modifier.padding(vertical = spacing4))
+
+            MonthGraphics()
         }
     }
 
