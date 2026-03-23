@@ -8,6 +8,7 @@ import aeb.proyecto.statistics.components.common.graphics.monthGraphics.MonthGra
 import aeb.proyecto.statistics.components.common.header.HeaderTitle
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.ui.calendar.model.CalendarUIState
+import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.text.LabelMediumText
