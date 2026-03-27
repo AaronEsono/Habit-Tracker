@@ -7,6 +7,7 @@ import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.statistics.model.DayBoxState
+import aeb.proyecto.statistics.model.GraphicsState
 import aeb.proyecto.statistics.model.NUMBER_OF_DAYS
 import aeb.proyecto.statistics.model.StatisticsState
 import aeb.proyecto.statistics.model.StatisticsSuccessState
@@ -15,6 +16,8 @@ import aeb.proyecto.ui.calendar.source.CalendarDataSource
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModel
+import com.patrykandpatrick.vico.core.cartesian.data.LineCartesianLayerModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,6 +40,7 @@ import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.Year
 import java.time.YearMonth
 import javax.inject.Inject
 import kotlin.collections.emptyList
@@ -49,6 +53,10 @@ class StatisticsViewModel @Inject constructor(
 
     private val _yearMonth:MutableStateFlow<YearMonth> = MutableStateFlow(YearMonth.now())
     val yearMonth:StateFlow<YearMonth> = _yearMonth.asStateFlow()
+
+    private val _yearGraphicsSelected = MutableStateFlow(LocalDate.now().year)
+    val yearGraphicsSelected: StateFlow<Int> = _yearGraphicsSelected.asStateFlow()
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val statisticsState: StateFlow<StatisticsState> =
@@ -228,6 +236,62 @@ class StatisticsViewModel @Inject constructor(
                 initialValue = emptyList()
             )
 
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val graphicsState: StateFlow<GraphicsState> =
+        combine(
+            yearGraphicsSelected,
+            statisticsState
+        ) { year, state -> year to state }
+            .flatMapLatest { (year, state) ->
+                flow {
+                    when(state){
+                        is StatisticsState.Error, StatisticsState.Loading -> {
+                            emit(GraphicsState())
+                        }
+                        is StatisticsState.Success -> {
+                            if(state.state is StatisticsSuccessState.Empty){
+                                emit(GraphicsState())
+                            }else{
+                                val successState = state.state
+                                val selected = (successState as StatisticsSuccessState.Habits).habitSelected
+                                val goal = selected.habit.goal
+
+                                val completedByMonth = selected.dailyHabits
+                                    .filter {
+                                        it.date.year == year &&
+                                                it.goalDone.compareTo(goal) >= 0
+                                    }
+                                    .groupBy { it.date.monthValue }
+
+
+                                val yValues = (1..12).map { month ->
+                                    completedByMonth[month]?.size?.toDouble() ?: 0.0
+                                }
+
+
+                                val chartModel = CartesianChartModel(
+                                    LineCartesianLayerModel.build {
+                                        series(yValues)
+                                    }
+                                )
+
+                                emit(GraphicsState(
+                                    color = selected.habit.color,
+                                    model = chartModel
+                                ))
+                            }
+                        }
+                    }
+
+                }
+            }
+            .flowOn(Dispatchers.IO)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = GraphicsState()
+            )
 
     fun onCLickCard(id:Long) = viewModelScope.launch(Dispatchers.IO){
         getHabitSelectedUseCase.setHabitSelected(id)

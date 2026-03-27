@@ -26,12 +26,14 @@ fun StatisticsScreen(
     val calendarState = viewModel.calendarUIState.collectAsStateWithLifecycle().value
     val startDayOfWeek = viewModel.dayOfWeek.collectAsStateWithLifecycle().value
     val boxUIState = viewModel.boxUIState.collectAsStateWithLifecycle().value
+    val graphicsState = viewModel.graphicsState.collectAsStateWithLifecycle().value
 
     when(orientation){
         Orientation.Portrait -> {
             VerticalStatisticsScreen(
                 statisticsState = statisticsState,
                 boxUIState = boxUIState,
+                graphicsState = graphicsState,
                 yearMonth = yearMonth,
                 startDayOfWeek = startDayOfWeek,
                 calendarUIState = calendarState,

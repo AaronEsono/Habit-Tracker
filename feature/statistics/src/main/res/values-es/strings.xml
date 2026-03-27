@@ -13,4 +13,17 @@
     <string name="statistics_abr_sat">Sáb</string>
     <string name="statistics_abr_sun">Dom</string>
 
+    <string name="statistics_jan_abv">Ene</string>
+    <string name="statistics_feb_abv">Feb</string>
+    <string name="statistics_mar_abv">Mar</string>
+    <string name="statistics_apr_abv">Abr</string>
+    <string name="statistics_may_abv">May</string>
+    <string name="statistics_jun_abv">Jun</string>
+    <string name="statistics_jul_abv">Jul</string>
+    <string name="statistics_aug_abv">Ago</string>
+    <string name="statistics_sep_abv">Sep</string>
+    <string name="statistics_oct_abv">Oct</string>
+    <string name="statistics_nov_abv">Nov</string>
+    <string name="statistics_dec_abv">Dic</string>
+
 </resources>

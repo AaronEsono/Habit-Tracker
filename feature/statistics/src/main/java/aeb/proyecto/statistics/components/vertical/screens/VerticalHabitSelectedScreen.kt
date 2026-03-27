@@ -7,6 +7,7 @@ import aeb.proyecto.statistics.components.common.calendar.StatisticsCalendar
 import aeb.proyecto.statistics.components.common.graphics.monthGraphics.MonthGraphics
 import aeb.proyecto.statistics.components.common.header.HeaderTitle
 import aeb.proyecto.statistics.model.BoxUIState
+import aeb.proyecto.statistics.model.GraphicsState
 import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
@@ -33,6 +34,7 @@ import java.time.YearMonth
 fun VerticalHabitSelectedScreen(
     habitSelected: HabitWithDailyHabit,
     boxUIState: List<BoxUIState>,
+    graphicsState: GraphicsState,
     yearMonth: YearMonth,
     startDayOfWeek: DayOfWeek,
     calendarUIState: CalendarUIState<HabitWithDay>,
@@ -80,7 +82,9 @@ fun VerticalHabitSelectedScreen(
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
-            MonthGraphics()
+            MonthGraphics(
+                graphicsState = graphicsState
+            )
         }
     }
 

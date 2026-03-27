@@ -1,5 +1,6 @@
 package aeb.proyecto.statistics.components.common.graphics.monthGraphics
 
+import aeb.proyecto.statistics.components.common.graphics.utils.monthLabelKeys
 import aeb.proyecto.statistics.model.GraphicsState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisGuidelineComponent
@@ -34,15 +36,13 @@ import com.patrykandpatrick.vico.compose.common.component.rememberShapeComponent
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
 import com.patrykandpatrick.vico.compose.common.fill
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModel
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.cartesian.data.LineCartesianLayerModel
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.cartesian.marker.DefaultCartesianMarker
 import com.patrykandpatrick.vico.core.common.Dimensions
 import com.patrykandpatrick.vico.core.common.shape.Shape
 
-
-private val x = (2010..2023).toList()
-private val y = listOf<Number>(0.28, 43, 3.1, 5.8, 15, 12, 29, 39, 0.54, 56, 54, 86, 12, 93)
 
 
 @Composable
@@ -51,78 +51,81 @@ fun MonthGraphics(
     graphicsState: GraphicsState = GraphicsState()
 ){
 
+    if(graphicsState.model != null){
+        val context = LocalContext.current
+        val monthLabels = remember(context) {
+            monthLabelKeys.map { context.getString(it) }
+        }
 
-    val myLineProvider = LineCartesianLayer.LineProvider.series(
-        // Usamos rememberLine que es lo que aparece en tu código fuente
-        rememberLine(
-            // Definimos el color de la línea
-            fill = LineCartesianLayer.LineFill.single(
-                fill(Color.Green)
-            ),
-            thickness = spacing2 // Grosor de la línea
-        )
-    )
-
-
-    val marker = DefaultCartesianMarker(
-        label = rememberTextComponent(
-            color = MaterialTheme.colorScheme.onSurface
-        ),
-        guideline = rememberLineComponent(MaterialTheme.colorScheme.onSurface, spacing1)
-    )
-
-    val model = remember {
-        CartesianChartModel(
-            LineCartesianLayerModel.build {
-                series(x, y)
-            }
-        )
-    }
-
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = spacing6)
-            .border(
-                1.dp,
-                MaterialTheme.colorScheme.outline,
-                RoundedCornerShape(spacing6)
+        val myLineProvider = LineCartesianLayer.LineProvider.series(
+            // Usamos rememberLine que es lo que aparece en tu código fuente
+            rememberLine(
+                // Definimos el color de la línea
+                fill = LineCartesianLayer.LineFill.single(
+                    fill(Color(graphicsState.color))
+                ),
+                thickness = spacing2 // Grosor de la línea
             )
-            .background(MaterialTheme.colorScheme.surfaceTint)
-    ) {
-        CartesianChartHost(
-            chart = rememberCartesianChart(
-                layers = arrayOf(rememberLineCartesianLayer(
-                    lineProvider = myLineProvider,
-                )),
-                startAxis = rememberStartAxis(
-                    line = rememberAxisLineComponent(
-                        color = MaterialTheme.colorScheme.scrim
-                    ),
-                    label = rememberAxisLabelComponent(
-                        color = MaterialTheme.colorScheme.onSurface
-                    ),
-                    guideline = rememberAxisGuidelineComponent(
-                        color = MaterialTheme.colorScheme.outline
-                    )
-                ),
-                bottomAxis = rememberBottomAxis(
-                    line = rememberAxisLineComponent(
-                        color = MaterialTheme.colorScheme.scrim
-                    ),
-                    labelRotationDegrees = 45f,
-                    label = rememberAxisLabelComponent(
-                        color = MaterialTheme.colorScheme.onSurface
-                    ),
-                    guideline = rememberAxisGuidelineComponent(
-                        color = MaterialTheme.colorScheme.outline
-                    )
-                ),
-                marker = marker
-            ),
-            model = model,
-            modifier = Modifier.padding(horizontal = spacing6)
         )
+
+        val bottomAxisValueFormatter = CartesianValueFormatter { x, _, _ ->
+            monthLabels.getOrElse(x.toInt()) { "" }
+        }
+
+        val marker = DefaultCartesianMarker(
+            label = rememberTextComponent(
+                color = MaterialTheme.colorScheme.onSurface
+            ),
+            guideline = rememberLineComponent(MaterialTheme.colorScheme.onSurface, spacing1)
+        )
+
+
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = spacing6)
+                .border(
+                    1.dp,
+                    MaterialTheme.colorScheme.outline,
+                    RoundedCornerShape(spacing6)
+                )
+                .background(MaterialTheme.colorScheme.surfaceTint)
+        ) {
+            CartesianChartHost(
+                chart = rememberCartesianChart(
+                    layers = arrayOf(rememberLineCartesianLayer(
+                        lineProvider = myLineProvider,
+                    )),
+                    startAxis = rememberStartAxis(
+                        line = rememberAxisLineComponent(
+                            color = MaterialTheme.colorScheme.scrim
+                        ),
+                        label = rememberAxisLabelComponent(
+                            color = MaterialTheme.colorScheme.onSurface
+                        ),
+                        guideline = rememberAxisGuidelineComponent(
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                    ),
+                    bottomAxis = rememberBottomAxis(
+                        line = rememberAxisLineComponent(
+                            color = MaterialTheme.colorScheme.scrim
+                        ),
+                        labelRotationDegrees = 45f,
+                        label = rememberAxisLabelComponent(
+                            color = MaterialTheme.colorScheme.onSurface
+                        ),
+                        guideline = rememberAxisGuidelineComponent(
+                            color = MaterialTheme.colorScheme.outline
+                        ),
+                        valueFormatter = bottomAxisValueFormatter
+                    ),
+                    marker = marker
+                ),
+                model = graphicsState.model,
+                modifier = Modifier.padding(horizontal = spacing6)
+            )
+        }
     }
 
 }
