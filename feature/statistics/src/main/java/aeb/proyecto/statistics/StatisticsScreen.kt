@@ -27,6 +27,7 @@ fun StatisticsScreen(
     val startDayOfWeek = viewModel.dayOfWeek.collectAsStateWithLifecycle().value
     val boxUIState = viewModel.boxUIState.collectAsStateWithLifecycle().value
     val graphicsState = viewModel.graphicsState.collectAsStateWithLifecycle().value
+    val yearGraphicsSelected = viewModel.yearGraphicsSelected.collectAsStateWithLifecycle().value
 
     when(orientation){
         Orientation.Portrait -> {
@@ -35,10 +36,12 @@ fun StatisticsScreen(
                 boxUIState = boxUIState,
                 graphicsState = graphicsState,
                 yearMonth = yearMonth,
+                yearGraphicsSelected = yearGraphicsSelected,
                 startDayOfWeek = startDayOfWeek,
                 calendarUIState = calendarState,
                 onCLickCard = viewModel::onCLickCard,
-                onMonthChange = viewModel::onMonthButtonClicked
+                onMonthChange = viewModel::onMonthButtonClicked,
+                onYearSelected = viewModel::onYearSelected
             )
         }
         Orientation.Landscape -> {}
@@ -54,7 +57,7 @@ fun StatisticsScreen(
 
     // 4. Sistema de recuadros con los días a lo habitKit ----- HECHO
 
-    // 5. Sistema de conteo de completados por mes, hacer detalle
+    // 5. Sistema de conteo de completados por mes, hacer detalle ----- HECHO
 
     // 6. Sistema de conteo de completados por hora, hacer detalle, en este hacer histórico?
 

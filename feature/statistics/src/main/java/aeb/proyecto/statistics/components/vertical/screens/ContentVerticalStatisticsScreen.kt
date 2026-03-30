@@ -33,10 +33,12 @@ fun ContentVerticalStatisticsScreen(
     graphicsState: GraphicsState,
     habitSelected: HabitWithDailyHabit,
     yearMonth: YearMonth,
+    yearGraphicsSelected: Int,
     startDayOfWeek: DayOfWeek,
     calendarUIState: CalendarUIState<HabitWithDay>,
     onClickCard: (id:Long) -> Unit,
-    onMonthChange: (YearMonth) -> Unit
+    onMonthChange: (YearMonth) -> Unit,
+    onYearSelected: (Boolean) -> Unit = {}
 ){
 
     Column (
@@ -69,9 +71,11 @@ fun ContentVerticalStatisticsScreen(
             boxUIState = boxUIState,
             graphicsState = graphicsState,
             yearMonth = yearMonth,
+            yearGraphicsSelected = yearGraphicsSelected,
             startDayOfWeek = startDayOfWeek,
             calendarUIState = calendarUIState,
-            onMonthChange = onMonthChange
+            onMonthChange = onMonthChange,
+            onYearSelected = onYearSelected
         )
     }
 

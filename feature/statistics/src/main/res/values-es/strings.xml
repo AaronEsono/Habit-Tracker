@@ -26,4 +26,6 @@
     <string name="statistics_nov_abv">Nov</string>
     <string name="statistics_dec_abv">Dic</string>
 
+    <string name="statistics_label_graphics">Número de hábitos completados por mes</string>
+
 </resources>

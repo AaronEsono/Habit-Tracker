@@ -36,9 +36,11 @@ fun VerticalHabitSelectedScreen(
     boxUIState: List<BoxUIState>,
     graphicsState: GraphicsState,
     yearMonth: YearMonth,
+    yearGraphicsSelected: Int,
     startDayOfWeek: DayOfWeek,
     calendarUIState: CalendarUIState<HabitWithDay>,
-    onMonthChange: (YearMonth) -> Unit
+    onMonthChange: (YearMonth) -> Unit,
+    onYearSelected: (Boolean) -> Unit = {}
 ){
 
 
@@ -83,7 +85,9 @@ fun VerticalHabitSelectedScreen(
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
             MonthGraphics(
-                graphicsState = graphicsState
+                graphicsState = graphicsState,
+                yearGraphicsSelected = yearGraphicsSelected,
+                onYearSelected = onYearSelected
             )
         }
     }

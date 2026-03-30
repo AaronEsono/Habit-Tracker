@@ -5,6 +5,7 @@ import aeb.proyecto.domain.usecase.statistics.GetHabitsStatisticsUseCase
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.statistics.model.DayBoxState
 import aeb.proyecto.statistics.model.GraphicsState
@@ -256,11 +257,19 @@ class StatisticsViewModel @Inject constructor(
                                 val successState = state.state
                                 val selected = (successState as StatisticsSuccessState.Habits).habitSelected
                                 val goal = selected.habit.goal
+                                val typeHabit = selected.habit.typeHabit
 
                                 val completedByMonth = selected.dailyHabits
-                                    .filter {
-                                        it.date.year == year &&
-                                                it.goalDone.compareTo(goal) >= 0
+                                    .filter { it.date.year == year } // Primero filtramos el año
+                                    .filter { habitDay ->
+                                        when (typeHabit) {
+                                            is TypeHabit.Daily, is TypeHabit.Recurring -> {
+                                                habitDay.goalDone.compareTo(goal) >= 0
+                                            }
+                                            else -> {
+                                                habitDay.goalDone.compareTo(java.math.BigDecimal.ZERO) > 0
+                                            }
+                                        }
                                     }
                                     .groupBy { it.date.monthValue }
 
@@ -299,6 +308,16 @@ class StatisticsViewModel @Inject constructor(
 
     fun onMonthButtonClicked(yearMonth: YearMonth){
         _yearMonth.update {yearMonth}
+    }
+
+    fun onYearSelected(isNext: Boolean){
+        _yearGraphicsSelected.update {
+            if(isNext){
+                it + 1
+            }else{
+                it - 1
+            }
+        }
     }
 
 }

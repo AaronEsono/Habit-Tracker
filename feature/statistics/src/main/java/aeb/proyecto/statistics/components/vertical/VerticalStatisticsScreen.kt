@@ -23,10 +23,12 @@ fun VerticalStatisticsScreen(
     boxUIState: List<BoxUIState>,
     graphicsState: GraphicsState,
     yearMonth: YearMonth,
+    yearGraphicsSelected: Int,
     startDayOfWeek: DayOfWeek,
     calendarUIState: CalendarUIState<HabitWithDay>,
     onCLickCard: (id:Long) -> Unit,
-    onMonthChange: (YearMonth) -> Unit
+    onMonthChange: (YearMonth) -> Unit,
+    onYearSelected: (Boolean) -> Unit = {}
 ){
 
     when(statisticsState){
@@ -46,10 +48,12 @@ fun VerticalStatisticsScreen(
                         graphicsState = graphicsState,
                         habitSelected = statisticsState.state.habitSelected,
                         yearMonth = yearMonth,
+                        yearGraphicsSelected = yearGraphicsSelected,
                         startDayOfWeek = startDayOfWeek,
                         calendarUIState = calendarUIState,
                         onClickCard = onCLickCard,
-                        onMonthChange = onMonthChange
+                        onMonthChange = onMonthChange,
+                        onYearSelected = onYearSelected
                     )
                 }
             }

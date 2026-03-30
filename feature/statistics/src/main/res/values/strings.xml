@@ -25,4 +25,6 @@
     <string name="statistics_oct_abv">Oct</string>
     <string name="statistics_nov_abv">Nov</string>
     <string name="statistics_dec_abv">Dec</string>
+
+    <string name="statistics_label_graphics">Number of completed habits per month</string>
 </resources>
