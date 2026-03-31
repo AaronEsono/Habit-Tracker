@@ -4,6 +4,8 @@ import aeb.proyecto.statistics.R
 import aeb.proyecto.statistics.components.common.graphics.utils.monthLabelKeys
 import aeb.proyecto.statistics.model.GraphicsState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing1
+import aeb.proyecto.ui.dimmens.Dimmens.spacing10
+import aeb.proyecto.ui.dimmens.Dimmens.spacing12
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
@@ -20,6 +22,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
@@ -31,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -62,6 +66,20 @@ fun MonthGraphics(
     yearGraphicsSelected: Int,
     onYearSelected: (Boolean) -> Unit = {}
 ){
+
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+
+    // --- Lógica Responsive ---
+    val isTablet = configuration.screenWidthDp > 600
+    val scaleFactor = if (isTablet) 1.4f else 1.0f
+
+    // Estilos de texto adaptativos (puedes usar copy para cambiar solo el tamaño)
+    val titleSize = MaterialTheme.typography.titleSmall.fontSize * scaleFactor
+    val labelSize = MaterialTheme.typography.labelLarge.fontSize * scaleFactor
+    val iconSize = 20.dp * scaleFactor
+
+    // ... (tus definiciones de myLineProvider, monthLabels, etc.)
 
     if(graphicsState.model != null){
         val context = LocalContext.current
@@ -110,12 +128,13 @@ fun MonthGraphics(
                 TitleSmallText(
                     text = stringResource(R.string.statistics_label_graphics),
                     color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(start = spacing8),
+                    modifier = Modifier.padding(start = spacing12),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    fontSize = titleSize
                 )
 
-                Spacer(modifier = Modifier.padding(vertical = spacing1))
+                Spacer(modifier = Modifier.padding(vertical = spacing2))
 
                 Row (
                     Modifier.padding(start = spacing4),
@@ -125,31 +144,32 @@ fun MonthGraphics(
                     Icon(
                         Icons.Filled.ArrowBackIosNew,
                         contentDescription = "arrow back year selected",
-                        tint = MaterialTheme.colorScheme.outline,
+                        tint = MaterialTheme.colorScheme.scrim,
                         modifier = Modifier.clickable(
                             interactionSource = null,
                             indication = null
                         ){
                             onYearSelected(false)
-                        }
+                        }.size(iconSize)
                     )
 
                     LabelLargeText(
                         text = yearGraphicsSelected.toString(),
-                        modifier = Modifier.padding(horizontal = spacing4),
-                        color = MaterialTheme.colorScheme.onSurface
+                        modifier = Modifier.padding(horizontal = spacing2),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = labelSize
                     )
 
                     Icon(
                         Icons.AutoMirrored.Filled.ArrowForwardIos,
                         contentDescription = "arrow forward year selected",
-                        tint = MaterialTheme.colorScheme.outline,
+                        tint = MaterialTheme.colorScheme.scrim,
                         modifier = Modifier.clickable(
                             interactionSource = null,
                             indication = null
                         ){
                             onYearSelected(true)
-                        }
+                        }.size(iconSize)
                     )
                 }
 
