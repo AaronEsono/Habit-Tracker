@@ -27,7 +27,10 @@ fun StatisticsScreen(
     val startDayOfWeek = viewModel.dayOfWeek.collectAsStateWithLifecycle().value
     val boxUIState = viewModel.boxUIState.collectAsStateWithLifecycle().value
     val graphicsState = viewModel.graphicsState.collectAsStateWithLifecycle().value
+    val hourlyGraphicsState = viewModel.hourlyGraphicsState.collectAsStateWithLifecycle().value
+    val yearHourlyGraphicsSelected = viewModel.yearHourlyGraphicsSelected.collectAsStateWithLifecycle().value
     val yearGraphicsSelected = viewModel.yearGraphicsSelected.collectAsStateWithLifecycle().value
+
 
     when(orientation){
         Orientation.Portrait -> {
@@ -35,13 +38,16 @@ fun StatisticsScreen(
                 statisticsState = statisticsState,
                 boxUIState = boxUIState,
                 graphicsState = graphicsState,
+                hourlyGraphicsState = hourlyGraphicsState,
                 yearMonth = yearMonth,
+                yearHourlyGraphicsSelected = yearHourlyGraphicsSelected,
                 yearGraphicsSelected = yearGraphicsSelected,
                 startDayOfWeek = startDayOfWeek,
                 calendarUIState = calendarState,
                 onCLickCard = viewModel::onCLickCard,
                 onMonthChange = viewModel::onMonthButtonClicked,
-                onYearSelected = viewModel::onYearSelected
+                onYearSelected = viewModel::onYearSelected,
+                onHourYearSelected = viewModel::onHourYearSelected
             )
         }
         Orientation.Landscape -> {}
@@ -59,7 +65,7 @@ fun StatisticsScreen(
 
     // 5. Sistema de conteo de completados por mes, hacer detalle ----- HECHO
 
-    // 6. Sistema de conteo de completados por hora, hacer detalle, en este hacer histórico?
+    // 6. Sistema de conteo de completados por hora, hacer detalle, en este hacer histórico? ----- HECHO
 
     // 7. Dos recuadros, en uno mostrar los completados total, y en otro la racha actual y la mejor racha
     // A lo mejor las rachas separarlos en dos

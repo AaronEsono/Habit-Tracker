@@ -4,6 +4,7 @@ import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.statistics.components.common.boxDays.StatisticsBoxDays
 import aeb.proyecto.statistics.components.common.calendar.StatisticsCalendar
+import aeb.proyecto.statistics.components.common.graphics.hourGraphics.HourGraphics
 import aeb.proyecto.statistics.components.common.graphics.monthGraphics.MonthGraphics
 import aeb.proyecto.statistics.components.common.header.HeaderTitle
 import aeb.proyecto.statistics.model.BoxUIState
@@ -35,12 +36,15 @@ fun VerticalHabitSelectedScreen(
     habitSelected: HabitWithDailyHabit,
     boxUIState: List<BoxUIState>,
     graphicsState: GraphicsState,
+    hourlyGraphicsState: GraphicsState,
     yearMonth: YearMonth,
     yearGraphicsSelected: Int,
+    yearHourlyGraphicsSelected: Int,
     startDayOfWeek: DayOfWeek,
     calendarUIState: CalendarUIState<HabitWithDay>,
     onMonthChange: (YearMonth) -> Unit,
-    onYearSelected: (Boolean) -> Unit = {}
+    onYearSelected: (Boolean) -> Unit = {},
+    onHourYearSelected: (Boolean) -> Unit = {}
 ){
 
 
@@ -88,6 +92,14 @@ fun VerticalHabitSelectedScreen(
                 graphicsState = graphicsState,
                 yearGraphicsSelected = yearGraphicsSelected,
                 onYearSelected = onYearSelected
+            )
+
+            Spacer(modifier = Modifier.padding(vertical = spacing4))
+
+            HourGraphics(
+                graphicsState = hourlyGraphicsState,
+                yearGraphicsSelected = yearHourlyGraphicsSelected,
+                onYearSelected = onHourYearSelected
             )
         }
     }

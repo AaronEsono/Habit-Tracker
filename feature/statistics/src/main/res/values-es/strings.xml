@@ -27,5 +27,6 @@
     <string name="statistics_dec_abv">Dic</string>
 
     <string name="statistics_label_graphics">Número de hábitos completados por mes</string>
+    <string name="statistics_label_graphics_hour">Número de hábitos completados cada hora</string>
 
 </resources>

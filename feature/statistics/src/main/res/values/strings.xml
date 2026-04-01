@@ -27,4 +27,6 @@
     <string name="statistics_dec_abv">Dec</string>
 
     <string name="statistics_label_graphics">Number of completed habits per month</string>
+    <string name="statistics_label_graphics_hour">Number of completed habits per hour</string>
+
 </resources>

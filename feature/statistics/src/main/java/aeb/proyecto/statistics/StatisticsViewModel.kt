@@ -58,6 +58,9 @@ class StatisticsViewModel @Inject constructor(
     private val _yearGraphicsSelected = MutableStateFlow(LocalDate.now().year)
     val yearGraphicsSelected: StateFlow<Int> = _yearGraphicsSelected.asStateFlow()
 
+    private val _yearHourlyGraphicsSelected = MutableStateFlow(LocalDate.now().year)
+    val yearHourlyGraphicsSelected: StateFlow<Int> = _yearHourlyGraphicsSelected.asStateFlow()
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val statisticsState: StateFlow<StatisticsState> =
@@ -267,7 +270,7 @@ class StatisticsViewModel @Inject constructor(
                                                 habitDay.goalDone.compareTo(goal) >= 0
                                             }
                                             else -> {
-                                                habitDay.goalDone.compareTo(java.math.BigDecimal.ZERO) > 0
+                                                habitDay.goalDone.compareTo(BigDecimal.ZERO) > 0
                                             }
                                         }
                                     }
@@ -302,6 +305,71 @@ class StatisticsViewModel @Inject constructor(
                 initialValue = GraphicsState()
             )
 
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val hourlyGraphicsState: StateFlow<GraphicsState> =
+        combine(
+            yearHourlyGraphicsSelected,
+            statisticsState
+        ) { year, state -> year to state }
+            .flatMapLatest { (year, state) ->
+                flow {
+                    when (state) {
+                        is StatisticsState.Error, StatisticsState.Loading -> {
+                            emit(GraphicsState())
+                        }
+                        is StatisticsState.Success -> {
+                            val successState = state.state
+                            if (successState is StatisticsSuccessState.Habits) {
+                                val selected = successState.habitSelected
+                                val goal = selected.habit.goal
+                                val typeHabit = selected.habit.typeHabit
+
+                                // 1. Filtrar por año y por éxito (misma lógica que el mensual)
+                                val completedByHour = selected.dailyHabits
+                                    .filter { it.date.year == year }
+                                    .filter { habitDay ->
+                                        when (typeHabit) {
+                                            is TypeHabit.Daily, is TypeHabit.Recurring -> {
+                                                habitDay.goalDone.compareTo(goal) >= 0
+                                            }
+                                            else -> {
+                                                habitDay.goalDone.compareTo(java.math.BigDecimal.ZERO) > 0
+                                            }
+                                        }
+                                    }
+                                    // 2. Agrupar por la HORA de finalización (0..23)
+                                    .groupBy { it.hourFinishDate.hour }
+
+                                // 3. Crear lista de 24 elementos (uno por cada hora del día)
+                                val yValues = (0..23).map { hour ->
+                                    completedByHour[hour]?.size?.toDouble() ?: 0.0
+                                }
+
+                                val chartModel = CartesianChartModel(
+                                    LineCartesianLayerModel.build {
+                                        series(yValues)
+                                    }
+                                )
+
+                                emit(GraphicsState(
+                                    color = selected.habit.color,
+                                    model = chartModel
+                                ))
+                            } else {
+                                emit(GraphicsState())
+                            }
+                        }
+                    }
+                }
+            }
+            .flowOn(Dispatchers.Default)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = GraphicsState()
+            )
+
     fun onCLickCard(id:Long) = viewModelScope.launch(Dispatchers.IO){
         getHabitSelectedUseCase.setHabitSelected(id)
     }
@@ -312,6 +380,16 @@ class StatisticsViewModel @Inject constructor(
 
     fun onYearSelected(isNext: Boolean){
         _yearGraphicsSelected.update {
+            if(isNext){
+                it + 1
+            }else{
+                it - 1
+            }
+        }
+    }
+
+    fun onHourYearSelected(isNext: Boolean){
+        _yearHourlyGraphicsSelected.update {
             if(isNext){
                 it + 1
             }else{
