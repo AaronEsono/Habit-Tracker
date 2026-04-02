@@ -12,6 +12,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.TitleSmallText
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -173,40 +174,44 @@ fun MonthGraphics(
                     )
                 }
 
-                CartesianChartHost(
-                    chart = rememberCartesianChart(
-                        layers = arrayOf(rememberLineCartesianLayer(
-                            lineProvider = myLineProvider,
-                        )),
-                        startAxis = rememberStartAxis(
-                            line = rememberAxisLineComponent(
-                                color = MaterialTheme.colorScheme.scrim
-                            ),
-                            label = rememberAxisLabelComponent(
-                                color = MaterialTheme.colorScheme.onSurface
-                            ),
-                            guideline = rememberAxisGuidelineComponent(
-                                color = MaterialTheme.colorScheme.outline
-                            )
-                        ),
-                        bottomAxis = rememberBottomAxis(
-                            line = rememberAxisLineComponent(
-                                color = MaterialTheme.colorScheme.scrim
-                            ),
-                            labelRotationDegrees = 45f,
-                            label = rememberAxisLabelComponent(
-                                color = MaterialTheme.colorScheme.onSurface
-                            ),
-                            guideline = rememberAxisGuidelineComponent(
-                                color = MaterialTheme.colorScheme.outline
-                            ),
-                            valueFormatter = bottomAxisValueFormatter
-                        ),
-                        marker = marker
-                    ),
-                    model = graphicsState.model,
+                AnimatedContent(
+                    targetState = graphicsState.model,
                     modifier = Modifier.padding(horizontal = spacing6)
-                )
+                ) { modelState ->
+                    CartesianChartHost(
+                        chart = rememberCartesianChart(
+                            layers = arrayOf(rememberLineCartesianLayer(
+                                lineProvider = myLineProvider,
+                            )),
+                            startAxis = rememberStartAxis(
+                                line = rememberAxisLineComponent(
+                                    color = MaterialTheme.colorScheme.scrim
+                                ),
+                                label = rememberAxisLabelComponent(
+                                    color = MaterialTheme.colorScheme.onSurface
+                                ),
+                                guideline = rememberAxisGuidelineComponent(
+                                    color = MaterialTheme.colorScheme.outline
+                                )
+                            ),
+                            bottomAxis = rememberBottomAxis(
+                                line = rememberAxisLineComponent(
+                                    color = MaterialTheme.colorScheme.scrim
+                                ),
+                                labelRotationDegrees = 45f,
+                                label = rememberAxisLabelComponent(
+                                    color = MaterialTheme.colorScheme.onSurface
+                                ),
+                                guideline = rememberAxisGuidelineComponent(
+                                    color = MaterialTheme.colorScheme.outline
+                                ),
+                                valueFormatter = bottomAxisValueFormatter
+                            ),
+                            marker = marker
+                        ),
+                        model = modelState
+                    )
+                }
             }
         }
     }

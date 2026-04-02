@@ -4,16 +4,19 @@ import aeb.proyecto.domain.usecase.statistics.GetHabitSelectedUseCase
 import aeb.proyecto.domain.usecase.statistics.GetHabitsStatisticsUseCase
 import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.HabitDay
+import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.statistics.model.DayBoxState
+import aeb.proyecto.statistics.model.GoalsDoneState
 import aeb.proyecto.statistics.model.GraphicsState
 import aeb.proyecto.statistics.model.NUMBER_OF_DAYS
 import aeb.proyecto.statistics.model.StatisticsState
 import aeb.proyecto.statistics.model.StatisticsSuccessState
 import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.calendar.source.CalendarDataSource
+import android.R.attr.firstDayOfWeek
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,6 +46,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Year
 import java.time.YearMonth
+import java.time.temporal.TemporalAdjusters
 import javax.inject.Inject
 import kotlin.collections.emptyList
 
@@ -370,6 +374,46 @@ class StatisticsViewModel @Inject constructor(
                 initialValue = GraphicsState()
             )
 
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val goalsDoneState: StateFlow<GoalsDoneState> =
+        combine(
+            dayOfWeek,
+            statisticsState
+        ) { firstDayOfWeek, state -> firstDayOfWeek to state }
+            .flatMapLatest { (dayOfWeek, state) ->
+                flow {
+                    val successState = (state as? StatisticsState.Success)?.state as? StatisticsSuccessState.Habits
+
+                    if (successState == null) {
+                        emit(GoalsDoneState())
+                        return@flow
+                    }
+
+                    val selected = successState.habitSelected
+                    val firstDay = DayOfWeek.of(firstDayOfWeek)
+
+                    // 1. Calculamos cada parte usando funciones dedicadas
+                    val totalCompleted = calculateTotalCompleted(selected, firstDay)
+                    // val (bestStreak, bestDates) = calculateBestStreak(selected, firstDay)
+                    // val (currentStreak, currentDates) = calculateCurrentStreak(selected, firstDay)
+
+                    emit(GoalsDoneState(
+                        numberOfDaysCompleted = totalCompleted,
+                        // numberOfBestStreak = bestStreak,
+                        // bestStreakDates = bestDates,
+                        // ... etc
+                    ))
+                }
+            }
+            .flowOn(Dispatchers.Default)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = GoalsDoneState()
+            )
+
+
     fun onCLickCard(id:Long) = viewModelScope.launch(Dispatchers.IO){
         getHabitSelectedUseCase.setHabitSelected(id)
     }
@@ -394,6 +438,33 @@ class StatisticsViewModel @Inject constructor(
                 it + 1
             }else{
                 it - 1
+            }
+        }
+    }
+
+    private fun calculateTotalCompleted(selected: HabitWithDailyHabit, firstDay: DayOfWeek): Int {
+        val habitGoal = selected.habit.goal
+        val dailyHabits = selected.dailyHabits
+
+        return when (val type = selected.habit.typeHabit) {
+            TypeHabit.Daily, is TypeHabit.Recurring -> {
+                dailyHabits.count { it.goalDone >= habitGoal }
+            }
+            is TypeHabit.Weekly -> {
+                val groupedByWeek = dailyHabits.groupBy { it.date.with(TemporalAdjusters.previousOrSame(firstDay)) }
+                if (type.weeklyGoal) {
+                    groupedByWeek.values.count { week -> week.sumOf { it.goalDone.toDouble() } >= habitGoal.toDouble() }
+                } else {
+                    groupedByWeek.values.count { week -> week.count { it.goalDone >= habitGoal } >= type.numberDays }
+                }
+            }
+            is TypeHabit.Monthly -> {
+                val groupedByMonth = dailyHabits.groupBy { it.date.with(TemporalAdjusters.firstDayOfMonth()) }
+                if (type.monthlyGoal) {
+                    groupedByMonth.values.count { month -> month.sumOf { it.goalDone.toDouble() } >= habitGoal.toDouble() }
+                } else {
+                    groupedByMonth.values.count { month -> month.count { it.goalDone >= habitGoal } >= type.numberTimes }
+                }
             }
         }
     }
