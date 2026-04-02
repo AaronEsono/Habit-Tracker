@@ -30,6 +30,7 @@ fun StatisticsScreen(
     val hourlyGraphicsState = viewModel.hourlyGraphicsState.collectAsStateWithLifecycle().value
     val yearHourlyGraphicsSelected = viewModel.yearHourlyGraphicsSelected.collectAsStateWithLifecycle().value
     val yearGraphicsSelected = viewModel.yearGraphicsSelected.collectAsStateWithLifecycle().value
+    val goalsDoneState = viewModel.goalsDoneState.collectAsStateWithLifecycle().value
 
 
     when(orientation){
