@@ -48,6 +48,7 @@ import java.time.Period
 import java.time.Year
 import java.time.YearMonth
 import java.time.temporal.TemporalAdjusters
+import java.time.temporal.TemporalAmount
 import javax.inject.Inject
 import kotlin.collections.emptyList
 
@@ -376,7 +377,6 @@ class StatisticsViewModel @Inject constructor(
             )
 
 
-    //Mañana entender esto, y arreglar el firstDay
     @OptIn(ExperimentalCoroutinesApi::class)
     val goalsDoneState: StateFlow<GoalsDoneState> =
         combine(
@@ -392,11 +392,10 @@ class StatisticsViewModel @Inject constructor(
                         return@flow
                     }
 
-                    val safeDayValue = if (firstDayOfWeek in 1..7) firstDayOfWeek else 1
-                    val firstDay = DayOfWeek.of(safeDayValue)
-
                     val selected = successState.habitSelected
-                    val completedPeriods = getCompletedPeriods(selected, firstDay)
+
+                    // Refactorizar las funciones, arreglarlas para que vayan niqueladas, las dos
+                    val completedPeriods = getCompletedPeriods(selected, dayOfWeek)
 
                     // 1. Calculamos cada parte usando funciones dedicadas
                     val totalCompleted = completedPeriods.size
@@ -411,15 +410,10 @@ class StatisticsViewModel @Inject constructor(
                         currentStreakDates = Pair(currentData.second, currentData.third)
                     )
 
-                    Log.d("StatisticsViewModel", "GoalsDoneState: $goalDone")
 
-                    emit(GoalsDoneState(
-                        numberOfDaysCompleted = totalCompleted,
-                        numberOfBestStreak = bestData.first,
-                        bestStreakDates = Pair(bestData.second, bestData.third),
-                        numberOfCurrentStreak = currentData.first,
-                        currentStreakDates = Pair(currentData.second, currentData.third)
-                    ))
+                    Log.d("TAG", "goalsDoneState: $goalDone")
+
+                    emit(goalDone)
                 }
             }
             .flowOn(Dispatchers.Default)
@@ -458,33 +452,6 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
-    private fun calculateTotalCompleted(selected: HabitWithDailyHabit, firstDay: DayOfWeek): Int {
-        val habitGoal = selected.habit.goal
-        val dailyHabits = selected.dailyHabits
-
-        return when (val type = selected.habit.typeHabit) {
-            TypeHabit.Daily, is TypeHabit.Recurring -> {
-                dailyHabits.count { it.goalDone >= habitGoal }
-            }
-            is TypeHabit.Weekly -> {
-                val groupedByWeek = dailyHabits.groupBy { it.date.with(TemporalAdjusters.previousOrSame(firstDay)) }
-                if (type.weeklyGoal) {
-                    groupedByWeek.values.count { week -> week.sumOf { it.goalDone.toDouble() } >= habitGoal.toDouble() }
-                } else {
-                    groupedByWeek.values.count { week -> week.count { it.goalDone >= habitGoal } >= type.numberDays }
-                }
-            }
-            is TypeHabit.Monthly -> {
-                val groupedByMonth = dailyHabits.groupBy { it.date.with(TemporalAdjusters.firstDayOfMonth()) }
-                if (type.monthlyGoal) {
-                    groupedByMonth.values.count { month -> month.sumOf { it.goalDone.toDouble() } >= habitGoal.toDouble() }
-                } else {
-                    groupedByMonth.values.count { month -> month.count { it.goalDone >= habitGoal } >= type.numberTimes }
-                }
-            }
-        }
-    }
-
     private fun getCompletedPeriods(selected: HabitWithDailyHabit, firstDay: DayOfWeek): List<LocalDate> {
         val habitGoal = selected.habit.goal
         val dailyHabits = selected.dailyHabits
@@ -518,54 +485,86 @@ class StatisticsViewModel @Inject constructor(
     ): Triple<Int, LocalDate, LocalDate> {
         if (completedPeriods.isEmpty()) return Triple(0, LocalDate.now(), LocalDate.now())
 
-        val step: Period = when (type) {
-            is TypeHabit.Daily, is TypeHabit.Recurring -> Period.ofDays(1)
+        val step: TemporalAmount = when (type) {
+            is TypeHabit.Daily -> Period.ofDays(1)
+            is TypeHabit.Recurring -> Period.ofDays(type.interval)
             is TypeHabit.Weekly -> Period.ofWeeks(1)
             is TypeHabit.Monthly -> Period.ofMonths(1)
         }
 
+        fun getEndOfPeriod(start: LocalDate): LocalDate {
+            return when (type) {
+                is TypeHabit.Daily, is TypeHabit.Recurring -> start
+                is TypeHabit.Weekly -> start.plusDays(6)
+                is TypeHabit.Monthly -> start.with(TemporalAdjusters.lastDayOfMonth())
+            }
+        }
+
+        // --- BLOQUE 1: CALCULAR LA RACHA QUE LLEGUE HASTA EL FINAL ---
+        // Esto nos sirve tanto para la Mejor como para la Actual
+        var lastStreakCount = 1
+        var lastStreakStart = completedPeriods.first()
+
+        // Recorremos de atrás hacia adelante para encontrar la racha "viva" al final de la lista
+        for (i in completedPeriods.size - 1 downTo 1) {
+            if (completedPeriods[i] == completedPeriods[i - 1].plus(step)) {
+                lastStreakCount++
+                lastStreakStart = completedPeriods[i - 1]
+            } else {
+                // En cuanto encontramos un hueco, paramos: ya tenemos la racha final
+                break
+            }
+        }
+
+        // --- BLOQUE 3: SI PIDEN LA MEJOR RACHA (HISTÓRICA) ---
+        // Aquí sí usamos el bucle completo que ya teníamos
         var bestStreak = 0
         var bestStart = completedPeriods.first()
-        var bestEnd = completedPeriods.first()
-
+        var bestEnd = getEndOfPeriod(completedPeriods.first())
         var currentStreak = 1
         var currentStart = completedPeriods.first()
 
         for (i in 1 until completedPeriods.size) {
-            // Comprobamos si la fecha actual es exactamente la anterior + el paso (día/semana/mes)
             if (completedPeriods[i] == completedPeriods[i - 1].plus(step)) {
                 currentStreak++
             } else {
-                // Se rompió la racha, comprobamos si es la mejor hasta ahora
-                if (currentStreak >= bestStreak) {
+                if (currentStreak > bestStreak) {
                     bestStreak = currentStreak
                     bestStart = currentStart
-                    bestEnd = completedPeriods[i - 1]
+                    bestEnd = getEndOfPeriod(completedPeriods[i - 1])
                 }
                 currentStreak = 1
                 currentStart = completedPeriods[i]
             }
         }
-
-        // Comprobación final para la última racha procesada
-        if (currentStreak >= bestStreak) {
+        // Validar la racha que termina en el último elemento
+        if (currentStreak > bestStreak) {
             bestStreak = currentStreak
             bestStart = currentStart
-            bestEnd = completedPeriods.last()
+            bestEnd = getEndOfPeriod(completedPeriods.last())
         }
 
-        // Lógica para Racha Actual: Solo cuenta si el último periodo completado es "hoy" o el periodo inmediatamente anterior
+        // --- BLOQUE 2: SI PIDEN LA RACHA ACTUAL ---
         if (isCurrent) {
-            val todayPeriod = when(type) {
-                is TypeHabit.Daily, is TypeHabit.Recurring -> LocalDate.now()
-                is TypeHabit.Weekly -> LocalDate.now().with(TemporalAdjusters.previousOrSame(bestStart.dayOfWeek))
-                is TypeHabit.Monthly -> LocalDate.now().with(TemporalAdjusters.firstDayOfMonth())
+            val now = LocalDate.now()
+            val lastCompleted = completedPeriods.last()
+
+            val isAlive = when(type) {
+                is TypeHabit.Recurring -> !now.isAfter(lastCompleted.plus(step))
+                is TypeHabit.Daily -> !now.isAfter(lastCompleted.plusDays(1))
+                is TypeHabit.Weekly -> {
+                    val currentWeekStart = now.with(TemporalAdjusters.previousOrSame(lastStreakStart.dayOfWeek))
+                    lastCompleted == currentWeekStart || lastCompleted == currentWeekStart.minusWeeks(1)
+                }
+                is TypeHabit.Monthly -> {
+                    val currentMonthStart = now.with(TemporalAdjusters.firstDayOfMonth())
+                    lastCompleted == currentMonthStart || lastCompleted == currentMonthStart.minusMonths(1)
+                }
             }
 
-            // Si el último completado no es hoy ni el periodo anterior, la racha actual es 0
-            val lastCompleted = completedPeriods.last()
-            return if (lastCompleted == todayPeriod || lastCompleted == todayPeriod.minus(step)) {
-                Triple(currentStreak, currentStart, lastCompleted)
+            return if (isAlive) {
+                // Devolvemos la racha del final, sea grande o pequeña (ej: 2 días)
+                Triple(lastStreakCount, lastStreakStart, getEndOfPeriod(lastCompleted))
             } else {
                 Triple(0, LocalDate.now(), LocalDate.now())
             }
