@@ -340,7 +340,7 @@ class StatisticsViewModel @Inject constructor(
                                                 habitDay.goalDone.compareTo(goal) >= 0
                                             }
                                             else -> {
-                                                habitDay.goalDone.compareTo(java.math.BigDecimal.ZERO) > 0
+                                                habitDay.goalDone.compareTo(BigDecimal.ZERO) > 0
                                             }
                                         }
                                     }
@@ -394,7 +394,7 @@ class StatisticsViewModel @Inject constructor(
 
                     val selected = successState.habitSelected
 
-                    // Refactorizar las funciones, arreglarlas para que vayan niqueladas, las dos
+                    // Refactorizar las funciones, arreglarlas para que vayan niqueladas, las dos y documentar
                     val completedPeriods = getCompletedPeriods(selected, dayOfWeek)
 
                     // 1. Calculamos cada parte usando funciones dedicadas
@@ -452,30 +452,53 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Returns the dates on which the habit's goal was successfully achieved.
+     *
+     * This function extracts the completion dates based on the habit type:
+     * - For daily/recurring habits: returns the exact date of completion.
+     * - For weekly habits: returns the start date of the completed week.
+     * - For monthly habits: returns the first day of the completed month.
+     *
+     * @param selected The habit and its associated logs to evaluate.
+     * @param firstDay The user-defined start of the week (e.g., Monday). Used to group
+     * weekly logs from [firstDay] to the end of that week.
+     * @return A sorted list of [LocalDate] representing the start of each successful period.
+     */
     private fun getCompletedPeriods(selected: HabitWithDailyHabit, firstDay: DayOfWeek): List<LocalDate> {
         val habitGoal = selected.habit.goal
-        val dailyHabits = selected.dailyHabits
         val type = selected.habit.typeHabit
 
-        return when (type) {
+        // Filter to count records only up to the current date
+        val dailyHabits = selected.dailyHabits.filter { !it.date.isAfter(LocalDate.now()) }
+
+        val listDates = when(type){
             TypeHabit.Daily, is TypeHabit.Recurring -> {
                 dailyHabits.filter { it.goalDone >= habitGoal }.map { it.date }
             }
             is TypeHabit.Weekly -> {
-                dailyHabits.groupBy { it.date.with(TemporalAdjusters.previousOrSame(firstDay)) }
-                    .filter { (_, week) ->
-                        if (type.weeklyGoal) week.sumOf { it.goalDone.toDouble() } >= habitGoal.toDouble()
-                        else week.count { it.goalDone >= habitGoal } >= type.numberDays
-                    }.keys.toList()
+                // First, group by week start date
+                val datesByWeek = dailyHabits.groupBy { it.date.with(TemporalAdjusters.previousOrSame(firstDay)) }
+
+                // If it's a cumulative goal, sum the progress; otherwise, count successful days
+                datesByWeek.filter { (_, week) ->
+                    if (type.weeklyGoal) week.sumOf { it.goalDone.toDouble() } >= habitGoal.toDouble()
+                    else week.count { it.goalDone >= habitGoal } >= type.numberDays
+                }.keys.toList()
             }
             is TypeHabit.Monthly -> {
-                dailyHabits.groupBy { it.date.with(TemporalAdjusters.firstDayOfMonth()) }
-                    .filter { (_, month) ->
-                        if (type.monthlyGoal) month.sumOf { it.goalDone.toDouble() } >= habitGoal.toDouble()
-                        else month.count { it.goalDone >= habitGoal } >= type.numberTimes
-                    }.keys.toList()
+                // First, group by month start date
+                val datesByMonth = dailyHabits.groupBy { it.date.with(TemporalAdjusters.firstDayOfMonth()) }
+
+                // If it's a cumulative goal, sum the progress; otherwise, count successful occurrences
+                datesByMonth.filter { (_, month) ->
+                    if (type.monthlyGoal) month.sumOf { it.goalDone.toDouble() } >= habitGoal.toDouble()
+                    else month.count { it.goalDone >= habitGoal } >= type.numberTimes
+                }.keys.toList()
             }
-        }.sorted() // Muy importante que estén ordenadas para calcular la racha
+        }
+
+        return listDates.sorted()
     }
 
     private fun calculateStreak(
