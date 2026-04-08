@@ -501,13 +501,35 @@ class StatisticsViewModel @Inject constructor(
         return listDates.sorted()
     }
 
+    /**
+     * Calculates the habit's streak data, supporting both historical records and the current status.
+     *
+     * This function evaluates the consecutive completion periods based on the provided history.
+     * It determines how many consecutive "steps" (days, weeks, or months) the habit was
+     * maintained without interruption.
+     *
+     * @param completedPeriods A sorted list of [LocalDate] representing the start of each successful period.
+     * @param type The [TypeHabit] configuration used to define the time interval between successes.
+     * @param isCurrent Boolean flag:
+     * - If `true`, returns the currently active streak (resetting to 0 if the streak is broken today).
+     * - If `false`, returns the longest historical streak ever achieved for this habit.
+     * @return A [Triple] containing:
+     * 1. The streak count (number of consecutive periods).
+     * 2. The start date of the streak ([LocalDate]).
+     * 3. The end date of the streak ([LocalDate]).
+     * @see getCompletedPeriods
+     */
     private fun calculateStreak(
         completedPeriods: List<LocalDate>,
         type: TypeHabit,
-        isCurrent: Boolean // true para racha actual, false para la mejor histórica
+        isCurrent: Boolean
     ): Triple<Int, LocalDate, LocalDate> {
         if (completedPeriods.isEmpty()) return Triple(0, LocalDate.now(), LocalDate.now())
 
+        /**
+         * Defines the temporal distance between two consecutive successful periods.
+         * This unit is used to verify if the streak continues or has been broken.
+         */
         val step: TemporalAmount = when (type) {
             is TypeHabit.Daily -> Period.ofDays(1)
             is TypeHabit.Recurring -> Period.ofDays(type.interval)
@@ -515,6 +537,15 @@ class StatisticsViewModel @Inject constructor(
             is TypeHabit.Monthly -> Period.ofMonths(1)
         }
 
+        /**
+         * Calculates the inclusive end date of a given period based on the habit type.
+         * * - Daily/Recurring: The period ends on the same day it starts.
+         * - Weekly: The period ends 6 days after the start (the full week).
+         * - Monthly: The period ends on the last day of that specific month.
+         *
+         * @param start The initial date of the successful period.
+         * @return The [LocalDate] representing the final day of that period.
+         */
         fun getEndOfPeriod(start: LocalDate): LocalDate {
             return when (type) {
                 is TypeHabit.Daily, is TypeHabit.Recurring -> start
@@ -523,73 +554,91 @@ class StatisticsViewModel @Inject constructor(
             }
         }
 
-        // --- BLOQUE 1: CALCULAR LA RACHA QUE LLEGUE HASTA EL FINAL ---
-        // Esto nos sirve tanto para la Mejor como para la Actual
-        var lastStreakCount = 1
-        var lastStreakStart = completedPeriods.first()
-
-        // Recorremos de atrás hacia adelante para encontrar la racha "viva" al final de la lista
-        for (i in completedPeriods.size - 1 downTo 1) {
-            if (completedPeriods[i] == completedPeriods[i - 1].plus(step)) {
-                lastStreakCount++
-                lastStreakStart = completedPeriods[i - 1]
-            } else {
-                // En cuanto encontramos un hueco, paramos: ya tenemos la racha final
-                break
-            }
-        }
-
-        // --- BLOQUE 3: SI PIDEN LA MEJOR RACHA (HISTÓRICA) ---
-        // Aquí sí usamos el bucle completo que ya teníamos
         var bestStreak = 0
         var bestStart = completedPeriods.first()
         var bestEnd = getEndOfPeriod(completedPeriods.first())
         var currentStreak = 1
         var currentStart = completedPeriods.first()
 
-        for (i in 1 until completedPeriods.size) {
-            if (completedPeriods[i] == completedPeriods[i - 1].plus(step)) {
-                currentStreak++
-            } else {
-                if (currentStreak > bestStreak) {
-                    bestStreak = currentStreak
-                    bestStart = currentStart
-                    bestEnd = getEndOfPeriod(completedPeriods[i - 1])
+        // --- HISTORICAL STREAK CALCULATION ---
+        // This block identifies the longest consecutive chain of successful periods in the habit's history.
+        if(!isCurrent){
+            for (i in 1 until completedPeriods.size){
+                // Check if the current period follows the previous one without any gaps
+                if(completedPeriods[i] == completedPeriods[i-1].plus(step)){
+                    currentStreak++
+                }else{
+                    // A gap was found; check if the streak just ended is the new all-time record
+                    if(currentStreak > bestStreak){
+                        bestStreak = currentStreak
+                        bestStart = currentStart
+                        bestEnd = getEndOfPeriod(completedPeriods[i - 1])
+                    }
+                    // Reset for the next potential streak starting at the current period
+                    currentStreak = 1
+                    currentStart = completedPeriods[i]
                 }
-                currentStreak = 1
-                currentStart = completedPeriods[i]
             }
-        }
-        // Validar la racha que termina en el último elemento
-        if (currentStreak > bestStreak) {
-            bestStreak = currentStreak
-            bestStart = currentStart
-            bestEnd = getEndOfPeriod(completedPeriods.last())
-        }
 
-        // --- BLOQUE 2: SI PIDEN LA RACHA ACTUAL ---
-        if (isCurrent) {
+            // Final check: validate the last streak in the list (since the 'else' block
+            // won't trigger if the history ends while a streak is still active)
+            if (currentStreak > bestStreak) {
+                bestStreak = currentStreak
+                bestStart = currentStart
+                bestEnd = getEndOfPeriod(completedPeriods.last())
+            }
+
+        // --- CURRENT STREAK CALCULATION ---
+        // This block determines if the habit is still active today and calculates its ongoing progress.
+        } else{
             val now = LocalDate.now()
             val lastCompleted = completedPeriods.last()
 
-            val isAlive = when(type) {
-                is TypeHabit.Recurring -> !now.isAfter(lastCompleted.plus(step))
-                is TypeHabit.Daily -> !now.isAfter(lastCompleted.plusDays(1))
-                is TypeHabit.Weekly -> {
-                    val currentWeekStart = now.with(TemporalAdjusters.previousOrSame(lastStreakStart.dayOfWeek))
-                    lastCompleted == currentWeekStart || lastCompleted == currentWeekStart.minusWeeks(1)
-                }
-                is TypeHabit.Monthly -> {
-                    val currentMonthStart = now.with(TemporalAdjusters.firstDayOfMonth())
-                    lastCompleted == currentMonthStart || lastCompleted == currentMonthStart.minusMonths(1)
+            // Identify the theoretical start date of the current period based on the habit type
+            val currentPeriodStart = when (type) {
+                is TypeHabit.Daily -> now
+                // For Weekly habits, we align 'now' to the same weekday as the last completion
+                // to check if we are still within the same weekly cycle.
+                is TypeHabit.Weekly -> now.with(TemporalAdjusters.previousOrSame(completedPeriods.last().dayOfWeek))
+                is TypeHabit.Monthly -> now.with(TemporalAdjusters.firstDayOfMonth())
+                is TypeHabit.Recurring -> {
+                    // Logic for Recurring: Calculate the most recent 'due date' relative to the start date.
+                    // Formula: (Current Day - Start Day) / Interval * Interval
+                    val daysFromStart = java.time.temporal.ChronoUnit.DAYS.between(type.date, now)
+                    val lastExpectedInterval = (daysFromStart / type.interval) * type.interval
+                    type.date.plusDays(lastExpectedInterval)
                 }
             }
 
-            return if (isAlive) {
-                // Devolvemos la racha del final, sea grande o pequeña (ej: 2 días)
-                Triple(lastStreakCount, lastStreakStart, getEndOfPeriod(lastCompleted))
+            // A streak is considered "alive" if the last recorded completion
+            // occurred during the current period or the immediately preceding one.
+            val isAlive = lastCompleted == currentPeriodStart || lastCompleted == currentPeriodStart.minus(step)
+
+            if (isAlive) {
+                // If the streak is alive, we count backwards to find the length
+                // of the uninterrupted chain ending at the most recent record.
+                var count = 1
+                var startDate = lastCompleted
+
+                // Iterate backwards through the list to find consecutive periods
+                for (i in completedPeriods.size - 1 downTo 1) {
+                    // Check if the current period in the loop is exactly one 'step' after the previous one
+                    if (completedPeriods[i] == completedPeriods[i - 1].plus(step)) {
+                        count++
+                        startDate = completedPeriods[i - 1]
+                    } else {
+                        break // Continuity broken; stop counting
+                    }
+                }
+
+                bestStreak = count
+                bestStart = startDate
+                bestEnd = getEndOfPeriod(lastCompleted)
             } else {
-                Triple(0, LocalDate.now(), LocalDate.now())
+                // Streak is "dead": the last record is older than the allowed grace period.
+                bestStreak = 0
+                bestStart = now
+                bestEnd = now
             }
         }
 
