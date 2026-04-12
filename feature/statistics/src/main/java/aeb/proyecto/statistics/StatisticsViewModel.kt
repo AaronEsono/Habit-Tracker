@@ -47,6 +47,7 @@ import java.time.LocalDate
 import java.time.Period
 import java.time.Year
 import java.time.YearMonth
+import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import java.time.temporal.TemporalAmount
 import javax.inject.Inject
@@ -401,17 +402,16 @@ class StatisticsViewModel @Inject constructor(
                     val totalCompleted = completedPeriods.size
                     val bestData = calculateStreak(completedPeriods, selected.habit.typeHabit, isCurrent = false)
                     val currentData = calculateStreak(completedPeriods, selected.habit.typeHabit, isCurrent = true)
+                    val consistency = calculateConsistency(completedPeriods, selected.habit.typeHabit)
 
                     val goalDone = GoalsDoneState(
                         numberOfDaysCompleted = totalCompleted,
                         numberOfBestStreak = bestData.first,
+                        consistencyPercentage = consistency,
                         bestStreakDates = Pair(bestData.second, bestData.third),
                         numberOfCurrentStreak = currentData.first,
                         currentStreakDates = Pair(currentData.second, currentData.third)
                     )
-
-
-                    Log.d("TAG", "goalsDoneState: $goalDone")
 
                     emit(goalDone)
                 }
@@ -643,6 +643,44 @@ class StatisticsViewModel @Inject constructor(
         }
 
         return Triple(bestStreak, bestStart, bestEnd)
+    }
+
+    /**
+     * Calculates the habit's consistency score as a percentage.
+     *
+     * This score represents the ratio of completed periods against the total
+     * possible periods since the user first started recording the habit.
+     *
+     * @param completedPeriods Sorted list of dates where the goal was met.
+     * @param type The habit configuration to determine the time step.
+     * @return An integer percentage between 0 and 100.
+     */
+    private fun calculateConsistency(
+        completedPeriods: List<LocalDate>,
+        type: TypeHabit
+    ): Int {
+        if (completedPeriods.isEmpty()) return 0
+
+        val firstRecord = completedPeriods.first()
+        val today = LocalDate.now()
+
+        // We calculate how many periods have passed in total since the beginning
+        val totalPossiblePeriods = when (type) {
+            is TypeHabit.Daily -> ChronoUnit.DAYS.between(firstRecord, today) + 1
+            is TypeHabit.Weekly -> ChronoUnit.WEEKS.between(firstRecord, today) + 1
+            is TypeHabit.Monthly -> ChronoUnit.MONTHS.between(firstRecord, today) + 1
+            is TypeHabit.Recurring -> {
+                val daysBetween = ChronoUnit.DAYS.between(firstRecord, today)
+                (daysBetween / type.interval) + 1
+            }
+        }
+
+        return if (totalPossiblePeriods > 0) {
+            // (Done / Possibilities) * 100
+            ((completedPeriods.size.toDouble() / totalPossiblePeriods.toDouble()) * 100).toInt().coerceIn(0, 100)
+        } else {
+            0
+        }
     }
 
 }

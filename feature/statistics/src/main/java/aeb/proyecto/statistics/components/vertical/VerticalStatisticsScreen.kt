@@ -5,6 +5,7 @@ import aeb.proyecto.statistics.components.common.loading.StatisticsLoading
 import aeb.proyecto.statistics.components.vertical.screens.ContentVerticalStatisticsScreen
 import aeb.proyecto.statistics.components.vertical.screens.NoContentVerticalStatisticsScreen
 import aeb.proyecto.statistics.model.BoxUIState
+import aeb.proyecto.statistics.model.GoalsDoneState
 import aeb.proyecto.statistics.model.GraphicsState
 import aeb.proyecto.statistics.model.StatisticsState
 import aeb.proyecto.statistics.model.StatisticsSuccessState
@@ -23,6 +24,7 @@ fun VerticalStatisticsScreen(
     boxUIState: List<BoxUIState>,
     graphicsState: GraphicsState,
     hourlyGraphicsState: GraphicsState,
+    goalDoneState: GoalsDoneState,
     yearMonth: YearMonth,
     yearGraphicsSelected: Int,
     yearHourlyGraphicsSelected: Int,

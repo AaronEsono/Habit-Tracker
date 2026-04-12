@@ -40,6 +40,7 @@ fun StatisticsScreen(
                 boxUIState = boxUIState,
                 graphicsState = graphicsState,
                 hourlyGraphicsState = hourlyGraphicsState,
+                goalDoneState = goalsDoneState,
                 yearMonth = yearMonth,
                 yearHourlyGraphicsSelected = yearHourlyGraphicsSelected,
                 yearGraphicsSelected = yearGraphicsSelected,
