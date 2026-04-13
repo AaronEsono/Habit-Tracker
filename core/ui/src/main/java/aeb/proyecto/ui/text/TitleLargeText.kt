@@ -23,6 +23,7 @@ fun TitleLargeText(
     fontFamily: FontFamily? = null,
     textAlign: TextAlign? = null,
     overflow: TextOverflow = TextOverflow.Clip,
+    lineHeight: TextUnit = TextUnit.Unspecified,
     maxLines:Int = Int.MAX_VALUE,
     minLines:Int = 1
 ) {
@@ -38,6 +39,7 @@ fun TitleLargeText(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        minLines = minLines
+        minLines = minLines,
+        lineHeight = lineHeight
     )
 }

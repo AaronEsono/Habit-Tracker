@@ -22,6 +22,7 @@ fun LabelLargeText(
     fontWeight: FontWeight? = null,
     fontFamily: FontFamily? = null,
     textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines:Int = Int.MAX_VALUE,
     minLines:Int = 1
@@ -38,6 +39,7 @@ fun LabelLargeText(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        minLines = minLines
+        minLines = minLines,
+        lineHeight = lineHeight
     )
 }

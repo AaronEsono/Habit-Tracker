@@ -29,4 +29,8 @@
     <string name="statistics_label_graphics">Número de hábitos completados por mes</string>
     <string name="statistics_label_graphics_hour">Número de hábitos completados cada hora</string>
 
+    <string name="statistics_goal_title_percentage">%1$s%%</string>
+    <string name="statistics_goal_subtitle_percentage">Porcentaje de hábitos completados</string>
+    <string name="statistics_goal_subtitle_completed">Días completados</string>
+
 </resources>

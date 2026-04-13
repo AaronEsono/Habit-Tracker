@@ -5,6 +5,7 @@ import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.statistics.components.common.card.HeaderCard
 import aeb.proyecto.statistics.model.BoxUIState
+import aeb.proyecto.statistics.model.GoalsDoneState
 import aeb.proyecto.statistics.model.GraphicsState
 import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
@@ -32,6 +33,7 @@ fun ContentVerticalStatisticsScreen(
     boxUIState: List<BoxUIState>,
     graphicsState: GraphicsState,
     hourlyGraphicsState: GraphicsState,
+    goalDoneState: GoalsDoneState,
     habitSelected: HabitWithDailyHabit,
     yearMonth: YearMonth,
     yearGraphicsSelected: Int,
@@ -73,6 +75,7 @@ fun ContentVerticalStatisticsScreen(
             habitSelected = habitSelected,
             boxUIState = boxUIState,
             graphicsState = graphicsState,
+            goalDoneState = goalDoneState,
             hourlyGraphicsState = hourlyGraphicsState,
             yearMonth = yearMonth,
             yearGraphicsSelected = yearGraphicsSelected,

@@ -51,6 +51,7 @@ fun VerticalStatisticsScreen(
                         habits = statisticsState.state.habits,
                         boxUIState = boxUIState,
                         graphicsState = graphicsState,
+                        goalDoneState = goalDoneState,
                         hourlyGraphicsState = hourlyGraphicsState,
                         habitSelected = statisticsState.state.habitSelected,
                         yearMonth = yearMonth,
