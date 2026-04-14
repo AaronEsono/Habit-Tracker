@@ -6,12 +6,14 @@ import aeb.proyecto.statistics.R
 import aeb.proyecto.statistics.components.common.boxDays.StatisticsBoxDays
 import aeb.proyecto.statistics.components.common.calendar.StatisticsCalendar
 import aeb.proyecto.statistics.components.common.goalBox.GoalBoxDays
+import aeb.proyecto.statistics.components.common.goalBox.GoalBoxStreak
 import aeb.proyecto.statistics.components.common.graphics.hourGraphics.HourGraphics
 import aeb.proyecto.statistics.components.common.graphics.monthGraphics.MonthGraphics
 import aeb.proyecto.statistics.components.common.header.HeaderTitle
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.statistics.model.GoalsDoneState
 import aeb.proyecto.statistics.model.GraphicsState
+import aeb.proyecto.statistics.utils.dateFormatter
 import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.dimmens.Dimmens.spacing2
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
@@ -132,6 +134,35 @@ fun VerticalHabitSelectedScreen(
                 yearGraphicsSelected = yearHourlyGraphicsSelected,
                 onYearSelected = onHourYearSelected
             )
+
+            Spacer(modifier = Modifier.padding(vertical = spacing4))
+
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = spacing6)
+                    .fillMaxWidth()
+                    .height(goalBoxHeight)
+            ) {
+                GoalBoxStreak(
+                    modifier = Modifier.fillMaxHeight().weight(1f),
+                    title = goalDoneState.numberOfBestStreak.toString(),
+                    dateString = stringResource(R.string.statistics_goal_subtitle_streak_date,
+                        goalDoneState.bestStreakDates.first.format(dateFormatter),
+                        goalDoneState.bestStreakDates.second.format(dateFormatter)),
+                    subTitle = stringResource(R.string.statistics_goal_subtitle_streak_historic)
+                )
+
+                Spacer(modifier = Modifier.padding(horizontal = spacing2))
+
+                GoalBoxStreak(
+                    modifier = Modifier.fillMaxHeight().weight(1f),
+                    title = goalDoneState.numberOfCurrentStreak.toString(),
+                    dateString = stringResource(R.string.statistics_goal_subtitle_streak_date,
+                        goalDoneState.currentStreakDates.first.format(dateFormatter),
+                        goalDoneState.currentStreakDates.second.format(dateFormatter)),
+                    subTitle = stringResource(R.string.statistics_goal_subtitle_streak_today)
+                )
+            }
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
         }

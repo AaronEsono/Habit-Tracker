@@ -32,5 +32,9 @@
     <string name="statistics_goal_title_percentage">%1$s%%</string>
     <string name="statistics_goal_subtitle_percentage">Porcentaje de hábitos completados</string>
     <string name="statistics_goal_subtitle_completed">Días completados</string>
+    <string name="statistics_goal_subtitle_streak_today">Racha actual</string>
+    <string name="statistics_goal_subtitle_streak_historic">Mayor racha</string>
+    <string name="statistics_goal_subtitle_streak_date">De %1$s a %2$s</string>
+
 
 </resources>

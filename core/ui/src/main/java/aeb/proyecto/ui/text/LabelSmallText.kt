@@ -24,7 +24,8 @@ fun LabelSmallText(
     textAlign: TextAlign? = null,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1
+    minLines: Int = 1,
+    lineHeight: TextUnit = TextUnit.Unspecified
 ) {
     Text(
         text,
@@ -38,6 +39,7 @@ fun LabelSmallText(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        minLines = minLines
+        minLines = minLines,
+        lineHeight = lineHeight
     )
 }

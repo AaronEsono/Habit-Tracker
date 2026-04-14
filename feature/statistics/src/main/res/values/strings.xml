@@ -32,5 +32,8 @@
     <string name="statistics_goal_title_percentage">%1$s%%</string>
     <string name="statistics_goal_subtitle_percentage">Percentage of completed habits</string>
     <string name="statistics_goal_subtitle_completed">Days completed</string>
+    <string name="statistics_goal_subtitle_streak_today">Current streak</string>
+    <string name="statistics_goal_subtitle_streak_historic">Best streak</string>
+    <string name="statistics_goal_subtitle_streak_date">From %1$s to %2$s</string>
 
 </resources>

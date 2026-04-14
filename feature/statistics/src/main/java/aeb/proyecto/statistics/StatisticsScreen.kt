@@ -69,8 +69,8 @@ fun StatisticsScreen(
 
     // 6. Sistema de conteo de completados por hora, hacer detalle, en este hacer histórico? ----- HECHO
 
-    // 7. Dos recuadros, en uno mostrar los completados total, y en otro la racha actual y la mejor racha
-    // A lo mejor las rachas separarlos en dos
+    // 7. Dos recuadros, en uno mostrar los completados total, y en otro la racha actual y la mejor racha ----- HECHO
+    // A lo mejor las rachas separarlos en dos ----- HECHO
 
     // 8. Rueda donde se muestren: completados, a medio completar, no hecho, porcentaje
 
