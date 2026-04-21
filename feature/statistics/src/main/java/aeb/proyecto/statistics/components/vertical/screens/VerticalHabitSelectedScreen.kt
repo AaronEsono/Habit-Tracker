@@ -5,6 +5,9 @@ import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.statistics.R
 import aeb.proyecto.statistics.components.common.boxDays.StatisticsBoxDays
 import aeb.proyecto.statistics.components.common.calendar.StatisticsCalendar
+import aeb.proyecto.statistics.components.common.donutChart.DonutChart
+import aeb.proyecto.statistics.components.common.donutChart.DonutChartData
+import aeb.proyecto.statistics.components.common.donutChart.DonutChartDataCollection
 import aeb.proyecto.statistics.components.common.goalBox.GoalBoxDays
 import aeb.proyecto.statistics.components.common.goalBox.GoalBoxStreak
 import aeb.proyecto.statistics.components.common.graphics.hourGraphics.HourGraphics
@@ -37,6 +40,31 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import java.time.DayOfWeek
 import java.time.YearMonth
+
+val donutData: DonutChartDataCollection = DonutChartDataCollection(
+    items = listOf(
+        DonutChartData(
+            amount = 25.4f,
+            color = Color(0xFFE57373),
+            titleString = R.string.statistics_goal_subtitle_streak_today
+        ),
+        DonutChartData(
+            amount = 13.8f,
+            color = Color(0xFF64B5F6),
+            titleString = R.string.statistics_abr_mon
+        ),
+        DonutChartData(
+            amount = 32.1f,
+            color = Color(0xFF81C784),
+            titleString = R.string.statistics_label_graphics
+        ),
+        DonutChartData(
+            amount = 8.7f,
+            color = Color(0xFFFFD54F),
+            titleString = R.string.statistics_abr_wed
+        )
+    )
+)
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
@@ -165,6 +193,10 @@ fun VerticalHabitSelectedScreen(
             }
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
+
+            DonutChart(
+                data = donutData,
+            )
         }
     }
 
