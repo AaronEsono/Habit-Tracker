@@ -2,8 +2,13 @@ package aeb.proyecto.statistics.components.common.donutChart
 
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
+import aeb.proyecto.ui.text.LabelMediumText
+import android.util.Log
+import android.widget.Toast
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,8 +32,10 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import kotlin.collections.mutableListOf
 
 @Composable
@@ -40,17 +47,19 @@ fun DonutChart(
     selectionView: @Composable (selectedItem: DonutChartData?) -> Unit = {_ -> },
 ){
 
+
     val anglesList: MutableList<DrawingAngles> = remember { mutableListOf() }
     val gapAngle = data.calculateGapAngle(gapPercentage)
 
+    // El índice del elemento pulsado
     var selectedIndex by remember { mutableIntStateOf(-1) }
-    val animationTargetState = (0..data.items.size).map {
-        remember { mutableStateOf(DonutChartState()) }
-    }
-    val animValues = (0..data.items.size).map {
+
+    // Creamos una lista de grosores animados, uno para cada arco
+    val animValues = data.items.mapIndexed { index, _ ->
         animateDpAsState(
-            targetValue = animationTargetState[it].value.stroke,
-            animationSpec = TweenSpec(700)
+            targetValue = if (selectedIndex == index) STROKE_SIZE_SELECTED else STROKE_SIZE_UNSELECTED,
+            animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing),
+            label = "StrokeAnimation"
         )
     }
 
@@ -73,31 +82,54 @@ fun DonutChart(
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onTap = { tapOffset ->
+                            val index = findTappedAngleIndex(
+                                tapOffset = tapOffset,
+                                canvasSize = size.toSize(),
+                                // Usamos el grosor base para la detección
+                                strokeWidthPx = STROKE_SIZE_UNSELECTED.toPx(),
+                                anglesList = anglesList
+                            )
 
+                            selectedIndex = if (selectedIndex == index) -1 else index
                         }
                     )
                 }
                 .size(chartSize),
             // 3
             onDraw = {
-                val defaultStrokeWidth = STROKE_SIZE_UNSELECTED.toPx()
                 anglesList.clear()
                 var lastAngle = 0f
+
+                // 1. Definimos el grosor máximo que alcanzará el donut para dejar espacio
+                val maxPossibleStroke = STROKE_SIZE_SELECTED.toPx()
+
+                // 2. El "centro" del trazo debe estar a una distancia fija del borde
+                // Usamos el maxPossibleStroke para que incluso el arco más grande no se salga del Canvas
+                val offsetFixed = maxPossibleStroke / 2
+                val sizeFixed = Size(
+                    width = size.width - maxPossibleStroke,
+                    height = size.height - maxPossibleStroke
+                )
+
                 data.items.forEachIndexed { ind, item ->
                     val sweepAngle = data.findSweepAngle(ind, gapPercentage)
+                    val currentStrokeWidth = animValues[ind].value.toPx()
+
                     anglesList.add(DrawingAngles(lastAngle, sweepAngle))
-                    // 4
+
                     drawArc(
                         color = item.color,
                         startAngle = lastAngle,
                         sweepAngle = sweepAngle,
                         useCenter = false,
-                        topLeft = Offset(defaultStrokeWidth / 2, defaultStrokeWidth / 2),
-                        style = Stroke(defaultStrokeWidth, cap = StrokeCap.Butt),
-                        size = Size(size.width - defaultStrokeWidth,
-                            size.height - defaultStrokeWidth)
+                        // 3. Usamos el offset y tamaño FIJOS
+                        // Esto hace que el "esqueleto" del círculo no se mueva
+                        topLeft = Offset(offsetFixed, offsetFixed),
+                        size = sizeFixed,
+                        // 4. El grosor dinámico hará que crezca hacia ambos lados del esqueleto
+                        style = Stroke(width = currentStrokeWidth, cap = StrokeCap.Butt)
                     )
-                    // 5
+
                     lastAngle += sweepAngle + gapAngle
                 }
             }

@@ -1,7 +1,9 @@
 package aeb.proyecto.statistics.components.common.donutChart
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
+import kotlin.math.atan2
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -54,83 +56,43 @@ fun DonutChartDataCollection.findSweepAngle(
     return ((((amount + gap) / totalWithGap) * TOTAL_ANGLE)) - gapAngle
 }
 
-/**
- * Find the distance between two points in a graph.
- * Calculated using the pythagorean theorem.
- */
-private fun findTouchDistanceFromCenter(center: Offset, touch: Offset) =
-    sqrt((touch.x - center.x).pow(2) + (touch.y - center.y).pow(2))
-
-/**
- * The touch point starts from Canvas top left which ranges
- * from (0,0) -> (canvas.width, canvas.height). We need to normalize this
- * point so that the (0,0) is located in the center of the graph instead.
- */
-private fun Offset.findNormalizedPointFromTouch(canvasCenter: Offset) =
-    Offset(this.x, canvasCenter.y + (canvasCenter.y - this.y))
-
-/**
- * Calculate the touch angle based on the canvas center. Then
- * adjust the angle so that drawing starts from the 4th quadrant
- * instead of the first.
- */
-private fun calculateTouchAngleAccordingToCanvas(canvasCenter: Offset, normalizedPoint: Offset): Float {
-    val angle = calculateTouchAngleInDegrees(canvasCenter, normalizedPoint)
-    return adjustAngleToCanvas(angle).toFloat()
-}
-
-/**
- * Calculate touch angle in radian using atan2(). Afterwards, convert the
- * radian to degrees to be compared to arc data points.
- */
-private fun calculateTouchAngleInDegrees(canvasCenter: Offset, normalizedPoint: Offset): Double {
-    val touchInRadian = kotlin.math.atan2(normalizedPoint.y - canvasCenter.y,
-        normalizedPoint.x - canvasCenter.x)
-    return touchInRadian * -180 / Math.PI // Convert radians to angle in degrees
-}
-
-/**
- * Start from 4th quadrant going to 1st quadrant, degrees ranging from 0 to 360
- */
-private fun adjustAngleToCanvas(angle: Double) = (angle + TOTAL_ANGLE) % TOTAL_ANGLE
-
-private fun handleCanvasTap(
-    center: Offset,
+fun findTappedAngleIndex(
     tapOffset: Offset,
-    anglesList: List<DrawingAngles>,
-    currentSelectedIndex: Int,
-    currentStrokeValues: List<Float>,
-    onItemSelected: (Int) -> Unit = {},
-    onItemDeselected: (Int) -> Unit = {},
-    onNoItemSelected: () -> Unit = {},
-) {
-    val normalized = tapOffset.findNormalizedPointFromTouch(center)
-    val touchAngle =
-        calculateTouchAngleAccordingToCanvas(center, normalized)
-    val distance = findTouchDistanceFromCenter(center, normalized)
+    canvasSize: Size,
+    strokeWidthPx: Float,
+    anglesList: List<DrawingAngles>
+): Int {
+    val centerX = canvasSize.width / 2
+    val centerY = canvasSize.height / 2
 
-    var selectedIndex = -1
-    var newDataTapped = false
+    // 1. Calcular distancia desde el centro (Pitágoras)
+    val dx = tapOffset.x - centerX
+    val dy = tapOffset.y - centerY
+    val distanceToCenter = sqrt(dx * dx + dy * dy)
 
-    anglesList.forEachIndexed { ind, angle ->
-        val stroke = currentStrokeValues[ind]
-        if (angle.isInsideAngle(touchAngle)) {
-            if (distance > (center.x - stroke) &&
-                distance < (center.x)
-            ) { // since it's a square center.x or center.y will be the same
-                selectedIndex = ind
-                newDataTapped = true
-            }
-        }
-    }
+    // 2. Verificar si el toque está dentro del grosor del Donut
+    val innerRadius = (canvasSize.width / 2) - strokeWidthPx
+    val outerRadius = canvasSize.width / 2
 
-    if (selectedIndex >= 0 && newDataTapped) {
-        onItemSelected(selectedIndex)
-    }
-    if (currentSelectedIndex >= 0) {
-        onItemDeselected(currentSelectedIndex)
-        if (currentSelectedIndex == selectedIndex || !newDataTapped) {
-            onNoItemSelected()
+    if (distanceToCenter !in innerRadius..outerRadius) return -1
+
+    // 3. Calcular el ángulo del toque en grados (0 a 360)
+    var tapAngle = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
+
+    // atan2 devuelve de -180 a 180, normalizamos a 0-360
+    if (tapAngle < 0) tapAngle += 360f
+
+    // 4. Buscar en qué rango de anglesList cae
+    return anglesList.indexOfFirst { range ->
+        // Caso simple: el ángulo está entre inicio y fin
+        if (range.start <= tapAngle && tapAngle <= (range.start + range.end)) {
+            true
+        } else if (range.start + range.end > 360f) {
+            // Caso borde: cuando el arco cruza la barrera de los 360 grados
+            val wrappedEnd = (range.start + range.end) % 360f
+            tapAngle >= range.start || tapAngle <= wrappedEnd
+        } else {
+            false
         }
     }
 }
