@@ -91,6 +91,7 @@ fun DonutChart(
                             )
 
                             selectedIndex = if (selectedIndex == index) -1 else index
+
                         }
                     )
                 }
