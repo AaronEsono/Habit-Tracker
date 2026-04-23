@@ -1,19 +1,16 @@
 package aeb.proyecto.statistics.components.common.header
 
 import aeb.proyecto.room.entities.Habit
+import aeb.proyecto.statistics.components.common.donutChart.PieChart
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
-import aeb.proyecto.ui.text.LabelSmallText
 import aeb.proyecto.ui.text.TitleLargeText
-import aeb.proyecto.ui.text.TitleMediumText
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
