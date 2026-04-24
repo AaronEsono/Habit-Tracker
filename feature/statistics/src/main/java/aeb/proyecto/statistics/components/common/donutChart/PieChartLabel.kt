@@ -23,7 +23,8 @@ import androidx.compose.ui.unit.Dp
 
 @Composable
 fun PieChartLabel(
-    containerHeight: Dp
+    containerHeight: Dp,
+    pieChartData: PieChartData
 ){
     // Definimos proporciones:
     // Título: 8% del alto del contenedor | Subtítulo: 6% | Caja: 12%
@@ -42,7 +43,7 @@ fun PieChartLabel(
             modifier = Modifier
                 .size(boxSize)
                 .background(
-                    color = Color.Cyan,
+                    color = Color(pieChartData.color),
                     shape = RoundedCornerShape(containerHeight * 0.02f) // Bordes también relativos
                 )
         )
@@ -54,7 +55,7 @@ fun PieChartLabel(
         ) {
             // Título Dinámico
             LabelLargeText(
-                text = "titulo",
+                text = pieChartData.title,
                 fontSize = titleSize,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -63,7 +64,7 @@ fun PieChartLabel(
 
             // Subtítulo Dinámico
             LabelMediumText(
-                text = "prueba",
+                text = pieChartData.value.toString(),
                 fontSize = subtitleSize,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

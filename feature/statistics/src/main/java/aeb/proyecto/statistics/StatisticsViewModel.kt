@@ -7,6 +7,8 @@ import aeb.proyecto.room.entities.HabitDay
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.room.model.classes.TypeHabit
+import aeb.proyecto.statistics.components.common.donutChart.PieChartData
+import aeb.proyecto.statistics.components.common.donutChart.listaDePrueba
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.statistics.model.DayBoxState
 import aeb.proyecto.statistics.model.GoalsDoneState
@@ -424,6 +426,22 @@ class StatisticsViewModel @Inject constructor(
             )
 
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val pieChartState: StateFlow<List<PieChartData>> =
+        statisticsState
+            .flatMapLatest {
+                flow {
+                    emit(listaDePrueba)
+                }
+            }
+            .flowOn(Dispatchers.Default)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = listOf()
+            )
+
+
     fun onCLickCard(id:Long) = viewModelScope.launch(Dispatchers.IO){
         getHabitSelectedUseCase.setHabitSelected(id)
     }
@@ -681,6 +699,10 @@ class StatisticsViewModel @Inject constructor(
         } else {
             0
         }
+    }
+
+    fun getDataPieChart(): List<PieChartData>{
+        return listOf()
     }
 
 }
