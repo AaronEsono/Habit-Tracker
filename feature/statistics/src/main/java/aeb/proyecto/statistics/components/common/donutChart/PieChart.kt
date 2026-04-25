@@ -37,19 +37,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PieChart(
     modifier: Modifier = Modifier,
-    data: List<PieChartData> = listaDePrueba,
+    data: List<PieChartData>,
     chartHeight: Dp = 200.dp
 ){
-
-    val floatValues = remember(data) {
-        val total = data.sumOf { it.value.toDouble() }.toFloat()
-        if (total > 0f) {
-            data.map { 360f * it.value / total }
-        } else {
-            emptyList()
-        }
-    }
-
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()

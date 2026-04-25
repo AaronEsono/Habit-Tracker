@@ -1,6 +1,7 @@
 package aeb.proyecto.statistics.components.vertical
 
 import aeb.proyecto.room.entities.relations.HabitWithDay
+import aeb.proyecto.statistics.components.common.donutChart.PieChartData
 import aeb.proyecto.statistics.components.common.loading.StatisticsLoading
 import aeb.proyecto.statistics.components.vertical.screens.ContentVerticalStatisticsScreen
 import aeb.proyecto.statistics.components.vertical.screens.NoContentVerticalStatisticsScreen
@@ -25,6 +26,7 @@ fun VerticalStatisticsScreen(
     graphicsState: GraphicsState,
     hourlyGraphicsState: GraphicsState,
     goalDoneState: GoalsDoneState,
+    pieChartState: List<PieChartData>,
     yearMonth: YearMonth,
     yearGraphicsSelected: Int,
     yearHourlyGraphicsSelected: Int,
@@ -52,6 +54,7 @@ fun VerticalStatisticsScreen(
                         boxUIState = boxUIState,
                         graphicsState = graphicsState,
                         goalDoneState = goalDoneState,
+                        pieChartState = pieChartState,
                         hourlyGraphicsState = hourlyGraphicsState,
                         habitSelected = statisticsState.state.habitSelected,
                         yearMonth = yearMonth,

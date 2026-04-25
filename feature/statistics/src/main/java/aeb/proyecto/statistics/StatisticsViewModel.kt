@@ -20,6 +20,8 @@ import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.calendar.source.CalendarDataSource
 import android.R.attr.firstDayOfWeek
 import android.util.Log
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModel
@@ -53,7 +55,10 @@ import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import java.time.temporal.TemporalAmount
 import javax.inject.Inject
+import kotlin.collections.component1
+import kotlin.collections.component2
 import kotlin.collections.emptyList
+import kotlin.collections.map
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
@@ -428,10 +433,26 @@ class StatisticsViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val pieChartState: StateFlow<List<PieChartData>> =
-        statisticsState
-            .flatMapLatest {
+        combine(
+            statisticsState,
+            dayOfWeek
+        ) { state, dayOfWeek -> state to dayOfWeek }
+            .flatMapLatest { (state, dayOfWeek) ->
                 flow {
-                    emit(listaDePrueba)
+                    when(state){
+                        is StatisticsState.Error, StatisticsState.Loading -> emit(listOf())
+                        is StatisticsState.Success -> {
+                            val selected = (state.state as StatisticsSuccessState.Habits).habitSelected
+
+                            val data = getDataPieChart(
+                                selected = selected,
+                                firstDay = dayOfWeek
+                            )
+
+                            Log.d("DATASDFDFSFDSDFSFDSFDSDFSFDS", data.toString())
+                            emit(data)
+                        }
+                    }
                 }
             }
             .flowOn(Dispatchers.Default)
@@ -440,6 +461,7 @@ class StatisticsViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = listOf()
             )
+
 
 
     fun onCLickCard(id:Long) = viewModelScope.launch(Dispatchers.IO){
@@ -701,8 +723,93 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
-    fun getDataPieChart(): List<PieChartData>{
-        return listOf()
+    fun getDataPieChart(
+        selected: HabitWithDailyHabit,
+        firstDay: DayOfWeek
+    ): List<PieChartData>{
+        val totalPeriods = getTotalPeriods(selected, firstDay)
+
+        val completedHabits = getCompletedPeriods(selected,firstDay).size
+        val noDoneHabits = getUncompletedPeriods(selected, firstDay)
+        val uncompletedHabits = totalPeriods - (completedHabits + noDoneHabits)
+
+        Log.d("DATASDFDFSFDSDFSFDSFDSFDSFDSFDSFDS", completedHabits.toString() + " hechos")
+        Log.d("DATASDFDFSFDSDFSFDSFDSFDSFDSFDSFDS", noDoneHabits.toString() + " no hechos")
+        Log.d("DATASDFDFSFDSDFSFDSFDSFDSFDSFDSFDS", uncompletedHabits.toString() + " a medias")
+        Log.d("DATASDFDFSFDSDFSFDSFDSFDSFDSFDSFDS", totalPeriods.toString() + " total")
+
+
+        return listaDePrueba
+    }
+
+    private fun getUncompletedPeriods(
+        selected: HabitWithDailyHabit,
+        firstDay: DayOfWeek
+    ): Int {
+        val type = selected.habit.typeHabit
+        val today = LocalDate.now()
+
+        val pastAndTodayHabits = selected.dailyHabits.filter { !it.date.isAfter(today) }
+        val firstRecordDate = pastAndTodayHabits.minOfOrNull { it.date } ?: return 0
+
+        // 1. Agrupamos los registros existentes por su inicio de período
+        val groupedRecords = when (type) {
+            TypeHabit.Daily, is TypeHabit.Recurring -> pastAndTodayHabits.groupBy { it.date }
+            is TypeHabit.Weekly -> pastAndTodayHabits.groupBy { it.date.with(TemporalAdjusters.previousOrSame(firstDay)) }
+            is TypeHabit.Monthly -> pastAndTodayHabits.groupBy { it.date.with(TemporalAdjusters.firstDayOfMonth()) }
+        }
+
+        // 2. Calculamos cuántos períodos han pasado en total (el "universo" de la tarta)
+        val totalPeriods = when (type) {
+            TypeHabit.Daily -> ChronoUnit.DAYS.between(firstRecordDate, today).toInt() + 1
+            is TypeHabit.Weekly -> ChronoUnit.WEEKS.between(
+                firstRecordDate.with(TemporalAdjusters.previousOrSame(firstDay)),
+                today.with(TemporalAdjusters.previousOrSame(firstDay))
+            ).toInt() + 1
+            is TypeHabit.Monthly -> ChronoUnit.MONTHS.between(
+                firstRecordDate.with(TemporalAdjusters.firstDayOfMonth()),
+                today.with(TemporalAdjusters.firstDayOfMonth())
+            ).toInt() + 1
+            is TypeHabit.Recurring -> (ChronoUnit.DAYS.between(firstRecordDate, today).toInt() / type.interval) + 1
+        }
+
+        // 3. Contamos cuántos de los períodos registrados están vacíos (suma de progreso = 0)
+        val periodsWithZeroProgress = groupedRecords.values.count { daysInPeriod ->
+            daysInPeriod.sumOf { it.goalDone.toDouble() } <= 0.0
+        }
+
+        // 4. Calculamos los períodos que ni siquiera existen en la base de datos (huecos)
+        val missingPeriods = (totalPeriods - groupedRecords.size).coerceAtLeast(0)
+
+        // El total de "malos" son los que están a cero + los que no se registraron
+        return periodsWithZeroProgress + missingPeriods
+    }
+
+    private fun getTotalPeriods(
+        selected: HabitWithDailyHabit,
+        firstDay: DayOfWeek
+    ): Int {
+        val today = LocalDate.now()
+        val type = selected.habit.typeHabit
+
+        // Obtenemos la fecha del primer registro que NO sea del futuro
+        val firstRecordDate = selected.dailyHabits
+            .map { it.date }
+            .filter { !it.isAfter(today) }
+            .minOrNull() ?: return 0
+
+        return when (type) {
+            TypeHabit.Daily -> ChronoUnit.DAYS.between(firstRecordDate, today).toInt() + 1
+            is TypeHabit.Weekly -> ChronoUnit.WEEKS.between(
+                firstRecordDate.with(TemporalAdjusters.previousOrSame(firstDay)),
+                today.with(TemporalAdjusters.previousOrSame(firstDay))
+            ).toInt() + 1
+            is TypeHabit.Monthly -> ChronoUnit.MONTHS.between(
+                firstRecordDate.with(TemporalAdjusters.firstDayOfMonth()),
+                today.with(TemporalAdjusters.firstDayOfMonth())
+            ).toInt() + 1
+            is TypeHabit.Recurring -> (ChronoUnit.DAYS.between(firstRecordDate, today).toInt() / type.interval) + 1
+        }
     }
 
 }

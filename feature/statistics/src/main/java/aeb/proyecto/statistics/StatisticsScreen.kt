@@ -31,6 +31,7 @@ fun StatisticsScreen(
     val yearHourlyGraphicsSelected = viewModel.yearHourlyGraphicsSelected.collectAsStateWithLifecycle().value
     val yearGraphicsSelected = viewModel.yearGraphicsSelected.collectAsStateWithLifecycle().value
     val goalsDoneState = viewModel.goalsDoneState.collectAsStateWithLifecycle().value
+    val pieChartState = viewModel.pieChartState.collectAsStateWithLifecycle().value
 
 
     when(orientation){
@@ -41,6 +42,7 @@ fun StatisticsScreen(
                 graphicsState = graphicsState,
                 hourlyGraphicsState = hourlyGraphicsState,
                 goalDoneState = goalsDoneState,
+                pieChartState = pieChartState,
                 yearMonth = yearMonth,
                 yearHourlyGraphicsSelected = yearHourlyGraphicsSelected,
                 yearGraphicsSelected = yearGraphicsSelected,

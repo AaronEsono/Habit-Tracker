@@ -4,6 +4,7 @@ import aeb.proyecto.room.entities.Habit
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.statistics.components.common.card.HeaderCard
+import aeb.proyecto.statistics.components.common.donutChart.PieChartData
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.statistics.model.GoalsDoneState
 import aeb.proyecto.statistics.model.GraphicsState
@@ -34,6 +35,7 @@ fun ContentVerticalStatisticsScreen(
     graphicsState: GraphicsState,
     hourlyGraphicsState: GraphicsState,
     goalDoneState: GoalsDoneState,
+    pieChartState: List<PieChartData>,
     habitSelected: HabitWithDailyHabit,
     yearMonth: YearMonth,
     yearGraphicsSelected: Int,
@@ -76,6 +78,7 @@ fun ContentVerticalStatisticsScreen(
             boxUIState = boxUIState,
             graphicsState = graphicsState,
             goalDoneState = goalDoneState,
+            pieChartState = pieChartState,
             hourlyGraphicsState = hourlyGraphicsState,
             yearMonth = yearMonth,
             yearGraphicsSelected = yearGraphicsSelected,

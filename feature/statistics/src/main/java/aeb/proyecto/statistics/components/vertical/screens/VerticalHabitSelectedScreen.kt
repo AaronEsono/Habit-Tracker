@@ -6,6 +6,7 @@ import aeb.proyecto.statistics.R
 import aeb.proyecto.statistics.components.common.boxDays.StatisticsBoxDays
 import aeb.proyecto.statistics.components.common.calendar.StatisticsCalendar
 import aeb.proyecto.statistics.components.common.donutChart.PieChart
+import aeb.proyecto.statistics.components.common.donutChart.PieChartData
 import aeb.proyecto.statistics.components.common.goalBox.GoalBoxDays
 import aeb.proyecto.statistics.components.common.goalBox.GoalBoxStreak
 import aeb.proyecto.statistics.components.common.graphics.hourGraphics.HourGraphics
@@ -46,6 +47,7 @@ fun VerticalHabitSelectedScreen(
     graphicsState: GraphicsState,
     hourlyGraphicsState: GraphicsState,
     goalDoneState: GoalsDoneState,
+    pieChartState: List<PieChartData>,
     yearMonth: YearMonth,
     yearGraphicsSelected: Int,
     yearHourlyGraphicsSelected: Int,
@@ -168,6 +170,7 @@ fun VerticalHabitSelectedScreen(
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
             PieChart(
+                data = pieChartState,
                 chartHeight = pieChartHeight
             )
 
