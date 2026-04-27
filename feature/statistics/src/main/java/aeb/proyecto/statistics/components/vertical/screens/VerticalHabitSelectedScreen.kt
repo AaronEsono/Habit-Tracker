@@ -62,7 +62,7 @@ fun VerticalHabitSelectedScreen(
     BoxWithConstraints {
         val headerHeight = maxHeight * 0.1f
         val boxHeight = maxHeight * 0.25f
-        val goalBoxHeight = maxHeight * 0.10f
+        val goalBoxHeight = maxHeight * 0.15f
         val pieChartHeight = maxHeight * 0.3f
 
 
@@ -169,10 +169,12 @@ fun VerticalHabitSelectedScreen(
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
-            PieChart(
-                data = pieChartState,
-                chartHeight = pieChartHeight
-            )
+            if(pieChartState.isNotEmpty()){
+                PieChart(
+                    data = pieChartState,
+                    chartHeight = pieChartHeight
+                )
+            }
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
         }

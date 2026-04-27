@@ -8,7 +8,7 @@ import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.statistics.components.common.donutChart.PieChartData
-import aeb.proyecto.statistics.components.common.donutChart.listaDePrueba
+import aeb.proyecto.statistics.components.common.donutChart.PieChartState
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.statistics.model.DayBoxState
 import aeb.proyecto.statistics.model.GoalsDoneState
@@ -18,10 +18,7 @@ import aeb.proyecto.statistics.model.StatisticsState
 import aeb.proyecto.statistics.model.StatisticsSuccessState
 import aeb.proyecto.ui.calendar.model.CalendarUIState
 import aeb.proyecto.ui.calendar.source.CalendarDataSource
-import android.R.attr.firstDayOfWeek
 import android.util.Log
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModel
@@ -29,7 +26,6 @@ import com.patrykandpatrick.vico.core.cartesian.data.LineCartesianLayerModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +34,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -49,16 +44,12 @@ import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Period
-import java.time.Year
 import java.time.YearMonth
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import java.time.temporal.TemporalAmount
 import javax.inject.Inject
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.emptyList
-import kotlin.collections.map
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
@@ -431,6 +422,8 @@ class StatisticsViewModel @Inject constructor(
             )
 
 
+    // Mirar el goalBox, ponerlo arriba
+    // Comprobar que en todos los moviles se vea bien
     @OptIn(ExperimentalCoroutinesApi::class)
     val pieChartState: StateFlow<List<PieChartData>> =
         combine(
@@ -449,7 +442,6 @@ class StatisticsViewModel @Inject constructor(
                                 firstDay = dayOfWeek
                             )
 
-                            Log.d("DATASDFDFSFDSDFSFDSFDSDFSFDS", data.toString())
                             emit(data)
                         }
                     }
@@ -723,25 +715,119 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Orchestrates the calculation of all pie chart segments for a specific habit.
+     * * This function aggregates data from various utility methods to determine the three
+     * possible states of a habit period: Completed, Uncompleted (In Progress), and Not Done.
+     * It calculates both the display percentage and the geometric sweep angle for each state.
+     * * @param selected The habit and its history to be processed.
+     * @param firstDay The configured start of the week for grouping calculations.
+     * @return A filtered and sorted list of [PieChartData] ready for UI rendering.
+     * Segments with a 0% contribution are excluded to keep the legend clean.
+     */
     fun getDataPieChart(
         selected: HabitWithDailyHabit,
         firstDay: DayOfWeek
     ): List<PieChartData>{
+        // 1. Establish the total timeframe (the 100% of the chart)
         val totalPeriods = getTotalPeriods(selected, firstDay)
 
+        // 2. Count periods for each distinct state
         val completedHabits = getCompletedPeriods(selected,firstDay).size
         val noDoneHabits = getUncompletedPeriods(selected, firstDay)
+
+        // In Progress (Uncompleted) is derived by subtracting known states from the total
         val uncompletedHabits = totalPeriods - (completedHabits + noDoneHabits)
 
-        Log.d("DATASDFDFSFDSDFSFDSFDSFDSFDSFDSFDS", completedHabits.toString() + " hechos")
-        Log.d("DATASDFDFSFDSDFSFDSFDSFDSFDSFDSFDS", noDoneHabits.toString() + " no hechos")
-        Log.d("DATASDFDFSFDSDFSFDSFDSFDSFDSFDSFDS", uncompletedHabits.toString() + " a medias")
-        Log.d("DATASDFDFSFDSDFSFDSFDSFDSFDSFDSFDS", totalPeriods.toString() + " total")
+        // 3. Calculate integer percentages for UI labels
+        val partCompletedPercentage = getPercentage(completedHabits, totalPeriods)
+        val partUncompletedPercentage = getPercentage(uncompletedHabits, totalPeriods)
+        val partNoDonePercentage = getPercentage(noDoneHabits, totalPeriods)
 
+        // 4. Calculate exact Float angles for Canvas drawing
+        val partAngleCompleted = getPercentageAngle(completedHabits, totalPeriods)
+        val partAngleUncompleted = getPercentageAngle(uncompletedHabits, totalPeriods)
+        val partAngleNoDone = getPercentageAngle(noDoneHabits, totalPeriods)
 
-        return listaDePrueba
+        val pieChartList = listOf(
+            PieChartData(
+                percentage = partCompletedPercentage,
+                value = partAngleCompleted,
+                habitColor = selected.habit.color,
+                state = PieChartState.COMPLETED
+            ),
+            PieChartData(
+                percentage = partUncompletedPercentage,
+                value = partAngleUncompleted,
+                habitColor = selected.habit.color,
+                state = PieChartState.UNCOMPLETED
+            ),
+            PieChartData(
+                percentage = partNoDonePercentage,
+                value = partAngleNoDone,
+                habitColor = selected.habit.color,
+                state = PieChartState.NOT_DONE
+            )
+        )
+
+        // Filter out empty segments and sort by state for consistent UI placement
+        return pieChartList.filter { it.percentage > 0 }.sortedBy { it.state }
     }
 
+    /**
+     * Calculates the integer percentage of a part relative to a total.
+     *
+     * This function performs floating-point arithmetic internally to prevent precision loss
+     * inherent in integer division. It applies rounding to the nearest integer to ensure
+     * the most accurate representation for statistical UI components.
+     *
+     * @param part The current value or number of completed units.
+     * @param total The maximum value or the total universe of units.
+     * @return The calculated percentage as an [Int] between 0 and 100.
+     * Returns 0 if the total is 0 or less to prevent division by zero errors.
+     */
+    private fun getPercentage(part:Int, total:Int): Int {
+        return if (total > 0) {
+            // Convert to Float to preserve decimal precision before scaling
+            // Use roundToInt() to minimize cumulative rounding errors (e.g., 66.6 -> 67)
+            ((part.toFloat() / total.toFloat()) * 100f).roundToInt()
+        } else {
+            0
+        }
+    }
+
+    /**
+     * Calculates the sweep angle in degrees for a pie chart segment.
+     *
+     * This function maps a specific portion to a 360-degree circular scale.
+     * It maintains [Float] precision to ensure that the sum of all segments
+     * perfectly aligns with the circular geometry, avoiding gaps in the UI
+     * rendering caused by integer rounding.
+     *
+     * @param part The current value representing the size of the segment.
+     * @param total The total sum of all parts in the dataset.
+     * @return The calculated angle in degrees as a [Float].
+     * Returns 0f if the total is 0 or less to avoid invalid calculations.
+     */
+    private fun getPercentageAngle(part:Int, total:Int): Float {
+        return if (total > 0) {
+            // Map the ratio to a 360-degree circle
+            ((part.toFloat() / total.toFloat()) * 360f)
+        } else {
+            0f
+        }
+    }
+
+    /**
+     * Calculates the number of periods that were not completed or had no activity.
+     * * This identifies "failed" periods by checking two scenarios:
+     * 1. Periods that exist in the database but have zero total progress.
+     * 2. Periods that are completely missing from the database based on the elapsed time
+     * since the first record.
+     * * @param selected The habit data containing the schedule type and daily records.
+     * @param firstDay The start of the week configuration (e.g., Monday or Sunday).
+     * @return The total count of failed or missing periods as an [Int].
+     */
     private fun getUncompletedPeriods(
         selected: HabitWithDailyHabit,
         firstDay: DayOfWeek
@@ -749,17 +835,18 @@ class StatisticsViewModel @Inject constructor(
         val type = selected.habit.typeHabit
         val today = LocalDate.now()
 
+        // Filter out future records to prevent data contamination
         val pastAndTodayHabits = selected.dailyHabits.filter { !it.date.isAfter(today) }
         val firstRecordDate = pastAndTodayHabits.minOfOrNull { it.date } ?: return 0
 
-        // 1. Agrupamos los registros existentes por su inicio de período
+        // 1. Group existing records into temporal buckets based on habit type
         val groupedRecords = when (type) {
             TypeHabit.Daily, is TypeHabit.Recurring -> pastAndTodayHabits.groupBy { it.date }
             is TypeHabit.Weekly -> pastAndTodayHabits.groupBy { it.date.with(TemporalAdjusters.previousOrSame(firstDay)) }
             is TypeHabit.Monthly -> pastAndTodayHabits.groupBy { it.date.with(TemporalAdjusters.firstDayOfMonth()) }
         }
 
-        // 2. Calculamos cuántos períodos han pasado en total (el "universo" de la tarta)
+        // 2. Determine the total number of periods elapsed on the calendar (the "universe")
         val totalPeriods = when (type) {
             TypeHabit.Daily -> ChronoUnit.DAYS.between(firstRecordDate, today).toInt() + 1
             is TypeHabit.Weekly -> ChronoUnit.WEEKS.between(
@@ -773,18 +860,30 @@ class StatisticsViewModel @Inject constructor(
             is TypeHabit.Recurring -> (ChronoUnit.DAYS.between(firstRecordDate, today).toInt() / type.interval) + 1
         }
 
-        // 3. Contamos cuántos de los períodos registrados están vacíos (suma de progreso = 0)
+        // 3. Count periods where activity was logged but the sum of progress is zero
         val periodsWithZeroProgress = groupedRecords.values.count { daysInPeriod ->
             daysInPeriod.sumOf { it.goalDone.toDouble() } <= 0.0
         }
 
-        // 4. Calculamos los períodos que ni siquiera existen en la base de datos (huecos)
+        // 4. Calculate "gaps" (periods that have passed but have no entries in the database)
         val missingPeriods = (totalPeriods - groupedRecords.size).coerceAtLeast(0)
 
-        // El total de "malos" son los que están a cero + los que no se registraron
+        // Total uncompleted count is the sum of zero-activity logs plus missing calendar slots
         return periodsWithZeroProgress + missingPeriods
     }
 
+    /**
+     * Determines the total number of temporal units elapsed since the habit's inception.
+     * * This function defines the total "universe" or time horizon of the habit by calculating
+     * the distance between the first recorded activity (excluding future dates) and the
+     * current date. It automatically adjusts the unit of measurement (Days, Weeks, Months)
+     * based on the habit's configuration.
+     *
+     * @param selected The habit data and its associated daily logs.
+     * @param firstDay The localized start of the week (used for weekly grouping).
+     * @return The total count of periods that have passed as an [Int].
+     * Returns 0 if no valid past or present records are found.
+     */
     private fun getTotalPeriods(
         selected: HabitWithDailyHabit,
         firstDay: DayOfWeek
@@ -792,7 +891,7 @@ class StatisticsViewModel @Inject constructor(
         val today = LocalDate.now()
         val type = selected.habit.typeHabit
 
-        // Obtenemos la fecha del primer registro que NO sea del futuro
+        // Retrieve the earliest record date, ignoring any accidental future entries
         val firstRecordDate = selected.dailyHabits
             .map { it.date }
             .filter { !it.isAfter(today) }

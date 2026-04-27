@@ -36,4 +36,8 @@
     <string name="statistics_goal_subtitle_streak_historic">Best streak</string>
     <string name="statistics_goal_subtitle_streak_date">From %1$s to %2$s</string>
 
+    <string name="statistics_title_completed">Completed</string>
+    <string name="statistics_title_uncompleted">Uncompleted</string>
+    <string name="statistics_title_not_done">Not done</string>
+
 </resources>

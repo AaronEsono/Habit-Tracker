@@ -36,5 +36,8 @@
     <string name="statistics_goal_subtitle_streak_historic">Mayor racha</string>
     <string name="statistics_goal_subtitle_streak_date">De %1$s a %2$s</string>
 
+    <string name="statistics_title_completed">Completados</string>
+    <string name="statistics_title_uncompleted">No completados</string>
+    <string name="statistics_title_not_done">No iniciados</string>
 
 </resources>

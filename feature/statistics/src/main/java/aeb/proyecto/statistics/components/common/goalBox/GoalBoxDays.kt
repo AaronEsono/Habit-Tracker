@@ -38,8 +38,8 @@ fun GoalBoxDays(
             .fillMaxWidth()
     ) {
 
-        val fontSizeTitle = (maxHeight.value * 0.40f).sp
-        val fontSizeSubtitle = (maxHeight.value * 0.20f).sp
+        val fontSizeTitle = (maxHeight.value * 0.35f).sp
+        val fontSizeSubtitle = (maxHeight.value * 0.15f).sp
 
         Column(
             modifier = Modifier

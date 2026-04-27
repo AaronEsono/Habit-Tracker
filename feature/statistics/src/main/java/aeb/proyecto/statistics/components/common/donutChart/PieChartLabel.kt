@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,9 +29,11 @@ fun PieChartLabel(
 ){
     // Definimos proporciones:
     // Título: 8% del alto del contenedor | Subtítulo: 6% | Caja: 12%
-    val titleSize = with(LocalDensity.current) { (containerHeight.toPx() * 0.08f).toSp() }
-    val subtitleSize = with(LocalDensity.current) { (containerHeight.toPx() * 0.06f).toSp() }
-    val boxSize = containerHeight * 0.16f
+    val titleSize = with(LocalDensity.current) { (containerHeight.toPx() * 0.10f).toSp() }
+    val subtitleSize = with(LocalDensity.current) { (containerHeight.toPx() * 0.08f).toSp() }
+    val boxSize = containerHeight * 0.20f
+    val title = pieChartData.getTitle()
+    val color = pieChartData.getColor()
 
 
     Row(
@@ -43,7 +46,7 @@ fun PieChartLabel(
             modifier = Modifier
                 .size(boxSize)
                 .background(
-                    color = Color(pieChartData.color),
+                    color = color,
                     shape = RoundedCornerShape(containerHeight * 0.02f) // Bordes también relativos
                 )
         )
@@ -55,7 +58,7 @@ fun PieChartLabel(
         ) {
             // Título Dinámico
             LabelLargeText(
-                text = pieChartData.title,
+                text = title,
                 fontSize = titleSize,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -64,7 +67,7 @@ fun PieChartLabel(
 
             // Subtítulo Dinámico
             LabelMediumText(
-                text = pieChartData.value.toString(),
+                text = "${pieChartData.percentage}%",
                 fontSize = subtitleSize,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

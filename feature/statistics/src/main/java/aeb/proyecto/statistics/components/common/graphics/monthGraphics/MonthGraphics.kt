@@ -73,10 +73,11 @@ fun MonthGraphics(
 
     // --- Lógica Responsive ---
     val isTablet = configuration.screenWidthDp > 600
-    val scaleFactor = if (isTablet) 1.4f else 1.0f
+    val scaleFactor = if (isTablet) 1.45f else 1.15f
+    val titleScaleFactor = if (isTablet) 1.4f else 1.0f
 
     // Estilos de texto adaptativos (puedes usar copy para cambiar solo el tamaño)
-    val titleSize = MaterialTheme.typography.titleSmall.fontSize * scaleFactor
+    val titleSize = MaterialTheme.typography.titleSmall.fontSize * titleScaleFactor
     val labelSize = MaterialTheme.typography.labelLarge.fontSize * scaleFactor
     val iconSize = 20.dp * scaleFactor
 
