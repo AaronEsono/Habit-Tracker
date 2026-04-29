@@ -1,5 +1,8 @@
-package aeb.proyecto.statistics.components.common.donutChart
+package aeb.proyecto.statistics.components.vertical.donutChart
 
+import aeb.proyecto.statistics.components.common.donutChart.ChartCanvas
+import aeb.proyecto.statistics.components.common.donutChart.PieChartData
+import aeb.proyecto.statistics.components.common.donutChart.PieChartLabel
 import aeb.proyecto.ui.dimmens.Dimmens.spacing16
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
@@ -9,7 +12,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -22,25 +24,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 
-// Ahora mismo no utilizamos un height, por la tanto, el donut y los textos son muy grandes, hay que tratar ese 0.35 directamente
-// al donut, al igual que los textos
-// Arreglar tamaños
-
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun PieChart(
+fun VerticalPieChart(
     modifier: Modifier = Modifier,
     data: List<PieChartData>,
     chartHeight: Dp = 200.dp
@@ -94,39 +86,6 @@ fun PieChart(
                     }
                 }
             }
-        }
-    }
-}
-
-// Extraemos el Canvas a una función para no repetir código
-@Composable
-fun ChartCanvas(data: List<PieChartData>, modifier: Modifier) {
-    val notDoneColor = MaterialTheme.colorScheme.secondaryContainer
-
-    Canvas(modifier = modifier) {
-        val dynamicStrokeWidth = size.width * 0.15f // Un poco más grueso para que se vea mejor
-        var currentStartAngle = -90f
-        val arcSize = Size(size.width - dynamicStrokeWidth, size.height - dynamicStrokeWidth)
-        val offset = Offset(dynamicStrokeWidth / 2, dynamicStrokeWidth / 2)
-
-        data.forEachIndexed { index, pieData ->
-
-            val arcColor = when (pieData.state) {
-                PieChartState.COMPLETED -> Color(pieData.habitColor)
-                PieChartState.UNCOMPLETED -> Color(pieData.habitColor).copy(alpha = 0.4f)
-                PieChartState.NOT_DONE -> notDoneColor
-            }
-
-            drawArc(
-                color = arcColor,
-                startAngle = currentStartAngle,
-                sweepAngle = pieData.value,
-                useCenter = false,
-                topLeft = offset,
-                size = arcSize,
-                style = Stroke(dynamicStrokeWidth, cap = StrokeCap.Butt)
-            )
-            currentStartAngle += pieData.value
         }
     }
 }

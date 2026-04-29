@@ -1,5 +1,6 @@
 package aeb.proyecto.statistics
 
+import aeb.proyecto.statistics.components.horizontal.HorizontalStatisticsScreen
 import aeb.proyecto.statistics.components.vertical.VerticalStatisticsScreen
 import aeb.proyecto.ui.orientation.Orientation
 import aeb.proyecto.ui.orientation.getOrientation
@@ -54,7 +55,25 @@ fun StatisticsScreen(
                 onHourYearSelected = viewModel::onHourYearSelected
             )
         }
-        Orientation.Landscape -> {}
+        Orientation.Landscape -> {
+            HorizontalStatisticsScreen(
+                statisticsState = statisticsState,
+                boxUIState = boxUIState,
+                graphicsState = graphicsState,
+                hourlyGraphicsState = hourlyGraphicsState,
+                goalDoneState = goalsDoneState,
+                pieChartState = pieChartState,
+                yearMonth = yearMonth,
+                yearHourlyGraphicsSelected = yearHourlyGraphicsSelected,
+                yearGraphicsSelected = yearGraphicsSelected,
+                startDayOfWeek = startDayOfWeek,
+                calendarUIState = calendarState,
+                onCLickCard = viewModel::onCLickCard,
+                onMonthChange = viewModel::onMonthButtonClicked,
+                onYearSelected = viewModel::onYearSelected,
+                onHourYearSelected = viewModel::onHourYearSelected
+            )
+        }
     }
 
     // Vertical
@@ -74,6 +93,6 @@ fun StatisticsScreen(
     // 7. Dos recuadros, en uno mostrar los completados total, y en otro la racha actual y la mejor racha ----- HECHO
     // A lo mejor las rachas separarlos en dos ----- HECHO
 
-    // 8. Rueda donde se muestren: completados, a medio completar, no hecho, porcentaje
+    // 8. Rueda donde se muestren: completados, a medio completar, no hecho, porcentaje ----- HECHO
 
 }

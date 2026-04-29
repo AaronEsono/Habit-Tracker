@@ -1,7 +1,6 @@
 package aeb.proyecto.statistics.components.common.header
 
 import aeb.proyecto.room.entities.Habit
-import aeb.proyecto.statistics.components.common.donutChart.PieChart
 import aeb.proyecto.ui.dimmens.Dimmens.spacing4
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8

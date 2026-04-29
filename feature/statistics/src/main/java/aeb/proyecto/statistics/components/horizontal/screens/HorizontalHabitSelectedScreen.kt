@@ -1,4 +1,4 @@
-package aeb.proyecto.statistics.components.vertical.screens
+package aeb.proyecto.statistics.components.horizontal.screens
 
 import aeb.proyecto.room.entities.relations.HabitWithDailyHabit
 import aeb.proyecto.room.entities.relations.HabitWithDay
@@ -11,6 +11,7 @@ import aeb.proyecto.statistics.components.common.goalBox.GoalBoxStreak
 import aeb.proyecto.statistics.components.common.graphics.hourGraphics.HourGraphics
 import aeb.proyecto.statistics.components.common.graphics.monthGraphics.MonthGraphics
 import aeb.proyecto.statistics.components.common.header.HeaderTitle
+import aeb.proyecto.statistics.components.horizontal.donutChart.HorizontalPieChart
 import aeb.proyecto.statistics.components.vertical.donutChart.VerticalPieChart
 import aeb.proyecto.statistics.model.BoxUIState
 import aeb.proyecto.statistics.model.GoalsDoneState
@@ -41,7 +42,7 @@ import java.time.YearMonth
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun VerticalHabitSelectedScreen(
+fun HorizontalHabitSelectedScreen(
     habitSelected: HabitWithDailyHabit,
     boxUIState: List<BoxUIState>,
     graphicsState: GraphicsState,
@@ -59,11 +60,11 @@ fun VerticalHabitSelectedScreen(
 ){
 
     BoxWithConstraints {
-        val headerHeight = maxHeight * 0.1f
-        val boxHeight = maxHeight * 0.25f
-        val goalBoxHeight = maxHeight * 0.15f
-        val goalBoxHeightStreak = maxHeight * 0.125f
-        val pieChartHeight = maxHeight * 0.3f
+        val headerHeight = maxHeight * 0.2f
+        val boxHeight = maxHeight * 0.55f
+        val goalBoxHeight = maxHeight * 0.3f
+        val goalBoxHeightStreak = maxHeight * 0.25f
+        val pieChartHeight = maxHeight * 0.45f
 
 
         Column (
@@ -170,7 +171,7 @@ fun VerticalHabitSelectedScreen(
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
             if(pieChartState.isNotEmpty()){
-                VerticalPieChart(
+                HorizontalPieChart(
                     data = pieChartState,
                     chartHeight = pieChartHeight
                 )
