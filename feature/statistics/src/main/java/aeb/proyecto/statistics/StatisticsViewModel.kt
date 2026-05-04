@@ -435,14 +435,19 @@ class StatisticsViewModel @Inject constructor(
                     when(state){
                         is StatisticsState.Error, StatisticsState.Loading -> emit(listOf())
                         is StatisticsState.Success -> {
-                            val selected = (state.state as StatisticsSuccessState.Habits).habitSelected
+                            if(state.state is StatisticsSuccessState.Habits){
+                                val selected = state.state.habitSelected
 
-                            val data = getDataPieChart(
-                                selected = selected,
-                                firstDay = dayOfWeek
-                            )
+                                val data = getDataPieChart(
+                                    selected = selected,
+                                    firstDay = dayOfWeek
+                                )
 
-                            emit(data)
+                                emit(data)
+                            }
+                            else {
+                                emit(listOf())
+                            }
                         }
                     }
                 }

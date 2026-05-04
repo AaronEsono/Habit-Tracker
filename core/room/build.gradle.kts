@@ -8,6 +8,10 @@ plugins {
 
 android {
     namespace = "aeb.proyecto.room"
+
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
 }
 
 dependencies {
