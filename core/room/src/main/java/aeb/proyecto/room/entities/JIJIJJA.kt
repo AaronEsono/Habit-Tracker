@@ -9,5 +9,5 @@ data class JIJIJJA(
     @PrimaryKey
     val hola:Int = 0,
     @ColumnInfo(defaultValue = "0")
-    val prueba:Int = 0,
+    val prueba2:Int = 0,
 )

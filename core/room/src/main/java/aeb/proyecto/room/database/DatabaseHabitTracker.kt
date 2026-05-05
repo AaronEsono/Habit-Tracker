@@ -19,15 +19,21 @@ import aeb.proyecto.room.entities.JIJIJJA
 import aeb.proyecto.room.entities.TimeEntry
 import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteColumn
+import androidx.room.DeleteTable
+import androidx.room.RenameColumn
+import androidx.room.RenameTable
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.AutoMigrationSpec
 
 @Database(
     entities = [Habit::class, HabitDay::class,HabitNotification::class,TimeEntry::class, JIJIJJA::class],
-    version = 3,
+    version = 4,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 2, to = 3)
+        AutoMigration(from = 2, to = 3),
+        AutoMigration(from = 3, to = 4, spec = DatabaseHabitTracker.MigrationTo3To4::class),
     ]
 )
 @TypeConverters(DateConverter::class,
@@ -43,14 +49,18 @@ abstract class DatabaseHabitTracker : RoomDatabase() {
     abstract fun entireDaoHabit(): EntireHabitDao
     abstract fun habitWithDailyHabitDao(): HabitWithDailyHabitDao
     abstract fun timerEntryDao(): TimerEntryDao
+
+    //@DeleteTable(tableName = "JIJIJJA")
+    //@DeleteColumn(tableName = "JIJIJJA", columnName = "prueba2")
+    //@RenameTable(toTableName = "JIJIJJA", fromTableName = "JIJIJJA2")
+    @RenameColumn(tableName = "JIJIJJA", fromColumnName = "prueba", toColumnName = "prueba2")
+    class MigrationTo3To4: AutoMigrationSpec
 }
 
 
 // 1. Indicar en el gradle el path del schema
 // 2. Indicar la migracion, de qué version a qué version, poner solo una autoMigration, si pones varias no funcionará porque se va a pensar que hay que hacerlo
-// de nuevo
+// de nuevo (lo ultimo no es correcto, esto paso porque ejecute con los cambios hechos en la version antigua, y al compararlo con la nueva, daba error)
 // 3. Cambia la version, el numero
-// 4. Disfruto
-
-
-// Mañana: comprobar como funcionan los borrados y las versiones, probar a borrar tablas y/o variables
+// 4. Si hay que renombrar o borrar, crear una migrationSpec
+// 5. Disfruta
