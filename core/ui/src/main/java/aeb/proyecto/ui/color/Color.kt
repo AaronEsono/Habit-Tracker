@@ -69,3 +69,30 @@ val outLineLightAlt = Color(0xFF8C8B82)
 val surfaceContainerLightAlt = Color(0xFFA4A39A)
 val surfaceTintLightAlt = Color(0xFFD7D6CF)
 val surfaceContainerHighestLightAlt = Color(0xFFE2E0D7)
+
+// Midnight theme
+val backgroundMidnight = Color(0xFF0A0A0A) // Negro casi puro
+val primaryMidnight = Color(0xFF1F1F1E)    // Gris carbón muy oscuro
+val primaryContainerMidnight = Color(0xFF252524)
+val onPrimaryContainerMidnight = Color(0xFFE3E3E3)
+
+val surfaceVariantMidnight = Color(0xFF2D312F)
+val onSurfaceMidnight = Color(0xFFF2F2F2) // Blanco casi puro para máximo contraste
+val inverseSurfaceMidnight = Color(0xFFFFFFFF)
+
+val tertiaryContainerMidnight = Color(0xFF0F0F0F) // Un paso arriba del fondo
+val secondaryContainerMidnight = Color(0xFF242526)
+
+val outLineMidnight = Color(0xFF636363) // Más sutil para no "brillar" demasiado
+val surfaceContainerMidnight = Color(0xFF1C1C1B)
+val surfaceTintMidnight = Color(0xFF121212)
+
+val surfaceContainerHighestMidnight = Color(0xFF222221)
+val surfaceContainerLowMidnight = Color(0xFF141413)
+
+// Corregimos el verde que tenías aquí por un tono neutro coherente
+val surfaceContainerLowestMidnight = Color(0xFF050505)
+
+val scrimMidnight = Color(0xFFA7A7A7) // Para modales, negro puro con transparencia
+val onBackgroundMidnight = Color(0xFFE3E3E3)
+val onSurfaceVariantMidnight = Color(0xFFB0B0AF)

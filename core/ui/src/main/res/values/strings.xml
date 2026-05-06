@@ -4,6 +4,7 @@
     <string name="ui_theme_dark_alt">Dark alt.</string>
     <string name="ui_theme_light">Light</string>
     <string name="ui_theme_light_alt">Light alt.</string>
+    <string name="ui_theme_midnight">Midnight</string>
 
     <string name="month_1">January</string>
     <string name="month_2">February</string>

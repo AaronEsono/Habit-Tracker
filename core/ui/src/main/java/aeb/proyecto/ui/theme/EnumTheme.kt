@@ -6,7 +6,8 @@ enum class EnumTheme(val theme: Int, val title: Int) {
     DARK(0, R.string.ui_theme_dark),
     BLUE_DARK(1, R.string.ui_theme_dark_alt),
     LIGHT(2, R.string.ui_theme_light),
-    CREME_LIGHT(3, R.string.ui_theme_light_alt)
+    CREME_LIGHT(3, R.string.ui_theme_light_alt),
+    MIDNIGHT(4, R.string.ui_theme_midnight)
 }
 
 fun getTitle(value:Int):Int{
