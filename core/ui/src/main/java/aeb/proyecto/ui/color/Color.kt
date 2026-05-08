@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 //Colores generales
 val colorErrorGeneral = Color(0xFFDB3C33)
 
-//Colores tema oscuro
+//Colores tema oscuro **************
 val backgroundDark = Color(0xFF201f1e)
 val primaryDark = Color(0xFF2e2d2b)
 val primaryContainerDark = Color(0xFF32312F)
@@ -24,6 +24,32 @@ val onBackgroundDark = Color(0xFFD1D2D4)
 val onSurfaceVariantDark = Color(0xFFA5A4A1)
 val surfaceContainerLowDark = Color(0xFFB0AFAE)
 val surfaceContainerLowestDark = Color(0xFF4CAF50)
+//Colores tema oscuro **************
+
+// Colores tema midnight ***********
+val backgroundMidnight = Color(0xFF0A0A0A)
+val primaryMidnight = Color(0xFF1F1F1E)
+val primaryContainerMidnight = Color(0xFF252524)
+val onPrimaryContainerMidnight = Color(0xFFE3E3E3)
+val surfaceVariantMidnight = Color(0xFF2D312F)
+val onSurfaceMidnight = Color(0xFFF2F2F2)
+val inverseSurfaceMidnight = Color(0xFFFFFFFF)
+val tertiaryContainerMidnight = Color(0xFF0F0F0F)
+val secondaryContainerMidnight = Color(0xFF242526)
+val outLineMidnight = Color(0xFF636363)
+val surfaceContainerMidnight = Color(0xFF61615E)
+val surfaceTintMidnight = Color(0xFF121212)
+val surfaceContainerHighestMidnight = Color(0xFF222221)
+val scrimMidnight = Color(0xFFA7A7A7)
+val onBackgroundMidnight = Color(0xFFE3E3E3)
+val onSurfaceVariantMidnight = Color(0xFFB0B0AF)
+val surfaceContainerLowMidnight = Color(0xFF141413)
+val surfaceContainerLowestMidnight = Color(0xFF4CAF50)
+// Colores tema midnight ***********
+
+// Colores tema Slate moss ***********
+
+// Colores tema Slate moss ***********
 
 //Colores tema claro
 val backgroundLight = Color(0xFFFAF9F7)
@@ -70,29 +96,33 @@ val surfaceContainerLightAlt = Color(0xFFA4A39A)
 val surfaceTintLightAlt = Color(0xFFD7D6CF)
 val surfaceContainerHighestLightAlt = Color(0xFFE2E0D7)
 
-// Midnight theme
-val backgroundMidnight = Color(0xFF0A0A0A) // Negro casi puro
-val primaryMidnight = Color(0xFF1F1F1E)    // Gris carbón muy oscuro
-val primaryContainerMidnight = Color(0xFF252524)
-val onPrimaryContainerMidnight = Color(0xFFE3E3E3)
 
-val surfaceVariantMidnight = Color(0xFF2D312F)
-val onSurfaceMidnight = Color(0xFFF2F2F2) // Blanco casi puro para máximo contraste
-val inverseSurfaceMidnight = Color(0xFFFFFFFF)
+//Beta Paleta Slate Moss
+val backgroundWarm = Color(0xFF1B1E1F) // Gris azulado/pizarra muy oscuro
+val primaryWarm = Color(0xFF272B2C)
+val primaryContainerWarm = Color(0xFF323839)
+val onPrimaryContainerWarm = Color(0xFFE1E4E4)
 
-val tertiaryContainerMidnight = Color(0xFF0F0F0F) // Un paso arriba del fondo
-val secondaryContainerMidnight = Color(0xFF242526)
+val surfaceVariantWarm = Color(0xFF3F484A)
+val onSurfaceWarm = Color(0xFFF0F1F1)
+val inverseSurfaceWarm = Color(0xFF0D0F0F)
 
-val outLineMidnight = Color(0xFF636363) // Más sutil para no "brillar" demasiado
-val surfaceContainerMidnight = Color(0xFF1C1C1B)
-val surfaceTintMidnight = Color(0xFF121212)
+val tertiaryContainerWarm = Color(0xFF141718)
+val secondaryContainerWarm = Color(0xFF343A3B)
 
-val surfaceContainerHighestMidnight = Color(0xFF222221)
-val surfaceContainerLowMidnight = Color(0xFF141413)
+val outLineWarm = Color(0xFF70797B)
+val surfaceContainerWarm = Color(0xFF616D6D)
+val surfaceTintWarm = Color(0xFF1B1E1F)
 
-// Corregimos el verde que tenías aquí por un tono neutro coherente
-val surfaceContainerLowestMidnight = Color(0xFF050505)
+val surfaceContainerHighestWarm = Color(0xFF2E3435)
+val surfaceContainerLowWarm = Color(0xFF1F2324)
+val surfaceContainerLowestWarm = Color(0xFF4CAF50)
 
-val scrimMidnight = Color(0xFFA7A7A7) // Para modales, negro puro con transparencia
-val onBackgroundMidnight = Color(0xFFE3E3E3)
-val onSurfaceVariantMidnight = Color(0xFFB0B0AF)
+// Scrim grisáceo con matiz frío para resaltar sobre el fondo pizarra
+val scrimWarm = Color(0xFFACB7B8)
+
+val onBackgroundWarm = Color(0xFFDDE1E2)
+val onSurfaceVariantWarm = Color(0xFF9BA4A6)
+
+
+//Lo que segutamente tenga que cambiar : onSurfaceContainerLowest, scrim y surface container

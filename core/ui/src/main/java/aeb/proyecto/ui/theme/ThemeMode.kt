@@ -5,19 +5,23 @@ import aeb.proyecto.ui.color.backgroundDarkAlt
 import aeb.proyecto.ui.color.backgroundLight
 import aeb.proyecto.ui.color.backgroundLightAlt
 import aeb.proyecto.ui.color.backgroundMidnight
+import aeb.proyecto.ui.color.backgroundWarm
 import aeb.proyecto.ui.color.colorErrorGeneral
 import aeb.proyecto.ui.color.inverseSurfaceDark
 import aeb.proyecto.ui.color.inverseSurfaceDarkAlt
 import aeb.proyecto.ui.color.inverseSurfaceLight
 import aeb.proyecto.ui.color.inverseSurfaceLightAlt
 import aeb.proyecto.ui.color.inverseSurfaceMidnight
+import aeb.proyecto.ui.color.inverseSurfaceWarm
 import aeb.proyecto.ui.color.onBackgroundDark
 import aeb.proyecto.ui.color.onBackgroundMidnight
+import aeb.proyecto.ui.color.onBackgroundWarm
 import aeb.proyecto.ui.color.onPrimaryContainerDark
 import aeb.proyecto.ui.color.onPrimaryContainerDarkAlt
 import aeb.proyecto.ui.color.onPrimaryContainerLight
 import aeb.proyecto.ui.color.onPrimaryContainerLightAlt
 import aeb.proyecto.ui.color.onPrimaryContainerMidnight
+import aeb.proyecto.ui.color.onPrimaryContainerWarm
 import aeb.proyecto.ui.color.onSurfaceDark
 import aeb.proyecto.ui.color.onSurfaceDarkAlt
 import aeb.proyecto.ui.color.onSurfaceLight
@@ -25,28 +29,35 @@ import aeb.proyecto.ui.color.onSurfaceLightAlt
 import aeb.proyecto.ui.color.onSurfaceMidnight
 import aeb.proyecto.ui.color.onSurfaceVariantDark
 import aeb.proyecto.ui.color.onSurfaceVariantMidnight
+import aeb.proyecto.ui.color.onSurfaceVariantWarm
+import aeb.proyecto.ui.color.onSurfaceWarm
 import aeb.proyecto.ui.color.outLineDark
 import aeb.proyecto.ui.color.outLineDarkAlt
 import aeb.proyecto.ui.color.outLineLight
 import aeb.proyecto.ui.color.outLineLightAlt
 import aeb.proyecto.ui.color.outLineMidnight
+import aeb.proyecto.ui.color.outLineWarm
 import aeb.proyecto.ui.color.primaryContainerDark
 import aeb.proyecto.ui.color.primaryContainerDarkAlt
 import aeb.proyecto.ui.color.primaryContainerLight
 import aeb.proyecto.ui.color.primaryContainerLightAlt
 import aeb.proyecto.ui.color.primaryContainerMidnight
+import aeb.proyecto.ui.color.primaryContainerWarm
 import aeb.proyecto.ui.color.primaryDark
 import aeb.proyecto.ui.color.primaryDarkAlt
 import aeb.proyecto.ui.color.primaryLight
 import aeb.proyecto.ui.color.primaryLightAlt
 import aeb.proyecto.ui.color.primaryMidnight
+import aeb.proyecto.ui.color.primaryWarm
 import aeb.proyecto.ui.color.scrimDark
 import aeb.proyecto.ui.color.scrimMidnight
+import aeb.proyecto.ui.color.scrimWarm
 import aeb.proyecto.ui.color.secondaryContainerDark
 import aeb.proyecto.ui.color.secondaryContainerDarkAlt
 import aeb.proyecto.ui.color.secondaryContainerLight
 import aeb.proyecto.ui.color.secondaryContainerLightAlt
 import aeb.proyecto.ui.color.secondaryContainerMidnight
+import aeb.proyecto.ui.color.secondaryContainerWarm
 import aeb.proyecto.ui.color.surfaceContainerDark
 import aeb.proyecto.ui.color.surfaceContainerDarkAlt
 import aeb.proyecto.ui.color.surfaceContainerHighestDark
@@ -54,28 +65,35 @@ import aeb.proyecto.ui.color.surfaceContainerHighestDarkAlt
 import aeb.proyecto.ui.color.surfaceContainerHighestLight
 import aeb.proyecto.ui.color.surfaceContainerHighestLightAlt
 import aeb.proyecto.ui.color.surfaceContainerHighestMidnight
+import aeb.proyecto.ui.color.surfaceContainerHighestWarm
 import aeb.proyecto.ui.color.surfaceContainerLight
 import aeb.proyecto.ui.color.surfaceContainerLightAlt
 import aeb.proyecto.ui.color.surfaceContainerLowDark
 import aeb.proyecto.ui.color.surfaceContainerLowMidnight
+import aeb.proyecto.ui.color.surfaceContainerLowWarm
 import aeb.proyecto.ui.color.surfaceContainerLowestDark
 import aeb.proyecto.ui.color.surfaceContainerLowestMidnight
+import aeb.proyecto.ui.color.surfaceContainerLowestWarm
 import aeb.proyecto.ui.color.surfaceContainerMidnight
+import aeb.proyecto.ui.color.surfaceContainerWarm
 import aeb.proyecto.ui.color.surfaceTintDark
 import aeb.proyecto.ui.color.surfaceTintDarkAlt
 import aeb.proyecto.ui.color.surfaceTintLight
 import aeb.proyecto.ui.color.surfaceTintLightAlt
 import aeb.proyecto.ui.color.surfaceTintMidnight
+import aeb.proyecto.ui.color.surfaceTintWarm
 import aeb.proyecto.ui.color.surfaceVariantDark
 import aeb.proyecto.ui.color.surfaceVariantDarkAlt
 import aeb.proyecto.ui.color.surfaceVariantLight
 import aeb.proyecto.ui.color.surfaceVariantLightAlt
 import aeb.proyecto.ui.color.surfaceVariantMidnight
+import aeb.proyecto.ui.color.surfaceVariantWarm
 import aeb.proyecto.ui.color.tertiaryContainerDark
 import aeb.proyecto.ui.color.tertiaryContainerDarkAlt
 import aeb.proyecto.ui.color.tertiaryContainerLight
 import aeb.proyecto.ui.color.tertiaryContainerLightAlt
 import aeb.proyecto.ui.color.tertiaryContainerMidnight
+import aeb.proyecto.ui.color.tertiaryContainerWarm
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
@@ -100,6 +118,28 @@ val Dark = darkColorScheme(
     onSurfaceVariant = onSurfaceVariantDark,
     surfaceContainerLow = surfaceContainerLowDark,
     surfaceContainerLowest = surfaceContainerLowestDark
+)
+
+val midnightDark = darkColorScheme(
+    background = backgroundMidnight,
+    primary = primaryMidnight,
+    onSurface = onSurfaceMidnight,
+    inverseSurface = inverseSurfaceMidnight,
+    primaryContainer = primaryContainerMidnight,
+    onPrimaryContainer = onPrimaryContainerMidnight,
+    surfaceVariant = surfaceVariantMidnight,
+    secondaryContainer = secondaryContainerMidnight,
+    tertiaryContainer = tertiaryContainerMidnight,
+    outline = outLineMidnight,
+    error = colorErrorGeneral,
+    surfaceContainer = surfaceContainerMidnight,
+    surfaceTint = surfaceTintMidnight,
+    surfaceContainerHighest = surfaceContainerHighestMidnight,
+    scrim = scrimMidnight,
+    onBackground = onBackgroundMidnight,
+    onSurfaceVariant = onSurfaceVariantMidnight,
+    surfaceContainerLow = surfaceContainerLowMidnight,
+    surfaceContainerLowest = surfaceContainerLowestMidnight
 )
 
 val Light = lightColorScheme(
@@ -154,24 +194,24 @@ val LightAlt = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLightAlt
 )
 
-val midnightDark = darkColorScheme(
-    background = backgroundMidnight,
-    primary = primaryMidnight,
-    onSurface = onSurfaceMidnight,
-    inverseSurface = inverseSurfaceMidnight,
-    primaryContainer = primaryContainerMidnight,
-    onPrimaryContainer = onPrimaryContainerMidnight,
-    surfaceVariant = surfaceVariantMidnight,
-    secondaryContainer = secondaryContainerMidnight,
-    tertiaryContainer = tertiaryContainerMidnight,
-    outline = outLineMidnight,
+val warmCharcoal = darkColorScheme(
+    background = backgroundWarm,
+    primary = primaryWarm,
+    onSurface = onSurfaceWarm,
+    inverseSurface = inverseSurfaceWarm,
+    primaryContainer = primaryContainerWarm,
+    onPrimaryContainer = onPrimaryContainerWarm,
+    surfaceVariant = surfaceVariantWarm,
+    secondaryContainer = secondaryContainerWarm,
+    tertiaryContainer = tertiaryContainerWarm,
+    outline = outLineWarm,
     error = colorErrorGeneral,
-    surfaceContainer = surfaceContainerMidnight,
-    surfaceTint = surfaceTintMidnight,
-    surfaceContainerHighest = surfaceContainerHighestMidnight,
-    scrim = scrimMidnight,
-    onBackground = onBackgroundMidnight,
-    onSurfaceVariant = onSurfaceVariantMidnight,
-    surfaceContainerLow = surfaceContainerLowMidnight,
-    surfaceContainerLowest = surfaceContainerLowestMidnight
+    surfaceContainer = surfaceContainerWarm,
+    surfaceTint = surfaceTintWarm,
+    surfaceContainerHighest = surfaceContainerHighestWarm,
+    scrim = scrimWarm,
+    onBackground = onBackgroundWarm,
+    onSurfaceVariant = onSurfaceVariantWarm,
+    surfaceContainerLow = surfaceContainerLowWarm,
+    surfaceContainerLowest = surfaceContainerLowestWarm
 )

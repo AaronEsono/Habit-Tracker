@@ -17,6 +17,7 @@ fun HabitTrackerTheme(
         EnumTheme.BLUE_DARK.theme -> DarkAlt
         EnumTheme.CREME_LIGHT.theme -> LightAlt
         EnumTheme.MIDNIGHT.theme -> midnightDark
+        EnumTheme.WARM_CHARCOAL.theme -> warmCharcoal
         else -> Dark
     }
 
