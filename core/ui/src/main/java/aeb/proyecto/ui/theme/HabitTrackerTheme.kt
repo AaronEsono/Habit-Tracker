@@ -13,11 +13,11 @@ fun HabitTrackerTheme(
 
     val themeScheme = when (theme) {
         EnumTheme.DARK.theme -> Dark
-        EnumTheme.LIGHT.theme -> Light
-        EnumTheme.BLUE_DARK.theme -> DarkAlt
-        EnumTheme.CREME_LIGHT.theme -> LightAlt
         EnumTheme.MIDNIGHT.theme -> midnightDark
-        EnumTheme.WARM_CHARCOAL.theme -> warmCharcoal
+        EnumTheme.SLATE_MOSS.theme -> SlateMoss
+        EnumTheme.PLUM.theme -> Plum
+        EnumTheme.LIGHT.theme -> Light
+        EnumTheme.CREME_LIGHT.theme -> LightAlt
         else -> Dark
     }
 

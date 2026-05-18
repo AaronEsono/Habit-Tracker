@@ -4,11 +4,11 @@ import aeb.proyecto.ui.R
 
 enum class EnumTheme(val theme: Int, val title: Int) {
     DARK(0, R.string.ui_theme_dark),
-    BLUE_DARK(1, R.string.ui_theme_dark_alt),
-    LIGHT(2, R.string.ui_theme_light),
-    CREME_LIGHT(3, R.string.ui_theme_light_alt),
-    MIDNIGHT(4, R.string.ui_theme_midnight),
-    WARM_CHARCOAL(5, R.string.ui_theme_charcoal)
+    MIDNIGHT(1, R.string.ui_theme_midnight),
+    SLATE_MOSS(2, R.string.ui_theme_slate_moss),
+    PLUM(3, R.string.ui_theme_plum),
+    LIGHT(4, R.string.ui_theme_light),
+    CREME_LIGHT(5, R.string.ui_theme_light_alt),
 }
 
 fun getTitle(value:Int):Int{

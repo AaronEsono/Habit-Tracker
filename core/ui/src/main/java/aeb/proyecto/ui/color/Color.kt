@@ -48,8 +48,49 @@ val surfaceContainerLowestMidnight = Color(0xFF4CAF50)
 // Colores tema midnight ***********
 
 // Colores tema Slate moss ***********
-
+val backgroundSlateMoss = Color(0xFF1B1E1F)
+val primarySlateMoss = Color(0xFF272B2C)
+val primaryContainerSlateMoss = Color(0xFF323839)
+val onPrimaryContainerSlateMoss = Color(0xFFE1E4E4)
+val surfaceVariantSlateMoss = Color(0xFF3F484A)
+val onSurfaceSlateMoss = Color(0xFFF0F1F1)
+val inverseSurfaceSlateMoss = Color(0xFF0D0F0F)
+val tertiaryContainerSlateMoss = Color(0xFF141718)
+val secondaryContainerSlateMoss = Color(0xFF343A3B)
+val outLineSlateMoss = Color(0xFF70797B)
+val surfaceContainerSlateMoss = Color(0xFF616D6D)
+val surfaceTintSlateMoss = Color(0xFF1B1E1F)
+val surfaceContainerHighestSlateMoss = Color(0xFF2E3435)
+val surfaceContainerLowSlateMoss = Color(0xFF1F2324)
+val surfaceContainerLowestSlateMoss = Color(0xFF4CAF50)
+val scrimSlateMoss = Color(0xFFACB7B8)
+val onBackgroundSlateMoss = Color(0xFFDDE1E2)
+val onSurfaceVariantSlateMoss = Color(0xFF9BA4A6)
 // Colores tema Slate moss ***********
+
+// Colores tema Plum ***********
+val backgroundPlum = Color(0xFF1A171B)
+val primaryPlum = Color(0xFF252126)
+val primaryContainerPlum = Color(0xFF332D35)
+val onPrimaryContainerPlum = Color(0xFFE9E4ED)
+
+val surfaceVariantPlum = Color(0xFF48434D)
+val onSurfacePlum = Color(0xFFF7F2FA)
+val inverseSurfacePlum = Color(0xFF0F0D10)
+
+val tertiaryContainerPlum = Color(0xFF131114)
+val secondaryContainerPlum = Color(0xFF35313D)
+val outLinePlum = Color(0xFF7D7685)
+val surfaceContainerPlum = Color(0xFFA195A5)
+val surfaceTintPlum = Color(0xFF1A171B)
+
+val surfaceContainerHighestPlum = Color(0xFF2C2830)
+val surfaceContainerLowPlum = Color(0xFF1E1B20)
+val surfaceContainerLowestPlum = Color(0xFF4CAF50)
+val scrimPlum = Color(0xFFCFC7D9)
+val onBackgroundPlum = Color(0xFFE6E1E9)
+val onSurfaceVariantPlum = Color(0xFFAAA3B2)
+// Colores tema Plum ***********
 
 //Colores tema claro
 val backgroundLight = Color(0xFFFAF9F7)
@@ -97,32 +138,6 @@ val surfaceTintLightAlt = Color(0xFFD7D6CF)
 val surfaceContainerHighestLightAlt = Color(0xFFE2E0D7)
 
 
-//Beta Paleta Slate Moss
-val backgroundWarm = Color(0xFF1B1E1F) // Gris azulado/pizarra muy oscuro
-val primaryWarm = Color(0xFF272B2C)
-val primaryContainerWarm = Color(0xFF323839)
-val onPrimaryContainerWarm = Color(0xFFE1E4E4)
-
-val surfaceVariantWarm = Color(0xFF3F484A)
-val onSurfaceWarm = Color(0xFFF0F1F1)
-val inverseSurfaceWarm = Color(0xFF0D0F0F)
-
-val tertiaryContainerWarm = Color(0xFF141718)
-val secondaryContainerWarm = Color(0xFF343A3B)
-
-val outLineWarm = Color(0xFF70797B)
-val surfaceContainerWarm = Color(0xFF616D6D)
-val surfaceTintWarm = Color(0xFF1B1E1F)
-
-val surfaceContainerHighestWarm = Color(0xFF2E3435)
-val surfaceContainerLowWarm = Color(0xFF1F2324)
-val surfaceContainerLowestWarm = Color(0xFF4CAF50)
-
-// Scrim grisáceo con matiz frío para resaltar sobre el fondo pizarra
-val scrimWarm = Color(0xFFACB7B8)
-
-val onBackgroundWarm = Color(0xFFDDE1E2)
-val onSurfaceVariantWarm = Color(0xFF9BA4A6)
 
 
 //Lo que segutamente tenga que cambiar : onSurfaceContainerLowest, scrim y surface container
