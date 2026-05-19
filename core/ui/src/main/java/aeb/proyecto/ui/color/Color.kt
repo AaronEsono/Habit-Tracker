@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 //Colores generales
 val colorErrorGeneral = Color(0xFFDB3C33)
 
-//Colores tema oscuro **************
+//Colores tema piedra **************
 val backgroundDark = Color(0xFF201f1e)
 val primaryDark = Color(0xFF2e2d2b)
 val primaryContainerDark = Color(0xFF32312F)
@@ -24,7 +24,7 @@ val onBackgroundDark = Color(0xFFD1D2D4)
 val onSurfaceVariantDark = Color(0xFFA5A4A1)
 val surfaceContainerLowDark = Color(0xFFB0AFAE)
 val surfaceContainerLowestDark = Color(0xFF4CAF50)
-//Colores tema oscuro **************
+//Colores tema piedra **************
 
 // Colores tema midnight ***********
 val backgroundMidnight = Color(0xFF0A0A0A)
@@ -139,5 +139,39 @@ val surfaceContainerHighestLightAlt = Color(0xFFE2E0D7)
 
 
 
+// --- Paleta Soft Stone (Claro Cálido - Corregida y Calibrada) ---
+
+val backgroundSoftStone = Color(0xFFFBFBF9) // Fondo principal (Hueso suave)
+val primarySoftStone = Color(0xFFE7E6E5)    // Blanco arena complementario (en lugar de oscuro)
+val primaryContainerSoftStone = Color(0xFFF2F1EF)
+val onPrimaryContainerSoftStone = Color(0xFF4D5250) // Gris suave para que lea sobre el container
+
+val surfaceVariantSoftStone = Color(0xFFECEBE9)
+val onSurfaceSoftStone = Color.Black     // Texto principal suave (Gris piedra medio)
+val inverseSurfaceSoftStone = Color.White
+
+val tertiaryContainerSoftStone = Color(0xFFFAF9F6)
+val secondaryContainerSoftStone = Color(0xFFD5D5D5)
+
+val outLineSoftStone = Color(0xFF727272) // Un gris mucho más claro que el original para que no rompa la armonía
+val surfaceContainerSoftStone = Color(0xFF383838)
+val surfaceTintSoftStone = Color(0xFFE7E6E5)
+
+val surfaceContainerHighestSoftStone = Color(0xFFECEBE9)
+val surfaceContainerLowSoftStone = Color(0xFFFAF9F6)
+val surfaceContainerLowestSoftStone = Color(0xFF4CAF50)
+
+// Scrim: Un gris muy clarito y limpio para hacer el efecto bruma sobre el fondo
+val scrimSoftStone = Color(0xFF2B2B2A)
+
+val onBackgroundSoftStone = Color(0xFF4D5250)    // Texto sobre fondo principal (Gris piedra)
+val onSurfaceVariantSoftStone = Color(0xFF848484) // Texto secundario un poco más tenue
 
 //Lo que segutamente tenga que cambiar : onSurfaceContainerLowest, scrim y surface container
+
+
+// Cosas a mirar en claro:
+// Ruleta de estadisticas --------------------------Hecho
+// Botones marcados opciones
+// Fecha arriba
+// Color semanal subtitle

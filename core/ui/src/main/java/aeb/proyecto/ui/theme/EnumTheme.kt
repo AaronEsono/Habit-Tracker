@@ -9,6 +9,7 @@ enum class EnumTheme(val theme: Int, val title: Int) {
     PLUM(3, R.string.ui_theme_plum),
     LIGHT(4, R.string.ui_theme_light),
     CREME_LIGHT(5, R.string.ui_theme_light_alt),
+    SOFT_STONE(6, R.string.ui_theme_soft_stone)
 }
 
 fun getTitle(value:Int):Int{
