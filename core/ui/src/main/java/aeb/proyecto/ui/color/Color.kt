@@ -13,6 +13,7 @@ val onPrimaryContainerDark = Color(0xFFE7E6E5)
 val surfaceVariantDark = Color(0xFF4D5250)
 val onSurfaceDark = Color.White
 val inverseSurfaceDark = Color.Black
+val inverseOnSurfaceDark = Color.Black
 val tertiaryContainerDark = Color(0xFF111010)
 val secondaryContainerDark = Color(0xFF3C3D40)
 val outLineDark = Color(0xFF848484)
@@ -43,7 +44,7 @@ val surfaceContainerHighestMidnight = Color(0xFF222221)
 val scrimMidnight = Color(0xFFA7A7A7)
 val onBackgroundMidnight = Color(0xFFE3E3E3)
 val onSurfaceVariantMidnight = Color(0xFFB0B0AF)
-val surfaceContainerLowMidnight = Color(0xFF141413)
+val surfaceContainerLowMidnight = Color(0xFFA8A8A8)
 val surfaceContainerLowestMidnight = Color(0xFF4CAF50)
 // Colores tema midnight ***********
 
@@ -61,7 +62,7 @@ val outLineSlateMoss = Color(0xFF70797B)
 val surfaceContainerSlateMoss = Color(0xFF616D6D)
 val surfaceTintSlateMoss = Color(0xFF1B1E1F)
 val surfaceContainerHighestSlateMoss = Color(0xFF2E3435)
-val surfaceContainerLowSlateMoss = Color(0xFF1F2324)
+val surfaceContainerLowSlateMoss = Color(0xFFB8B8B8)
 val surfaceContainerLowestSlateMoss = Color(0xFF4CAF50)
 val scrimSlateMoss = Color(0xFFACB7B8)
 val onBackgroundSlateMoss = Color(0xFFDDE1E2)
@@ -85,7 +86,7 @@ val surfaceContainerPlum = Color(0xFFA195A5)
 val surfaceTintPlum = Color(0xFF1A171B)
 
 val surfaceContainerHighestPlum = Color(0xFF2C2830)
-val surfaceContainerLowPlum = Color(0xFF1E1B20)
+val surfaceContainerLowPlum = Color(0xFFC9C5CB)
 val surfaceContainerLowestPlum = Color(0xFF4CAF50)
 val scrimPlum = Color(0xFFCFC7D9)
 val onBackgroundPlum = Color(0xFFE6E1E9)
@@ -154,11 +155,11 @@ val tertiaryContainerSoftStone = Color(0xFFFAF9F6)
 val secondaryContainerSoftStone = Color(0xFFD5D5D5)
 
 val outLineSoftStone = Color(0xFF727272) // Un gris mucho más claro que el original para que no rompa la armonía
-val surfaceContainerSoftStone = Color(0xFF383838)
+val surfaceContainerSoftStone = Color(0xFF808080)
 val surfaceTintSoftStone = Color(0xFFE7E6E5)
 
 val surfaceContainerHighestSoftStone = Color(0xFFECEBE9)
-val surfaceContainerLowSoftStone = Color(0xFFFAF9F6)
+val surfaceContainerLowSoftStone = Color(0xFF7D7C7C)
 val surfaceContainerLowestSoftStone = Color(0xFF4CAF50)
 
 // Scrim: Un gris muy clarito y limpio para hacer el efecto bruma sobre el fondo
@@ -172,6 +173,10 @@ val onSurfaceVariantSoftStone = Color(0xFF848484) // Texto secundario un poco m�
 
 // Cosas a mirar en claro:
 // Ruleta de estadisticas --------------------------Hecho
-// Botones marcados opciones
-// Fecha arriba
-// Color semanal subtitle
+// Botones marcados opciones --------------------------Hecho
+// Fecha arriba habit --------------------------Hecho
+// Color semanal subtitle addHabit --------------------------Hecho
+
+// Mirar en todos los temas, calendario de habit, dia de hoy, tanto en claros como en oscuros -------------------------Hecho
+
+// Ordenar color y poner inverseOnSurface en todos

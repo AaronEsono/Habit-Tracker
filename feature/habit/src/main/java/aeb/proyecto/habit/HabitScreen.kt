@@ -50,8 +50,6 @@ fun HabitScreen(
         selectedDate = selectedDate
     )
 
-    val context = LocalContext.current
-
     when(orientation){
         Orientation.Portrait -> {
             VerticalHabitScreen(

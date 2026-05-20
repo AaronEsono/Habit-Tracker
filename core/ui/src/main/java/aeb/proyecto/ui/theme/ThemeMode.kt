@@ -9,6 +9,7 @@ import aeb.proyecto.ui.color.backgroundPlum
 import aeb.proyecto.ui.color.backgroundSlateMoss
 import aeb.proyecto.ui.color.backgroundSoftStone
 import aeb.proyecto.ui.color.colorErrorGeneral
+import aeb.proyecto.ui.color.inverseOnSurfaceDark
 import aeb.proyecto.ui.color.inverseSurfaceDark
 import aeb.proyecto.ui.color.inverseSurfaceDarkAlt
 import aeb.proyecto.ui.color.inverseSurfaceLight
@@ -140,6 +141,7 @@ val Dark = darkColorScheme(
     primary = primaryDark,
     onSurface = onSurfaceDark,
     inverseSurface = inverseSurfaceDark,
+    inverseOnSurface = inverseOnSurfaceDark,
     primaryContainer = primaryContainerDark,
     onPrimaryContainer = onPrimaryContainerDark,
     surfaceVariant = surfaceVariantDark,
