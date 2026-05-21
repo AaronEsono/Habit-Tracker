@@ -1,9 +1,8 @@
 package aeb.proyecto.ui.theme
 
-import aeb.proyecto.ui.R
+import aeb.proyecto.ui.typography.Typography
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import aeb.proyecto.ui.typography.Typography
 
 @Composable
 fun HabitTrackerTheme(
@@ -12,14 +11,15 @@ fun HabitTrackerTheme(
 ) {
 
     val themeScheme = when (theme) {
-        EnumTheme.DARK.theme -> Dark
-        EnumTheme.MIDNIGHT.theme -> midnightDark
-        EnumTheme.SLATE_MOSS.theme -> SlateMoss
-        EnumTheme.PLUM.theme -> Plum
-        EnumTheme.LIGHT.theme -> Light
-        EnumTheme.CREME_LIGHT.theme -> LightAlt
-        EnumTheme.SOFT_STONE.theme -> SoftStone
-        else -> Dark
+        EnumTheme.DARK.theme -> DarkTheme
+        EnumTheme.MIDNIGHT.theme -> MidnightTheme
+        EnumTheme.SLATE_MOSS.theme -> SlateMossTheme
+        EnumTheme.PLUM.theme -> PlumTheme
+        EnumTheme.SOFT_STONE.theme -> SoftStoneTheme
+        EnumTheme.ICE_MINT.theme -> IceMintTheme
+        EnumTheme.DESERT_ROSE.theme -> DesertRoseTheme
+        EnumTheme.CYBER_DENIM.theme -> CyberDenimTheme
+        else -> DarkTheme
     }
 
     MaterialTheme(

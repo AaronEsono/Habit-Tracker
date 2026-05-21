@@ -1,104 +1,126 @@
 package aeb.proyecto.ui.theme
 
+import aeb.proyecto.ui.color.backgroundCyberDenim
 import aeb.proyecto.ui.color.backgroundDark
-import aeb.proyecto.ui.color.backgroundDarkAlt
-import aeb.proyecto.ui.color.backgroundLight
-import aeb.proyecto.ui.color.backgroundLightAlt
+import aeb.proyecto.ui.color.backgroundDesertRose
+import aeb.proyecto.ui.color.backgroundIceMint
 import aeb.proyecto.ui.color.backgroundMidnight
 import aeb.proyecto.ui.color.backgroundPlum
 import aeb.proyecto.ui.color.backgroundSlateMoss
 import aeb.proyecto.ui.color.backgroundSoftStone
 import aeb.proyecto.ui.color.colorErrorGeneral
+import aeb.proyecto.ui.color.inverseOnSurfaceCyberDenim
 import aeb.proyecto.ui.color.inverseOnSurfaceDark
+import aeb.proyecto.ui.color.inverseOnSurfaceDesertRose
+import aeb.proyecto.ui.color.inverseOnSurfaceIceMint
+import aeb.proyecto.ui.color.inverseOnSurfaceMidnight
+import aeb.proyecto.ui.color.inverseOnSurfacePlum
+import aeb.proyecto.ui.color.inverseOnSurfaceSlateMoss
+import aeb.proyecto.ui.color.inverseOnSurfaceSoftStone
+import aeb.proyecto.ui.color.inverseSurfaceCyberDenim
 import aeb.proyecto.ui.color.inverseSurfaceDark
-import aeb.proyecto.ui.color.inverseSurfaceDarkAlt
-import aeb.proyecto.ui.color.inverseSurfaceLight
-import aeb.proyecto.ui.color.inverseSurfaceLightAlt
+import aeb.proyecto.ui.color.inverseSurfaceDesertRose
+import aeb.proyecto.ui.color.inverseSurfaceIceMint
 import aeb.proyecto.ui.color.inverseSurfaceMidnight
 import aeb.proyecto.ui.color.inverseSurfacePlum
 import aeb.proyecto.ui.color.inverseSurfaceSlateMoss
 import aeb.proyecto.ui.color.inverseSurfaceSoftStone
+import aeb.proyecto.ui.color.onBackgroundCyberDenim
 import aeb.proyecto.ui.color.onBackgroundDark
+import aeb.proyecto.ui.color.onBackgroundDesertRose
+import aeb.proyecto.ui.color.onBackgroundIceMint
 import aeb.proyecto.ui.color.onBackgroundMidnight
 import aeb.proyecto.ui.color.onBackgroundPlum
 import aeb.proyecto.ui.color.onBackgroundSlateMoss
 import aeb.proyecto.ui.color.onBackgroundSoftStone
+import aeb.proyecto.ui.color.onPrimaryContainerCyberDenim
 import aeb.proyecto.ui.color.onPrimaryContainerDark
-import aeb.proyecto.ui.color.onPrimaryContainerDarkAlt
-import aeb.proyecto.ui.color.onPrimaryContainerLight
-import aeb.proyecto.ui.color.onPrimaryContainerLightAlt
+import aeb.proyecto.ui.color.onPrimaryContainerDesertRose
+import aeb.proyecto.ui.color.onPrimaryContainerIceMint
 import aeb.proyecto.ui.color.onPrimaryContainerMidnight
 import aeb.proyecto.ui.color.onPrimaryContainerPlum
 import aeb.proyecto.ui.color.onPrimaryContainerSlateMoss
 import aeb.proyecto.ui.color.onPrimaryContainerSoftStone
+import aeb.proyecto.ui.color.onSurfaceCyberDenim
 import aeb.proyecto.ui.color.onSurfaceDark
-import aeb.proyecto.ui.color.onSurfaceDarkAlt
-import aeb.proyecto.ui.color.onSurfaceLight
-import aeb.proyecto.ui.color.onSurfaceLightAlt
+import aeb.proyecto.ui.color.onSurfaceDesertRose
+import aeb.proyecto.ui.color.onSurfaceIceMint
 import aeb.proyecto.ui.color.onSurfaceMidnight
 import aeb.proyecto.ui.color.onSurfacePlum
 import aeb.proyecto.ui.color.onSurfaceSlateMoss
 import aeb.proyecto.ui.color.onSurfaceSoftStone
+import aeb.proyecto.ui.color.onSurfaceVariantCyberDenim
 import aeb.proyecto.ui.color.onSurfaceVariantDark
+import aeb.proyecto.ui.color.onSurfaceVariantDesertRose
+import aeb.proyecto.ui.color.onSurfaceVariantIceMint
 import aeb.proyecto.ui.color.onSurfaceVariantMidnight
 import aeb.proyecto.ui.color.onSurfaceVariantPlum
 import aeb.proyecto.ui.color.onSurfaceVariantSlateMoss
 import aeb.proyecto.ui.color.onSurfaceVariantSoftStone
+import aeb.proyecto.ui.color.outLineCyberDenim
 import aeb.proyecto.ui.color.outLineDark
-import aeb.proyecto.ui.color.outLineDarkAlt
-import aeb.proyecto.ui.color.outLineLight
-import aeb.proyecto.ui.color.outLineLightAlt
+import aeb.proyecto.ui.color.outLineDesertRose
+import aeb.proyecto.ui.color.outLineIceMint
 import aeb.proyecto.ui.color.outLineMidnight
 import aeb.proyecto.ui.color.outLinePlum
 import aeb.proyecto.ui.color.outLineSlateMoss
 import aeb.proyecto.ui.color.outLineSoftStone
+import aeb.proyecto.ui.color.primaryContainerCyberDenim
 import aeb.proyecto.ui.color.primaryContainerDark
-import aeb.proyecto.ui.color.primaryContainerDarkAlt
-import aeb.proyecto.ui.color.primaryContainerLight
-import aeb.proyecto.ui.color.primaryContainerLightAlt
+import aeb.proyecto.ui.color.primaryContainerDesertRose
+import aeb.proyecto.ui.color.primaryContainerIceMint
 import aeb.proyecto.ui.color.primaryContainerMidnight
 import aeb.proyecto.ui.color.primaryContainerPlum
 import aeb.proyecto.ui.color.primaryContainerSlateMoss
 import aeb.proyecto.ui.color.primaryContainerSoftStone
+import aeb.proyecto.ui.color.primaryCyberDenim
 import aeb.proyecto.ui.color.primaryDark
-import aeb.proyecto.ui.color.primaryDarkAlt
-import aeb.proyecto.ui.color.primaryLight
-import aeb.proyecto.ui.color.primaryLightAlt
+import aeb.proyecto.ui.color.primaryDesertRose
+import aeb.proyecto.ui.color.primaryIceMint
 import aeb.proyecto.ui.color.primaryMidnight
 import aeb.proyecto.ui.color.primaryPlum
 import aeb.proyecto.ui.color.primarySlateMoss
 import aeb.proyecto.ui.color.primarySoftStone
+import aeb.proyecto.ui.color.scrimCyberDenim
 import aeb.proyecto.ui.color.scrimDark
+import aeb.proyecto.ui.color.scrimDesertRose
+import aeb.proyecto.ui.color.scrimIceMint
 import aeb.proyecto.ui.color.scrimMidnight
 import aeb.proyecto.ui.color.scrimPlum
 import aeb.proyecto.ui.color.scrimSlateMoss
 import aeb.proyecto.ui.color.scrimSoftStone
+import aeb.proyecto.ui.color.secondaryContainerCyberDenim
 import aeb.proyecto.ui.color.secondaryContainerDark
-import aeb.proyecto.ui.color.secondaryContainerDarkAlt
-import aeb.proyecto.ui.color.secondaryContainerLight
-import aeb.proyecto.ui.color.secondaryContainerLightAlt
+import aeb.proyecto.ui.color.secondaryContainerDesertRose
+import aeb.proyecto.ui.color.secondaryContainerIceMint
 import aeb.proyecto.ui.color.secondaryContainerMidnight
 import aeb.proyecto.ui.color.secondaryContainerPlum
 import aeb.proyecto.ui.color.secondaryContainerSlateMoss
 import aeb.proyecto.ui.color.secondaryContainerSoftStone
+import aeb.proyecto.ui.color.surfaceContainerCyberDenim
 import aeb.proyecto.ui.color.surfaceContainerDark
-import aeb.proyecto.ui.color.surfaceContainerDarkAlt
+import aeb.proyecto.ui.color.surfaceContainerDesertRose
+import aeb.proyecto.ui.color.surfaceContainerHighestCyberDenim
 import aeb.proyecto.ui.color.surfaceContainerHighestDark
-import aeb.proyecto.ui.color.surfaceContainerHighestDarkAlt
-import aeb.proyecto.ui.color.surfaceContainerHighestLight
-import aeb.proyecto.ui.color.surfaceContainerHighestLightAlt
+import aeb.proyecto.ui.color.surfaceContainerHighestDesertRose
+import aeb.proyecto.ui.color.surfaceContainerHighestIceMint
 import aeb.proyecto.ui.color.surfaceContainerHighestMidnight
 import aeb.proyecto.ui.color.surfaceContainerHighestPlum
 import aeb.proyecto.ui.color.surfaceContainerHighestSlateMoss
 import aeb.proyecto.ui.color.surfaceContainerHighestSoftStone
-import aeb.proyecto.ui.color.surfaceContainerLight
-import aeb.proyecto.ui.color.surfaceContainerLightAlt
+import aeb.proyecto.ui.color.surfaceContainerIceMint
+import aeb.proyecto.ui.color.surfaceContainerLowCyberDenim
 import aeb.proyecto.ui.color.surfaceContainerLowDark
+import aeb.proyecto.ui.color.surfaceContainerLowDesertRose
+import aeb.proyecto.ui.color.surfaceContainerLowIceMint
 import aeb.proyecto.ui.color.surfaceContainerLowMidnight
 import aeb.proyecto.ui.color.surfaceContainerLowPlum
 import aeb.proyecto.ui.color.surfaceContainerLowSlateMoss
 import aeb.proyecto.ui.color.surfaceContainerLowSoftStone
+import aeb.proyecto.ui.color.surfaceContainerLowestCyberDenim
 import aeb.proyecto.ui.color.surfaceContainerLowestDark
+import aeb.proyecto.ui.color.surfaceContainerLowestDesertRose
+import aeb.proyecto.ui.color.surfaceContainerLowestIceMint
 import aeb.proyecto.ui.color.surfaceContainerLowestMidnight
 import aeb.proyecto.ui.color.surfaceContainerLowestPlum
 import aeb.proyecto.ui.color.surfaceContainerLowestSlateMoss
@@ -107,197 +129,221 @@ import aeb.proyecto.ui.color.surfaceContainerMidnight
 import aeb.proyecto.ui.color.surfaceContainerPlum
 import aeb.proyecto.ui.color.surfaceContainerSlateMoss
 import aeb.proyecto.ui.color.surfaceContainerSoftStone
+import aeb.proyecto.ui.color.surfaceTintCyberDenim
 import aeb.proyecto.ui.color.surfaceTintDark
-import aeb.proyecto.ui.color.surfaceTintDarkAlt
-import aeb.proyecto.ui.color.surfaceTintLight
-import aeb.proyecto.ui.color.surfaceTintLightAlt
+import aeb.proyecto.ui.color.surfaceTintDesertRose
+import aeb.proyecto.ui.color.surfaceTintIceMint
 import aeb.proyecto.ui.color.surfaceTintMidnight
 import aeb.proyecto.ui.color.surfaceTintPlum
 import aeb.proyecto.ui.color.surfaceTintSlateMoss
 import aeb.proyecto.ui.color.surfaceTintSoftStone
+import aeb.proyecto.ui.color.surfaceVariantCyberDenim
 import aeb.proyecto.ui.color.surfaceVariantDark
-import aeb.proyecto.ui.color.surfaceVariantDarkAlt
-import aeb.proyecto.ui.color.surfaceVariantLight
-import aeb.proyecto.ui.color.surfaceVariantLightAlt
+import aeb.proyecto.ui.color.surfaceVariantDesertRose
+import aeb.proyecto.ui.color.surfaceVariantIceMint
 import aeb.proyecto.ui.color.surfaceVariantMidnight
 import aeb.proyecto.ui.color.surfaceVariantPlum
 import aeb.proyecto.ui.color.surfaceVariantSlateMoss
 import aeb.proyecto.ui.color.surfaceVariantSoftStone
+import aeb.proyecto.ui.color.tertiaryContainerCyberDenim
 import aeb.proyecto.ui.color.tertiaryContainerDark
-import aeb.proyecto.ui.color.tertiaryContainerDarkAlt
-import aeb.proyecto.ui.color.tertiaryContainerLight
-import aeb.proyecto.ui.color.tertiaryContainerLightAlt
+import aeb.proyecto.ui.color.tertiaryContainerDesertRose
+import aeb.proyecto.ui.color.tertiaryContainerIceMint
 import aeb.proyecto.ui.color.tertiaryContainerMidnight
 import aeb.proyecto.ui.color.tertiaryContainerPlum
 import aeb.proyecto.ui.color.tertiaryContainerSlateMoss
 import aeb.proyecto.ui.color.tertiaryContainerSoftStone
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.ui.graphics.Color
 
 //Dark
-val Dark = darkColorScheme(
+val DarkTheme = darkColorScheme(
     background = backgroundDark,
+    onBackground = onBackgroundDark,
     primary = primaryDark,
+    primaryContainer = primaryContainerDark,
+    onPrimaryContainer = onPrimaryContainerDark,
+    secondaryContainer = secondaryContainerDark,
+    tertiaryContainer = tertiaryContainerDark,
     onSurface = onSurfaceDark,
     inverseSurface = inverseSurfaceDark,
     inverseOnSurface = inverseOnSurfaceDark,
-    primaryContainer = primaryContainerDark,
-    onPrimaryContainer = onPrimaryContainerDark,
-    surfaceVariant = surfaceVariantDark,
-    secondaryContainer = secondaryContainerDark,
-    tertiaryContainer = tertiaryContainerDark,
-    outline = outLineDark,
-    error = colorErrorGeneral,
-    surfaceContainer = surfaceContainerDark,
     surfaceTint = surfaceTintDark,
+    surfaceContainer = surfaceContainerDark,
     surfaceContainerHighest = surfaceContainerHighestDark,
-    scrim = scrimDark,
-    onBackground = onBackgroundDark,
+    surfaceVariant = surfaceVariantDark,
     onSurfaceVariant = onSurfaceVariantDark,
     surfaceContainerLow = surfaceContainerLowDark,
-    surfaceContainerLowest = surfaceContainerLowestDark
+    surfaceContainerLowest = surfaceContainerLowestDark,
+    outline = outLineDark,
+    scrim = scrimDark,
+    error = colorErrorGeneral
 )
 
 // Midnight
-val midnightDark = darkColorScheme(
+val MidnightTheme = darkColorScheme(
     background = backgroundMidnight,
+    onBackground = onBackgroundMidnight,
     primary = primaryMidnight,
-    onSurface = onSurfaceMidnight,
-    inverseSurface = inverseSurfaceMidnight,
     primaryContainer = primaryContainerMidnight,
     onPrimaryContainer = onPrimaryContainerMidnight,
-    surfaceVariant = surfaceVariantMidnight,
     secondaryContainer = secondaryContainerMidnight,
     tertiaryContainer = tertiaryContainerMidnight,
-    outline = outLineMidnight,
-    error = colorErrorGeneral,
-    surfaceContainer = surfaceContainerMidnight,
+    onSurface = onSurfaceMidnight,
+    inverseSurface = inverseSurfaceMidnight,
+    inverseOnSurface = inverseOnSurfaceMidnight,
     surfaceTint = surfaceTintMidnight,
+    surfaceContainer = surfaceContainerMidnight,
     surfaceContainerHighest = surfaceContainerHighestMidnight,
-    scrim = scrimMidnight,
-    onBackground = onBackgroundMidnight,
+    surfaceVariant = surfaceVariantMidnight,
     onSurfaceVariant = onSurfaceVariantMidnight,
     surfaceContainerLow = surfaceContainerLowMidnight,
-    surfaceContainerLowest = surfaceContainerLowestMidnight
+    surfaceContainerLowest = surfaceContainerLowestMidnight,
+    outline = outLineMidnight,
+    scrim = scrimMidnight,
+    error = colorErrorGeneral
 )
 
 //Slate Moss
-val SlateMoss = darkColorScheme(
+val SlateMossTheme = darkColorScheme(
     background = backgroundSlateMoss,
+    onBackground = onBackgroundSlateMoss,
     primary = primarySlateMoss,
-    onSurface = onSurfaceSlateMoss,
-    inverseSurface = inverseSurfaceSlateMoss,
     primaryContainer = primaryContainerSlateMoss,
     onPrimaryContainer = onPrimaryContainerSlateMoss,
-    surfaceVariant = surfaceVariantSlateMoss,
     secondaryContainer = secondaryContainerSlateMoss,
     tertiaryContainer = tertiaryContainerSlateMoss,
-    outline = outLineSlateMoss,
-    error = colorErrorGeneral,
-    surfaceContainer = surfaceContainerSlateMoss,
+    onSurface = onSurfaceSlateMoss,
+    inverseSurface = inverseSurfaceSlateMoss,
+    inverseOnSurface = inverseOnSurfaceSlateMoss,
     surfaceTint = surfaceTintSlateMoss,
+    surfaceContainer = surfaceContainerSlateMoss,
     surfaceContainerHighest = surfaceContainerHighestSlateMoss,
-    scrim = scrimSlateMoss,
-    onBackground = onBackgroundSlateMoss,
+    surfaceVariant = surfaceVariantSlateMoss,
     onSurfaceVariant = onSurfaceVariantSlateMoss,
     surfaceContainerLow = surfaceContainerLowSlateMoss,
-    surfaceContainerLowest = surfaceContainerLowestSlateMoss
+    surfaceContainerLowest = surfaceContainerLowestSlateMoss,
+    outline = outLineSlateMoss,
+    scrim = scrimSlateMoss,
+    error = colorErrorGeneral
 )
 
 //Plum
-val Plum = darkColorScheme(
+val PlumTheme = darkColorScheme(
     background = backgroundPlum,
+    onBackground = onBackgroundPlum,
     primary = primaryPlum,
-    onSurface = onSurfacePlum,
-    inverseSurface = inverseSurfacePlum,
     primaryContainer = primaryContainerPlum,
     onPrimaryContainer = onPrimaryContainerPlum,
-    surfaceVariant = surfaceVariantPlum,
     secondaryContainer = secondaryContainerPlum,
     tertiaryContainer = tertiaryContainerPlum,
-    outline = outLinePlum,
-    error = colorErrorGeneral,
-    surfaceContainer = surfaceContainerPlum,
+    onSurface = onSurfacePlum,
+    inverseSurface = inverseSurfacePlum,
+    inverseOnSurface = inverseOnSurfacePlum,
     surfaceTint = surfaceTintPlum,
+    surfaceContainer = surfaceContainerPlum,
     surfaceContainerHighest = surfaceContainerHighestPlum,
-    scrim = scrimPlum,
-    onBackground = onBackgroundPlum,
+    surfaceVariant = surfaceVariantPlum,
     onSurfaceVariant = onSurfaceVariantPlum,
     surfaceContainerLow = surfaceContainerLowPlum,
-    surfaceContainerLowest = surfaceContainerLowestPlum
-)
-
-val Light = lightColorScheme(
-    background = backgroundLight,
-    primary = primaryLight,
-    onSurface = onSurfaceLight,
-    inverseSurface = inverseSurfaceLight,
-    primaryContainer = primaryContainerLight,
-    onPrimaryContainer = onPrimaryContainerLight,
-    surfaceVariant = surfaceVariantLight,
-    secondaryContainer = secondaryContainerLight,
-    tertiaryContainer = tertiaryContainerLight,
-    outline = outLineLight,
+    surfaceContainerLowest = surfaceContainerLowestPlum,
+    outline = outLinePlum,
+    scrim = scrimPlum,
     error = colorErrorGeneral,
-    surfaceContainer = surfaceContainerLight,
-    surfaceTint = surfaceTintLight,
-    surfaceContainerHighest = surfaceContainerHighestLight,
-    scrim = Color.Gray
 )
 
-val DarkAlt = darkColorScheme(
-    background = backgroundDarkAlt,
-    primary = primaryDarkAlt,
-    onSurface = onSurfaceDarkAlt,
-    inverseSurface = inverseSurfaceDarkAlt,
-    primaryContainer = primaryContainerDarkAlt,
-    onPrimaryContainer = onPrimaryContainerDarkAlt,
-    surfaceVariant = surfaceVariantDarkAlt,
-    secondaryContainer = secondaryContainerDarkAlt,
-    tertiaryContainer = tertiaryContainerDarkAlt,
-    outline = outLineDarkAlt,
-    error = colorErrorGeneral,
-    surfaceContainer = surfaceContainerDarkAlt,
-    surfaceTint = surfaceTintDarkAlt,
-    surfaceContainerHighest = surfaceContainerHighestDarkAlt
-)
-
-val LightAlt = lightColorScheme(
-    background = backgroundLightAlt,
-    primary = primaryLightAlt,
-    onSurface = onSurfaceLightAlt,
-    inverseSurface = inverseSurfaceLightAlt,
-    primaryContainer = primaryContainerLightAlt,
-    onPrimaryContainer = onPrimaryContainerLightAlt,
-    surfaceVariant = surfaceVariantLightAlt,
-    secondaryContainer = secondaryContainerLightAlt,
-    tertiaryContainer = tertiaryContainerLightAlt,
-    outline = outLineLightAlt,
-    error = colorErrorGeneral,
-    surfaceContainer = surfaceContainerLightAlt,
-    surfaceTint = surfaceTintLightAlt,
-    surfaceContainerHighest = surfaceContainerHighestLightAlt
-)
-
-val SoftStone = lightColorScheme(
+// Soft Stone
+val SoftStoneTheme = lightColorScheme(
     background = backgroundSoftStone,
+    onBackground = onBackgroundSoftStone,
     primary = primarySoftStone,
-    onSurface = onSurfaceSoftStone,
-    inverseSurface = inverseSurfaceSoftStone,
     primaryContainer = primaryContainerSoftStone,
     onPrimaryContainer = onPrimaryContainerSoftStone,
-    surfaceVariant = surfaceVariantSoftStone,
     secondaryContainer = secondaryContainerSoftStone,
     tertiaryContainer = tertiaryContainerSoftStone,
-    outline = outLineSoftStone,
-    error = colorErrorGeneral,
-    surfaceContainer = surfaceContainerSoftStone,
+    onSurface = onSurfaceSoftStone,
+    inverseSurface = inverseSurfaceSoftStone,
+    inverseOnSurface = inverseOnSurfaceSoftStone,
     surfaceTint = surfaceTintSoftStone,
+    surfaceContainer = surfaceContainerSoftStone,
     surfaceContainerHighest = surfaceContainerHighestSoftStone,
-    scrim = scrimSoftStone,
-    onBackground = onBackgroundSoftStone,
+    surfaceVariant = surfaceVariantSoftStone,
     onSurfaceVariant = onSurfaceVariantSoftStone,
     surfaceContainerLow = surfaceContainerLowSoftStone,
-    surfaceContainerLowest = surfaceContainerLowestSoftStone
+    surfaceContainerLowest = surfaceContainerLowestSoftStone,
+    outline = outLineSoftStone,
+    scrim = scrimSoftStone,
+    error = colorErrorGeneral
+)
+
+// Ice mint
+val IceMintTheme = lightColorScheme(
+    background = backgroundIceMint,
+    onBackground = onBackgroundIceMint,
+    primary = primaryIceMint,
+    primaryContainer = primaryContainerIceMint,
+    onPrimaryContainer = onPrimaryContainerIceMint,
+    secondaryContainer = secondaryContainerIceMint,
+    tertiaryContainer = tertiaryContainerIceMint,
+    onSurface = onSurfaceIceMint,
+    inverseSurface = inverseSurfaceIceMint,
+    inverseOnSurface = inverseOnSurfaceIceMint,
+    surfaceTint = surfaceTintIceMint,
+    surfaceContainer = surfaceContainerIceMint,
+    surfaceContainerHighest = surfaceContainerHighestIceMint,
+    surfaceVariant = surfaceVariantIceMint,
+    onSurfaceVariant = onSurfaceVariantIceMint,
+    surfaceContainerLow = surfaceContainerLowIceMint,
+    surfaceContainerLowest = surfaceContainerLowestIceMint,
+    outline = outLineIceMint,
+    scrim = scrimIceMint,
+    error = colorErrorGeneral,
+)
+
+// Desert Rose
+val DesertRoseTheme = lightColorScheme(
+    background = backgroundDesertRose,
+    onBackground = onBackgroundDesertRose,
+    primary = primaryDesertRose,
+    primaryContainer = primaryContainerDesertRose,
+    onPrimaryContainer = onPrimaryContainerDesertRose,
+    secondaryContainer = secondaryContainerDesertRose,
+    tertiaryContainer = tertiaryContainerDesertRose,
+    onSurface = onSurfaceDesertRose,
+    inverseSurface = inverseSurfaceDesertRose,
+    inverseOnSurface = inverseOnSurfaceDesertRose,
+    surfaceTint = surfaceTintDesertRose,
+    surfaceContainer = surfaceContainerDesertRose,
+    surfaceContainerHighest = surfaceContainerHighestDesertRose,
+    surfaceVariant = surfaceVariantDesertRose,
+    onSurfaceVariant = onSurfaceVariantDesertRose,
+    surfaceContainerLow = surfaceContainerLowDesertRose,
+    surfaceContainerLowest = surfaceContainerLowestDesertRose,
+    outline = outLineDesertRose,
+    scrim = scrimDesertRose,
+    error = colorErrorGeneral,
+)
+
+// Cyber Denim
+val CyberDenimTheme = lightColorScheme(
+    background = backgroundCyberDenim,
+    onBackground = onBackgroundCyberDenim,
+    primary = primaryCyberDenim,
+    primaryContainer = primaryContainerCyberDenim,
+    onPrimaryContainer = onPrimaryContainerCyberDenim,
+    secondaryContainer = secondaryContainerCyberDenim,
+    tertiaryContainer = tertiaryContainerCyberDenim,
+    onSurface = onSurfaceCyberDenim,
+    inverseSurface = inverseSurfaceCyberDenim,
+    inverseOnSurface = inverseOnSurfaceCyberDenim,
+    surfaceTint = surfaceTintCyberDenim,
+    surfaceContainer = surfaceContainerCyberDenim,
+    surfaceContainerHighest = surfaceContainerHighestCyberDenim,
+    surfaceVariant = surfaceVariantCyberDenim,
+    onSurfaceVariant = onSurfaceVariantCyberDenim,
+    surfaceContainerLow = surfaceContainerLowCyberDenim,
+    surfaceContainerLowest = surfaceContainerLowestCyberDenim,
+    outline = outLineCyberDenim,
+    scrim = scrimCyberDenim,
+    error = colorErrorGeneral,
 )

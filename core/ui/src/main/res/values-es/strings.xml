@@ -5,8 +5,9 @@
     <string name="ui_theme_slate_moss">Pizarra</string>
     <string name="ui_theme_plum">Berenjena</string>
     <string name="ui_theme_soft_stone">Piedra suave</string>
-    <string name="ui_theme_light">Claro</string>
-    <string name="ui_theme_light_alt">Claro alt.</string>
+    <string name="ui_theme_ice_mint">Menta claro</string>
+    <string name="ui_theme_desert_rose">Diamante rojo</string>
+    <string name="ui_theme_cyber_denim">Azul urbano</string>
 
     <string name="month_1">Enero</string>
     <string name="month_2">Febrero</string>
