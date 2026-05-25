@@ -9,6 +9,23 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kotlinx.serialization.Serializable
 
+/**
+ * Represents the foundational root-level destinations accessible from the primary
+ * application navigation layout infrastructure (e.g., Bottom Navigation Bar or Navigation Rail).
+ *
+ * This structure leverages Kotlin's [Serializable] sealed classes to implement compile-time
+ * **Type-Safe Navigation**, mapping each top-level entry point directly to its corresponding
+ * architecture feature route contract.
+ *
+ * Consistent with Material 3 design ergonomics, the interface restricts core destinations
+ * to a maximum of 4 primary viewports to ensure high discoverability and an optimal,
+ * uncrowded touch target layout.
+ *
+ * @param T The explicit type configuration representing the feature's navigation contract route.
+ * @property title The localized string resource pointer used for rendering the destination's textual label.
+ * @property icon The drawable resource pointer representing the destination's visual indicator.
+ * @property route The strongly-typed navigation destination object instance.
+ */
 @Serializable
 sealed class TopLevelDestinations<T>(@StringRes val title:Int, @DrawableRes val icon:Int, val route:T){
     @Serializable
@@ -24,6 +41,10 @@ sealed class TopLevelDestinations<T>(@StringRes val title:Int, @DrawableRes val 
     data object SettingsBottom:TopLevelDestinations<Settings>(R.string.bottombar_settins, R.drawable.ic_settings, Settings)
 }
 
+/**
+ * Supplies an immutable utility list containing all active top-level screen destinations
+ * to feed the application's global navigation suite views.
+ */
 val menuItems = {
     listOf(
         TopLevelDestinations.HabitsBottom,

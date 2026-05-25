@@ -16,7 +16,7 @@ import org.gradle.kotlin.dsl.dependencies
  * plugins {
  *     alias(libs.plugins.habittracker.hilt.plugin.convention)
  * }
- **/
+ */
 class HiltPluginConvention: Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {

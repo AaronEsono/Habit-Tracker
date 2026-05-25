@@ -8,6 +8,24 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
+
+/**
+ * The core Gradle convention plugin responsible for establishing base Android and Kotlin
+ * configurations across all library modules in the project.
+ *
+ * This plugin applies the standard Android Library and Kotlin Android plugins, and enforces
+ * unified build properties including SDK versions (compileSdk 36, minSdk 26), Java 11
+ * compatibility options for both Java and Kotlin bytecode targets, and default release
+ * build type obfuscation profiles.
+ *
+ * **Usage:**
+ * Apply this plugin as the foundational build configuration for any new library or feature module.
+ * ```
+ * plugins {
+ * alias(libs.plugins.habittracker.android.library.plugin.convention)
+ * }
+ * ```
+ */
 class AndroidLibraryPluginConvention : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {

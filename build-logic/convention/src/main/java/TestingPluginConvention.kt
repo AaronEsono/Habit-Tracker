@@ -5,6 +5,23 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
+
+/**
+ * A shared Gradle convention plugin that centralizes testing configurations and
+ * dependencies across Android library modules.
+ *
+ * This plugin sets up the default [AndroidJUnitRunner] for instrumented tests and
+ * provisions standard testing frameworks for both local unit tests ([JUnit], [MockK],
+ * [Mockito], [Kotlinx Coroutines Test]) and UI/Instrumented tests ([Espresso]).
+ *
+ * **Usage:**
+ * Apply this plugin to any module that requires unit testing or Android instrumented testing infrastructure.
+ * ```
+ * plugins {
+ * alias(libs.plugins.habittracker.testing.plugin.convention)
+ * }
+ * ```
+ */
 class TestingPluginConvention: Plugin<Project> {
     override fun apply(target: Project) {
         with(target){

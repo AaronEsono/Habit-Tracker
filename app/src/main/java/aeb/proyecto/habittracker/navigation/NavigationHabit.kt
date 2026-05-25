@@ -20,6 +20,17 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 
+/**
+ * The central Navigation Graph and [NavHost] orchestrator for the entire application.
+ *
+ * This Composable defines the routing topology by nesting feature-specific screen builders
+ * (modularized via extension functions like [habitScreen], [statisticsScreen], etc.). It coordinates
+ * deep-linking transitions and explicitly handles backstack cleanups using atomic encapsulation rules
+ * (`popUpTo` with `inclusive = true`) during sensitive user flows, such as authentication switching
+ * or returning to the root habit tracker viewport.
+ *
+ * The graph defaults to the strongly-typed [Habit] destination as its application-wide home anchor.
+ */
 @Composable
 fun NavigationHabit(){
     val navController = LocalNavController.current
