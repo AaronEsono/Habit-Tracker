@@ -28,6 +28,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 
+/**
+ * An adaptive side-anchored navigation bar tailored for tablet form factors and landscape orientations.
+ *
+ * This Composable structural layout uses an [AnimatedVisibility] container to dynamically slide the
+ * rail menu in and out of the active screen real estate based on whether the user resides inside a valid
+ * [TopLevelDestinations] contract route.
+ *
+ * Inside the loop, navigation transitions are heavily optimized against interface recursion by combining
+ * single-top execution limits (`launchSingleTop`), structural state saving restoration hooks (`restoreState`),
+ * and deep atomic backstack purging routines to protect the navigation backstack graph integrity.
+ */
 @Composable
 fun BottomRailHabit(){
     val navController = LocalNavController.current

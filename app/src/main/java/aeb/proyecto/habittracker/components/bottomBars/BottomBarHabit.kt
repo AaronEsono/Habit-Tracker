@@ -19,6 +19,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 
+/**
+ * A standard mobile-first bottom navigation bar optimized for compact viewports and portrait layouts.
+ *
+ * This Composable structural layout pairs with its adaptive counterpart (`NavigationRail`) to govern
+ * global application routing. Wrapped inside an [AnimatedVisibility] layer, it safely displays or conceals
+ * the persistent menu track based on whether the active navigation destination maps to a root [TopLevelDestinations] contract.
+ *
+ * To enforce top-tier responsive ergonomics on handheld smartphones, layout elements utilize standardized
+ * touch targets and apply advanced navigation backstack safety parameters (`launchSingleTop`, `restoreState`)
+ * on item selection hooks to prevent layout memory inflation.
+ */
 @Composable
 fun BottomNavigationHabit() {
     val navController = LocalNavController.current

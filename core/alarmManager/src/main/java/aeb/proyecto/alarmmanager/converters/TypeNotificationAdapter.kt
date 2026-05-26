@@ -11,6 +11,20 @@ import com.google.gson.JsonSerializer
 import java.lang.reflect.Type
 import java.time.DayOfWeek
 
+/**
+ * A custom polymorphic Gson adapter tailored for handling the [TypeNotification] sealed class hierarchy.
+ *
+ * Since native JSON structures lack inherent metadata to map abstract contracts to physical object subclasses
+ * during reflex reflection runtime processes, this adapter injects a string discriminator property named `"tag"`.
+ *
+ * This explicit polymorphic strategy decouples data streams cleanly based on structural variants:
+ * * - **`DAILY`:** Serializes specific active days array maps mapped directly to Java [DayOfWeek] enumerations.
+ * - **`RECURRING`:** Serializes local integer intervals representing fixed scheduling frequencies.
+ *
+ * The deserializer validates structural boundaries dynamically, enforcing key property constraints
+ * via [JsonParseException] while offering robust safe-recovery states if unknown variations leak into
+ * persistent storage.
+ */
 class TypeNotificationAdapter : JsonSerializer<TypeNotification>, JsonDeserializer<TypeNotification> {
     override fun serialize(src: TypeNotification?, typeOfSrc: Type?, context: JsonSerializationContext): JsonElement {
         val jsonObject = JsonObject()

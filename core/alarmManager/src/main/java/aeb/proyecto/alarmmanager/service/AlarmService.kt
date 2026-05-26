@@ -2,35 +2,39 @@ package aeb.proyecto.alarmmanager.service
 
 import aeb.proyecto.alarmmanager.NotificationUtils
 import aeb.proyecto.alarmmanager.R
-import aeb.proyecto.alarmmanager.REMINDER
 import aeb.proyecto.alarmmanager.constants.CHANNEL
-import aeb.proyecto.alarmmanager.converters.LocalTimeAdapter
-import aeb.proyecto.alarmmanager.converters.TypeNotificationAdapter
+import aeb.proyecto.alarmmanager.constants.REMINDER
 import aeb.proyecto.alarmmanager.gsonProvider.GsonProvider
-import aeb.proyecto.room.converters.DateConverter
-import aeb.proyecto.room.converters.IconConverter
-import aeb.proyecto.room.converters.TypeNotificationConverter
 import aeb.proyecto.room.model.NotificationWithNameAndColor
-import aeb.proyecto.room.model.classes.TypeNotification
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.google.gson.Gson
-import javax.inject.Inject
 import androidx.core.net.toUri
-import com.google.android.libraries.places.api.model.LocalTime
-import com.google.gson.GsonBuilder
+import javax.inject.Inject
 
 
+/**
+ * An asynchronous background platform interceptor responsible for handling scheduled hardware alarm triggers.
+ *
+ * Annotated with [@AndroidEntryPoint] to enable Hilt dependency provisioning within non-component framework units,
+ * this [BroadcastReceiver] wakes up responsively from background context pipelines when an alert boundary conditions are met.
+ *
+ * The execution sequence pipeline performs three critical tasks:
+ * 1. Reconstructs serialized metadata payloads using [GsonProvider].
+ * 2. Validates Android runtime notification safety permission constraints (`POST_NOTIFICATIONS`).
+ * 3. Builds and pushes a rich platform alert styled dynamically with the target habit's color profile,
+ * wrapping an internal routing deep link (`app://main`) to manage explicit navigation resumption parameters.
+ *
+ * Finally, it delegates execution backward to [NotificationUtils.setRepeatedAlarm] to ensure uninterrupted
+ * chronological scheduling perpetuity.
+ */
 class AlarmService : BroadcastReceiver() {
 
     @Inject
@@ -40,17 +44,14 @@ class AlarmService : BroadcastReceiver() {
         createNotification(context,intent)
     }
 
-    private fun createNotification(context: Context, intent2: Intent){
-        notificationUtils = NotificationUtils(context)
+    private fun createNotification(context: Context, incomingIntent: Intent){
 
-        val intent = Intent(Intent.ACTION_VIEW, "app://main".toUri()).apply {
+        val deepLinkIntent = Intent(Intent.ACTION_VIEW, "app://main".toUri()).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
-        val notificationWithName = intent2.getStringExtra(REMINDER)
-
-        val data = GsonProvider.gson
-            .fromJson(notificationWithName, NotificationWithNameAndColor::class.java)
+        val rawReminderJson = incomingIntent.getStringExtra(REMINDER)
+        val data = GsonProvider.gson.fromJson(rawReminderJson, NotificationWithNameAndColor::class.java)
 
         if (ContextCompat.checkSelfPermission(
                 context,
@@ -58,21 +59,26 @@ class AlarmService : BroadcastReceiver() {
             ) == PackageManager.PERMISSION_GRANTED
         ){
 
-            val flag = PendingIntent.FLAG_IMMUTABLE
-            val pendingIntent = PendingIntent.getActivity(context,data.id.toInt(),intent,flag)
+            val pendingIntentFlags = PendingIntent.FLAG_IMMUTABLE
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                data.id.toInt(),
+                deepLinkIntent,
+                pendingIntentFlags
+            )
 
-            val color = Color(data.color)
+            val habitCustomColor = Color(data.color)
 
             val notification = NotificationCompat.Builder(context, CHANNEL)
                 .setSmallIcon(R.drawable.ic_achievement)
-                .setColor(color.toArgb())
+                .setColor(habitCustomColor.toArgb())
                 .setContentTitle(data.name)
-                .setContentText(context.getString(R.string.notification_subtitle,data.name))
+                .setContentText(context.getString(R.string.notification_subtitle, data.name))
                 .setContentIntent(pendingIntent)
                 .build()
 
             val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
-            manager.notify(data.id.toInt(),notification)
+            manager.notify(data.id.toInt(), notification)
         }
 
         notificationUtils.setRepeatedAlarm(data)

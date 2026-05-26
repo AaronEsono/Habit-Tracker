@@ -12,6 +12,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.window.core.layout.WindowWidthSizeClass
 
+/**
+ * A responsive text wrapper that dynamically scales navigation label typography dimensions
+ * based on the device's window size constraints and display posture.
+ *
+ * To guarantee interface layout safety across localized string variations, this component enforces
+ * a strict single-line ceiling restriction, utilizing elegant truncation fallback behavior
+ * ([TextOverflow.Ellipsis]) if the text boundaries exceed the responsive viewport allocations.
+ *
+ * @param title The framework localization string resource identifier pointer for the label content.
+ * @param windowSizeClass The active [WindowWidthSizeClass] defining width configuration metrics.
+ * @param orientation The current physical layout [Orientation] posture of the screen viewport.
+ */
 @Composable
 fun LabelBottomRailResponsive(
     @StringRes title:Int,

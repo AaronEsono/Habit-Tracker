@@ -12,6 +12,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
 
+/**
+ * A responsive wrapper around the standard [Icon] component that dynamically scales its dimensions
+ * based on the device's window size class and adaptive orientation.
+ *
+ * This utility ensures that core action targets remain visually proportional and ergonomically optimized
+ * across a diverse spectrum of form factors, preventing graphical regression when transitioning from
+ * compact mobile screens up to medium tablets or expanded desktop displays.
+ *
+ * @param icon The drawable framework resource identifier pointer for the vector asset.
+ * @param windowSizeClass The active [WindowWidthSizeClass] specifying the current window width constraints.
+ * @param orientation The current physical structural [Orientation] layout posture of the viewport.
+ */
 @Composable
 fun BottomRailIconResponsive(
     icon:Int,

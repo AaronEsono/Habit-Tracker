@@ -36,6 +36,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * A reactive dialog component that synchronizes background tracking data with the habit ecosystem.
+ *
+ * Since the habit execution timer can run detached in the background, this Composable intercepts
+ * the application session entry point when a background session finishes. It prompts the user to
+ * confirm if they want to append the accumulated track duration directly to the target habit's
+ * dynamic timeline.
+ *
+ * It features type-safe state unwrapping, internal mathematical string formatting memoization
+ * via [remember] to avoid redundant calculations during recomposition, and local time conversion.
+ *
+ * @param state The active [ShowDialogState] context carrying operational metadata (habit info, date, and raw elapsed seconds).
+ * @param onDismissRequest Lambda callback executed when the user rejects or cancels the background time synchronization.
+ * @param onConfirm Lambda callback executed when the user approves appending the tracked time into the local database storage.
+ */
 @Composable
 fun ManageDialogScreen (
    state: ShowDialogState,
