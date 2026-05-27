@@ -13,6 +13,24 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseAuthWebException
 
+/**
+ * A centralized, domain-level telemetry translation pipeline that transforms low-level platform
+ * security exceptions into localized Android presentation resource identifiers.
+ *
+ * This utility function enforces defensive exception handling across the authentication infrastructure by executing
+ * a dual-layered evaluations tree:
+ * 1. **Strongly-Typed Hierarchy Evaluation:** It checks if the incoming [Exception] matches explicit SDK subclasses
+ * (e.g., [FirebaseAuthWeakPasswordException]) to immediately catch concrete credential errors.
+ * 2. **String Discriminator Topology Fallback:** If the exception is packaged under the generic [FirebaseAuthException]
+ * envelope, it branches into a secondary evaluative block mapping raw server error string tokens (e.g., `"ERROR_TOO_MANY_REQUESTS"`)
+ * to isolate precise infrastructure failure variables.
+ *
+ * By returning primitive resource pointers ([Int]) rather than raw translated message strings, the layer preserves
+ * clean architecture separation, leaving localization extraction context tasks entirely to the visual presentation framework.
+ *
+ * @param e The raw [Exception] instance intercepted during asynchronous identity network transaction boundaries.
+ * @return An integer primitive (`@StringRes`) referencing the target string element inside the local `strings.xml` resource database.
+ */
 fun treatError(e: Exception): Int {
     return when (e) {
         is FirebaseAuthInvalidUserException -> R.string.error_auth_no_user_found

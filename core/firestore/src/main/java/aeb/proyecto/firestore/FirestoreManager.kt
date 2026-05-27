@@ -29,7 +29,7 @@ class FirestoreManager @Inject constructor(
                     trySend(AuthResponseFirestore.Success(data.toObject(FirestoreData::class.java)))
                 }
         } catch (e: Exception) {
-            analyticsManagerInterface.logEvent(FirestoreEvents.Error(e.message.toString()))
+            analyticsManagerInterface.logEvent(FirestoreEvents.error(e.message.toString()))
 
             val message = treatError(e)
             trySend(AuthResponseFirestore.Error(message))
@@ -48,7 +48,7 @@ class FirestoreManager @Inject constructor(
                     trySend(AuthResponseFirestore.Success(null))
                 }
         }catch (e:Exception){
-            analyticsManagerInterface.logEvent(FirestoreEvents.Error(e.message.toString()))
+            analyticsManagerInterface.logEvent(FirestoreEvents.error(e.message.toString()))
             val message = treatError(e)
             trySend(AuthResponseFirestore.Error(message))
         }
@@ -66,7 +66,7 @@ class FirestoreManager @Inject constructor(
                     trySend(AuthResponseFirestore.Success(null))
                 }
         }catch (e:Exception){
-            analyticsManagerInterface.logEvent(FirestoreEvents.Error(e.message.toString()))
+            analyticsManagerInterface.logEvent(FirestoreEvents.error(e.message.toString()))
             val message = treatError(e)
             trySend(AuthResponseFirestore.Error(message))
         }

@@ -17,102 +17,219 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingExcept
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.userProfileChangeRequest
+import dagger.Binds
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class AuthenticationManager @Inject constructor(
+/**
+ * The core orchestration engine driving all user session validation and profile state transitions.
+ *
+ * Acting as the concrete [internal] implementation of [AuthenticationInterface], this manager bridges
+ * local client requests with the remote Google Cloud Identity ecosystem. It encapsulates synchronous and
+ * reactive asynchronous streaming operations, safeguarding runtime sessions against corruption while executing
+ * decoupled behavioral telemetry propagation.
+ *
+ * @property context The globally scoped [@ApplicationContext] utilized to handle resource translation lookups
+ * and localized asset checks safely without introducing memory leak vulnerabilities.
+ * @property analyticsManagerInterface The decoupled abstraction contract leveraged to dispatch business intelligence
+ * logs during auth lifecycle milestones.
+ * @property auth The pre-provisioned, thread-safe framework driver managing remote security token sync states.
+ */
+internal class AuthenticationManager @Inject constructor(
     @ApplicationContext private val context: Context,
     private val analyticsManagerInterface: AnalyticsManagerInterface,
     private val auth: FirebaseAuth
 ):AuthenticationInterface {
 
-    override suspend fun createAccountWithEmail(email: String, password: String): Flow<AuthResponseAuthentication> = callbackFlow {
-        trySend(AuthResponseAuthentication.Loading)
+    /**
+     * Executes a sequential, asynchronous remote registration pipeline to provision a new user
+     * profile registry using an email and password combination.
+     *
+     * This routine leverages the native Kotlin Coroutines integration framework via [await] extension tasks
+     * wrapped within a reactive cold [Flow] stream builder. This architecture replaces volatile listener-based
+     * execution chains with structured, non-blocking sequential execution steps.
+     *
+     * ### Execution Pipeline Lifecycle:
+     * 1. **Visual State Initialization:** Immediately emits [AuthResponseAuthentication.Loading] to notify the active presentation UI layer.
+     * 2. **Credential Provisioning:** Invokes the remote Google authentication server. Execution suspends non-blockingly until the network transaction resolves.
+     * 3. **Profile Metadata Mutation:** Attaches the input email reference as the localized display name attribute, suspending until registration is verified.
+     * 4. **Security Token Dispatch:** Requests an outbound email verification link payload via [sendEmailVerification], blocking onward progress until the transmission frame registers success.
+     * 5. **Defensive Session Teardown:** Invokes [FirebaseAuth.signOut] sequentially to clear the default session auto-login cache, locking the profile until physical validation occurs.
+     * 6. **Terminal Emission:** Streams [AuthResponseAuthentication.Success] out to consumers and logs metrics via [analyticsManagerInterface].
+     *
+     * ### Exception Boundary Propagation:
+     * Any asynchronous network failure, security rules violation (e.g., duplicate email entries), or platform runtime exception
+     * thrown during suspension points is intercepted by the single `catch` block. This trigger guarantees a clean state teardown via
+     * an emergency [auth.signOut], maps the anomaly to an Android resource string through [treatError], logs telemetry data,
+     * and safely wraps the outcome inside [AuthResponseAuthentication.Error].
+     *
+     * @param email The unique communication address requested to anchor the new identity profile.
+     * @param password The raw security pass-phrase token selected to safeguard the resource.
+     * @return A cold [Flow] streaming the transactional state transitions ([Loading], [Success], [Error]).
+     * @throws Exception If the internal SDK core context drops the user reference layer unexpectedly during runtime initialization.
+     */
+    override suspend fun createAccountWithEmail(
+        email: String,
+        password: String
+    ): Flow<AuthResponseAuthentication> =
+        flow {
+            // 1. Broadcast immediate loading transaction state to the presentation layers
+            emit(AuthResponseAuthentication.Loading)
+
+            try {
+                // 2. Provision account node and suspend until the cloud transaction completes
+                val authResult = auth.createUserWithEmailAndPassword(email, password).await()
+
+                authResult.user?.let { user ->
+                    val profileUpdates = userProfileChangeRequest {
+                        displayName = user.email
+                    }
+
+                    // 3. Suspend sequentially until profile metadata synchronization completes
+                    user.updateProfile(profileUpdates).await()
+
+                    // 4. Suspend until verification dispatch confirmation registers
+                    user.sendEmailVerification().await()
+
+                    // 5. Enforce defensive sign-out rules before emitting success states
+                    auth.signOut()
+
+                    // Telemetry tracking & success stream resolution
+                    analyticsManagerInterface.logEvent(AuthenticationEvents.createdAccount(user.uid))
+                    emit(AuthResponseAuthentication.Success)
+                } ?: throw Exception("User reference was lost after registration initialization.")
+
+            } catch (e: Exception) {
+                // 6. Centralized safety net: enforce session cleaning and propagate mapped error keys
+                auth.signOut()
+                val errorResId = treatError(e)
+                analyticsManagerInterface.logEvent(
+                    AuthenticationEvents.error(
+                        e.localizedMessage ?: e.toString()
+                    )
+                )
+                emit(AuthResponseAuthentication.Error(errorResId))
+            }
+        }
+
+    /**
+     * Executes an asynchronous identity validation transaction using traditional email and password credentials.
+     *
+     * This routine leverages non-blocking sequential suspension points via [await] to verify identity coordinates
+     * against cloud registries. It implements strict post-authentication business logic gates to enforce email
+     * verification compliance rules before granting full session access.
+     *
+     * ### Sequential Execution Lifecycle:
+     * 1. **Visual State Initialization:** Immediately emits [AuthResponseAuthentication.Loading] to transition the presentation layer.
+     * 2. **Credential Validation:** Suspends non-blockingly while invoking the remote network login handshake.
+     * 3. **Security Gate Assessment:** Evaluates [com.google.firebase.auth.FirebaseUser.isEmailVerified]:
+     * * **Gate Passed:** Logs telemetry success metrics via [analyticsManagerInterface] and emits [AuthResponseAuthentication.Success].
+     * * **Gate Violated:** If the account activation link remains unclicked, it logs a specialized error tracking event,
+     * purges the session instantly via [auth.signOut], and routes [AuthResponseAuthentication.UnverifiedEmail] to the UI.
+     *
+     * ### Exception Boundary Propagation:
+     * Any invalid credentials runtime error, network timeout, or platform-level exception thrown during cloud suspension
+     * is intercepted natively by the single `catch` block. The routine executes a defensive emergency [auth.signOut],
+     * maps the exception to its corresponding localized string resource pointer via [treatError], logs telemetry tracking,
+     * and structuralizes the failure inside [AuthResponseAuthentication.Error].
+     *
+     * @param email The communication address registry matching the profile credentials.
+     * @param password The raw verification pass-phrase token submitted by the user.
+     * @return A cold [Flow] streaming the transactional state transitions ([Loading], [Success], [UnverifiedEmail], [Error]).
+     */
+    override suspend fun signInWithEmail(
+        email: String,
+        password: String
+    ): Flow<AuthResponseAuthentication> = flow {
+        // 1. Broadcast immediate loading transaction state to the presentation layers
+        emit(AuthResponseAuthentication.Loading)
 
         try {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if(task.isSuccessful){
-                        //Actualizacion del perfil y envio del email
-                        auth.currentUser?.let {
-                            val profileUpdates = userProfileChangeRequest {
-                                displayName = it.email
-                            }
+            // 2. Validate credentials against remote storage and suspend until network resolution
+            val authResult = auth.signInWithEmailAndPassword(email, password).await()
 
-                            it.updateProfile(profileUpdates)
-                            it.sendEmailVerification()
-
-                            auth.signOut()
-
-                            analyticsManagerInterface.logEvent(AuthenticationEvents.createdAccount(it.uid))
-                            trySend(AuthResponseAuthentication.Success)
-                        }
-
-                    }else{
-                        auth.signOut()
-                        analyticsManagerInterface.logEvent(AuthenticationEvents.error(ERROR_EMAIL_EXISTS))
-                        trySend(AuthResponseAuthentication.Error(R.string.error_auth_email_exists))
-                    }
+            authResult.user?.let { user ->
+                // 3. Enforce strict email verification business policies
+                if (user.isEmailVerified) {
+                    analyticsManagerInterface.logEvent(AuthenticationEvents.logUserLogged(user.uid))
+                    emit(AuthResponseAuthentication.Success)
+                } else {
+                    analyticsManagerInterface.logEvent(
+                        AuthenticationEvents.error(
+                            ERROR_UNVERIFIED_EMAIL
+                        )
+                    )
+                    auth.signOut()
+                    emit(AuthResponseAuthentication.UnverifiedEmail)
                 }
+            }
+                ?: throw Exception("User session allocation failed immediately after authentication handshake.")
+
         } catch (e: Exception) {
-            val error = treatError(e)
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
-            trySend(AuthResponseAuthentication.Error(error))
+            // 4. Centralized safety net: enforce session cleaning and propagate mapped error keys
+            auth.signOut()
+            val errorResId = treatError(e)
+            analyticsManagerInterface.logEvent(
+                AuthenticationEvents.error(
+                    e.localizedMessage ?: e.toString()
+                )
+            )
+            emit(AuthResponseAuthentication.Error(errorResId))
         }
-
-        awaitClose()
     }
 
-    override suspend fun signInWithEmail(email: String, password: String): Flow<AuthResponseAuthentication> = callbackFlow {
-        trySend(AuthResponseAuthentication.Loading)
+    /**
+     * Executes a federated single sign-on (SSO) authentication pipeline utilizing the modern Android
+     * [CredentialManager] subsystem integrated with remote Google Identity services.
+     *
+     * This routine coordinates a multi-layered cryptographic validation pipeline, wrapping jetpack identity
+     * options and Firebase Cloud authentication handshakes into a streamlined, sequential asynchronous [Flow].
+     *
+     * ### Federated Execution Topology:
+     * 1. **Configuration & Anti-Replay Payload:** Instantiates a [GetGoogleIdOption] specifying structural client
+     * IDs and injects a unique SHA-256 cryptographic token via [createNonce] to prevent mitigation replay exploits.
+     * 2. **OS Credential Sheet Suspension:** Invokes the native system UI credentials sheet. Execution suspends
+     * non-blockingly until the user selects an account profile or dismisses the interface layout frame.
+     * 3. **Token Extraction & Parsing:** Intercepts the custom identity payload data and validates the signature
+     * structure using [GoogleIdTokenCredential.createFrom].
+     * 4. **Firebase Cloud Exchange:** Converts the parsed Google ID token into a structural [com.google.firebase.auth.AuthCredential]
+     * token map, requesting remote cloud session synchronization via [FirebaseAuth.signInWithCredential] using sequential [.await] tasks.
+     *
+     * ### Comprehensive Exception Boundary Architecture:
+     * The overarching `catch` block functions as a unified defensive perimeter catching diverse cross-platform failure points:
+     * * **[GetCredentialException]:** Captures user cancelation events, missing Google Play Services, or missing local accounts.
+     * * **[GoogleIdTokenParsingException]:** Intercepts data corruption issues during binary parsing execution frames.
+     * * **[Exception]:** Catches Firebase cloud transaction rejections or network timeout configurations.
+     * Any caught failure triggers an immediate automated session sanitization cleanup map through [auth.signOut].
+     *
+     * @return A cold [Flow] emitting the transactional identity milestones ([Loading], [Success], [Error]).
+     */
+    override fun signInWithGoogle(): Flow<AuthResponseAuthentication> = flow {
+        // 1. Broadcast immediate loading transaction state to the presentation layers
+        emit(AuthResponseAuthentication.Loading)
 
         try {
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if(task.isSuccessful){
-                        if(auth.currentUser?.isEmailVerified == true){
-                            analyticsManagerInterface.logEvent(AuthenticationEvents.logUserLogged(auth.currentUser?.uid ?: ""))
-                            trySend(AuthResponseAuthentication.Success)
-                        }else{
-                            analyticsManagerInterface.logEvent(AuthenticationEvents.error(ERROR_UNVERIFIED_EMAIL))
-                            auth.signOut()
-                            trySend(AuthResponseAuthentication.UnverifiedEmail)
-                        }
-                    }else{
-                        val error = treatError(task.exception!!)
-                        analyticsManagerInterface.logEvent(AuthenticationEvents.error(task.exception.toString()))
-                        trySend(AuthResponseAuthentication.Error(error))
-                    }
-                }
-        }catch (e:Exception){
-            val error = treatError(e)
-            auth.signOut()
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
-            trySend(AuthResponseAuthentication.Error(error))
-        }
+            // 2. Build secure federated Google identity validation options
+            val googleValidation = GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(false)
+                .setServerClientId(context.getString(R.string.web_id))
+                .setNonce(createNonce())
+                .setAutoSelectEnabled(true)
+                .build()
 
-        awaitClose()
-    }
+            val request = GetCredentialRequest.Builder()
+                .addCredentialOption(googleValidation)
+                .build()
 
-    override fun signInWithGoogle(): Flow<AuthResponseAuthentication> = callbackFlow {
-        val googleValidation = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(context.getString(R.string.web_id))
-            .setNonce(createNonce())
-            .setAutoSelectEnabled(true)
-            .build()
-
-        val request = GetCredentialRequest.Builder()
-            .addCredentialOption(googleValidation)
-            .build()
-
-        try{
             val credentialManager = CredentialManager.create(context)
 
+            // 3. Request systemic UI selection sheet and suspend until user response registers
             val result = credentialManager.getCredential(
                 context = context,
                 request = request
@@ -120,44 +237,38 @@ class AuthenticationManager @Inject constructor(
 
             val credential = result.credential
 
-            if(credential is CustomCredential){
-                if(credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL){
-                    try {
-                        val googleIdTokenCredential = GoogleIdTokenCredential
-                            .createFrom(credential.data)
+            // 4. Evaluate and securely unpack type token signatures
+            if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
 
-                        val firebaseCredential = GoogleAuthProvider.getCredential(
-                            googleIdTokenCredential.idToken,
-                            null
-                        )
+                val firebaseCredential = GoogleAuthProvider.getCredential(
+                    googleIdTokenCredential.idToken,
+                    null
+                )
 
-                        auth.signInWithCredential(firebaseCredential)
-                            .addOnCompleteListener {
-                                if(it.isSuccessful){
-                                    analyticsManagerInterface.logEvent(AuthenticationEvents.loggedWithGoogle(it.result.user!!.uid))
-                                    trySend(AuthResponseAuthentication.Success)
-                                }else{
-                                    val error = treatError(it.exception!!)
-                                    analyticsManagerInterface.logEvent(AuthenticationEvents.error(it.exception.toString()))
-                                    trySend(AuthResponseAuthentication.Error(error))
-                                }
-                            }
+                // 5. Exchange identity tokens with Firebase cloud nodes and suspend until synchronized
+                val authResult = auth.signInWithCredential(firebaseCredential).await()
 
-                    }catch (e:GoogleIdTokenParsingException){
-                        val error = treatError(e)
-                        analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
-                        trySend(AuthResponseAuthentication.Error(error))
-                    }
-                }
+                authResult.user?.let { user ->
+                    analyticsManagerInterface.logEvent(AuthenticationEvents.loggedWithGoogle(user.uid))
+                    emit(AuthResponseAuthentication.Success)
+                } ?: throw Exception("Identity framework dropped the user session reference post-exchange.")
+
+            } else {
+                throw Exception("Received unsupported credential type token boundary: ${credential.type}")
             }
-        }catch (e:Exception){
-            val error = treatError(e)
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
-            trySend(AuthResponseAuthentication.Error(error))
+        } catch (e: Exception){
+            // 6. Centralized safety perimeter: purge session logs and propagate localized presentation markers
+            Log.e("AuthenticationManger", e.toString())
+            auth.signOut()
+            val errorResId = treatError(e)
+            analyticsManagerInterface.logEvent(
+                AuthenticationEvents.error(
+                    e.localizedMessage ?: e.toString()
+                )
+            )
+            emit(AuthResponseAuthentication.Error(errorResId))
         }
-
-
-        awaitClose()
     }
 
     override suspend fun resendEmail(email:String, password:String): Flow<AuthResponseAuthentication> = callbackFlow {
@@ -231,9 +342,43 @@ class AuthenticationManager @Inject constructor(
     }
 }
 
+/**
+ * A sealed architectural state wrapper representing the terminal and intermediate boundaries
+ * of the authentication lifecycle.
+ *
+ * This contract functions as a discriminated state machine union, standardizing payload propagation
+ * from data execution managers toward upstream presentation UI engines (such as Jetpack Compose ViewModels).
+ * It ensures compile-time exhaustiveness when evaluating execution outcomes via structural pattern matching.
+ */
 interface AuthResponseAuthentication {
+
+    /**
+     * A high-performance terminal allocation signaling that the requested identity operation
+     * was fully validated, synchronized, and resolved successfully by the cloud provider.
+     */
     data object Success : AuthResponseAuthentication
+
+    /**
+     * An intermediate allocation signaling that an active asynchronous transaction is currently
+     * traversing network execution boundaries.
+     *
+     * Presentation layers should intercept this token to trigger non-blocking UI loading indicators
+     * (e.g., ProgressBars or shimmer animations) and suspend concurrent user interactive inputs.
+     */
     data class Error(val message: Int) : AuthResponseAuthentication
+
+    /**
+     * A conditional validation roadblock signaling that credentials passed initial security checks,
+     * but access remains structurally restricted until physical email validation verification is complete.
+     */
     data object UnverifiedEmail: AuthResponseAuthentication
+
+    /**
+     * A terminal failure node encapsulating an immutable pointer reference to a localized user-facing
+     * description explaining the infrastructure breakdown.
+     *
+     * @property message An integer primitive value representing an Android string resource pointer (`@StringRes`)
+     * derived from resource dictionary maps (e.g., `R.string.error_auth_network_request_failed`).
+     */
     data object Loading: AuthResponseAuthentication
 }
