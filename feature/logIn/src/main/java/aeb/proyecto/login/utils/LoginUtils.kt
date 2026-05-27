@@ -1,6 +1,9 @@
 package aeb.proyecto.login.utils
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.util.Patterns
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.text.input.TextFieldState
 
 fun isEmailInvalid(textFieldState: TextFieldState): Boolean {
@@ -29,4 +32,10 @@ fun isButtonEnabled(
     } else {
         isEmailValid && isPasswordValid && rememberState.text == passwordState.text
     }
+}
+
+fun Context.findActivity(): ComponentActivity? = when (this) {
+    is ComponentActivity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }

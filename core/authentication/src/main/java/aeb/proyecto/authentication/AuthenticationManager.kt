@@ -210,7 +210,7 @@ internal class AuthenticationManager @Inject constructor(
      *
      * @return A cold [Flow] emitting the transactional identity milestones ([Loading], [Success], [Error]).
      */
-    override fun signInWithGoogle(): Flow<AuthResponseAuthentication> = flow {
+    override fun signInWithGoogle(context: Context): Flow<AuthResponseAuthentication> = flow {
         // 1. Broadcast immediate loading transaction state to the presentation layers
         emit(AuthResponseAuthentication.Loading)
 
@@ -259,7 +259,6 @@ internal class AuthenticationManager @Inject constructor(
             }
         } catch (e: Exception){
             // 6. Centralized safety perimeter: purge session logs and propagate localized presentation markers
-            Log.e("AuthenticationManger", e.toString())
             auth.signOut()
             val errorResId = treatError(e)
             analyticsManagerInterface.logEvent(

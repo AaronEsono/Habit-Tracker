@@ -3,6 +3,7 @@ package aeb.proyecto.domain.usecase.login
 import aeb.proyecto.authentication.AuthResponseAuthentication
 import aeb.proyecto.authentication.AuthenticationInterface
 import aeb.proyecto.datastore.model.EmailPassword
+import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -20,8 +21,8 @@ class LoginAuthenticationUseCase @Inject constructor(
         return authenticationInterface.signInWithEmail(email,password)
     }
 
-    fun signInWithGoogle(): Flow<AuthResponseAuthentication> {
-        return authenticationInterface.signInWithGoogle()
+    fun signInWithGoogle(context: Context): Flow<AuthResponseAuthentication> {
+        return authenticationInterface.signInWithGoogle(context)
     }
 
     suspend fun resendEmail(email:String, password: String): Flow<AuthResponseAuthentication> {

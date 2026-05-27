@@ -8,6 +8,7 @@ import aeb.proyecto.domain.usecase.login.SaveLoginCredentialUseCase
 import aeb.proyecto.login.model.BottomSheetState
 import aeb.proyecto.login.model.DataLoginBottomSheet
 import aeb.proyecto.login.model.DataLoginScreen
+import android.content.Context
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -120,9 +121,9 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun signInGoogle() {
+    fun signInGoogle(context: Context) {
         try {
-            loginAuthenticationUseCase.signInWithGoogle().onEach { response ->
+            loginAuthenticationUseCase.signInWithGoogle(context).onEach { response ->
                 when (response) {
                     is AuthResponseAuthentication.Success -> {
                         _uiState.update { LoginUIState.Login }
@@ -131,8 +132,11 @@ class LoginViewModel @Inject constructor(
                     is AuthResponseAuthentication.Error -> {
                         setError(response.message)
                     }
-                    else -> {
-                        setError(R.string.login_error_default)
+                    is AuthResponseAuthentication.Loading -> {
+                        _uiState.update { LoginUIState.Loading }
+                    }
+                    is AuthResponseAuthentication.UnverifiedEmail -> {
+                        // Tratar si fuera necesario en un futuro
                     }
                 }
             }

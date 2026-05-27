@@ -1,5 +1,6 @@
 package aeb.proyecto.authentication
 
+import android.content.Context
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -19,7 +20,7 @@ interface AuthenticationInterface {
      *
      * @return A cold [Flow] emitting asynchronous state updates of the active transaction lifecycle.
      */
-    fun signInWithGoogle(): Flow<AuthResponseAuthentication>
+    fun signInWithGoogle(context: Context): Flow<AuthResponseAuthentication>
 
     /**
      * Validates traditional user identity credentials using an encrypted password combination.
