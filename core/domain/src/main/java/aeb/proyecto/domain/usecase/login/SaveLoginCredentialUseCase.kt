@@ -1,22 +1,21 @@
 package aeb.proyecto.domain.usecase.login
 
 import aeb.proyecto.datastore.DatastoreInterface
-import aeb.proyecto.datastore.model.EmailPassword
+import aeb.proyecto.datastore.model.UserSession
 import javax.inject.Inject
 
 class SaveLoginCredentialUseCase @Inject constructor(
     private val datastoreInterface: DatastoreInterface,
 ) {
 
-    suspend fun clearData() = datastoreInterface.clearUser()
+    suspend fun clearData() = datastoreInterface.clearSession()
 
-    suspend fun setData(email:String,password:String) {
-        datastoreInterface.setEmail(email)
-        datastoreInterface.setPassword(password)
+    suspend fun saveUserSession(data: UserSession) {
+        datastoreInterface.saveUserSession(data)
     }
 
-    suspend fun getCredentials():EmailPassword{
-        return datastoreInterface.getEmailAndPassword()
+    suspend fun getCredentials():UserSession{
+        return datastoreInterface.getUserSession()
     }
 
 }

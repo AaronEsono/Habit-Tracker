@@ -3,8 +3,8 @@ package aeb.proyecto.datastore.repository
 import aeb.proyecto.datastore.DataStoreManager
 import aeb.proyecto.datastore.DatastoreInterface
 import aeb.proyecto.datastore.model.AppSettings
-import aeb.proyecto.datastore.model.EmailPassword
 import aeb.proyecto.datastore.model.LastSearched
+import aeb.proyecto.datastore.model.UserSession
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -81,6 +81,58 @@ class DatastoreRepository @Inject constructor(
     // STATISTICS ----------------------------------------------------------------
     // *******************************************************************************************
 
+
+    // LOGIN SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Routes the holistic authentication credential payload to the infrastructure manager for serialization.
+     *
+     * @param session The target stateful [UserSession] metadata object to commit.
+     */
+    override suspend fun saveUserSession(session: UserSession) {
+        dataStoreManager.saveUserSession(session)
+    }
+
+    /**
+     * Forwards the asynchronous query request to extract the localized authentication snapshot.
+     *
+     * @return An absolute, immutable [UserSession] state topology matrix wrapper.
+     */
+    override suspend fun getUserSession(): UserSession {
+        return dataStoreManager.getUserSession()
+    }
+
+    /**
+     * Dispatches the session purge event hook down to the core layout manager.
+     */
+    override suspend fun clearSession() {
+        dataStoreManager.clearSession()
+    }
+    // LOGIN SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+
+    // HABIT SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Forwards the asynchronous query request to extract the active habit classification token.
+     *
+     * @return The active localized category string token, or null if unestablished.
+     */
+    override suspend fun getTypeSelected(): String? {
+        return dataStoreManager.getTypeSelected()
+    }
+
+    /**
+     * Routes the active habit classification string token to the infrastructure manager for serialization.
+     *
+     * @param type The target category or classification string token to persist.
+     */
+    override suspend fun setTypeSelected(type: String) {
+        dataStoreManager.setTypeSelectedDate(type)
+    }
+    // HABIT SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+
     override val idTimerSelected: Flow<Long?>
         get() = dataStoreManager.idTimerSelected
 
@@ -122,17 +174,8 @@ class DatastoreRepository @Inject constructor(
     override val timerLinkedAndFinished: Flow<Boolean>
         get() = dataStoreManager.timerLinkedAndFinished
 
-
-    override suspend fun getEmailAndPassword(): EmailPassword {
-        return dataStoreManager.getEmailPassword()
-    }
-
     override suspend fun getLastSearched(): LastSearched {
         return dataStoreManager.getLastSearched()
-    }
-
-    override suspend fun getTypeSelected(): String? {
-        return dataStoreManager.getTypeSeleted()
     }
 
     override suspend fun getIdTimerSelected(): Long? {
@@ -223,22 +266,7 @@ class DatastoreRepository @Inject constructor(
         dataStoreManager.setTimerData(id, date, type, time)
     }
 
-    override suspend fun setTypeSelectedDate(type: String) {
-        dataStoreManager.setTypeSelectedDate(type)
-    }
-    override suspend fun setEmail(email: String) {
-        dataStoreManager.setEmail(email)
-    }
-
-    override suspend fun setPassword(password: String) {
-        dataStoreManager.setPassword(password)
-    }
-
     override suspend fun setLastSearched(uid: String, date: String) {
         dataStoreManager.setLastSearched(uid, date)
-    }
-
-    override suspend fun clearUser() {
-        dataStoreManager.clearDataUser()
     }
 }

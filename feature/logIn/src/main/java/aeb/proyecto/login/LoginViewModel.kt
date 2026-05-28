@@ -3,6 +3,7 @@ package aeb.proyecto.login
 import aeb.proyecto.authentication.AuthResponseAuthentication
 import aeb.proyecto.authentication.AuthenticationInterface
 import aeb.proyecto.datastore.DatastoreInterface
+import aeb.proyecto.datastore.model.UserSession
 import aeb.proyecto.domain.usecase.login.LoginAuthenticationUseCase
 import aeb.proyecto.domain.usecase.login.SaveLoginCredentialUseCase
 import aeb.proyecto.login.model.BottomSheetState
@@ -233,10 +234,15 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private suspend fun saveData(email:String, password:String){
-        if(_dataLoginScreen.value.isChecked){
-            saveLoginCredentialUseCase.setData(email,password)
-        }else{
+    private suspend fun saveData(email: String, password: String) {
+        if (_dataLoginScreen.value.isChecked) {
+            saveLoginCredentialUseCase.saveUserSession(
+                UserSession(
+                    email = email,
+                    password = password
+                )
+            )
+        } else {
             saveLoginCredentialUseCase.clearData()
         }
     }

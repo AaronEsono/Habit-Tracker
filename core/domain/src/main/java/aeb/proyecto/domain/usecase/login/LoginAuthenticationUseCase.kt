@@ -2,11 +2,8 @@ package aeb.proyecto.domain.usecase.login
 
 import aeb.proyecto.authentication.AuthResponseAuthentication
 import aeb.proyecto.authentication.AuthenticationInterface
-import aeb.proyecto.datastore.model.EmailPassword
 import android.content.Context
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class LoginAuthenticationUseCase @Inject constructor(

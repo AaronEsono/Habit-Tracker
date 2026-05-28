@@ -1,10 +1,9 @@
 package aeb.proyecto.datastore
 
 import aeb.proyecto.datastore.model.AppSettings
-import aeb.proyecto.datastore.model.EmailPassword
 import aeb.proyecto.datastore.model.LastSearched
+import aeb.proyecto.datastore.model.UserSession
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 /**
  * Declarative Domain Boundary Contract defining local key-value persistence operations.
@@ -98,6 +97,56 @@ interface DatastoreInterface {
     // STATISTICS ----------------------------------------------------------------
     // *******************************************************************************************
 
+    // LOGIN SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Commits a holistic authentication credential payload mutation into persistent storage.
+     *
+     * This operation processes both user identification and validation tokens inside an isolated
+     * atomic transaction boundary to ensure credentials never fall out of sync.
+     *
+     * @param session The target immutable [UserSession] state structure to serialize.
+     */
+    suspend fun saveUserSession(session: UserSession)
+
+    /**
+     * Non-blocking query extraction reading the active cached authentication session snapshot.
+     *
+     * @return The current [UserSession] state metadata, or an unauthenticated fallback structure
+     * if the storage layer is empty.
+     */
+    suspend fun getUserSession():UserSession
+
+    /**
+     * Atomically purges all localized authentication credentials from the persistent storage layer.
+     *
+     * This operation resets the session context to an anonymous state, triggering downstream
+     * reactive gateway navigation events.
+     */
+    suspend fun clearSession()
+
+    // LOGIN SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+
+    // HABIT SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Non-blocking operational query extracting the instantaneous cached habit classification filter.
+     *
+     * @return The active localized category string token, or null if no filtering boundary
+     * has been established.
+     */
+    suspend fun getTypeSelected():String?
+
+    /**
+     * Commits a structural habit classification type filter override to persistent storage.
+     *
+     * @param type The target category or classification string token to persist.
+     */
+    suspend fun setTypeSelected(type:String)
+    // HABIT SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+
     val idTimerSelected:Flow<Long?>
 
     val dateTimerSelected:Flow<String?>
@@ -112,11 +161,7 @@ interface DatastoreInterface {
 
     val timerLinkedAndFinished:Flow<Boolean>
 
-    suspend fun getEmailAndPassword():EmailPassword
-
     suspend fun getLastSearched():LastSearched
-
-    suspend fun getTypeSelected():String?
 
     suspend fun getIdTimerSelected():Long?
 
@@ -162,13 +207,6 @@ interface DatastoreInterface {
 
     suspend fun setSecondWheelTimer(second:Int)
 
-    suspend fun setTypeSelectedDate(type:String)
-
-    suspend fun setEmail(email:String)
-
-    suspend fun setPassword(password:String)
-
     suspend fun setLastSearched(uid:String, date:String)
 
-    suspend fun clearUser()
 }

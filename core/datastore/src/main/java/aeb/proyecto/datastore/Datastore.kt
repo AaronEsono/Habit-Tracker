@@ -1,8 +1,8 @@
 package aeb.proyecto.datastore
 
 import aeb.proyecto.datastore.model.AppSettings
-import aeb.proyecto.datastore.model.EmailPassword
 import aeb.proyecto.datastore.model.LastSearched
+import aeb.proyecto.datastore.model.UserSession
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -68,12 +68,30 @@ class DataStoreManager @Inject constructor(
         // STATISTICS ----------------------------------------------------------------
         // *******************************************************************************************
 
-        //Login Screen
+        // LOGIN SCREEN ----------------------------------------------------------------
+        // *******************************************************************************************
+        /**
+         * Internal preference key mapping the active user account identification sequence.
+         */
         private val EMAIL = stringPreferencesKey("email")
+
+        /**
+         * Internal preference key mapping the stateful account ownership verification token.
+         */
         private val PASSWORD = stringPreferencesKey("password")
 
-        // Habit Screen
+        // LOGIN SCREEN ----------------------------------------------------------------
+        // *******************************************************************************************
+
+        // HABIT SCREEN ----------------------------------------------------------------
+        // *******************************************************************************************
+        /**
+         * Internal preference key mapping the active structural category or behavior classification
+         * filter selected by the user within the habit management workflow.
+         */
         private val TYPE_SELECTED = stringPreferencesKey("typeSelected")
+        // HABIT SCREEN ----------------------------------------------------------------
+        // *******************************************************************************************
 
         //Timer Screeen
         //Id del habito
@@ -208,6 +226,78 @@ class DataStoreManager @Inject constructor(
     // STATISTICS ----------------------------------------------------------------
     // *******************************************************************************************
 
+    // LOGIN SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Global reactive authentication stream emitting the active local session topology snapshot.
+     *
+     * Downstream security interceptors or login gateway layout routers subscribing to this pipeline
+     * are insulated against redundant evaluation ticks if credentials remain structurally unchanged.
+     */
+    val userSession: Flow<UserSession> = dataStore.data.map { preferences ->
+        UserSession(
+            email = preferences[EMAIL] ?: "",
+            password = preferences[PASSWORD] ?: ""
+        )
+    }.distinctUntilChanged()
+
+    /**
+     * Commits a holistic authentication credential payload mutation into persistent storage.
+     *
+     * @param session The target immutable [UserSession] state structure to serialize.
+     */
+    suspend fun saveUserSession(session: UserSession) {
+        dataStore.edit { preferences ->
+            preferences[EMAIL] = session.email
+            preferences[PASSWORD] = session.password
+        }
+    }
+
+    /**
+     * Non-blocking query extraction pipeline reading the active cached session token snapshot.
+     *
+     * @return The current [UserSession] state metadata, or an unauthenticated fallback structure
+     * if the file-system pointer is empty.
+     */
+    suspend fun getUserSession(): UserSession = userSession.firstOrNull() ?: UserSession()
+
+    /**
+     * Atomically purges all localized authentication credentials from the persistent storage layer.
+     *
+     * This operation resets the session context to an anonymous state, triggering downstream
+     * reactive gateway navigation events if applicable.
+     */
+    suspend fun clearSession() {
+        saveUserSession(UserSession())
+    }
+    // LOGIN SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+
+    // HABIT SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Non-blocking operational query extracting the instantaneous cached habit classification filter.
+     *
+     * @return The active localized category string token, or null if no filtering boundary
+     * has been established.
+     */
+    suspend fun getTypeSelected() = dataStore.data.map { preferences ->
+        preferences[TYPE_SELECTED]
+    }.firstOrNull()
+
+    /**
+     * Commits a structural habit classification type filter override to persistent storage.
+     *
+     * @param type The target category or classification string token to persist.
+     */
+    suspend fun setTypeSelectedDate(type: String) {
+        dataStore.edit { preferences ->
+            preferences[TYPE_SELECTED] = type
+        }
+    }
+    // HABIT SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+
     val idTimerSelected: Flow<Long?> = dataStore.data.map { preferences ->
         preferences[ID_TIMER_SELECTED]
     }
@@ -252,13 +342,6 @@ class DataStoreManager @Inject constructor(
         preferences[IS_LINKED_HABIT_AND_FINISHED] ?: false
     }
 
-    suspend fun getEmailPassword() = dataStore.data.map { preferences ->
-        EmailPassword(
-            email = preferences[EMAIL] ?: "",
-            password = preferences[PASSWORD] ?: ""
-        )
-    }.firstOrNull() ?: EmailPassword()
-
     suspend fun getLastSearched() =
         dataStore.data.map { preferences ->
             LastSearched(
@@ -267,10 +350,6 @@ class DataStoreManager @Inject constructor(
                 searched = preferences[SEARCHED] ?: false
             )
         }.firstOrNull() ?: LastSearched()
-
-    suspend fun getTypeSeleted() = dataStore.data.map { preferences ->
-        preferences[TYPE_SELECTED]
-    }.firstOrNull()
 
     suspend fun getIdTimerSelected() = dataStore.data.map { preferences ->
         preferences[ID_TIMER_SELECTED]
@@ -382,7 +461,7 @@ class DataStoreManager @Inject constructor(
         }
     }
 
-    suspend fun setTimerData(id: Long, date: String, type: Int, time: Triple<Int,Int,Int>) {
+    suspend fun setTimerData(id: Long, date: String, type: Int, time: Triple<Int, Int, Int>) {
         dataStore.edit { preferences ->
             preferences[ID_TIMER_SELECTED] = id
             preferences[DATE_TIMER_SELECTED] = date
@@ -394,36 +473,11 @@ class DataStoreManager @Inject constructor(
         }
     }
 
-        suspend fun setTypeSelectedDate(type: String) {
-            dataStore.edit { preferences ->
-                preferences[TYPE_SELECTED] = type
-            }
+    suspend fun setLastSearched(uid: String, date: String) {
+        dataStore.edit { preferences ->
+            preferences[CURRENT_ID] = uid
+            preferences[DATE] = date
+            preferences[SEARCHED] = true
         }
-
-        suspend fun setEmail(email: String) {
-            dataStore.edit { preferences ->
-                preferences[EMAIL] = email
-            }
-        }
-
-        suspend fun setPassword(password: String) {
-            dataStore.edit { preferences ->
-                preferences[PASSWORD] = password
-            }
-        }
-
-        suspend fun setLastSearched(uid: String, date: String) {
-            dataStore.edit { preferences ->
-                preferences[CURRENT_ID] = uid
-                preferences[DATE] = date
-                preferences[SEARCHED] = true
-            }
-        }
-
-        suspend fun clearDataUser() {
-            dataStore.edit { preferences ->
-                preferences[EMAIL] = ""
-                preferences[PASSWORD] = ""
-            }
-        }
+    }
 }

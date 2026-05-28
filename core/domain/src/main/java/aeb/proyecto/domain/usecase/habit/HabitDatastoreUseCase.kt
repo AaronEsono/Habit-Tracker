@@ -21,7 +21,7 @@ class HabitDatastoreUseCase @Inject constructor(
         .map {day -> DayOfWeek.valueOf(day) }
 
     suspend fun setSelectedHabitType(tag: String) {
-        datastore.setTypeSelectedDate(tag)
+        datastore.setTypeSelected(tag)
     }
 
     suspend fun getTypeSelected(): String? {
