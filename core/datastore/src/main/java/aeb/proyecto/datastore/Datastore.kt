@@ -1,5 +1,6 @@
 package aeb.proyecto.datastore
 
+import aeb.proyecto.datastore.model.AppSettings
 import aeb.proyecto.datastore.model.EmailPassword
 import aeb.proyecto.datastore.model.LastSearched
 import androidx.datastore.core.DataStore
@@ -10,6 +11,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.time.DayOfWeek
@@ -24,10 +26,13 @@ class DataStoreManager @Inject constructor(
 ) {
 
     private companion object {
-        //Settings
+        // SETTINGS ----------------------------------------------------------------
+        // *******************************************************************************************
         private val THEME_MODE = intPreferencesKey("themeMode")
         private val LANGUAGE = stringPreferencesKey("language")
         private val DAY_START_WEEK = stringPreferencesKey("dayStartWeek")
+        // SETTINGS ----------------------------------------------------------------
+        // *******************************************************************************************
 
         // Statistics
         private val HABIT_SELECTED = longPreferencesKey("habitSelected")
@@ -71,17 +76,66 @@ class DataStoreManager @Inject constructor(
         private val SEARCHED = booleanPreferencesKey("searched")
     }
 
-    val themeMode: Flow<Int> = dataStore.data.map { preferences ->
-        preferences[THEME_MODE] ?: 0
+    // SETTINGS ----------------------------------------------------------------
+    // *******************************************************************************************
+    val appSettings: Flow<AppSettings> = dataStore.data.map { preferences ->
+        AppSettings(
+            themeMode = preferences[THEME_MODE] ?: 0,
+            language = preferences[LANGUAGE] ?: "",
+            dayStartWeek = preferences[DAY_START_WEEK] ?: DayOfWeek.MONDAY.name
+        )
     }
 
-    val languageMode: Flow<String> = dataStore.data.map { preferences ->
-        preferences[LANGUAGE] ?: ""
+    val themeMode: Flow<Int> = appSettings.map { it.themeMode }.distinctUntilChanged()
+    val languageMode: Flow<String> = appSettings.map { it.language }.distinctUntilChanged()
+    val dayOfWeek: Flow<String> = appSettings.map { it.dayStartWeek }.distinctUntilChanged()
+
+    suspend fun saveAppSettings(settings: AppSettings) {
+        dataStore.edit { preferences ->
+            preferences[THEME_MODE] = settings.themeMode
+            preferences[LANGUAGE] = settings.language
+            preferences[DAY_START_WEEK] = settings.dayStartWeek
+        }
     }
 
-    val dayOfWeek: Flow<String> = dataStore.data.map { preferences ->
-        preferences[DAY_START_WEEK] ?: DayOfWeek.MONDAY.name
+    // 4. Optimizador de Inicialización (Simplificado usando firstOrNull)
+    suspend fun getAppSettings(): AppSettings = appSettings.firstOrNull() ?: AppSettings()
+
+    suspend fun setFirstDayOfWeek() {
+        val firstDayOfWeek = DayOfWeek.of(Calendar.getInstance(Locale.getDefault()).firstDayOfWeek).name
+        dataStore.edit { preferences ->
+            preferences[DAY_START_WEEK] = firstDayOfWeek
+        }
     }
+
+    suspend fun setDayStartWeek(day: String) {
+        dataStore.edit { preferences ->
+            preferences[DAY_START_WEEK] = day
+        }
+    }
+
+    suspend fun setLanguage(language: String) {
+        dataStore.edit { preferences ->
+            preferences[LANGUAGE] = language
+        }
+    }
+
+    suspend fun setModeTheme(themeMode: Int) {
+        dataStore.edit { preferences ->
+            preferences[THEME_MODE] = themeMode
+        }
+    }
+
+    suspend fun getDayStartWeek() = dataStore.data.map { preferences ->
+        preferences[DAY_START_WEEK]
+    }.firstOrNull()
+
+    suspend fun getLanguage() = dataStore.data.map { preferences ->
+        preferences[LANGUAGE]
+    }.firstOrNull()
+
+    // SETTINGS ----------------------------------------------------------------
+    // *******************************************************************************************
 
     val idTimerSelected: Flow<Long?> = dataStore.data.map { preferences ->
         preferences[ID_TIMER_SELECTED]
@@ -146,14 +200,6 @@ class DataStoreManager @Inject constructor(
                 searched = preferences[SEARCHED] ?: false
             )
         }.firstOrNull() ?: LastSearched()
-
-    suspend fun getDayStartWeek() = dataStore.data.map { preferences ->
-        preferences[DAY_START_WEEK]
-    }.firstOrNull()
-
-    suspend fun getLanguage() = dataStore.data.map { preferences ->
-        preferences[LANGUAGE]
-    }.firstOrNull()
 
     suspend fun getTypeSeleted() = dataStore.data.map { preferences ->
         preferences[TYPE_SELECTED]
@@ -293,24 +339,6 @@ class DataStoreManager @Inject constructor(
             }
         }
 
-        suspend fun setDayStartWeek(day: String) {
-            dataStore.edit { preferences ->
-                preferences[DAY_START_WEEK] = day
-            }
-        }
-
-        suspend fun setLanguage(language: String) {
-            dataStore.edit { preferences ->
-                preferences[LANGUAGE] = language
-            }
-        }
-
-        suspend fun setModeTheme(themeMode: Int) {
-            dataStore.edit { preferences ->
-                preferences[THEME_MODE] = themeMode
-            }
-        }
-
         suspend fun setEmail(email: String) {
             dataStore.edit { preferences ->
                 preferences[EMAIL] = email
@@ -335,14 +363,6 @@ class DataStoreManager @Inject constructor(
             dataStore.edit { preferences ->
                 preferences[EMAIL] = ""
                 preferences[PASSWORD] = ""
-            }
-        }
-
-        suspend fun setFirstDayOfWeek() {
-            val firstDayOfWeek =
-                DayOfWeek.of(Calendar.getInstance(Locale.getDefault()).firstDayOfWeek).name
-            dataStore.edit { preferences ->
-                preferences[DAY_START_WEEK] = firstDayOfWeek
             }
         }
 }

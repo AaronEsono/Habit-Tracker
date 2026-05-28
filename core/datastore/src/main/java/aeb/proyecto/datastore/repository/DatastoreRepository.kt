@@ -2,6 +2,7 @@ package aeb.proyecto.datastore.repository
 
 import aeb.proyecto.datastore.DataStoreManager
 import aeb.proyecto.datastore.DatastoreInterface
+import aeb.proyecto.datastore.model.AppSettings
 import aeb.proyecto.datastore.model.EmailPassword
 import aeb.proyecto.datastore.model.LastSearched
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,9 @@ import javax.inject.Inject
 class DatastoreRepository @Inject constructor(
     private val dataStoreManager: DataStoreManager
 ): DatastoreInterface {
+
+    override val appSettings: Flow<AppSettings>
+        get() = dataStoreManager.appSettings
 
     override val themeMode: Flow<Int>
         get() = dataStoreManager.themeMode

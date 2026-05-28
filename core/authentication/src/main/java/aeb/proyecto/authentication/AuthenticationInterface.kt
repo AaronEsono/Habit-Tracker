@@ -18,6 +18,7 @@ interface AuthenticationInterface {
     /**
      * Initiates a federated single sign-on (SSO) authentication pipeline utilizing external Google credentials.
      *
+     * @param context The context from the activity
      * @return A cold [Flow] emitting asynchronous state updates of the active transaction lifecycle.
      */
     fun signInWithGoogle(context: Context): Flow<AuthResponseAuthentication>

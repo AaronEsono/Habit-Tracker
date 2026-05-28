@@ -1,11 +1,14 @@
 package aeb.proyecto.datastore
 
+import aeb.proyecto.datastore.model.AppSettings
 import aeb.proyecto.datastore.model.EmailPassword
 import aeb.proyecto.datastore.model.LastSearched
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface DatastoreInterface {
+
+    val appSettings: Flow<AppSettings>
 
     val themeMode: Flow<Int>
 

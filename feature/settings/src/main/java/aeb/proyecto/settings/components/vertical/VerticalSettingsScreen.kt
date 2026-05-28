@@ -82,7 +82,7 @@ fun VerticalSettingsScreen(
                 ButtonSettings(
                     modifier = Modifier.padding(top = spacing6),
                     title = R.string.settings_theme,
-                    label = getTitle(settingsUIState.data.theme),
+                    label = getTitle(settingsUIState.data.themeMode),
                     leadingIcon = R.drawable.ic_palette,
                     shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
                     onClick = onClickTheme
@@ -103,7 +103,7 @@ fun VerticalSettingsScreen(
 
                 ButtonSettings(
                     title = R.string.settings_day_title,
-                    label = getDay(settingsUIState.data.dayOfWeek),
+                    label = getDay(settingsUIState.data.dayStartWeek),
                     leadingIcon = R.drawable.ic_calendar_day,
                     onClick = onClickGeneralSettings
                 )
@@ -167,9 +167,9 @@ fun VerticalSettingsScreen(
             if(dialogState.showDialog){
                 VerticalDialogSettings(
                     dataDialog = dialogState.dataDialog,
-                    themeSelected = settingsUIState.data.theme,
+                    themeSelected = settingsUIState.data.themeMode,
                     languageSelected = settingsUIState.data.language,
-                    daySelected = settingsUIState.data.dayOfWeek,
+                    daySelected = settingsUIState.data.dayStartWeek,
                     onDismissRequest = onDismissDialog,
                     onClickButton = { dataResult -> onAcceptDialog(dataResult) }
                 )

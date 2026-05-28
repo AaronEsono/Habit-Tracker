@@ -208,6 +208,7 @@ internal class AuthenticationManager @Inject constructor(
      * * **[Exception]:** Catches Firebase cloud transaction rejections or network timeout configurations.
      * Any caught failure triggers an immediate automated session sanitization cleanup map through [auth.signOut].
      *
+     * @param context The context from the activity
      * @return A cold [Flow] emitting the transactional identity milestones ([Loading], [Success], [Error]).
      */
     override fun signInWithGoogle(context: Context): Flow<AuthResponseAuthentication> = flow {
@@ -270,61 +271,140 @@ internal class AuthenticationManager @Inject constructor(
         }
     }
 
-    override suspend fun resendEmail(email:String, password:String): Flow<AuthResponseAuthentication> = callbackFlow {
-        trySend(AuthResponseAuthentication.Loading)
+    /**
+     * Re-initiates the email verification handshake for an existing user account context.
+     *
+     * This function coordinates a sequential asynchronous pipeline to safely resend a verification token.
+     * It enforces temporary session establishment to fetch the cryptographic user profile before dispatching
+     * the outbound verification event.
+     *
+     * ### Architectural Lifecycle Topology:
+     * 1. **Session Provisioning:** Synchronously requests temporary authentication against Firebase Auth nodes
+     * using the provided [email] and [password] credentials via [.await].
+     * 2. **Token Dispatch:** Upon establishing a non-null token context, triggers [FirebaseUser.sendEmailVerification]
+     * to invoke the cloud-side SMTP relay infrastructure.
+     * 3. **Session Sanitization:** Implements an atomic defensive design pattern where [auth.signOut] is guaranteed
+     * to execute within the terminal success block and the global overarching `catch` perimeter. This prevents
+     * unverified residual sessions from hijacking or polling memory reference graphs.
+     *
+     * @param email The target account identification string.
+     * @param password The account validation secret payload.
+     * @return A cold [Flow] emitting the sequential transactional states ([Loading], [Success], [Error]).
+     */
+    override suspend fun resendEmail(
+        email: String,
+        password: String
+    ): Flow<AuthResponseAuthentication> =
+        flow {
+            // 1. Broadcast immediate loading transaction state to presentation layers
+            emit(AuthResponseAuthentication.Loading)
 
-        try {
-            auth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener { task ->
-                    if(task.isSuccessful){
-                        auth.currentUser?.sendEmailVerification()?.addOnCompleteListener {
-                            if(it.isSuccessful){
-                                analyticsManagerInterface.logEvent(AuthenticationEvents.resendEmail(auth.currentUser!!.email!!))
-                                auth.signOut()
-                                trySend(AuthResponseAuthentication.Success)
-                            }else{
-                                val error = treatError(it.exception ?: Exception())
-                                analyticsManagerInterface.logEvent(AuthenticationEvents.error(it.exception.toString()))
-                                trySend(AuthResponseAuthentication.Error(error))
-                            }
-                        }
-                    }
+            try {
+                // 2. Establish temporary cloud session to acquire user reference topology
+                val authResult = auth.signInWithEmailAndPassword(email, password).await()
+                val currentUser = authResult.user
+
+                if (currentUser != null) {
+                    // 3. Dispatch verification payload through Firebase SMTP infrastructure
+                    currentUser.sendEmailVerification().await()
+
+                    analyticsManagerInterface.logEvent(
+                        AuthenticationEvents.resendEmail(
+                            currentUser.email ?: email
+                        )
+                    )
+
+                    // 4. Enforce structural safety state: purge active session before emitting success
+                    auth.signOut()
+                    emit(AuthResponseAuthentication.Success)
+                } else {
+                    throw Exception("Firebase transaction returned an empty user reference during email pipeline execution.")
                 }
-        }catch (e:Exception){
-            val error = treatError(e)
-            auth.signOut()
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
-            trySend(AuthResponseAuthentication.Error(error))
+
+            } catch (e: Exception) {
+                // 5. Centralized boundary cleanup: terminate residual logs and propagate local resource identifier
+                auth.signOut()
+                val errorResId = treatError(e)
+                analyticsManagerInterface.logEvent(
+                    AuthenticationEvents.error(
+                        e.localizedMessage ?: e.toString()
+                    )
+                )
+                emit(AuthResponseAuthentication.Error(errorResId))
+            }
         }
 
-        awaitClose()
-    }
+    /**
+     * Initiates an asynchronous password recovery handshake for a specific user identifier.
+     *
+     * This function triggers the cloud-side Firebase authentication SMTP system to dispatch a secure
+     * password reset token link to the provided [email] address.
+     *
+     * ### Architectural Lifecycle Topology:
+     * 1. **Dispatched Verification Request:** Calls [FirebaseAuth.sendPasswordResetEmail] non-blockingly using
+     * the sequential [.await] architecture pattern.
+     * 2. **Telemetry Logging:** Upon a successful cloud confirmation response, fires a dedicated business
+     * analytic tracking event via [analyticsManagerInterface.logEvent].
+     * 3. **Defensive Perimeter Architecture:** Implements an overarching `catch` safety boundary. Any structural
+     * cloud rejection (e.g., [com.google.firebase.auth.FirebaseAuthInvalidUserException] for non-existent users
+     * or network drops) bypasses residual allocations, routes directly through [treatError], logs the structural failure
+     * footprint, and safely propagates an error token payload to the presentation layer.
+     *
+     * @param email The target account identification string requesting credential recovery.
+     * @return A cold [Flow] emitting the sequential transactional milestones ([Loading], [Success], [Error]).
+     */
+    override suspend fun forgotPassword(email: String): Flow<AuthResponseAuthentication> =
+        flow {
+            // 1. Broadcast immediate loading transaction state to presentation layers
+            emit(AuthResponseAuthentication.Loading)
 
-    override suspend fun forgotPassword(email: String): Flow<AuthResponseAuthentication> = callbackFlow {
-        trySend(AuthResponseAuthentication.Loading)
+            try {
+                // 2. Dispatch the recovery token request to Firebase Cloud nodes and suspend execution
+                auth.sendPasswordResetEmail(email).await()
 
-        try {
-            auth.sendPasswordResetEmail(email)
-                .addOnCompleteListener { task ->
-                    if(task.isSuccessful){
-                        analyticsManagerInterface.logEvent(AuthenticationEvents.forgotPassword(email))
-                        trySend(AuthResponseAuthentication.Success)
-                    }
-                }
-        }catch (e:Exception){
-            val error = treatError(e)
-            analyticsManagerInterface.logEvent(AuthenticationEvents.error(e.toString()))
-            trySend(AuthResponseAuthentication.Error(error))
+                // 3. Log business metrics event post-transaction confirmation
+                analyticsManagerInterface.logEvent(AuthenticationEvents.forgotPassword(email))
+
+                // 4. Emit terminal success state
+                emit(AuthResponseAuthentication.Success)
+
+            } catch (e: Exception) {
+                // 5. Centralized boundary cleanup: map raw exceptions to structural UI resource resources
+                val errorResId = treatError(e)
+                analyticsManagerInterface.logEvent(
+                    AuthenticationEvents.error(
+                        e.localizedMessage ?: e.toString()
+                    )
+                )
+                emit(AuthResponseAuthentication.Error(errorResId))
+            }
         }
 
-        awaitClose()
-    }
 
+    /**
+     * Terminates the active cloud session context securely.
+     *
+     * This function handles session sanitization by logging transactional metrics before invoking
+     * [FirebaseAuth.signOut]. It implements a defensive design pattern to prevent runtime exceptions
+     * if the user state is already nullified.
+     */
     override fun logOut() {
-        analyticsManagerInterface.logEvent(AuthenticationEvents.logOut(auth.currentUser!!.uid))
+        val uid = auth.currentUser?.uid
+        if (uid != null) {
+            analyticsManagerInterface.logEvent(AuthenticationEvents.logOut(uid))
+        }
         auth.signOut()
     }
 
+    /**
+     * Synchronously audits the structural persistence of the local authentication state.
+     *
+     * This function serves as a non-blocking gatekeeper to verify if a valid session reference
+     * exists within the cache boundary.
+     *
+     * @return [AuthResponseAuthentication.Success] if an active session state is verified;
+     * otherwise [AuthResponseAuthentication.Error] carrying the local missing resource identifier.
+     */
     override fun currentUser(): AuthResponseAuthentication {
         auth.currentUser?.let{
             analyticsManagerInterface.logEvent(AuthenticationEvents.reconnected(it.uid))
@@ -332,10 +412,22 @@ internal class AuthenticationManager @Inject constructor(
         } ?: return AuthResponseAuthentication.Error(R.string.error_auth_no_user_found)
     }
 
+    /**
+     * Extracts a display moniker parsed directly from the active credential metadata.
+     *
+     * @return The sub-string segment preceding the structural email delimiter ("@"),
+     * or an empty string if the user profile context is unestablished or anonymous.
+     */
     override fun getName(): String {
         return auth.currentUser?.email?.substringBefore("@") ?: ""
     }
 
+    /**
+     * Retrieves the cryptographic unique resource identifier (UID) for the currently authenticated profile.
+     *
+     * @return The unique user ID string generated by Firebase Auth nodes, or an empty string
+     * if no terminal state session exists.
+     */
     override fun getCurrentId(): String {
         return auth.currentUser?.uid ?: ""
     }

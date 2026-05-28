@@ -1,10 +1,10 @@
 package aeb.proyecto.settings
 
+import aeb.proyecto.datastore.model.AppSettings
 import aeb.proyecto.domain.usecase.settings.DataSettingsUseCase
 import aeb.proyecto.domain.usecase.settings.SetLanguageUseCase
 import aeb.proyecto.domain.usecase.settings.SetValueDataStoreSettingsUseCase
 import aeb.proyecto.domain.usecase.settings.SettingsAuthenticationUseCase
-import aeb.proyecto.domain.usecase.settings.SettingsData
 import aeb.proyecto.settings.model.DataDialog
 import aeb.proyecto.settings.model.DataResult
 import aeb.proyecto.settings.model.SettingsDialogState
@@ -35,7 +35,7 @@ class SettingsViewModel @Inject constructor(
     val settingDialogState:StateFlow<SettingsDialogState> = _settingDialogState.asStateFlow()
 
     val settingsUIState:StateFlow<SettingsUIState> = dataSettingsUseCase.dataSettings
-        .map<SettingsData,SettingsUIState>{
+        .map<AppSettings,SettingsUIState>{
             SettingsUIState.Success(it)
         }
         .catch {
@@ -58,6 +58,11 @@ class SettingsViewModel @Inject constructor(
         setValueDataStoreSettingsUseCase.setLanguage(language)
     }
 
+    private fun setDaySelected(dayOfWeek: DayOfWeek) = viewModelScope.launch{
+        setStateDialog(false)
+        setValueDataStoreSettingsUseCase.setDaySelected(dayOfWeek.name)
+    }
+
     fun getCurrentUser():Boolean{
         return settingsAuthenticationUseCase.getCurrentUser()
     }
@@ -74,11 +79,6 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun setDaySelected(dayOfWeek: DayOfWeek) = viewModelScope.launch{
-        setStateDialog(false)
-        setValueDataStoreSettingsUseCase.setDaySelected(dayOfWeek.name)
-    }
-
     fun treatResultDialog(dataResult: DataResult){
         when(dataResult){
             is DataResult.LanguageResult -> {setLanguage(dataResult.language)}
@@ -91,5 +91,5 @@ class SettingsViewModel @Inject constructor(
 sealed class SettingsUIState(){
     data object Loading: SettingsUIState()
     data object Error: SettingsUIState()
-    data class Success(val data:SettingsData): SettingsUIState()
+    data class Success(val data: AppSettings): SettingsUIState()
 }
