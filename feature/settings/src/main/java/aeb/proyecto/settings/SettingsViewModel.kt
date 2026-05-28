@@ -3,7 +3,6 @@ package aeb.proyecto.settings
 import aeb.proyecto.datastore.model.AppSettings
 import aeb.proyecto.domain.usecase.settings.DataSettingsUseCase
 import aeb.proyecto.domain.usecase.settings.SetLanguageUseCase
-import aeb.proyecto.domain.usecase.settings.SetValueDataStoreSettingsUseCase
 import aeb.proyecto.domain.usecase.settings.SettingsAuthenticationUseCase
 import aeb.proyecto.settings.model.DataDialog
 import aeb.proyecto.settings.model.DataResult
@@ -11,6 +10,7 @@ import aeb.proyecto.settings.model.SettingsDialogState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -25,8 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    dataSettingsUseCase: DataSettingsUseCase,
-    private val setValueDataStoreSettingsUseCase: SetValueDataStoreSettingsUseCase,
+    private val dataSettingsUseCase: DataSettingsUseCase,
     private val setLanguageUseCase: SetLanguageUseCase,
     private val settingsAuthenticationUseCase: SettingsAuthenticationUseCase
 ):ViewModel() {
@@ -46,23 +45,6 @@ class SettingsViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = SettingsUIState.Loading
         )
-
-    private fun setTheme(themeMode:Int) = viewModelScope.launch{
-        setStateDialog(false)
-        setValueDataStoreSettingsUseCase.setTheme(themeMode)
-    }
-
-    private fun setLanguage(language:String) = viewModelScope.launch{
-        setStateDialog(false)
-        setLanguageUseCase.setLanguage(language)
-        setValueDataStoreSettingsUseCase.setLanguage(language)
-    }
-
-    private fun setDaySelected(dayOfWeek: DayOfWeek) = viewModelScope.launch{
-        setStateDialog(false)
-        setValueDataStoreSettingsUseCase.setDaySelected(dayOfWeek.name)
-    }
-
     fun getCurrentUser():Boolean{
         return settingsAuthenticationUseCase.getCurrentUser()
     }
@@ -79,11 +61,25 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun treatResultDialog(dataResult: DataResult){
-        when(dataResult){
-            is DataResult.LanguageResult -> {setLanguage(dataResult.language)}
-            is DataResult.ThemeResult -> {setTheme(dataResult.theme)}
-            is DataResult.DayOfWeekResult -> {setDaySelected(dataResult.dayOfWeek)}
+    fun treatResultDialog(dataResult: DataResult) {
+        viewModelScope.launch {
+            var appSettings = dataSettingsUseCase.getAppSettings()
+
+            when(dataResult){
+                is DataResult.LanguageResult -> {
+                    appSettings = appSettings.copy(language = dataResult.language)
+                    setLanguageUseCase.setLanguage(dataResult.language)
+                }
+                is DataResult.ThemeResult -> {
+                    appSettings = appSettings.copy(themeMode = dataResult.theme)
+                }
+                is DataResult.DayOfWeekResult -> {
+                    appSettings = appSettings.copy(dayStartWeek = dataResult.dayOfWeek.name)
+                }
+            }
+
+            setStateDialog(false)
+            dataSettingsUseCase.setAppSettings(appSettings)
         }
     }
 }

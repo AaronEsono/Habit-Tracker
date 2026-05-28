@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.util.Locale
 import javax.inject.Inject
 
@@ -79,38 +80,42 @@ class MainViewModel @Inject constructor(
      */
     fun setData() = viewModelScope.launch{
         if(!_dataSet.value){
-            setDayWeek()
-            setLanguage()
-            _dataSet.value = true
-        }
-    }
+            // 1. Retrieve the atomic multi-preference configuration state snapshot
+            val currentSettings = manageDatastoreUseCase.getAppSettings()
 
-    /**
-     * Inspects current local storage for the preferred first day of the week.
-     * Fallbacks to reading the device's default system [Locale] if no preference exists.
-     */
-    private suspend fun setDayWeek(){
-        val day = manageDatastoreUseCase.getDayOfWeek()
-        if(day == null){
-            val firstDay = firstDayProvider.getFirstDayOfWeekByLocale().name
-            manageDatastoreUseCase.setDayOfWeek(firstDay)
-        }
-    }
+            // Local transaction variables to batch potential mutations
+            var updatedDay = currentSettings.dayStartWeek
+            var updatedLanguage = currentSettings.language
+            var needsUpdate = false
 
-    /**
-     * Inspects current local storage for the application's language configuration.
-     * Fallbacks to the native device language context, defaulting to English if the
-     * scanned system language profile is unsupported by the app's catalog.
-     */
-    private suspend fun setLanguage(){
-        if(manageDatastoreUseCase.getLanguage() == null){
-            val language = Locale.getDefault().language
-
-            if(findLanguage(language) != null){
-                manageDatastoreUseCase.setLanguage(language)
-            }else{
-                manageDatastoreUseCase.setLanguage(EnumLanguage.ENGLISH.value)
+            // 2. Evaluate calendar topology: fallback to localized device metrics if preference is unestablished
+            if (currentSettings.dayStartWeek.isEmpty() || currentSettings.dayStartWeek == DayOfWeek.MONDAY.name) {
+                updatedDay = firstDayProvider.getFirstDayOfWeekByLocale().name
+                needsUpdate = true
             }
+
+            // 3. Evaluate internationalization state: match system ISO-639 codes against supported app catalog
+            if (currentSettings.language.isEmpty()) {
+                val systemLanguage = Locale.getDefault().language
+                updatedLanguage = if (findLanguage(systemLanguage) != null) {
+                    systemLanguage
+                } else {
+                    EnumLanguage.ENGLISH.value
+                }
+                needsUpdate = true
+            }
+
+            // 4. Atomic Transaction Commit: Dispatch structural payload mutations in a single disk I/O operation
+            if (needsUpdate) {
+                manageDatastoreUseCase.saveSettingsApp(
+                    currentSettings.copy(
+                        dayStartWeek = updatedDay,
+                        language = updatedLanguage
+                    )
+                )
+            }
+
+            _dataSet.value = true
         }
     }
 

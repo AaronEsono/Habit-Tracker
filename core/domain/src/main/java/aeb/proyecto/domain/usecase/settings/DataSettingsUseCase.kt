@@ -12,7 +12,9 @@ class DataSettingsUseCase @Inject constructor(
 ) {
     val dataSettings: Flow<AppSettings> = datastoreInterface.appSettings
 
-    fun setAppSettings(appSettings: AppSettings){
-        //Hola
+    suspend fun setAppSettings(appSettings: AppSettings){
+        datastoreInterface.setAppSettings(appSettings)
     }
+
+    suspend fun getAppSettings(): AppSettings = datastoreInterface.getAppSettings()
 }

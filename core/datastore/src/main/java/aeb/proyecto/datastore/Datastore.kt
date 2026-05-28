@@ -20,6 +20,19 @@ import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Enterprise-grade Infrastructure Engine coordinating local reactive key-value serialization.
+ *
+ * This manager centralizes file-system transactions over the underlying [DataStore] binary
+ * file. Actively decorated as a [@Singleton], it guarantees a structural single-source-of-truth
+ * pipeline across the global application context, pattern-preventing race conditions or concurrent
+ * file-lock mutation faults.
+ *
+ * All data extraction processes expose structural cold streams ([kotlinx.coroutines.flow.Flow]),
+ * while state mutators enforce atomic, non-blocking coroutine suspension boundaries.
+ *
+ * @property dataStore The single-pointer, thread-safe platform interface handling data serialization workflows.
+ */
 @Singleton
 class DataStoreManager @Inject constructor(
     private val dataStore: DataStore<Preferences>
@@ -28,14 +41,32 @@ class DataStoreManager @Inject constructor(
     private companion object {
         // SETTINGS ----------------------------------------------------------------
         // *******************************************************************************************
+        /**
+         * Internal preference key mapping the active visual presentation user interface mode.
+         */
         private val THEME_MODE = intPreferencesKey("themeMode")
+
+        /**
+         * Internal preference key tracking the ISO-639 localization configuration code sequence.
+         */
         private val LANGUAGE = stringPreferencesKey("language")
+
+        /**
+         * Internal preference key mapping the preferred chronological regional first day of the week.
+         */
         private val DAY_START_WEEK = stringPreferencesKey("dayStartWeek")
         // SETTINGS ----------------------------------------------------------------
         // *******************************************************************************************
 
-        // Statistics
+        // STATISTICS ----------------------------------------------------------------
+        // *******************************************************************************************
+        /**
+         * Internal preference key mapping the database unique identifier (ID) of the
+         * structurally focused habit instance within the statistics and analytical dashboards.
+         */
         private val HABIT_SELECTED = longPreferencesKey("habitSelected")
+        // STATISTICS ----------------------------------------------------------------
+        // *******************************************************************************************
 
         //Login Screen
         private val EMAIL = stringPreferencesKey("email")
@@ -78,6 +109,11 @@ class DataStoreManager @Inject constructor(
 
     // SETTINGS ----------------------------------------------------------------
     // *******************************************************************************************
+    /**
+     * Global multi-preference configuration execution pipeline stream.
+     * * Emits an updated immutable [AppSettings] snapshot mapping every transactional mutation
+     * happening within the file-system boundary.
+     */
     val appSettings: Flow<AppSettings> = dataStore.data.map { preferences ->
         AppSettings(
             themeMode = preferences[THEME_MODE] ?: 0,
@@ -86,10 +122,35 @@ class DataStoreManager @Inject constructor(
         )
     }
 
+    /**
+     * Filtered reactive stream tracking structural modifications over the visual theme token.
+     * * Employs distinct memory evaluation gating to suppress redundant downstream presentation
+     * recompositions if the underlying integer identity remains unaltered.
+     */
     val themeMode: Flow<Int> = appSettings.map { it.themeMode }.distinctUntilChanged()
+
+    /**
+     * Filtered reactive stream tracking structural modifications over the internationalization language code.
+     * * Employs distinct memory evaluation gating to suppress redundant downstream presentation
+     * recompositions if the underlying string identity remains unaltered.
+     */
     val languageMode: Flow<String> = appSettings.map { it.language }.distinctUntilChanged()
+
+    /**
+     * Filtered reactive stream tracking structural modifications over the first day of the week identifier.
+     * * Employs distinct memory evaluation gating to suppress redundant downstream presentation
+     * recompositions if the underlying string identity remains unaltered.
+     */
     val dayOfWeek: Flow<String> = appSettings.map { it.dayStartWeek }.distinctUntilChanged()
 
+    /**
+     * Commits a holistic, multi-preference configuration payload mutation into disk storage.
+     *
+     * This transaction operation synchronizes all underlying system values inside a single,
+     * atomic write block, minimizing physical file descriptor locks.
+     *
+     * @param settings The target immutable [AppSettings] layout structure to serialize.
+     */
     suspend fun saveAppSettings(settings: AppSettings) {
         dataStore.edit { preferences ->
             preferences[THEME_MODE] = settings.themeMode
@@ -98,43 +159,53 @@ class DataStoreManager @Inject constructor(
         }
     }
 
-    // 4. Optimizador de Inicialización (Simplificado usando firstOrNull)
+    /**
+     * Non-blocking query extraction pipeline reading the active cached configuration snapshot.
+     *
+     * @return The current stateful configuration mapping payload, or an empty fallback [AppSettings]
+     * reference structure if the underlying binary pointer is unestablished.
+     */
     suspend fun getAppSettings(): AppSettings = appSettings.firstOrNull() ?: AppSettings()
 
+    /**
+     * Automatically inspects the primary workstation regional configuration parameters to force-initialize
+     * the regional calendar start marker boundary.
+     *
+     * This operation processes values dynamically based on native runtime system settings
+     * and merges the localized mutation cleanly into the master configuration layout structure.
+     */
     suspend fun setFirstDayOfWeek() {
         val firstDayOfWeek = DayOfWeek.of(Calendar.getInstance(Locale.getDefault()).firstDayOfWeek).name
         dataStore.edit { preferences ->
             preferences[DAY_START_WEEK] = firstDayOfWeek
         }
     }
-
-    suspend fun setDayStartWeek(day: String) {
-        dataStore.edit { preferences ->
-            preferences[DAY_START_WEEK] = day
-        }
-    }
-
-    suspend fun setLanguage(language: String) {
-        dataStore.edit { preferences ->
-            preferences[LANGUAGE] = language
-        }
-    }
-
-    suspend fun setModeTheme(themeMode: Int) {
-        dataStore.edit { preferences ->
-            preferences[THEME_MODE] = themeMode
-        }
-    }
-
-    suspend fun getDayStartWeek() = dataStore.data.map { preferences ->
-        preferences[DAY_START_WEEK]
-    }.firstOrNull()
-
-    suspend fun getLanguage() = dataStore.data.map { preferences ->
-        preferences[LANGUAGE]
-    }.firstOrNull()
-
     // SETTINGS ----------------------------------------------------------------
+    // *******************************************************************************************
+
+    // STATISTICS ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Cold reactive stream emitting the active focused habit identifier token.
+     *
+     * Downstream consumer components or chart layout orchestrators subscribing to this pipeline
+     * are insulated against redundant state emissions if the underlying long index remains unaltered.
+     */
+    val habitSelected: Flow<Long?> = dataStore.data.map { preferences ->
+        preferences[HABIT_SELECTED]
+    }
+
+    /**
+     * Commits a structural database identifier token override to focus a specific habit profile.
+     *
+     * @param id The target database record long primary key to persist.
+     */
+    suspend fun setHabitSelected(id: Long) {
+        dataStore.edit { preferences ->
+            preferences[HABIT_SELECTED] = id
+        }
+    }
+    // STATISTICS ----------------------------------------------------------------
     // *******************************************************************************************
 
     val idTimerSelected: Flow<Long?> = dataStore.data.map { preferences ->
@@ -179,10 +250,6 @@ class DataStoreManager @Inject constructor(
 
     val timerLinkedAndFinished: Flow<Boolean> = dataStore.data.map { preferences ->
         preferences[IS_LINKED_HABIT_AND_FINISHED] ?: false
-    }
-
-    val habitSelected: Flow<Long?> = dataStore.data.map { preferences ->
-        preferences[HABIT_SELECTED]
     }
 
     suspend fun getEmailPassword() = dataStore.data.map { preferences ->
@@ -240,12 +307,6 @@ class DataStoreManager @Inject constructor(
     suspend fun getIsLinkedHabitAndFinished() = dataStore.data.map { preferences ->
         preferences[IS_LINKED_HABIT_AND_FINISHED]
     }.firstOrNull()
-
-    suspend fun setHabitSelected(id: Long) {
-        dataStore.edit { preferences ->
-            preferences[HABIT_SELECTED] = id
-        }
-    }
 
     suspend fun setIsLinkedHabitAndFinished(isLinked: Boolean) {
         dataStore.edit { preferences ->

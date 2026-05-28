@@ -9,7 +9,7 @@ class DataStoreAddHabitUseCase @Inject constructor(
 ) {
 
     suspend fun getDayOfWeek():DayOfWeek{
-        return DayOfWeek.valueOf(datastoreInterface.getDayStartWeek() ?: "Monday")
+        return DayOfWeek.valueOf(datastoreInterface.getAppSettings().dayStartWeek)
     }
 
 }

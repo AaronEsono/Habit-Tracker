@@ -1,13 +1,13 @@
 <resources>
 
     <string name="ui_theme_dark">Dark</string>
-    <string name="ui_theme_soft_stone">Piedra suave</string>
+    <string name="ui_theme_soft_stone">Soft Stone</string>
     <string name="ui_theme_midnight">Midnight</string>
     <string name="ui_theme_slate_moss">Slate Moss</string>
     <string name="ui_theme_plum">Plum</string>
     <string name="ui_theme_ice_mint">Ice mint</string>
     <string name="ui_theme_desert_rose">Desert rose</string>
-    <string name="ui_theme_cyber_denim">Azul urbano</string>
+    <string name="ui_theme_cyber_denim">Cyber denim</string>
 
     <string name="month_1">January</string>
     <string name="month_2">February</string>

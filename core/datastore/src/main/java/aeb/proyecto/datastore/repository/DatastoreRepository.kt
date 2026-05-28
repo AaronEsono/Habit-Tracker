@@ -9,9 +9,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
+/**
+ * Concrete Infrastructure Repository implementing local preference storage abstractions.
+ *
+ * This component acts as the architectural boundary implementation defined by [DatastoreInterface].
+ * It decouples downstream domain logic and presentation ViewModels from platform-specific
+ * serialization lifecycles by routing all structural data streams and asynchronous mutation
+ * transactions through the central [DataStoreManager].
+ *
+ * @property dataStoreManager The thread-safe single-source-of-truth preferences engine wrapper.
+ */
 class DatastoreRepository @Inject constructor(
     private val dataStoreManager: DataStoreManager
 ): DatastoreInterface {
+
+    // SETTINGS ----------------------------------------------------------------
+    // *******************************************************************************************
 
     override val appSettings: Flow<AppSettings>
         get() = dataStoreManager.appSettings
@@ -24,6 +37,49 @@ class DatastoreRepository @Inject constructor(
 
     override val dayOfWeek: Flow<String>
         get() = dataStoreManager.dayOfWeek
+
+    /**
+     * Forwards the asynchronous query request to extract the localized configuration snapshot.
+     *
+     * @return An absolute, immutable [AppSettings] state topology matrix wrapper.
+     */
+    override suspend fun getAppSettings(): AppSettings {
+        return dataStoreManager.getAppSettings()
+    }
+
+    /**
+     * Routes the holistic multi-preference payload to the core infrastructure engine for serialization.
+     *
+     * @param data The target stateful [AppSettings] metadata object to commit.
+     */
+    override suspend fun setAppSettings(data: AppSettings) {
+        dataStoreManager.saveAppSettings(data)
+    }
+
+    /**
+     * Dispatches the regional synchronization event hook down to the core layout manager.
+     */
+    override suspend fun setFirstDayOfWeek(){
+        dataStoreManager.setFirstDayOfWeek()
+    }
+    // SETTINGS ----------------------------------------------------------------
+    // *******************************************************************************************
+
+    // STATISTICS ----------------------------------------------------------------
+    // *******************************************************************************************
+    override val habitSelected: Flow<Long?>
+        get() = dataStoreManager.habitSelected
+
+    /**
+     * Routes the focused habit database record identifier to the infrastructure manager for local serialization.
+     *
+     * @param id The target database long primary key to persist.
+     */
+    override suspend fun setHabitSelected(id: Long) {
+        dataStoreManager.setHabitSelected(id)
+    }
+    // STATISTICS ----------------------------------------------------------------
+    // *******************************************************************************************
 
     override val idTimerSelected: Flow<Long?>
         get() = dataStoreManager.idTimerSelected
@@ -67,23 +123,12 @@ class DatastoreRepository @Inject constructor(
         get() = dataStoreManager.timerLinkedAndFinished
 
 
-    override val habitSelected: Flow<Long?>
-        get() = dataStoreManager.habitSelected
-
     override suspend fun getEmailAndPassword(): EmailPassword {
         return dataStoreManager.getEmailPassword()
     }
 
     override suspend fun getLastSearched(): LastSearched {
         return dataStoreManager.getLastSearched()
-    }
-
-    override suspend fun getLanguage(): String? {
-        return dataStoreManager.getLanguage()
-    }
-
-    override suspend fun getDayStartWeek(): String? {
-        return dataStoreManager.getDayStartWeek()
     }
 
     override suspend fun getTypeSelected(): String? {
@@ -124,10 +169,6 @@ class DatastoreRepository @Inject constructor(
 
     override suspend fun getIsLinkedHabitAndFinished(): Boolean? {
         return dataStoreManager.getIsLinkedHabitAndFinished()
-    }
-
-    override suspend fun setHabitSelected(id: Long) {
-        dataStoreManager.setHabitSelected(id)
     }
 
     override suspend fun setTimePassedTimer(time: Long) {
@@ -185,19 +226,6 @@ class DatastoreRepository @Inject constructor(
     override suspend fun setTypeSelectedDate(type: String) {
         dataStoreManager.setTypeSelectedDate(type)
     }
-
-    override suspend fun setDayStartWeek(day: String) {
-        dataStoreManager.setDayStartWeek(day)
-    }
-
-    override suspend fun setLanguage(language: String) {
-        dataStoreManager.setLanguage(language)
-    }
-
-    override suspend fun setModeTheme(themeMode: Int) {
-        dataStoreManager.setModeTheme(themeMode)
-    }
-
     override suspend fun setEmail(email: String) {
         dataStoreManager.setEmail(email)
     }
@@ -212,9 +240,5 @@ class DatastoreRepository @Inject constructor(
 
     override suspend fun clearUser() {
         dataStoreManager.clearDataUser()
-    }
-
-    override suspend fun setFirstDayOfWeek(){
-        dataStoreManager.setFirstDayOfWeek()
     }
 }
