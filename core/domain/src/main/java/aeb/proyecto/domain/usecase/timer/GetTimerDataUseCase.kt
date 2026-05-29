@@ -16,17 +16,17 @@ class GetTimerDataUseCase @Inject constructor(
 ) {
 
     val timerData: Flow<TimerData> = combine(
-        datastoreInterface.idTimerSelected,
-        datastoreInterface.dateTimerSelected,
+        datastoreInterface.idHabitLinkedTimer,
+        datastoreInterface.dateHabitLinkedTimer,
         datastoreInterface.typeTimerSelected,
         combine(
-            datastoreInterface.hourSelected,
+            datastoreInterface.wheelHourSelected,
             datastoreInterface.restHourSelected
         ) { hourSelected,restSelected ->
             Pair(hourSelected,restSelected)
         },
-        datastoreInterface.timer
-    ){ idHabit, dateHabit, typeHabit, (timeHabit, restHour), timer ->
+        datastoreInterface.numberSetsSelected
+    ){ idHabit, dateHabit, typeHabit, (timeHabit, restHour), setsTimer ->
 
         val habitWithDay = if (idHabit != null && !dateHabit.isNullOrEmpty()) {
             runCatching {
@@ -39,7 +39,7 @@ class GetTimerDataUseCase @Inject constructor(
             typeTimer = typeHabit ?: 0,
             hourSelected = getHourFromString(timeHabit),
             restHour = getHourFromString(restHour),
-            sets = timer ?: 1
+            sets = setsTimer ?: 1
         )
     }
 }

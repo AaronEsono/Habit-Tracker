@@ -133,16 +133,16 @@ class DatastoreRepository @Inject constructor(
     // HABIT SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 
-    override val idTimerSelected: Flow<Long?>
+    override val idHabitLinkedTimer: Flow<Long?>
         get() = dataStoreManager.idTimerSelected
 
-    override val dateTimerSelected: Flow<String?>
+    override val dateHabitLinkedTimer: Flow<String?>
         get() = dataStoreManager.dateTimerSelected
 
     override val typeTimerSelected: Flow<Int?>
         get() = dataStoreManager.typeTimerSelected
 
-    override val hourSelected: Flow<String> = combine(
+    override val wheelHourSelected: Flow<String> = combine(
         dataStoreManager.hourWheelTimer,
         dataStoreManager.minuteWheelTimer,
         dataStoreManager.secondWheelTimer
@@ -168,7 +168,7 @@ class DatastoreRepository @Inject constructor(
         "$hourString:$minuteString:$secondString"
     }
 
-    override val timer: Flow<Int?>
+    override val numberSetsSelected: Flow<Int?>
         get() = dataStoreManager.setsTimer
 
     override val timerLinkedAndFinished: Flow<Boolean>
@@ -178,32 +178,12 @@ class DatastoreRepository @Inject constructor(
         return dataStoreManager.getLastSearched()
     }
 
-    override suspend fun getIdTimerSelected(): Long? {
+    override suspend fun getIdHabitLinkedTimer(): Long? {
         return dataStoreManager.getIdTimerSelected()
     }
 
-    override suspend fun getDateTimerSelected(): String? {
+    override suspend fun getDateHabitLinkedTimer(): String? {
         return dataStoreManager.getDateTimerSelected()
-    }
-
-    override suspend fun getTypeTimerSelected(): Int? {
-        return dataStoreManager.getTypeTimerSelected()
-    }
-
-    override suspend fun getRestIntervalHourTimer(): Int? {
-        return dataStoreManager.getRestIntervalHourTimer()
-    }
-
-    override suspend fun getRestIntervalMinuteTimer(): Int? {
-        return dataStoreManager.getRestIntervalMinuteTimer()
-    }
-
-    override suspend fun getRestIntervalSecondTimer(): Int? {
-        return dataStoreManager.getRestIntervalSecondTimer()
-    }
-
-    override suspend fun getSetsTimer(): Int? {
-        return dataStoreManager.getSetsTimer()
     }
 
     override suspend fun getTimePassedTimer(): Long? {

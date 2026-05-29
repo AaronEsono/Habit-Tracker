@@ -93,26 +93,77 @@ class DataStoreManager @Inject constructor(
         // HABIT SCREEN ----------------------------------------------------------------
         // *******************************************************************************************
 
-        //Timer Screeen
-        //Id del habito
-        private val ID_TIMER_SELECTED = longPreferencesKey("idTimerSelected")
-        // Fecha del habito
+        // TIMER SCREEN ----------------------------------------------------------------
+        // *******************************************************************************************
+        /**
+         * Internal preference key mapping the database unique identifier (ID) of the habit
+         * currently linked to the active timer session for post-completion tracking.
+         */
+        private val ID_HABIT_LINKED_TIMER = longPreferencesKey("idHabitLinkedTimer")
+
+        /**
+         * Internal preference key mapping the targeted persistence calendar date string boundary
+         * representing when the accumulated timer session duration should merge.
+         */
         private val DATE_TIMER_SELECTED = stringPreferencesKey("dateTimerSelected")
-        // Tipo de timer seleccionado
+
+        /**
+         * Internal preference key mapping the active operational behavior mode token of the timer
+         * (e.g., Stopwatch, Countdown, or Interval Sets configuration).
+         */
         private val TYPE_TIMER_SELECTED = intPreferencesKey("typeTimerSelected")
 
-        //Wheel picker timer
+
+
+        // Primary Wheel Picker
+        /**
+         * Internal preference key mapping the current hours position within the primary
+         * countdown duration wheel picker.
+         */
         private val HOUR_WHEEL_TIMER = intPreferencesKey("hourWheelTimer")
+
+        /**
+         * Internal preference key mapping the current minutes position within the primary
+         * countdown duration wheel picker.
+         */
         private val MINUTE_WHEEL_TIMER = intPreferencesKey("minuteWheelTimer")
+
+        /**
+         * Internal preference key mapping the current seconds position within the primary
+         * countdown duration wheel picker.
+         */
         private val SECOND_WHEEL_TIMER = intPreferencesKey("secondWheelTimer")
 
-        //Rest interval time
+
+
+        // Rest Interval Time
+        /**
+         * Internal preference key mapping the current hours position within the auxiliary
+         * rest interval duration wheel picker.
+         */
         private val REST_INTERVAL_HOUR_TIMER = intPreferencesKey("restIntervalHourTime")
+
+        /**
+         * Internal preference key mapping the current minutes position within the auxiliary
+         * rest interval duration wheel picker.
+         */
         private val REST_INTERVAL_MINUTE_TIMER = intPreferencesKey("restIntervalMinuteTime")
+
+        /**
+         * Internal preference key mapping the current seconds position within the auxiliary
+         * rest interval duration wheel picker.
+         */
         private val REST_INTERVAL_SECOND_TIMER = intPreferencesKey("restIntervalSecondTime")
 
-        //Sets Timer
+        // Sets Count
+        /**
+         * Internal preference key mapping the total targeted loop iteration metrics or interval sets
+         * to process inside the structured session workflow.
+         */
         private val SETS_TIMER = intPreferencesKey("setsTimer")
+        // TIMER SCREEN ----------------------------------------------------------------
+        // *******************************************************************************************
+
 
         //Tiempo pasado
         private val TIME_PASSED_TIMER = longPreferencesKey("timePassedTimer")
@@ -299,7 +350,7 @@ class DataStoreManager @Inject constructor(
     // *******************************************************************************************
 
     val idTimerSelected: Flow<Long?> = dataStore.data.map { preferences ->
-        preferences[ID_TIMER_SELECTED]
+        preferences[ID_HABIT_LINKED_TIMER]
     }
 
     val dateTimerSelected: Flow<String?> = dataStore.data.map { preferences ->
@@ -352,7 +403,7 @@ class DataStoreManager @Inject constructor(
         }.firstOrNull() ?: LastSearched()
 
     suspend fun getIdTimerSelected() = dataStore.data.map { preferences ->
-        preferences[ID_TIMER_SELECTED]
+        preferences[ID_HABIT_LINKED_TIMER]
     }.firstOrNull()
 
     suspend fun getDateTimerSelected() = dataStore.data.map { preferences ->
@@ -425,7 +476,7 @@ class DataStoreManager @Inject constructor(
 
     suspend fun setIdTimerSelected(id: Long) {
         dataStore.edit { preferences ->
-            preferences[ID_TIMER_SELECTED] = id
+            preferences[ID_HABIT_LINKED_TIMER] = id
         }
     }
 
@@ -463,7 +514,7 @@ class DataStoreManager @Inject constructor(
 
     suspend fun setTimerData(id: Long, date: String, type: Int, time: Triple<Int, Int, Int>) {
         dataStore.edit { preferences ->
-            preferences[ID_TIMER_SELECTED] = id
+            preferences[ID_HABIT_LINKED_TIMER] = id
             preferences[DATE_TIMER_SELECTED] = date
             preferences[TYPE_TIMER_SELECTED] = type
 

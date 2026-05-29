@@ -25,9 +25,9 @@ class ManageDialogTimerUseCase @Inject constructor(
                 flowOf(ShowDialogState.NoShowDialog)
             } else {
                 flow {
-                    val id = datastoreInterface.getIdTimerSelected() ?: 0L
+                    val id = datastoreInterface.getIdHabitLinkedTimer() ?: 0L
                     val date = try {
-                        LocalDate.parse(datastoreInterface.getDateTimerSelected())
+                        LocalDate.parse(datastoreInterface.getDateHabitLinkedTimer())
                     } catch (e: Exception) {
                         LocalDate.now()
                     }

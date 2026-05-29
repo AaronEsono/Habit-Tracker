@@ -147,35 +147,25 @@ interface DatastoreInterface {
     // HABIT SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 
-    val idTimerSelected:Flow<Long?>
-
-    val dateTimerSelected:Flow<String?>
-
+    // Seguir mirando las funciones y renombrar
+    // TIMER SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    val idHabitLinkedTimer:Flow<Long?>
+    val dateHabitLinkedTimer:Flow<String?>
     val typeTimerSelected:Flow<Int?>
-
-    val hourSelected:Flow<String>
-
+    val wheelHourSelected:Flow<String>
     val restHourSelected:Flow<String>
+    val numberSetsSelected:Flow<Int?>
 
-    val timer:Flow<Int?>
+    suspend fun getIdHabitLinkedTimer():Long?
+
+    suspend fun getDateHabitLinkedTimer():String?
+    // TIMER SCREEN ----------------------------------------------------------------
+    // ******************************************************************************************* >
 
     val timerLinkedAndFinished:Flow<Boolean>
 
     suspend fun getLastSearched():LastSearched
-
-    suspend fun getIdTimerSelected():Long?
-
-    suspend fun getDateTimerSelected():String?
-
-    suspend fun getTypeTimerSelected():Int?
-
-    suspend fun getRestIntervalHourTimer():Int?
-
-    suspend fun getRestIntervalMinuteTimer():Int?
-
-    suspend fun getRestIntervalSecondTimer():Int?
-
-    suspend fun getSetsTimer():Int?
 
     suspend fun getTimePassedTimer():Long?
 
