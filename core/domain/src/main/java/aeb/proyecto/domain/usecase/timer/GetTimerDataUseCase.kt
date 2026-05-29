@@ -25,7 +25,7 @@ class GetTimerDataUseCase @Inject constructor(
         ) { hourSelected,restSelected ->
             Pair(hourSelected,restSelected)
         },
-        datastoreInterface.numberSetsSelected
+        datastoreInterface.numberSetsTimerSelected
     ){ idHabit, dateHabit, typeHabit, (timeHabit, restHour), setsTimer ->
 
         val habitWithDay = if (idHabit != null && !dateHabit.isNullOrEmpty()) {

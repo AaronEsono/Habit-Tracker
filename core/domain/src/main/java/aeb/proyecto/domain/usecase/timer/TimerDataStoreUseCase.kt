@@ -39,16 +39,16 @@ class TimerDataStoreUseCase @Inject constructor(
     }
 
     suspend fun setTimer(value:Int){
-        datastoreInterface.setSetsTimer(value)
+        datastoreInterface.setNumberSetsTimer(value)
     }
 
     suspend fun setHabitLinked(id:Long, date:LocalDate){
-        datastoreInterface.setIdTimerSelected(id)
-        datastoreInterface.setDateTimerSelected(date.toString())
+        datastoreInterface.setIdHabitLinkedTimer(id)
+        datastoreInterface.setDateHabitLinkedTimer(date.toString())
     }
 
     suspend fun removeHabitLinked(){
-        datastoreInterface.setIdTimerSelected(-1)
+        datastoreInterface.setIdHabitLinkedTimer(-1)
     }
 
 }

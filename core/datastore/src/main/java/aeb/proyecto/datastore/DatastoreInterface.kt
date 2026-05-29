@@ -147,56 +147,131 @@ interface DatastoreInterface {
     // HABIT SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 
-    // Seguir mirando las funciones y renombrar
     // TIMER SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
+    /**
+     * Cold reactive stream emitting the unique database identifier (ID) of the habit linked to the current timer session.
+     * Emits null if no habit is currently associated.
+     */
     val idHabitLinkedTimer:Flow<Long?>
-    val dateHabitLinkedTimer:Flow<String?>
-    val typeTimerSelected:Flow<Int?>
-    val wheelHourSelected:Flow<String>
-    val restHourSelected:Flow<String>
-    val numberSetsSelected:Flow<Int?>
 
+    /**
+     * Cold reactive stream emitting the target calendar date string linked to the current timer tracking session.
+     */
+    val dateHabitLinkedTimer:Flow<String?>
+
+    /**
+     * Cold reactive stream emitting the active timer operational mode identifier token (e.g., Stopwatch or Countdown).
+     */
+    val typeTimerSelected:Flow<Int?>
+
+    /**
+     * Cold reactive stream emitting the formatted state representation of the primary countdown hour picker.
+     */
+    val wheelHourSelected:Flow<String>
+
+    /**
+     * Cold reactive stream emitting the formatted state representation of the auxiliary rest interval hour picker.
+     */
+    val restHourSelected:Flow<String>
+
+    /**
+     * Cold reactive stream emitting the total targeted loop iteration or interval sets count.
+     */
+    val numberSetsTimerSelected:Flow<Int?>
+
+    /**
+     * Non-blocking query extracting the instantaneous cached database identifier of the linked habit profile.
+     *
+     * @return The active localized long primary key, or null if unlinked.
+     */
     suspend fun getIdHabitLinkedTimer():Long?
 
+    /**
+     * Non-blocking query extracting the instantaneous cached tracking target date string.
+     *
+     * @return The localized calendar date string snapshot, or null if completely uninitialized.
+     */
     suspend fun getDateHabitLinkedTimer():String?
+
+    /**
+     * Commits the current hours position within the auxiliary rest interval duration wheel picker.
+     *
+     * @param hour The target duration value to serialize.
+     */
+    suspend fun setRestIntervalHourTimer(hour:Int)
+
+    /**
+     * Commits the current minutes position within the auxiliary rest interval duration wheel picker.
+     *
+     * @param minute The target duration value to serialize.
+     */
+    suspend fun setRestIntervalMinuteTimer(minute:Int)
+
+    /**
+     * Commits the current seconds position within the auxiliary rest interval duration wheel picker.
+     *
+     * @param second The target duration value to serialize.
+     */
+    suspend fun setRestIntervalSecondTimer(second:Int)
+
+    /**
+     * Commits the current hours position within the primary countdown duration wheel picker.
+     *
+     * @param hour The target duration value to serialize.
+     */
+    suspend fun setHourWheelTimer(hour:Int)
+
+    /**
+     * Commits the current minutes position within the primary countdown duration wheel picker.
+     *
+     * @param minute The target duration value to serialize.
+     */
+    suspend fun setMinuteWheelTimer(minute:Int)
+
+    /**
+     * Commits the current seconds position within the primary countdown duration wheel picker.
+     *
+     * @param second The target duration value to serialize.
+     */
+    suspend fun setSecondWheelTimer(second:Int)
+
+    /**
+     * Commits the total targeted loop interval sets count independently.
+     *
+     * @param sets The absolute target repetition index to persist.
+     */
+    suspend fun setNumberSetsTimer(sets:Int)
+
+    /**
+     * Commits a structural database identifier token override to link a specific habit profile to the active timer session.
+     *
+     * @param id The target database record long primary key to persist.
+     */
+    suspend fun setIdHabitLinkedTimer(id:Long)
+
+    /**
+     * Commits the target scheduling calendar date string boundary independently.
+     *
+     * @param date The target calendar reference sequence to persist.
+     */
+    suspend fun setDateHabitLinkedTimer(date:String)
+
+    /**
+     * Commits the active timer operational behavior mode token independently.
+     *
+     * @param type The targeted structural mode configuration token to persist.
+     */
+    suspend fun setTypeTimerSelected(type:Int)
     // TIMER SCREEN ----------------------------------------------------------------
-    // ******************************************************************************************* >
+    // *******************************************************************************************
 
     val timerLinkedAndFinished:Flow<Boolean>
 
-    suspend fun getLastSearched():LastSearched
+    suspend fun setIsLinkedHabitAndFinished(isLinked:Boolean)
 
     suspend fun getTimePassedTimer():Long?
 
-    suspend fun getIsLinkedHabitAndFinished():Boolean?
-
     suspend fun setTimePassedTimer(time:Long)
-
-    suspend fun setIsLinkedHabitAndFinished(isLinked:Boolean)
-
-    suspend fun setSetsTimer(sets:Int)
-
-    suspend fun setRestIntervalHourTimer(hour:Int)
-
-    suspend fun setRestIntervalMinuteTimer(minute:Int)
-
-    suspend fun setRestIntervalSecondTimer(second:Int)
-
-    suspend fun setTimerData(id:Long, date:String, type:Int, time:Triple<Int,Int,Int>)
-
-    suspend fun setIdTimerSelected(id:Long)
-
-    suspend fun setDateTimerSelected(date:String)
-
-    suspend fun setTypeTimerSelected(type:Int)
-
-    suspend fun setHourWheelTimer(hour:Int)
-
-    suspend fun setMinuteWheelTimer(minute:Int)
-
-    suspend fun setSecondWheelTimer(second:Int)
-
-    suspend fun setLastSearched(uid:String, date:String)
 
 }

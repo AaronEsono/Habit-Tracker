@@ -29,14 +29,14 @@ class HabitDatastoreUseCase @Inject constructor(
     }
 
     suspend fun setHabitLinked(id:Long, date: LocalDate){
-        datastore.setIdTimerSelected(id)
-        datastore.setDateTimerSelected(date.toString())
+        datastore.setIdHabitLinkedTimer(id)
+        datastore.setDateHabitLinkedTimer(date.toString())
     }
 
     suspend fun setTimerFromHabit(id:Long,date:LocalDate,timeLeft:BigDecimal){
         //Seteamos el hábito
-        datastore.setIdTimerSelected(id)
-        datastore.setDateTimerSelected(date.toString())
+        datastore.setIdHabitLinkedTimer(id)
+        datastore.setDateHabitLinkedTimer(date.toString())
 
         //Seteamos la hora
         val hour = bigDecimalToTriple(timeLeft)

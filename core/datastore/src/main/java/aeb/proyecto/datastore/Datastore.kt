@@ -160,20 +160,18 @@ class DataStoreManager @Inject constructor(
          * Internal preference key mapping the total targeted loop iteration metrics or interval sets
          * to process inside the structured session workflow.
          */
-        private val SETS_TIMER = intPreferencesKey("setsTimer")
+        private val NUMBER_SETS_TIMER_SELECTED = intPreferencesKey("numberSetsTimerSelected")
         // TIMER SCREEN ----------------------------------------------------------------
         // *******************************************************************************************
 
-
-        //Tiempo pasado
+        // Falta esto
+        // STOPWATCH SERVICE ----------------------------------------------------------------
+        // *******************************************************************************************
         private val TIME_PASSED_TIMER = longPreferencesKey("timePassedTimer")
-        //Timer habito vinculado
         private val IS_LINKED_HABIT_AND_FINISHED = booleanPreferencesKey("isLinkedHabitAndFinished")
 
-        // Por mirar
-        private val CURRENT_ID = stringPreferencesKey("currentId")
-        private val DATE = stringPreferencesKey("date")
-        private val SEARCHED = booleanPreferencesKey("searched")
+        // STOPWATCH SERVICE ----------------------------------------------------------------
+        // *******************************************************************************************
     }
 
     // SETTINGS ----------------------------------------------------------------
@@ -349,93 +347,189 @@ class DataStoreManager @Inject constructor(
     // HABIT SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 
-    val idTimerSelected: Flow<Long?> = dataStore.data.map { preferences ->
+    // TIMER SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Cold reactive stream emitting the unique identifier (ID) of the habit linked to the current timer session.
+     */
+    val idHabitLinkedSelected: Flow<Long?> = dataStore.data.map { preferences ->
         preferences[ID_HABIT_LINKED_TIMER]
     }
 
-    val dateTimerSelected: Flow<String?> = dataStore.data.map { preferences ->
+    /**
+     * Cold reactive stream emitting the target calendar date string assigned to the active tracking session.
+     */
+    val dateHabitLinkedSelected: Flow<String?> = dataStore.data.map { preferences ->
         preferences[DATE_TIMER_SELECTED]
     }
 
+    /**
+     * Cold reactive stream emitting the active timer operational mode index configuration token.
+     */
     val typeTimerSelected: Flow<Int?> = dataStore.data.map { preferences ->
         preferences[TYPE_TIMER_SELECTED]
     }
 
+    /**
+     * Cold reactive stream tracking the current raw hour index selection of the primary countdown wheels.
+     */
     val hourWheelTimer: Flow<Int?> = dataStore.data.map { preferences ->
         preferences[HOUR_WHEEL_TIMER]
     }
 
+    /**
+     * Cold reactive stream tracking the current raw minute index selection of the primary countdown wheels.
+     */
     val minuteWheelTimer: Flow<Int?> = dataStore.data.map { preferences ->
         preferences[MINUTE_WHEEL_TIMER]
     }
 
+    /**
+     * Cold reactive stream tracking the current raw second index selection of the primary countdown wheels.
+     */
     val secondWheelTimer: Flow<Int?> = dataStore.data.map { preferences ->
         preferences[SECOND_WHEEL_TIMER]
     }
 
+    /**
+     * Cold reactive stream tracking the auxiliary hours selection dedicated to loop rest intervals.
+     */
     val restIntervalHourTimer: Flow<Int?> = dataStore.data.map { preferences ->
         preferences[REST_INTERVAL_HOUR_TIMER]
     }
 
+    /**
+     * Cold reactive stream tracking the auxiliary minutes selection dedicated to loop rest intervals.
+     */
     val restIntervalMinuteTimer: Flow<Int?> = dataStore.data.map { preferences ->
         preferences[REST_INTERVAL_MINUTE_TIMER]
     }
 
+    /**
+     * Cold reactive stream tracking the auxiliary seconds selection dedicated to loop rest intervals.
+     */
     val restIntervalSecondTimer: Flow<Int?> = dataStore.data.map { preferences ->
         preferences[REST_INTERVAL_SECOND_TIMER]
     }
 
-    val setsTimer: Flow<Int?> = dataStore.data.map { preferences ->
-        preferences[SETS_TIMER]
+    /**
+     * Cold reactive stream tracking the active loop repetition target limit or intervals count.
+     */
+    val numberSetsTimerSelected: Flow<Int?> = dataStore.data.map { preferences ->
+        preferences[NUMBER_SETS_TIMER_SELECTED]
     }
+
+    /**
+     * Non-blocking query extraction pipeline reading the instantaneous habit ID boundary snapshot.
+     */
+    suspend fun getIdHabitLinkedSelected() = dataStore.data.map { preferences ->
+        preferences[ID_HABIT_LINKED_TIMER]
+    }.firstOrNull()
+
+    /**
+     * Non-blocking query extraction pipeline reading the instantaneous tracking date string snapshot.
+     */
+    suspend fun getDateHabitLinkedSelected() = dataStore.data.map { preferences ->
+        preferences[DATE_TIMER_SELECTED]
+    }.firstOrNull()
+
+    /**
+     * Commits the target rest interval hours component independently into local storage.
+     */
+    suspend fun setRestIntervalHourTimer(hour: Int) {
+        dataStore.edit { preferences ->
+            preferences[REST_INTERVAL_HOUR_TIMER] = hour
+        }
+    }
+
+    /**
+     * Commits the target rest interval minutes component independently into local storage.
+     */
+    suspend fun setRestIntervalMinuteTimer(minute: Int) {
+        dataStore.edit { preferences ->
+            preferences[REST_INTERVAL_MINUTE_TIMER] = minute
+        }
+    }
+
+    /**
+     * Commits the target rest interval seconds component independently into local storage.
+     */
+    suspend fun setRestIntervalSecondTimer(second: Int) {
+        dataStore.edit { preferences ->
+            preferences[REST_INTERVAL_SECOND_TIMER] = second
+        }
+    }
+
+    /**
+     * Overrides the active operational configuration behavior mode token inside infrastructure storage.
+     */
+    suspend fun setTypeTimerSelected(type: Int) {
+        dataStore.edit { preferences ->
+            preferences[TYPE_TIMER_SELECTED] = type
+        }
+    }
+
+    /**
+     * Commits the target countdown hours component independently into local storage.
+     */
+    suspend fun setHourWheelTimer(hour: Int) {
+        dataStore.edit { preferences ->
+            preferences[HOUR_WHEEL_TIMER] = hour
+        }
+    }
+
+    /**
+     * Commits the target countdown minutes component independently into local storage.
+     */
+    suspend fun setMinuteWheelTimer(minute: Int) {
+        dataStore.edit { preferences ->
+            preferences[MINUTE_WHEEL_TIMER] = minute
+        }
+    }
+
+    /**
+     * Commits the target countdown seconds component independently into local storage.
+     */
+    suspend fun setSecondWheelTimer(second: Int) {
+        dataStore.edit { preferences ->
+            preferences[SECOND_WHEEL_TIMER] = second
+        }
+    }
+
+    /**
+     * Commits the total loop interval target iteration metric independently into local storage.
+     */
+    suspend fun setNumberSetsTimerSelected(sets: Int) {
+        dataStore.edit { preferences ->
+            preferences[NUMBER_SETS_TIMER_SELECTED] = sets
+        }
+    }
+
+    /**
+     * Binds a specific habit profile structure long primary key safely into the local configuration context.
+     */
+    suspend fun setIdHabitLinkedSelected(id: Long) {
+        dataStore.edit { preferences ->
+            preferences[ID_HABIT_LINKED_TIMER] = id
+        }
+    }
+
+    /**
+     * Overrides the tracking system target calendar execution date reference sequence.
+     */
+    suspend fun setDateHabitLinkedSelected(date: String) {
+        dataStore.edit { preferences ->
+            preferences[DATE_TIMER_SELECTED] = date
+        }
+    }
+    // TIMER SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
 
     val timerLinkedAndFinished: Flow<Boolean> = dataStore.data.map { preferences ->
         preferences[IS_LINKED_HABIT_AND_FINISHED] ?: false
     }
-
-    suspend fun getLastSearched() =
-        dataStore.data.map { preferences ->
-            LastSearched(
-                uid = preferences[CURRENT_ID] ?: "",
-                date = preferences[DATE] ?: "",
-                searched = preferences[SEARCHED] ?: false
-            )
-        }.firstOrNull() ?: LastSearched()
-
-    suspend fun getIdTimerSelected() = dataStore.data.map { preferences ->
-        preferences[ID_HABIT_LINKED_TIMER]
-    }.firstOrNull()
-
-    suspend fun getDateTimerSelected() = dataStore.data.map { preferences ->
-        preferences[DATE_TIMER_SELECTED]
-    }.firstOrNull()
-
-    suspend fun getTypeTimerSelected() = dataStore.data.map { preferences ->
-        preferences[TYPE_TIMER_SELECTED]
-    }.firstOrNull()
-
-    suspend fun getRestIntervalHourTimer() = dataStore.data.map { preferences ->
-        preferences[REST_INTERVAL_HOUR_TIMER]
-    }.firstOrNull()
-
-    suspend fun getRestIntervalMinuteTimer() = dataStore.data.map { preferences ->
-        preferences[REST_INTERVAL_MINUTE_TIMER]
-    }.firstOrNull()
-
-    suspend fun getRestIntervalSecondTimer() = dataStore.data.map { preferences ->
-        preferences[REST_INTERVAL_SECOND_TIMER]
-    }.firstOrNull()
-
-    suspend fun getSetsTimer() = dataStore.data.map { preferences ->
-        preferences[SETS_TIMER]
-    }.firstOrNull()
-
     suspend fun getTimePassedTimer() = dataStore.data.map { preferences ->
         preferences[TIME_PASSED_TIMER]
-    }.firstOrNull()
-
-    suspend fun getIsLinkedHabitAndFinished() = dataStore.data.map { preferences ->
-        preferences[IS_LINKED_HABIT_AND_FINISHED]
     }.firstOrNull()
 
     suspend fun setIsLinkedHabitAndFinished(isLinked: Boolean) {
@@ -447,88 +541,6 @@ class DataStoreManager @Inject constructor(
     suspend fun setTimePassedTimer(time: Long) {
         dataStore.edit { preferences ->
             preferences[TIME_PASSED_TIMER] = time
-        }
-    }
-
-    suspend fun setSetsTimer(sets: Int) {
-        dataStore.edit { preferences ->
-            preferences[SETS_TIMER] = sets
-        }
-    }
-
-    suspend fun setRestIntervalHourTimer(hour: Int) {
-        dataStore.edit { preferences ->
-            preferences[REST_INTERVAL_HOUR_TIMER] = hour
-        }
-    }
-
-    suspend fun setRestIntervalMinuteTimer(minute: Int) {
-        dataStore.edit { preferences ->
-            preferences[REST_INTERVAL_MINUTE_TIMER] = minute
-        }
-    }
-
-    suspend fun setRestIntervalSecondTimer(second: Int) {
-        dataStore.edit { preferences ->
-            preferences[REST_INTERVAL_SECOND_TIMER] = second
-        }
-    }
-
-    suspend fun setIdTimerSelected(id: Long) {
-        dataStore.edit { preferences ->
-            preferences[ID_HABIT_LINKED_TIMER] = id
-        }
-    }
-
-
-    suspend fun setDateTimerSelected(date: String) {
-        dataStore.edit { preferences ->
-            preferences[DATE_TIMER_SELECTED] = date
-        }
-    }
-
-
-    suspend fun setTypeTimerSelected(type: Int) {
-        dataStore.edit { preferences ->
-            preferences[TYPE_TIMER_SELECTED] = type
-        }
-    }
-
-    suspend fun setHourWheelTimer(hour: Int) {
-        dataStore.edit { preferences ->
-            preferences[HOUR_WHEEL_TIMER] = hour
-        }
-    }
-
-    suspend fun setMinuteWheelTimer(minute: Int) {
-        dataStore.edit { preferences ->
-            preferences[MINUTE_WHEEL_TIMER] = minute
-        }
-    }
-
-    suspend fun setSecondWheelTimer(second: Int) {
-        dataStore.edit { preferences ->
-            preferences[SECOND_WHEEL_TIMER] = second
-        }
-    }
-
-    suspend fun setTimerData(id: Long, date: String, type: Int, time: Triple<Int, Int, Int>) {
-        dataStore.edit { preferences ->
-            preferences[ID_HABIT_LINKED_TIMER] = id
-            preferences[DATE_TIMER_SELECTED] = date
-            preferences[TYPE_TIMER_SELECTED] = type
-
-            preferences[HOUR_WHEEL_TIMER] = time.first
-            preferences[MINUTE_WHEEL_TIMER] = time.second
-            preferences[SECOND_WHEEL_TIMER] = time.third
-        }
-    }
-
-    suspend fun setLastSearched(uid: String, date: String) {
-        dataStore.edit { preferences ->
-            preferences[CURRENT_ID] = uid
-            preferences[DATE] = date
-            preferences[SEARCHED] = true
         }
     }
 }

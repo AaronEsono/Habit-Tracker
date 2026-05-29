@@ -133,11 +133,14 @@ class DatastoreRepository @Inject constructor(
     // HABIT SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 
+    // TIMER SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+
     override val idHabitLinkedTimer: Flow<Long?>
-        get() = dataStoreManager.idTimerSelected
+        get() = dataStoreManager.idHabitLinkedSelected
 
     override val dateHabitLinkedTimer: Flow<String?>
-        get() = dataStoreManager.dateTimerSelected
+        get() = dataStoreManager.dateHabitLinkedSelected
 
     override val typeTimerSelected: Flow<Int?>
         get() = dataStoreManager.typeTimerSelected
@@ -168,30 +171,104 @@ class DatastoreRepository @Inject constructor(
         "$hourString:$minuteString:$secondString"
     }
 
-    override val numberSetsSelected: Flow<Int?>
-        get() = dataStoreManager.setsTimer
+    override val numberSetsTimerSelected: Flow<Int?>
+        get() = dataStoreManager.numberSetsTimerSelected
+
+    /**
+     * Forwards the asynchronous query request to extract the current linked habit ID snapshot.
+     *
+     * @return The localized unique identifier, or null if unlinked.
+     */
+    override suspend fun getIdHabitLinkedTimer(): Long? {
+        return dataStoreManager.getIdHabitLinkedSelected()
+    }
+
+    /**
+     * Forwards the asynchronous query request to extract the target tracking calendar date string.
+     *
+     * @return The targeted calendar reference snapshot sequence, or null if uninitialized.
+     */
+    override suspend fun getDateHabitLinkedTimer(): String? {
+        return dataStoreManager.getDateHabitLinkedSelected()
+    }
+
+    /**
+     * Routes the target rest interval hours component to the infrastructure layer.
+     */
+    override suspend fun setRestIntervalHourTimer(hour: Int) {
+        dataStoreManager.setRestIntervalHourTimer(hour)
+    }
+
+    /**
+     * Routes the target rest interval minutes component to the infrastructure layer.
+     */
+    override suspend fun setRestIntervalMinuteTimer(minute: Int) {
+        dataStoreManager.setRestIntervalMinuteTimer(minute)
+    }
+
+    /**
+     * Routes the target rest interval seconds component to the infrastructure layer.
+     */
+    override suspend fun setRestIntervalSecondTimer(second: Int) {
+        dataStoreManager.setRestIntervalSecondTimer(second)
+    }
+
+    /**
+     * Routes the target countdown hours component to the infrastructure layer.
+     */
+    override suspend fun setHourWheelTimer(hour: Int) {
+        dataStoreManager.setHourWheelTimer(hour)
+    }
+
+    /**
+     * Routes the target countdown minutes component to the infrastructure layer.
+     */
+    override suspend fun setMinuteWheelTimer(minute: Int) {
+        dataStoreManager.setMinuteWheelTimer(minute)
+    }
+
+    /**
+     * Routes the target countdown seconds component to the infrastructure layer.
+     */
+    override suspend fun setSecondWheelTimer(second: Int) {
+        dataStoreManager.setSecondWheelTimer(second)
+    }
+
+    /**
+     * Routes the active loop set configuration total count to the infrastructure layer.
+     */
+    override suspend fun setNumberSetsTimer(sets: Int) {
+        dataStoreManager.setNumberSetsTimerSelected(sets)
+    }
+
+    /**
+     * Binds a specific habit profile structure unique primary key directly into the active timer context.
+     */
+    override suspend fun setIdHabitLinkedTimer(id: Long) {
+        dataStoreManager.setIdHabitLinkedSelected(id)
+    }
+
+    /**
+     * Overrides the targeting system calendar snapshot sequence for tracking data consolidation.
+     */
+    override suspend fun setDateHabitLinkedTimer(date: String) {
+        dataStoreManager.setDateHabitLinkedSelected(date)
+    }
+
+    /**
+     * Overrides the active operational behavioral mode token inside infrastructure storage.
+     */
+    override suspend fun setTypeTimerSelected(type: Int) {
+        dataStoreManager.setTypeTimerSelected(type)
+    }
+    // TIMER SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
 
     override val timerLinkedAndFinished: Flow<Boolean>
         get() = dataStoreManager.timerLinkedAndFinished
 
-    override suspend fun getLastSearched(): LastSearched {
-        return dataStoreManager.getLastSearched()
-    }
-
-    override suspend fun getIdHabitLinkedTimer(): Long? {
-        return dataStoreManager.getIdTimerSelected()
-    }
-
-    override suspend fun getDateHabitLinkedTimer(): String? {
-        return dataStoreManager.getDateTimerSelected()
-    }
-
     override suspend fun getTimePassedTimer(): Long? {
         return dataStoreManager.getTimePassedTimer()
-    }
-
-    override suspend fun getIsLinkedHabitAndFinished(): Boolean? {
-        return dataStoreManager.getIsLinkedHabitAndFinished()
     }
 
     override suspend fun setTimePassedTimer(time: Long) {
@@ -200,53 +277,5 @@ class DatastoreRepository @Inject constructor(
 
     override suspend fun setIsLinkedHabitAndFinished(isLinked: Boolean) {
         dataStoreManager.setIsLinkedHabitAndFinished(isLinked)
-    }
-
-    override suspend fun setSetsTimer(sets: Int) {
-        dataStoreManager.setSetsTimer(sets)
-    }
-
-    override suspend fun setRestIntervalHourTimer(hour: Int) {
-        dataStoreManager.setRestIntervalHourTimer(hour)
-    }
-
-    override suspend fun setRestIntervalMinuteTimer(minute: Int) {
-        dataStoreManager.setRestIntervalMinuteTimer(minute)
-    }
-
-    override suspend fun setRestIntervalSecondTimer(second: Int) {
-        dataStoreManager.setRestIntervalSecondTimer(second)
-    }
-
-    override suspend fun setIdTimerSelected(id: Long) {
-        dataStoreManager.setIdTimerSelected(id)
-    }
-
-    override suspend fun setDateTimerSelected(date: String) {
-        dataStoreManager.setDateTimerSelected(date)
-    }
-
-    override suspend fun setTypeTimerSelected(type: Int) {
-        dataStoreManager.setTypeTimerSelected(type)
-    }
-
-    override suspend fun setHourWheelTimer(hour: Int) {
-        dataStoreManager.setHourWheelTimer(hour)
-    }
-
-    override suspend fun setMinuteWheelTimer(minute: Int) {
-        dataStoreManager.setMinuteWheelTimer(minute)
-    }
-
-    override suspend fun setSecondWheelTimer(second: Int) {
-        dataStoreManager.setSecondWheelTimer(second)
-    }
-
-    override suspend fun setTimerData(id: Long, date: String, type: Int, time: Triple<Int,Int,Int>) {
-        dataStoreManager.setTimerData(id, date, type, time)
-    }
-
-    override suspend fun setLastSearched(uid: String, date: String) {
-        dataStoreManager.setLastSearched(uid, date)
     }
 }

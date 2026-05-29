@@ -59,7 +59,7 @@ class TimeEntriesUseCase @Inject constructor(
 
     private suspend fun setDataInterval(timeEntry: TimeEntryWithHabit?){
         timeEntry?.timeEntry?.intervals?.let { sets ->
-            datastoreInterface.setSetsTimer(sets.toInt())
+            datastoreInterface.setNumberSetsTimer(sets.toInt())
         }
 
         timeEntry?.timeEntry?.restTime?.let {
@@ -75,8 +75,8 @@ class TimeEntriesUseCase @Inject constructor(
         datastoreInterface.setTypeTimerSelected(typeTimer)
 
         habit?.id?.let { id ->
-            datastoreInterface.setIdTimerSelected(id)
-        } ?: datastoreInterface.setIdTimerSelected(-1L)
+            datastoreInterface.setIdHabitLinkedTimer(id)
+        } ?: datastoreInterface.setIdHabitLinkedTimer(-1L)
     }
 
     private suspend fun setTimer(timeEntry: TimeEntryWithHabit?){
