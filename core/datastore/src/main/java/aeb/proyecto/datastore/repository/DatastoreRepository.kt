@@ -267,14 +267,29 @@ class DatastoreRepository @Inject constructor(
     override val timerLinkedAndFinished: Flow<Boolean>
         get() = dataStoreManager.timerLinkedAndFinished
 
+    /**
+     * Forwards the asynchronous query request to extract the instantaneous elapsed timing snapshot.
+     *
+     * @return The current long tracking duration, or null if uninitialized.
+     */
     override suspend fun getTimePassedTimer(): Long? {
         return dataStoreManager.getTimePassedTimer()
     }
 
+    /**
+     * Routes the active elapsed runtime metric down to the core infrastructure engine for serialization.
+     *
+     * @param time The current absolute time metric sequence to persist.
+     */
     override suspend fun setTimePassedTimer(time: Long) {
         dataStoreManager.setTimePassedTimer(time)
     }
 
+    /**
+     * Routes the session completion validation flag down to the core infrastructure engine for serialization.
+     *
+     * @param isLinked The target confirmation state visibility token to serialize.
+     */
     override suspend fun setIsLinkedHabitAndFinished(isLinked: Boolean) {
         dataStoreManager.setIsLinkedHabitAndFinished(isLinked)
     }

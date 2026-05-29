@@ -164,12 +164,19 @@ class DataStoreManager @Inject constructor(
         // TIMER SCREEN ----------------------------------------------------------------
         // *******************************************************************************************
 
-        // Falta esto
         // STOPWATCH SERVICE ----------------------------------------------------------------
         // *******************************************************************************************
+        /**
+         * Internal preference key tracking the cumulative milliseconds or seconds sequence
+         * that has elapsed during the active background timing execution.
+         */
         private val TIME_PASSED_TIMER = longPreferencesKey("timePassedTimer")
-        private val IS_LINKED_HABIT_AND_FINISHED = booleanPreferencesKey("isLinkedHabitAndFinished")
 
+        /**
+         * Internal preference key flagging whether a tracking session had an associated habit profile
+         * and successfully reached its completion state topology boundary.
+         */
+        private val IS_LINKED_HABIT_AND_FINISHED = booleanPreferencesKey("isLinkedHabitAndFinished")
         // STOPWATCH SERVICE ----------------------------------------------------------------
         // *******************************************************************************************
     }
@@ -525,22 +532,46 @@ class DataStoreManager @Inject constructor(
     // TIMER SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 
+    // STOPWATCH SERVICE ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Cold reactive stream tracking the stateful validation marker verifying if the active
+     * tracking session completed successfully with an attached habit connection profile.
+     */
     val timerLinkedAndFinished: Flow<Boolean> = dataStore.data.map { preferences ->
         preferences[IS_LINKED_HABIT_AND_FINISHED] ?: false
     }
+
+    /**
+     * Non-blocking query extraction pipeline reading the instantaneous elapsed timing snapshot.
+     *
+     * @return The current long tracking duration, or null if the system hasn't initialized a session.
+     */
     suspend fun getTimePassedTimer() = dataStore.data.map { preferences ->
         preferences[TIME_PASSED_TIMER]
     }.firstOrNull()
 
+    /**
+     * Overrides the stateful linked habit completion validation flag inside infrastructure storage.
+     *
+     * @param isLinked The target confirmation state visibility token to serialize.
+     */
     suspend fun setIsLinkedHabitAndFinished(isLinked: Boolean) {
         dataStore.edit { preferences ->
             preferences[IS_LINKED_HABIT_AND_FINISHED] = isLinked
         }
     }
 
+    /**
+     * Commits an updated elapsed duration metric independently into localized storage.
+     *
+     * @param time The current absolute time metric sequence to persist.
+     */
     suspend fun setTimePassedTimer(time: Long) {
         dataStore.edit { preferences ->
             preferences[TIME_PASSED_TIMER] = time
         }
     }
+    // STOPWATCH SERVICE ----------------------------------------------------------------
+    // *******************************************************************************************
 }

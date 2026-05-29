@@ -266,12 +266,31 @@ interface DatastoreInterface {
     // TIMER SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 
+    /**
+     * Cold reactive stream tracking the stateful validation marker verifying if the active
+     * tracking session completed successfully with an attached habit connection profile.
+     */
     val timerLinkedAndFinished:Flow<Boolean>
 
+    /**
+     * Overrides the stateful linked habit completion validation flag inside infrastructure storage.
+     *
+     * @param isLinked The target confirmation state visibility token to serialize.
+     */
     suspend fun setIsLinkedHabitAndFinished(isLinked:Boolean)
 
+    /**
+     * Non-blocking query extraction pipeline reading the instantaneous elapsed timing snapshot.
+     *
+     * @return The current long tracking duration, or null if uninitialized.
+     */
     suspend fun getTimePassedTimer():Long?
 
+    /**
+     * Commits an updated elapsed duration metric independently into localized storage.
+     *
+     * @param time The current absolute time metric sequence to persist.
+     */
     suspend fun setTimePassedTimer(time:Long)
 
 }
