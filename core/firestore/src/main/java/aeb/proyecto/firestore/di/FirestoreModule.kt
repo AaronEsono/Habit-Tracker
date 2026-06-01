@@ -11,6 +11,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object FirestoreModule {
 
+    /**
+     * Provides a centralized, thread-safe instance of [FirebaseFirestore] managed as a Singleton.
+     *
+     * This infrastructure component serves as the primary entry point for all remote
+     * NoSQL database operations, collection references, and real-time synchronization pipelines.
+     *
+     * @return The global operational [FirebaseFirestore] database gateway.
+     */
     @Provides
     @Singleton
     fun provideFirestore(): FirebaseFirestore {

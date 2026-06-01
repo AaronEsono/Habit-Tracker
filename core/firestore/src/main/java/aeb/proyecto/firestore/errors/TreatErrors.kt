@@ -3,6 +3,16 @@ package aeb.proyecto.firestore.errors
 import aeb.proyecto.firestore.R
 import com.google.firebase.firestore.FirebaseFirestoreException
 
+/**
+ * Evaluates incoming cloud storage exceptions and maps Firestore-specific failure
+ * tokens to localized application string resource identifiers.
+ *
+ * This translation engine acts as an abstraction barrier, ensuring the UI layer
+ * receives user-friendly, displayable feedback strings rather than raw technical stack traces.
+ *
+ * @param e The intercepted upstream [Exception] thrown during database execution.
+ * @return A unique [Int] corresponding to the localized string resource mapping the specific failure state.
+ */
 fun treatError(e: Exception): Int {
     return when (e) {
         is FirebaseFirestoreException -> when (e.code) {
