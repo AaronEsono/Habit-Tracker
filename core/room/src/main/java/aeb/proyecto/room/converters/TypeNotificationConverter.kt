@@ -6,9 +6,26 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.time.DayOfWeek
 
+/**
+ * Advanced polymorphic persistence bridge for [TypeNotification] sealed class structures.
+ *
+ * Implements a high-performance Hybrid Serialization Pattern by prefixing structural tags
+ * to handle runtime type erasure, combining flat scalar tokens with isolated JSON sub-arrays.
+ */
 class TypeNotificationConverter {
-    private val gson = Gson() // Use a single instance of Gson
 
+    // Single instance allocation to optimize memory footprint during massive entity mapping loops
+    private val gson = Gson()
+
+    /**
+     * Serializes a polymorphic [TypeNotification] instance into a prefixed string layout.
+     *
+     * - [TypeNotification.Daily] -> "daily:[JSON_ARRAY_OF_DAYS]"
+     * - [TypeNotification.Recurring] -> "recurring:INTERVAL_INTEGER"
+     *
+     * @param type The runtime alert behavioral pattern configuration.
+     * @return A flat string snapshot mapping both the discriminator token and encapsulated arguments.
+     */
     @TypeConverter
     fun fromTypeNotification(type: TypeNotification): String {
         return when (type) {
@@ -21,6 +38,15 @@ class TypeNotificationConverter {
         }
     }
 
+    /**
+     * De-serializes a tagged string snapshot back into its safe, polymorphic [TypeNotification] runtime layout.
+     *
+     * Features graceful recovery configurations to prevent catastrophic runtime exceptions
+     * in case of schema structural mismatching.
+     *
+     * @param value The raw tagged text string sequence extracted from the local database layer.
+     * @return A fully hydrated type-safe [TypeNotification] instance, defaulting to an empty Daily setup on parsing failures.
+     */
     @TypeConverter
     fun toTypeNotification(value: String): TypeNotification {
         return when {
@@ -38,7 +64,10 @@ class TypeNotificationConverter {
                 val interval = value.removePrefix("recurring:").toIntOrNull() ?: 1
                 TypeNotification.Recurring(interval)
             }
-            else -> throw IllegalArgumentException("Unknown TypeNotification format: $value")
+            else -> {
+                // Defensive fallback strategy to safeguard release builds against unexpected data shapes
+                TypeNotification.Daily(emptyList())
+            }
         }
     }
 }

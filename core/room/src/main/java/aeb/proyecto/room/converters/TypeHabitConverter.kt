@@ -20,17 +20,38 @@ import java.lang.reflect.Type
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * Advanced monolithic persistence bridge managing the polymorphic serialization of [TypeHabit].
+ *
+ * This converter configures a specialized isolation instance of [Gson] injected with custom structural
+ * type adapters. It ensures that complex domain-specific calendar objects and polymorphic sealed class
+ * hierarchies are marshaled into perfectly flat, standardized JSON strings within the SQLite data block.
+ */
 class TypeHabitConverter {
+
+    // Custom structural execution instance configured with specialized type adapters
     private val gson: Gson = GsonBuilder()
         .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
         .registerTypeAdapter(TypeHabit::class.java, TypeHabitAdapter())
         .create()
 
+    /**
+     * Serializes any polymorphic concrete instance of [TypeHabit] into a structured, flat JSON string layout.
+     *
+     * @param type The active behavioral cadence model present in memory.
+     * @return A clean, flat JSON string representation tracking all underlying metadata.
+     */
     @TypeConverter
     fun fromTypeHabit(type:TypeHabit): String {
         return gson.toJson(type)
     }
 
+    /**
+     * De-serializes a structural JSON string layout back into its safe, polymorphic [TypeHabit] runtime instance.
+     *
+     * @param json The raw flat JSON text string sequence extracted from the database row.
+     * @return A fully hydrated type-safe [TypeHabit] subclass entity.
+     */
     @TypeConverter
     fun toTypeHabit(json: String): TypeHabit {
         val type = object : TypeToken<TypeHabit>() {}.type
@@ -38,6 +59,12 @@ class TypeHabitConverter {
     }
 }
 
+/**
+ * Custom Gson adapter intercepting [LocalDate] streams to enforce flat serialization formatting.
+ *
+ * Encodes timestamps strictly into the standardized ISO-8601 calendar string layout ("YYYY-MM-DD"),
+ * completely bypassing verbose platform-specific reflection overhead.
+ */
 class LocalDateAdapter : JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE // Format: "YYYY-MM-DD"
 
@@ -50,9 +77,18 @@ class LocalDateAdapter : JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> 
     }
 }
 
-
+/**
+ * Custom polymorphic Gson adapter managing the manual structural serialization mapping for the [TypeHabit] hierarchy.
+ *
+ * It captures concrete sealed properties at runtime and explicitly structures custom [JsonObject] layouts
+ * appended with an immutable "tag" discriminator. During inversion, it scans the structural token
+ * to parse and reinstantiate the correct type-safe subclass container.
+ */
 class TypeHabitAdapter : JsonSerializer<TypeHabit>, JsonDeserializer<TypeHabit> {
 
+    /**
+     * Marshals polymorphic data properties by flattening state targets into custom JSON objects.
+     */
     override fun serialize(src: TypeHabit?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
         val jsonObject = JsonObject()
         jsonObject.addProperty("tag", src?.tag)
@@ -76,6 +112,9 @@ class TypeHabitAdapter : JsonSerializer<TypeHabit>, JsonDeserializer<TypeHabit> 
         return jsonObject
     }
 
+    /**
+     * Inspects the explicit structural tag identifier to unpack metadata and build type-safe runtime instances.
+     */
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): TypeHabit {
         val jsonObject = json?.asJsonObject
         val type = jsonObject?.get("tag")?.asString

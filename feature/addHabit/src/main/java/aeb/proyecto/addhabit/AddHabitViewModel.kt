@@ -15,7 +15,7 @@ import aeb.proyecto.addhabit.model.DataBottomSheet
 import aeb.proyecto.domain.usecase.addHabit.DataStoreAddHabitUseCase
 import aeb.proyecto.domain.usecase.addHabit.RoomRepositoryAddHabitUseCase
 import aeb.proyecto.domain.usecase.addHabit.SetNotificationAddHabitUseCase
-import aeb.proyecto.room.model.classes.TIPO_UNIDAD
+import aeb.proyecto.room.model.classes.UnitType
 import aeb.proyecto.room.model.classes.TypeNotification
 import aeb.proyecto.room.model.classes.UnitHabit
 import aeb.proyecto.room.model.classes.unitsHourMode
@@ -152,7 +152,7 @@ class AddHabitViewModel @Inject constructor(
 
     fun onPickUnit(unit: UnitHabit){
         //Si es una unidad de tiempo, quitamos los decimales
-        if(unit.unitType == TIPO_UNIDAD.TIEMPO){
+        if(unit.unitType == UnitType.TIME){
             val text = _dataAddHabit.value.habitScreen.numberTimesTextField.text.toString()
             val integerPart = text.substringBefore(".")
 

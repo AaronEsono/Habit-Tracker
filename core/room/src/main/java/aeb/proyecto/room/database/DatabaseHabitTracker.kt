@@ -20,13 +20,19 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
+/**
+ * Centralized relational persistence highway architecture for the local ecosystem.
+ *
+ * This monolithic abstract controller registers structural data models, marshals custom object
+ * graph transformations via type converters, and exposes atomic data access objects (DAOs).
+ */
 @Database(
     entities = [Habit::class, HabitDay::class,HabitNotification::class,TimeEntry::class],
     version = 1,
     exportSchema = true,
 //    autoMigrations = [
 //        AutoMigration(from = 1, to = 2),
-//        En caso de borrar o renombrar:
+//        In case to delete or rename:
 //        AutoMigration(from = 2, to = 3, spec = DatabaseHabitTracker.MigrationToXToY::class),
 //    ]
 )

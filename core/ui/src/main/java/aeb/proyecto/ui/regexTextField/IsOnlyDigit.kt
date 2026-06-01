@@ -1,6 +1,6 @@
 package aeb.proyecto.ui.regexTextField
 
-import aeb.proyecto.room.model.classes.TIPO_UNIDAD
+import aeb.proyecto.room.model.classes.UnitType
 import aeb.proyecto.room.model.classes.UnitHabit
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.delete
@@ -15,8 +15,8 @@ val onlyZeroTo59 = "([1-5]?\\d)".toRegex()
 @Composable
 fun IsOnlyDigit(textFieldState: TextFieldState, unit: UnitHabit){
     val regex = when(unit.unitType){
-        TIPO_UNIDAD.FRECUENCIA,TIPO_UNIDAD.CANTIDAD -> {onlyDecimal}
-        TIPO_UNIDAD.TIEMPO -> {onlyDigits}
+        UnitType.FREQUENCY,UnitType.QUANTITY -> {onlyDecimal}
+        UnitType.TIME -> {onlyDigits}
     }
 
     when(regex){
