@@ -6,6 +6,14 @@ import aeb.proyecto.stopwatch.manager.StopWatchStateManager
 import aeb.proyecto.stopwatch.manager.TypeTimer
 import android.content.Context
 
+/**
+ * Computes and injects the precise contextual heading for an active interval progression session.
+ * Evaluates the underlying [IntervalState] to switch between rest periods, active work sessions,
+ * and dynamic "last round" micro-copy highlights.
+ *
+ * @param stateManager The centralized reactive single source of truth context provider.
+ * @param context The framework-level context required to resolve localized string resources.
+ */
 fun setIntervalTitle(stateManager: StopWatchStateManager, context: Context){
     val type =  stateManager.typeTimer.value as TypeTimer.INTERVAL
 
@@ -25,6 +33,14 @@ fun setIntervalTitle(stateManager: StopWatchStateManager, context: Context){
     }
 }
 
+/**
+ * Resolves a tailored, human-readable paused status header string based on the active tracking profile modality.
+ * Combines structural state identifiers into a single descriptive string token (e.g., "Paused: Timer").
+ *
+ * @param stateManager The centralized reactive single source of truth context provider.
+ * @param context The framework-level context required to resolve localized string resources.
+ * @return A fully resolved, humanized localized paused state descriptive [String].
+ */
 fun getPausedTitle( stateManager: StopWatchStateManager, context: Context): String {
     val labelRes = when(stateManager.typeTimer.value) {
         is TypeTimer.INTERVAL -> R.string.service_interval
@@ -34,6 +50,14 @@ fun getPausedTitle( stateManager: StopWatchStateManager, context: Context): Stri
     return context.getString(R.string.service_paused, context.getString(labelRes))
 }
 
+/**
+ * Sets up and populates baseline structural properties and naming conventions within the state broker
+ * prior to launching background execution threads.
+ * Establishes absolute countdown ceilings or baseline zero indicators to prevent interface state flickering.
+ *
+ * @param stateManager The centralized reactive single source of truth context provider.
+ * @param context The framework-level context required to resolve localized string resources.
+ */
 fun prepareInitialTimerTitle( stateManager: StopWatchStateManager, context: Context) {
     when (val timer = stateManager.typeTimer.value) {
         is TypeTimer.INTERVAL -> {

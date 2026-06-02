@@ -72,6 +72,21 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 
+/**
+ * Root graphical user interface canvas rendering the interactive floating window overlay.
+ * Monitors asynchronous runtime state pipelines safely across platform lifecycle switches, mapping
+ * system gesture drag translations, dimensional mutations, and dynamic context-aware color schemes
+ * into a highly optimized, single-purpose tracking controller panel.
+ *
+ * @param stateManager The centralized reactive state controller driving numerical tracking variables.
+ * @param onDrag Functional callback tracking raw coordinate translations to shift the physical window boundaries.
+ * @param onCloseOverlay Terminal callback teardown invocation to destroy the window canvas layout.
+ * @param onOpenApp Intercept interaction routing focus back to the main application context pipeline.
+ * @param onPaused Callback invocation pausing active chronological calculation loops.
+ * @param onResumed Callback invocation re-activating suspended countdown timers or stopwatches.
+ * @param onFinished Terminal validation callback finalizing successful time investment segments.
+ * @param onCancel Destructive reset callback purging active session metrics.
+ */
 @Composable
 fun OverlayContent(
     stateManager: StopWatchStateManager,
@@ -87,40 +102,45 @@ fun OverlayContent(
     val isDarkTheme = isSystemInDarkTheme()
     var expanded by remember { mutableStateOf(false) }
 
+    // Stream-safe collection constraints linked directly to the host platform environment lifecycle
     val timeElapsed = stateManager.timerString.collectAsStateWithLifecycle().value
     val state = stateManager.currentState.collectAsStateWithLifecycle().value
     val elapsedTime = stateManager.elapsedTime.collectAsStateWithLifecycle().value
     val typeTimer = stateManager.typeTimer.collectAsStateWithLifecycle().value
     val habitLinked = stateManager.habitLinked.collectAsStateWithLifecycle().value
 
+    // Resolve structural color layouts and smooth calculation progress vectors
     val theme = remember (isDarkTheme){ if (isDarkTheme) darkOverlayTheme else lightOverlayTheme }
     val percentage = getPercentage(typeTimer, elapsedTime)
 
+    // Dynamic color matching engine mapping the tracking track to specific habit palette profiles
     val colorBar = remember (habitLinked){
         habitLinked?.habit?.let {
             Color(it.color)
         }?: theme.filledBarColor
     }
 
+    // Smooth structural dimension animation translating boundaries between collapsed and expanded modes
     val animatedWidth by animateDpAsState(
         targetValue = if (expanded) 150.dp else 100.dp,
         animationSpec = tween(durationMillis = 300)
     )
 
+    // Root physical frame layout capturing drag, click bounds, and managing canvas drawing clipping masks
     Box(
         modifier = Modifier
             .background(theme.backgroundColor, RoundedCornerShape(spacing16))
             .pointerInput(true) {
                 detectDragGestures { change, dragAmount ->
-                    change.consume()
+                    change.consume() // Halt gesture transmission to underlying software layers
                     val (dx, dy) = dragAmount
-                    onDrag(dx.toInt(), dy.toInt())
+                    onDrag(dx.toInt(), dy.toInt()) // Dispatch delta translations to window managers
                 }
             }
             .padding(horizontal = spacing12, vertical = spacing8)
             .width(animatedWidth)
             .clickable (
-                indication = null,
+                indication = null, // Strip heavy material ripple effects to keep composition lightweight
                 interactionSource = remember { MutableInteractionSource() }
             ){
                 expanded = true
@@ -131,7 +151,7 @@ fun OverlayContent(
         ){
 
             if(expanded){
-                //Titulo e iconos
+                // Extended contextual controls header panel
                 Row (modifier = Modifier.padding(bottom = spacing8)){
                     Icon(
                         Icons.AutoMirrored.Filled.OpenInNew,
@@ -174,6 +194,7 @@ fun OverlayContent(
 
                 }
 
+                // Smoothly crossfade localized heading tags upon state transitions
                 AnimatedContent(
                     targetState = getTitle(typeTimer,state)
                 ) { titleAnim ->
@@ -187,6 +208,7 @@ fun OverlayContent(
                     )
                 }
 
+                // Optional tracking relationship indicator label
                 if(habitLinked != null){
                     LabelSmallText(
                         text = stringResource(R.string.timer_title_habit,habitLinked.habit.name, getTextToday(habitLinked.day.date)),
@@ -202,6 +224,7 @@ fun OverlayContent(
                 Spacer(modifier = Modifier.padding(vertical = spacing2))
             }
 
+            // High-visibility core timer character rendering node
             LabelMediumText(
                 text = timeElapsed,
                 fontSize = 20.sp,
@@ -211,6 +234,7 @@ fun OverlayContent(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            // Progressive stopwatches ignore target bounding boxes; suppress tracking bars for that configuration
             if(typeTimer != TypeTimer.STOPWATCH){
                 Spacer(modifier = Modifier.padding(vertical = spacing2))
 
@@ -224,6 +248,7 @@ fun OverlayContent(
             }
 
             if(expanded){
+                // Extended operational state interaction button row
                 when (state) {
                     StopwatchState.Idle -> Unit
                     StopwatchState.Stopped, StopwatchState.InProgress -> {
