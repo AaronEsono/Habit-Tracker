@@ -12,6 +12,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Structural wrapper component enforcing the system's [bodySmall] typography profile.
+ * Designed for low-density secondary metadata text, sub-labels, legal footnotes, or tight timeline tags.
+ */
 @Composable
 fun BodySmallText(
     text: String,

@@ -114,6 +114,11 @@ import androidx.compose.material.icons.filled.WineBar
 import androidx.compose.material.icons.filled.Work
 
 
+/**
+ * Categorized structural catalog of platform [ImageVector] icons.
+ * Supplies high-contrast symbolic anchors representing distinct physical performance,
+ * lifestyle tracking, and habit behavioral disciplines.
+ */
 val listIcons = listOf(
     // Ejercicio y actividad física
     Icons.Filled.FitnessCenter,

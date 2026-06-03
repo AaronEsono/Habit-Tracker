@@ -12,6 +12,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Structural wrapper component enforcing the system's [bodyMedium] typography profile.
+ * Engineered for standard body copy, structural field labeling, and intermediate informational targets.
+ */
 @Composable
 fun BodyMediumText(
     text: String,

@@ -27,6 +27,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import java.time.YearMonth
 
+
+/**
+ * Symmetrical visual control header serving as the chronological navigation bridge for the calendar matrix.
+ * Provides programmatic month-shifting execution vectors while maintaining perfectly centered typography alignments
+ * and stripping legacy material feedback behaviors to guarantee monochromatic design consistency.
+ *
+ * @param modifier The structural composition modifier layout adjustment token.
+ * @param yearMonth The current focused absolute state profile representing the active target window.
+ * @param onPreviousMonthButtonClicked Reactive callback emitting a compiled [YearMonth] structural decrement slice.
+ * @param onNextMonthButtonClicked Reactive callback emitting a compiled [YearMonth] structural increment slice.
+ */
 @Composable
 fun CalendarHeader(
     modifier: Modifier = Modifier,
@@ -35,23 +46,25 @@ fun CalendarHeader(
     onNextMonthButtonClicked: (YearMonth) -> Unit,
 ){
 
+    // Shared single-instance interaction tracker to bypass allocation cycles during recomposition
     val interactionSource = remember { MutableInteractionSource() }
 
     Row (
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ){
+        // Retrograde month navigation trigger node
         Icon(
             Icons.Filled.ArrowBackIosNew,
             contentDescription = "",
             modifier = Modifier.clickable(
                 interactionSource = interactionSource,
-                indication = null
+                indication = null // Strips visual ripple layers to fulfill monochromatic style profiles
             ) {onPreviousMonthButtonClicked(yearMonth.minusMonths(1))}
                 .padding(start = spacing16)
         )
 
-
+        // Balanced layout center containing the dynamic text presentation nodes
         Column (
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,6 +74,7 @@ fun CalendarHeader(
             LabelMediumText(yearMonth.year.toString())
         }
 
+        // Anterograde month navigation trigger node
         Icon(
             Icons.AutoMirrored.Filled.ArrowForwardIos,
             contentDescription = "",

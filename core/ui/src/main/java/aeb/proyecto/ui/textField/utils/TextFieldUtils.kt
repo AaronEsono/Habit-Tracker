@@ -19,6 +19,13 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 
+/**
+ * Custom layout modifier that auto-clears the active layout hierarchy focus when the software
+ * keyboard (IME) gets dismissed by native user back gestures or window structural hides.
+ *
+ * Prevents "ghost focus styling" bugs where the blinking cursor remains pinned to fields
+ * despite the input hardware panel being completely hidden from view.
+ */
 @OptIn(ExperimentalLayoutApi::class)
 fun Modifier.clearFocusOnKeyboardDismiss(): Modifier = composed {
     var isFocused by remember { mutableStateOf(false) }

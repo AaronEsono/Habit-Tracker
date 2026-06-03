@@ -12,6 +12,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Structural wrapper component enforcing the system's [labelLarge] typography profile.
+ * Tailored for functional interactable nodes, call-to-actions, button text masks, and key form headers.
+ */
 @Composable
 fun LabelLargeText(
     text: String,

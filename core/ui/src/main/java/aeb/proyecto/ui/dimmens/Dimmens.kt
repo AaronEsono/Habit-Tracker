@@ -2,6 +2,13 @@ package aeb.proyecto.ui.dimmens
 
 import androidx.compose.ui.unit.dp
 
+/**
+ * Global design system layout repository anchoring structural spatial tokens.
+ * Centralizes density-independent pixel ([Dp]) values to enforce strict geometric consistency
+ * across margins, paddings, and alignment boundaries, completely eliminating hardcoded magic numbers.
+ *
+ * Follows an incremental atomic scale aligned with standard UI grid matrix multiplication profiles.
+ */
 object Dimmens {
     val spacing1 = 1.dp
     val spacing2 = 2.dp

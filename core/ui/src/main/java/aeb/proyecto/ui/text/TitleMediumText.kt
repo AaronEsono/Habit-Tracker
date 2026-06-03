@@ -12,6 +12,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Structural wrapper component enforcing the system's [titleMedium] typography profile.
+ * Tailored for medium-priority subsections, individual habit card headers, and prominent alert dialogue titles.
+ */
 @Composable
 fun TitleMediumText(
     text: String,

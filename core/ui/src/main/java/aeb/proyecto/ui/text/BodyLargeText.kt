@@ -12,6 +12,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Structural wrapper component enforcing the system's [bodyLarge] typography profile.
+ * Engineered for primary readable copy, description metrics, and descriptive multi-line layouts.
+ * Pairs dynamically with the semantic surface contrast token [onSurface] to guarantee dark/light compliance.
+ */
 @Composable
 fun BodyLargeText(
     text: String,

@@ -12,6 +12,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Structural wrapper component enforcing the system's [labelMedium] typography profile.
+ * Optimized for secondary data categorizations, inactive form fields, and accompanying asset descriptive text.
+ */
 @Composable
 fun LabelMediumText(
     text: String,

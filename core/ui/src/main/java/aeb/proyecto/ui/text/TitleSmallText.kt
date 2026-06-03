@@ -12,6 +12,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Structural wrapper component enforcing the system's [titleSmall] typography profile.
+ * Optimized for low-level inner section boundaries, grouped settings headers, and sub-card categorical tags.
+ */
 @Composable
 fun TitleSmallText(
     text: String,

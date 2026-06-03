@@ -12,6 +12,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.window.Dialog
 
+/**
+ * Reusable architectural dialogue window wrapper abstraction over the platform [Dialog] infrastructure.
+ * Encases the bare dialog canvas inside an elevated Material 3 [Card] structure to guarantee unified
+ * shape radiuses, elevations, and background canvas containment layouts across modal interaction screens.
+ *
+ * @param modifier The structural composition modifier layout adjustment token.
+ * @param shape The geometric boundary outline pattern applied to the container, defaults to an 8dp corner radius.
+ * @param containerColor The surface background color bound by default to the active semantic card system tokens.
+ * @param onDismissRequest The programmatic callback closure triggered when the user clicks outside the modal boundary or presses back.
+ * @param content The declarative architectural sub-view dialog layout injected into the card canvas slot.
+ */
 @Composable
 fun CustomDialog(
     modifier: Modifier = Modifier,

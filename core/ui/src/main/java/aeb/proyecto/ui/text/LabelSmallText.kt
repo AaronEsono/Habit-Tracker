@@ -12,6 +12,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Structural wrapper component enforcing the system's [labelSmall] typography profile.
+ * Intended for granular micro-metadata layers, badge nodes, timeline details, and ultra-high density displays.
+ */
 @Composable
 fun LabelSmallText(
     text: String,

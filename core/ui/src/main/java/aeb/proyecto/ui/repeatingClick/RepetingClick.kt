@@ -19,6 +19,21 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ * Custom layout modifier that injects an accelerated repeating click gesture pipeline onto a visual node.
+ * As long as the physical pointer input remains pressed, it continuously fires execution triggers
+ * while exponentially decaying the interval window to achieve a high-performance progressive counting acceleration curve.
+ *
+ * Fully integrated with the platform [MutableInteractionSource] to feed stateful visual indicators
+ * cleanly without breaking event cancellation scopes.
+ *
+ * @param interactionSource The stateful event tracker pipeline tasked with emitting press and release tokens.
+ * @param enabled Boundary flag to ignore gesture captures if the host element enters an inactive state.
+ * @param maxDelayMillis Initial baseline delay window applied between the first consecutive click sequences.
+ * @param minDelayMillis The absolute safety floor speed limit allowed for click cycles during full acceleration.
+ * @param delayDecayFactor Percentage fraction (0.0f to 1.0f) stripped away from the active delay buffer on every tick.
+ * @param onClick The functional callback closure invoked on every execution tick cycle.
+ */
 @SuppressLint("SuspiciousModifierThen")
 fun Modifier.repeatingClickable(
     interactionSource: MutableInteractionSource,
@@ -50,9 +65,11 @@ fun Modifier.repeatingClickable(
                         }
                     }
 
+                    // Standby and evaluate terminal boundary events (User lifting finger or moving past active tracking frames)
                     val up = waitForUpOrCancellation()
                     heldButtonJob.cancel()
 
+                    // Resolve the semantic gesture outcome cleanly to update design indicators
                     val releaseOrCancel = when (up) {
                         null -> PressInteraction.Cancel(downPress)
                         else -> PressInteraction.Release(downPress)

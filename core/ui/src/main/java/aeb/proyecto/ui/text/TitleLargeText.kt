@@ -12,6 +12,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Structural wrapper component enforcing the system's [titleLarge] typography profile.
+ * Engineered to act as the primary structural header anchor for screen titles and prominent
+ * high-level visual container nodes.
+ */
 @Composable
 fun TitleLargeText(
     text: String,
