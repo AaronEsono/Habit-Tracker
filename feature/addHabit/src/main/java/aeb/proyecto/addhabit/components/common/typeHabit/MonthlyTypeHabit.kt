@@ -6,6 +6,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.LabelSmallText
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,10 +44,31 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
+// ============================================================================
+// MONTHLY VIEWPORT ARCHITECTURE METRICS
+// ============================================================================
+
 val height = 45.dp
 const val NUMBER_ELEMENTS = 7
+
+/**
+ * Immutable registry index representing standard maximum calendar days for monthly matrix populations.
+ */
 val days = (1..31).toList()
 
+/**
+ * A highly structural layout component that manages the custom configuration strategy for monthly habit targets.
+ * Features an animated workflow shifting reactively between a global monthly switch goal rule
+ * and an exhaustive granular date picker selection timeline layout.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param colorSelected The primary active design [Color] token allocated to paint structural focus indicator highlights.
+ * @param monthlyGoal Core state flag indicating whether the objective calculation defaults to an open monthly cumulative ceiling.
+ * @param contrastColor An accessible high-contrast [Color] reference targeted to tint internal text layers during active selections.
+ * @param numberSelected Currently active configuration boundary marker identifying the focused picked calendar day integer.
+ * @param onNumberSelected State-mutation callback lambda tracking incremental numeric changes downstream.
+ * @param onCheckedMonthly Interactive toggle action callback hub tracking global switch configuration shifts.
+ */
 @Composable
 fun MonthlyTypeHabit(
     modifier: Modifier = Modifier,
@@ -62,6 +84,7 @@ fun MonthlyTypeHabit(
         modifier = modifier,
     ){
 
+        // SECTION 1: GLOBAL MONTHLY STRATEGY TOGGLE HEADER ROW
         Row (
             modifier = Modifier.fillMaxWidth().padding(vertical = spacing8),
             verticalAlignment = Alignment.CenterVertically
@@ -87,6 +110,7 @@ fun MonthlyTypeHabit(
             )
         }
 
+        // SECTION 2: GRANULAR TARGET PICKER STEP WRAPPER
         AnimatedVisibility(
             visible = !monthlyGoal
         ) {
@@ -106,6 +130,18 @@ fun MonthlyTypeHabit(
 
 }
 
+/**
+ * A highly-customized fluid numeric wheel picker components engineered on top of [HorizontalPager].
+ * Projects an interactive snap-to-center single-row calendar matrix calculating advanced trigonometric
+ * opacity transforms on the graphical layer to fade out side elements dynamically.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param colorSelected The primary active design [Color] token allocated to paint the centralized highlight anchor box workspace.
+ * @param contrastColor Accessible high-contrast [Color] layer mapped onto highlighted texts.
+ * @param numberSelected Core layout configuration pointer identifying the currently active focused calendar day integer.
+ * @param onNumberSelected Event callback lambda transmitting finalized numeric selection values downstream.
+ */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun NumberPicker(
     modifier: Modifier = Modifier,
@@ -116,6 +152,7 @@ fun NumberPicker(
 ) {
 
     BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        // Core structural metric variables mapping fluid distribution lines across the constraints sheet
         val contentPadding = (maxWidth - height) / 2
         val offSet = maxWidth / NUMBER_ELEMENTS
         val itemSpacing = offSet - height
@@ -123,6 +160,7 @@ fun NumberPicker(
 
         val scope = rememberCoroutineScope()
 
+        // Sinks dynamic alignment adjustments safely back up onto structural business layers
         LaunchedEffect (pagerState.currentPage){
             onNumberSelected(days[pagerState.currentPage])
         }
@@ -131,6 +169,7 @@ fun NumberPicker(
             MutableInteractionSource()
         }
 
+        // Background highlight track indicating the active viewport node anchor frame
         CenterBox(
             modifier = modifier
                 .align(Alignment.Center),
@@ -148,9 +187,11 @@ fun NumberPicker(
                 modifier = Modifier
                     .size(height)
                     .graphicsLayer {
+                        // Calculate standard fractional offsets from focus core lines
                         val pageOffset = ((pagerState.currentPage - page) + pagerState
                             .currentPageOffsetFraction).absoluteValue
 
+                        // Map alpha layers dynamically to fade away outbound items elegantly
                         val percentFromCenter = 1.0f - (pageOffset / (5f / 2f))
                         val opacity = 0.25f + (percentFromCenter * 0.75f).coerceIn(0f, 1f)
 
@@ -163,6 +204,7 @@ fun NumberPicker(
                         enabled = true,
                     ) {
                         scope.launch {
+                            // Smoothly snap the viewport over to tapped coordinates
                             pagerState.animateScrollToPage(page)
                         }
                     }) {
@@ -182,6 +224,13 @@ fun NumberPicker(
     }
 }
 
+/**
+ * A static background anchor lens component designed to highlight the focused wheel area.
+ * Placed structurally beneath the scroll track viewport layers to frame the active picker index choice.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param color The active design [Color] token assigned to paint the central selection box canvas.
+ */
 @Composable
 fun CenterBox(
     modifier: Modifier = Modifier,
@@ -196,6 +245,14 @@ fun CenterBox(
     }
 }
 
+/**
+ * Computes the correct accessible contrast text color token distribution based on structural focus coordinates.
+ * Switches to a high-contrast ink profile when a specific page value aligns with the active chosen slot.
+ *
+ * @param page The numeric value representation of the current grid item being processed.
+ * @param numberSelected The targeted configuration boundary marker identifying the globally focused choice index.
+ * @param contrastColor The accessible high-contrast ink tint targeted to override selected item layers.
+ */
 @Composable
 fun colorText(page:Int, numberSelected:Int,contrastColor: Color):Color{
     return if(page == numberSelected) contrastColor else MaterialTheme.colorScheme.onSurface

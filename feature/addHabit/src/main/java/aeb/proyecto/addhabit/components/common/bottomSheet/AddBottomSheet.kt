@@ -35,6 +35,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.launch
 
+/**
+ * Contextual operational BottomSheet component that abstracts application modal messages.
+ * Leverages structured configuration metadata inside [DataBottomSheet] to adaptively render
+ * error validation messaging or double-check destructive transaction confirmations.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param dataBottomSheet Explicit categorical metadata configuration descriptor mapping text resources and iconography.
+ * @param color The personalized brand [Color] token representation allocated to paint the prominent action background button.
+ * @param contrastColor An accessible, high-contrast [Color] reference mapped onto primary action label texts.
+ * @param onDismiss Contextual callback lambda fired when the viewport panel completes its dismissal animation.
+ * @param onAccept Action callback lambda triggered when the user commits to the primary confirmation button.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddBottomSheet(
@@ -63,6 +75,7 @@ fun AddBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            // Header configuration layer grouping contextual indicators
             Row (
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -82,12 +95,14 @@ fun AddBottomSheet(
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
+            // Informational detailed instruction label
             LabelLargeText(
                 stringResource(dataBottomSheet.subtitle),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = spacing8)
             )
 
+            // Dynamic bottom row action button arrangement
             Row (
                 modifier = Modifier
                     .fillMaxWidth()
@@ -95,6 +110,7 @@ fun AddBottomSheet(
             ){
 
                 when(dataBottomSheet){
+                    // Mounts secondary dismissal controls only over destructive validation workflows
                     DataBottomSheet.DELETE_NOTIFICATION -> {
                         CustomRipple {
                             OutlinedButton(
@@ -116,6 +132,7 @@ fun AddBottomSheet(
                     DataBottomSheet.ERROR_NAME_UNIT,DataBottomSheet.ERROR_HOUR, DataBottomSheet.ERROR_INTERVAL_UNIT, DataBottomSheet.GENERAL_ERROR -> Unit
                 }
 
+                // Primary confirmation execution target node
                 CustomRipple {
                     Button(
                         modifier = Modifier.weight(1f),

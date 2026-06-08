@@ -28,6 +28,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
+/**
+ * A modal operational dialog window that serves as a dedicated category choice dashboard.
+ * Iterates dynamically over available [TypeHabit] entry configurations to mount fully decoupled,
+ * interactive full-width button rows mapped against contextual localization metadata.
+ *
+ * @param onDismissRequest Contextual closure callback lambda fired to close or unmount the dialog overlay viewport.
+ * @param onClickButton Callback action lambda tracking the specific [TypeHabit] model chosen by the user.
+ */
 @Composable
 fun PickTypeHabitDialog(
     onDismissRequest: () -> Unit,
@@ -45,6 +53,7 @@ fun PickTypeHabitDialog(
                 .padding(horizontal = spacing10, vertical = spacing12)
         ) {
 
+            // Header asset layer grouping illustrative graphic vectors and dismiss handles
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -71,6 +80,7 @@ fun PickTypeHabitDialog(
                 }
             }
 
+            // Scroll-defended iterative element wrapper mapping behavioral options
             Column (
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ){
@@ -90,5 +100,4 @@ fun PickTypeHabitDialog(
             }
         }
     }
-
 }

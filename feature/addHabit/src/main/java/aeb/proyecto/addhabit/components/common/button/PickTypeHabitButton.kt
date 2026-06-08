@@ -15,6 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 
+/**
+ * An atomic interactive layout component that represents a distinct configuration choice structure.
+ * Features an explicit title line stacked above descriptive subtitle helper context tags,
+ * typically utilized to open bottom sheets or modal menus for selecting habit types or tracking metrics.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param title The prominent primary text header literal identifying the button action or selected choice.
+ * @param subtitle Explanatory contextual metadata or label text printed right underneath the primary title.
+ * @param onClick Interactive action lambda trigger executed when the user presses this surface element.
+ */
 @Composable
 fun PickTypeHabitButton(
     modifier: Modifier = Modifier,

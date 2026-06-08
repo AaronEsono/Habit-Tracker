@@ -16,6 +16,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 
+/**
+ * A full-screen non-interactive loading backdrop overlay layout.
+ * Blurs out the main viewport with an elegant translucent dim screen veil and intercepts all physical
+ * click touch event gestures to safeguard application states against accidental double-tap interaction exploits
+ * during asynchronous background database transaction operations.
+ *
+ * Includes a dedicated testing identifier node to ease automated semantic integration checks.
+ */
 @Composable
 fun AddHabitLoading (){
     Box(
@@ -24,6 +32,7 @@ fun AddHabitLoading (){
             .background(color = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.8f))
             .zIndex(1f)
             .testTag("Loading overlay")
+            // Prevent downstream action pipelines from firing while an operations transition executes
             .clickable(enabled = false) {}
     ) {
         Column(

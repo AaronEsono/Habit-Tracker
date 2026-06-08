@@ -97,6 +97,33 @@ import androidx.core.content.ContextCompat
 import java.time.LocalDate
 import java.time.LocalTime
 
+/**
+ * Portrait implementation of the Habit Configuration Screen.
+ * Assembles highly granular component atoms into a fluid, multi-column workspace. Coordinates responsive
+ * state tracking, localized text filters, and security permission routines through unidirectional event propagation.
+ *
+ * @param dataAddHabit Central semantic state data wrapper containing the structural screen states and buffers.
+ * @param uiState Current global asynchronous execution lifecycle checkpoint mapping transition events.
+ * @param navigateToHabit Navigation router trigger dispatched to clear the stack and pop back onto dashboards.
+ * @param onClickCard Component event firing localized asset selectors (Palettes or Icon inventories).
+ * @param onClickGridOption Dispatches structural element updates chosen from layout catalog grids.
+ * @param onClickDialog Injects visual state adjustments over overlay tracking indexes.
+ * @param onDismissDialog Contextual layout command closing functional active dialog slots.
+ * @param onClickTypeHabit Selects core behavior strategies (Daily, Weekly, Monthly, or Custom Recurring loops).
+ * @param onClickWeekly Mutation lambda tracking day integer updates across weekly metrics.
+ * @param onMonthNumberSelected Mutation lambda tracking day integer updates across monthly timelines.
+ * @param onDateSelected Commits localized date updates picked from overlay calendars.
+ * @param onPickUnit Locks core habit measurement units downstream.
+ * @param onClickTypeNotification Append new dynamic notification templates matching user actions.
+ * @param onTimeSelected Commits finalized structural local hours/minutes components upstream.
+ * @param onClickDeleteNotification Dispatches removal commands targeted over specific reminder IDs.
+ * @param onCheckedWeeklyChange Swaps focus strategies across cumulative or granular weekly metrics rules.
+ * @param onCheckedMonthlyChange Swaps focus strategies across cumulative or granular monthly metrics rules.
+ * @param onClickTypeNotificationResult Distributes incremental interval context variations downstream.
+ * @param onClickEditNotification Invokes deep time tuning modifications over existing alerts trackers.
+ * @param onDismiss Navigation back anchor clearing uncommitted modifications out of memory fields.
+ * @param onAccept Direct confirmation layout switch commanding state data insertion processes.
+ */
 @Composable
 fun VerticalAddHabitScreen(
     dataAddHabit: DataAddHabitScreen,
@@ -126,9 +153,11 @@ fun VerticalAddHabitScreen(
     val context = LocalContext.current
     val habit = dataAddHabit.habitScreen
 
+    // Pre-filter notification arrays by strategy to ease structural matrix distribution later
     val notificationWeek = habit.notifications.filter { it.type is TypeNotification.Daily }
     val notificationRecurring = habit.notifications.filter { it.type is TypeNotification.Recurring }
 
+    // Evaluate hardware interaction tracking states defensively
     val isPermissionGranted = remember {
         mutableStateOf(
             ContextCompat.checkSelfPermission(
@@ -138,18 +167,22 @@ fun VerticalAddHabitScreen(
         )
     }
 
+    // Trigger permission side effects monitors smoothly
     OnChangePermissions(isPermissionGranted,context)
 
+    // Apply strict text filter sanitization properties onto input data state tracks
     IsOnlyDigit(habit.numberTimesTextField,habit.unit)
     IsOnlyDigit(habit.firstHourTimesTextField)
     IsOnlyZeroTo59(habit.secondHourTimesTextField)
 
+    // Process asynchronous runtime interface flow directives
     when(uiState){
         AddHabitUIState.Error, AddHabitUIState.Success -> Unit
         AddHabitUIState.Loading -> {
             AddHabitLoading()
         }
         AddHabitUIState.ToHabit -> {
+            // Unbind screen lifecycle safely inside a coroutine lateral side-effect layer
             LaunchedEffect (Unit){
                 navigateToHabit()
             }
@@ -163,7 +196,12 @@ fun VerticalAddHabitScreen(
             .windowInsetsPadding(WindowInsets.navigationBars)
             .verticalScroll(rememberScrollState())
     ){
-        //TextField Nombre y descripción
+
+        // ============================================================================
+        // SECTION 1: NAME AND DESCRIPTION
+        // ============================================================================
+
+        // HABIT TITLE IDENTIFICATION TRAILING ROW
         AddHabitTextField(
             textFieldState = habit.nameTextField,
             modifier = Modifier.height(60.dp),
@@ -176,6 +214,7 @@ fun VerticalAddHabitScreen(
             keyboardType = KeyboardType.Text
         )
 
+        // HABIT SUMMARY DESCRIPTION DETAIL TRACK
         AddHabitTextField(
             modifier = Modifier
                 .padding(top = spacing10)
@@ -192,12 +231,16 @@ fun VerticalAddHabitScreen(
 
         CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
-        //Colores e iconos
+
+        // ============================================================================
+        // SECTION 2: AESTHETICS & BRANDING DEPLOYMENT METRICS (COLORS & ICONS)
+        // ============================================================================
         Row (
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
 
+            // ACTIVE THEME CHROMATIC PALETTE PICKER TRIGGER CARD
             AddHabitCard(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.add_habit_color_label),
@@ -206,6 +249,7 @@ fun VerticalAddHabitScreen(
                 onClick = { onClickCard(GridOption.COLORS) }
             )
 
+            // VISUAL SYMBOL GLYPH IDENTIFIER PICKER TRIGGER CARD
             AddHabitCard(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.add_habit_icon_label),
@@ -215,6 +259,7 @@ fun VerticalAddHabitScreen(
             )
         }
 
+        // INLINE EXPANSION: CHROMATIC PALETTE SELECTION MATRIX CATALOGUE
         AnimatedVisibility(
             visible = dataAddHabit.isColorSelected
         ) {
@@ -226,6 +271,7 @@ fun VerticalAddHabitScreen(
             )
         }
 
+        // INLINE EXPANSION: IDENTIFIER SYMBOL GLYPH SELECTION MATRIX CATALOGUE
         AnimatedVisibility(
             visible = dataAddHabit.isIconSelected
         ) {
@@ -239,22 +285,30 @@ fun VerticalAddHabitScreen(
 
         CustomHorizontalDivider(modifier = Modifier.padding(top = spacing20, bottom = spacing16))
 
-        // Tipo de hábito
+        // ============================================================================
+        // SECTION 3: CORE TEMPORAL FREQUENCY ROUTINE STRATEGY PIPELINE
+        // ============================================================================
+
         LabelLargeText(
             stringResource(R.string.add_habit_pick_type_habit_title),
             modifier = Modifier.padding(bottom = spacing8))
 
+        // DIALOG TRIGGER HUB COMMANDING THE STRATEGY OVERLAY SELECTION DIALOG
         AddHabitCardButton(
             title = stringResource(habit.typeHabit.title),
             modifier = Modifier.fillMaxWidth(),
             onClick = { onClickDialog(PICK_TYPE_HABIT) }
         )
 
+        // FLUID OVERLAY TRANSITION MUTATING ACCORDING TO COMMITTED RE-ACTIVE CALENDAR SCHEDULERS
         AnimatedContent(
             targetState = habit.typeHabit
         ) { typeHabit ->
             when (typeHabit) {
+                // Daily strategy requires no additional target coordinates metrics
                 TypeHabit.DAILY -> Unit
+
+                // Injects specific granular layout tracks mapping designated weekly target loops
                 TypeHabit.WEEKLY -> {
                     WeeklyTypeHabit(modifier = Modifier
                         .fillMaxWidth()
@@ -267,6 +321,7 @@ fun VerticalAddHabitScreen(
                         onClickWeekly = onClickWeekly)
                 }
 
+                // Injects structural configuration metrics targeted across localized monthly timelines
                 TypeHabit.MONTHLY -> {
                     MonthlyTypeHabit(modifier = Modifier
                         .fillMaxWidth()
@@ -278,6 +333,8 @@ fun VerticalAddHabitScreen(
                         onCheckedMonthly = onCheckedMonthlyChange,
                         onNumberSelected = onMonthNumberSelected)
                 }
+
+                // Injects dynamic specialized rolling interval components tracking custom cyclic loops
                 TypeHabit.CYCLIC -> {
                     RecurringTypeHabit(
                         intervalTextFieldState = habit.intervalTextFieldState,
@@ -295,9 +352,12 @@ fun VerticalAddHabitScreen(
 
         CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
-        //Unidades y veces
+        // ============================================================================
+        // SECTION 4: REPETITIONS ANS UNITS
+        // ============================================================================
         LabelLargeText(stringResource(R.string.add_habit_times_and_units))
 
+        // RE-EVALUATE WORKSPACE LAYOUT DIRECTIVES REFLECTING RE-ACTIVE CHOSEN MEASURE METRICS
         AnimatedContent(
             targetState = habit.unit in unitsHourMode,
             label = "UnitContentAnimation"
@@ -309,6 +369,7 @@ fun VerticalAddHabitScreen(
                     .padding(top = spacing12),
             ) {
                 if (!isHourMode) {
+                    // MODE A: PROGRAMMATIC SINGLE SCALAR COUNTER INPUT NODE (E.G. REPETITIONS)
                     AddHabitTextField(
                         textFieldState = habit.numberTimesTextField,
                         modifier = Modifier
@@ -322,11 +383,12 @@ fun VerticalAddHabitScreen(
                         keyboardType = KeyboardType.Number
                     )
                 } else {
+                    // MODE B: CHRONO TWIN FOCUS METRICS TRAILING SPLIT ROW (E.G. HOURS : MINUTES)
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.weight(1f)
                     ) {
-
+                        // COARSE HIGHER ORDER STEP CHRONO INPUT (HOURS / MINUTES)
                         Column (
                             modifier = Modifier
                                 .weight(1f)
@@ -349,6 +411,7 @@ fun VerticalAddHabitScreen(
                             )
                         }
 
+                        // DECORATIVE TIME BOUNDARY SPLIT OPERATOR LABEL (: COLON MARKER)
                         LabelLargeText(
                             stringResource(R.string.add_habit_dots),
                             fontSize = 40.sp,
@@ -357,6 +420,7 @@ fun VerticalAddHabitScreen(
                                 .offset(y = (-10).dp)
                         )
 
+                        // REFINED SUB-STEP TIME TRACE INPUT (MINUTES / SECONDS TRACKER)
                         Column (
                             modifier = Modifier
                                 .weight(1f)
@@ -395,6 +459,7 @@ fun VerticalAddHabitScreen(
 
                 Spacer(modifier = Modifier.padding(horizontal = spacing8))
 
+                // CRADLE UNIT DIALOG CONTEXT PICKER TRIGGER BUTTON SHEET
                 AddHabitCardButton(
                     title = getTextUnits(habit.numberTimesTextField, habit.firstHourTimesTextField, habit.unit),
                     modifier = Modifier.weight(1f),
@@ -403,13 +468,16 @@ fun VerticalAddHabitScreen(
             }
         }
 
-        //Notificaciones
+        // ============================================================================
+        //SECTION 5: SYSTEM PERMISSIONS BOUNDARY & LOCAL NOTIFICATION REGISTRY TRACK
+        // ============================================================================
         if(isPermissionGranted.value){
 
             CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
             LabelLargeText(stringResource(R.string.add_habit_notifications_title))
 
+            // TRIGGER BUTTON SHEET TO APPEND NEW ALARM CONFIGURATION TEMPLATES
             CardLeadingIconButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -422,6 +490,7 @@ fun VerticalAddHabitScreen(
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
+            // GRID FLOW SUB-SECTION A: GRANULAR WEEKLY/DAILY ALERTS MATRIX TREE
             if(notificationWeek.isNotEmpty()){
                 LabelMediumText(
                     stringResource(R.string.add_habit_notificacionWeek),
@@ -440,6 +509,7 @@ fun VerticalAddHabitScreen(
                 }
             }
 
+            // GRID FLOW SUB-SECTION B: GRANULAR ROLLING CYCLIC ALERT MATRIX TREE
             if(notificationRecurring.isNotEmpty()){
                 LabelMediumText(
                     stringResource(R.string.add_habit_notificacionRecurring),
@@ -459,10 +529,15 @@ fun VerticalAddHabitScreen(
 
         }else{
 
+            // ============================================================================
+            // CONTINGENCY FALLBACK VIEW: POST_NOTIFICATIONS HARDWARE DEFENSE BLOCKER
+            // ============================================================================
+
             CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
             LabelMediumText(stringResource(R.string.add_habit_no_permissions))
 
+            // ACTION BUTTON FORWARDING USER HARDWARE INSTRUCTIONS STRAIGHT TO OPERATING SYSTEM OPTIONS
             Button(onClick = {
                 goToAppSettings(context)
             },
@@ -492,9 +567,15 @@ fun VerticalAddHabitScreen(
         }
     }
 
-    //Dialog
+    // ============================================================================
+    // SECTION 6: MODAL CONTEXT ROUTER (STATE-DRIVEN DIALOG ORCHESTRATION PIPELINE)
+    // ============================================================================
     if (dataAddHabit.showDialog) {
+
+        // Contextual branching dispatcher evaluating designated programmatic tracking indexes
         when (dataAddHabit.typeDialog) {
+
+            // ROUTE A: INFLATE STRATEGY TYPE SELECTION OVERLAY (DAILY, WEEKLY, MONTHLY, CYCLIC)
             PICK_TYPE_HABIT -> {
                 PickTypeHabitDialog(
                     onDismissRequest = onDismissDialog,
@@ -502,6 +583,7 @@ fun VerticalAddHabitScreen(
                 )
             }
 
+            // ROUTE B: INFLATE CALENDAR SELECTOR SHEET FOR CYCLIC INITIALIZATION BASES
             PICK_DATE ->{
                 DatePickerDialogHabit(
                     onDismissRequest = onDismissDialog,
@@ -510,6 +592,7 @@ fun VerticalAddHabitScreen(
                     onClickDate = onDateSelected)
             }
 
+            // ROUTE C: INFLATE SCALAR UNIT SPECS OVERLAY MATRIX (TIMES, HOURS, MINUTES, SECONDS)
             PICK_UNIT -> {
                 PickUnitDialog(
                     onDismissRequest = onDismissDialog,
@@ -520,6 +603,7 @@ fun VerticalAddHabitScreen(
                 )
             }
 
+            // ROUTE D: INFLATE REMINDER DISPATCH STRATEGY OVERLAY WINDOW
             PICK_TYPE_NOTIFICATION ->{
                 PickTypeNotificationDialog(
                     onDismissRequest = onDismissDialog,
@@ -527,6 +611,7 @@ fun VerticalAddHabitScreen(
                 )
             }
 
+            // ROUTE E: INFLATE DYNAMIC CHRONO ALARM TIME PICKER WORKSPACE SHEET
             PICK_NOTIFICATION -> {
                 TimePickerDialog(
                     color = habit.color,
@@ -541,6 +626,9 @@ fun VerticalAddHabitScreen(
         }
     }
 
+    // ============================================================================
+    // SECTION 7: CONTEXTUAL PERSISTENT TRAY CONTAINER (MODAL BOTTOM SHEET WORKFLOW)
+    // ============================================================================
     if(dataAddHabit.bottomSheetState.isVisible){
         AddBottomSheet(
             dataBottomSheet = dataAddHabit.bottomSheetState.dataBottomSheet,

@@ -15,6 +15,17 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 
+/**
+ * Transforms a presentation layer aggregate configuration form model into a consolidated
+ * domain-layer relational structure payload.
+ *
+ * Unwraps reactive inputs into standard primitives, casts colors into ARGB integer matrices,
+ * computes complex goal time structures into flat storage units, and converts UI presentation
+ * enum flags into deep polymorphic domain behaviors.
+ *
+ * @param habitScreen The active [AddHabit] screen state model containing the current input parameters.
+ * @return A unified [HabitWithNotification] domain data token ready for persistence layers.
+ */
 fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
     Log.d("HabitScreen", habitScreen.toString())
     return HabitWithNotification(
@@ -43,6 +54,16 @@ fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
     )
 }
 
+/**
+ * Rehydrates a domain-layer composite data entity back into an isolated, mutable presentation form state structure.
+ *
+ * Maps textual properties into fresh Foundation [TextFieldState] controllers, reconstructs graphic
+ * color tokens from primitive storage integers, and safely unpacks polymorphic rule definitions into
+ * separate layout fields.
+ *
+ * @param habitWithNotification The underlying [HabitWithNotification] aggregate structural payload retrieved from core storage.
+ * @return An interactive, independent [AddHabit] configuration instance model prepared for UI state tracking.
+ */
 fun toHabitScreen(habitWithNotification: HabitWithNotification): AddHabit {
     return AddHabit(
         id = habitWithNotification.habit.id,
@@ -72,6 +93,17 @@ fun toHabitScreen(habitWithNotification: HabitWithNotification): AddHabit {
     )
 }
 
+/**
+ * Compiles input parameters across text fields into a standardized financial-grade numeric quantitative metric representation.
+ * Dispatches temporal fields through conversion filters if tracking metric units measure time bounds;
+ * otherwise, normalizes base texts into isolated scales to prevent structural decimal truncation leaks.
+ *
+ * @param numberTextField Standard discrete count input state buffer tracker.
+ * @param firstHourTextField Temporal hours field boundary text input buffer tracker.
+ * @param secondHourTextField Temporal minutes field boundary text input buffer tracker.
+ * @param unitHabit The structural metrics definition format targeting the evaluation.
+ * @return A high-precision [BigDecimal] numerical matrix anchor representing the target operational goal.
+ */
 fun goalConverter(
     numberTextField: TextFieldState,
     firstHourTextField: TextFieldState,
@@ -92,6 +124,14 @@ fun goalConverter(
     }
 }
 
+/**
+ * Extracts and maps the primary tracking segment from a consolidated quantitative target numerical entity
+ * into a presentation layer input controller state.
+ *
+ * @param goal The composite target metric [BigDecimal] specification ledger retrieved from the core data framework.
+ * @param unitHabit The active metric measurement classification rule tracking parameters.
+ * @return A fresh [TextFieldState] model wrapped around isolated target string elements.
+ */
 fun firstHourConverter(goal:BigDecimal,unitHabit: UnitHabit):TextFieldState{
     return when(unitHabit){
         UnitHabit.MINUTES, UnitHabit.HOURS -> {
@@ -104,6 +144,14 @@ fun firstHourConverter(goal:BigDecimal,unitHabit: UnitHabit):TextFieldState{
     }
 }
 
+/**
+ * Extracts and maps the secondary tracking segment from a consolidated quantitative target numerical entity
+ * into a presentation layer input controller state.
+ *
+ * @param goal The composite target metric [BigDecimal] specification ledger retrieved from the core data framework.
+ * @param unitHabit The active metric measurement classification rule tracking parameters.
+ * @return A fresh [TextFieldState] model wrapped around isolated target string elements.
+ */
 fun secondHourConverter(goal:BigDecimal,unitHabit: UnitHabit):TextFieldState{
     return when(unitHabit){
         UnitHabit.MINUTES, UnitHabit.HOURS -> {

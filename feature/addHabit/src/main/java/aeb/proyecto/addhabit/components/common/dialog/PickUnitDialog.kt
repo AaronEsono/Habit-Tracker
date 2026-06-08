@@ -45,6 +45,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
+/**
+ * A comprehensive modal metric selection dialog that serves as the central configuration dashboard
+ * for unit metrics. Organizes dynamic units into distinct behavioral sections (Frequency, Quantity,
+ * and Time boundaries) leveraging reuse-optimized fluid wrapping layouts.
+ *
+ * @param unitSeleted The active runtime marker identifying the currently selected [UnitHabit] metric.
+ * @param colorSelected The calculated custom design [Color] token used to highlight the focused selection node.
+ * @param contrastColor An accessible high-contrast [Color] reference mapped onto content labels inside the active state.
+ * @param onDismissRequest Contextual closure callback lambda dispatched to close or unmount the dialog overlay layer.
+ * @param onClickButton Action callback lambda carrying the finalized [UnitHabit] option clicked by the user.
+ */
 @Composable
 fun PickUnitDialog(
     unitSeleted: UnitHabit,
@@ -64,6 +75,7 @@ fun PickUnitDialog(
                 .padding(horizontal = spacing14, vertical = spacing12)
         ){
 
+            // Header decorative asset block managing image resources and close anchors
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -90,9 +102,11 @@ fun PickUnitDialog(
                 }
             }
 
+            // Scroll-defended core catalog wrapper separating structural metrics segments
             Column (
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ){
+                // SECTION 1: FREQUENCY METRICS
                 BodyMediumText(
                     stringResource(R.string.add_habit_frecuency_title),
                     fontWeight = FontWeight.Bold,
@@ -111,6 +125,7 @@ fun PickUnitDialog(
                         onDismissRequest()
                     })
 
+                // SECTION 2: QUANTITY METRICS
                 BodyMediumText(
                     stringResource(R.string.add_habit_quantity_title),
                     modifier = Modifier.padding(top = spacing4, bottom = spacing4),
@@ -129,6 +144,7 @@ fun PickUnitDialog(
                         onDismissRequest()
                     })
 
+                // SECTION 3: TIME BOUNDARY METRICS
                 BodyMediumText(
                     stringResource(R.string.add_habit_time_title),
                     modifier = Modifier.padding(top = spacing4, bottom = spacing4),
@@ -151,6 +167,15 @@ fun PickUnitDialog(
     }
 }
 
+/**
+ * An atomic selective chip element representing a standalone measurement unit metric wrapper.
+ * Adapts its internal iconography and background tokens dynamically based on focused activation states.
+ *
+ * @param unit The structural metric configuration model [UnitHabit] anchoring text tokens and vector graphics.
+ * @param colorSelected The calculated contextual [Color] token injected to paint the chip background workspace.
+ * @param contrastColor An accessible high-contrast [Color] reference targeted to tint internal text and graphic nodes.
+ * @param onClick Interactive click action callback lambda triggered when the user selects this target tile.
+ */
 @Composable
 fun UnitCard(
     unit: UnitHabit,
@@ -181,6 +206,16 @@ fun UnitCard(
     }
 }
 
+/**
+ * An elastic adaptive flex-wrap container layer designed to lay out unit metrics across dynamic fluid lines.
+ * Prevents text truncation across dynamic system font scaling setups by leveraging flow distribution paths.
+ *
+ * @param list Core immutable collection registry tracking available [UnitHabit] instances to inflate.
+ * @param onClickButton Callback action lambda tracking single-tap unit update intents.
+ * @param colorSelected Personalized design accent [Color] token applied over the active selection tile background.
+ * @param contrastColor High-contrast accessible design [Color] token assigned to paint content elements inside the selected state.
+ * @param unitSelected Currently active configuration boundary marker identifying the runtime selected target metric type.
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FlowRowCards(
@@ -208,11 +243,17 @@ fun FlowRowCards(
     }
 }
 
+/**
+ * Evaluates operational background colors defensively based on focused active configuration rules.
+ */
 @Composable
 fun colorSelected(unit: UnitHabit, unitSelected: UnitHabit, colorSelected: Color):Color{
     return if(unit == unitSelected) colorSelected else MaterialTheme.colorScheme.background
 }
 
+/**
+ * Evaluates operational text content contrast color balances based on focused active configuration rules.
+ */
 @Composable
 fun contrastSelected(unit: UnitHabit, unitSelected: UnitHabit, contrastSelected: Color):Color{
     return if(unit == unitSelected) contrastSelected else MaterialTheme.colorScheme.onSurface

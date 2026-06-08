@@ -30,8 +30,28 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+// ============================================================================
+// WEEKLY VIEWPORT ARCHITECTURE METRICS
+// ============================================================================
+
+/**
+ * Immutable registry tracking standard day iteration constraints for weekly matrix layouts.
+ */
 val numberOfDaysWeek = listOf(1,2,3,4,5,6,7)
 
+/**
+ * A tailored configuration layout container designed to manage weekly target behaviors.
+ * Coordinates an animated workflow shifting reactively between a global weekly cumulative target switch
+ * and a specific day-count button selection track.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param weeklyGoal Core state flag indicating whether the strategy defaults to an open weekly cumulative ceiling.
+ * @param numberSelected Currently active configuration boundary marker identifying the focused picked weekday count integer.
+ * @param colorSelected The primary active design [Color] token allocated to paint structural focus indicator highlights.
+ * @param contrastColor An accessible high-contrast [Color] reference targeted to tint internal text layers during active selections.
+ * @param onClickWeekly Event callback lambda transmitting selected day metrics downstream.
+ * @param onCheckedChange Interactive toggle action callback hub tracking global switch configuration shifts.
+ */
 @Composable
 fun WeeklyTypeHabit(
     modifier: Modifier = Modifier,
@@ -47,6 +67,7 @@ fun WeeklyTypeHabit(
         modifier = modifier,
     ){
 
+        // SECTION 1: GLOBAL WEEKLY STRATEGY TOGGLE HEADER ROW
         Row (
             modifier = Modifier.fillMaxWidth().padding(vertical = spacing8),
             verticalAlignment = Alignment.CenterVertically
@@ -72,6 +93,7 @@ fun WeeklyTypeHabit(
             )
         }
 
+        // SECTION 2: GRANULAR TARGET HORIZONTAL MATRIX TRACK
         AnimatedVisibility(
             visible = !weeklyGoal
         ) {
@@ -100,6 +122,18 @@ fun WeeklyTypeHabit(
 
 }
 
+/**
+ * An atomic micro-card button component representing an isolated numerical day target within a weekly grid.
+ * Shifts its color tokens dynamically between background container systems and custom accent highlight slots
+ * based on its selection state.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param number The core primitive integer identifier displayed as the main text label. Defaults to 1.
+ * @param selected Operational flag determining whether this specific day node holds the active user focus.
+ * @param colorSelected The primary active design [Color] token allocated to paint the container when selected is true.
+ * @param contrastColor An accessible high-contrast [Color] reference targeted to tint text strings inside selected states.
+ * @param onClick Interactive action callback lambda targeted to emit user selection events upstream.
+ */
 @Composable
 fun WeeklyButton(
     modifier: Modifier = Modifier,
@@ -135,6 +169,13 @@ fun WeeklyButton(
     }
 }
 
+/**
+ * Evaluates operational coordinate equivalences between individual node values and active target states.
+ *
+ * @param number The current baseline element integer to evaluate.
+ * @param selected The active focused configuration state pointer index.
+ * @return True if coordinates align perfectly, false otherwise.
+ */
 fun numberSelected(number:Int, selected:Int):Boolean{
     return number == selected
 }

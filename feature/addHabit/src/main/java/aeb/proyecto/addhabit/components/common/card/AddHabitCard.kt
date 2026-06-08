@@ -24,6 +24,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
+/**
+ * A profile row component combining a specialized illustrative asset token tile and its aligned title descriptor text.
+ * Integrates an interaction-wrapped [ElevatedCard] displaying the habit's design icon with dynamic color tints,
+ * typically used as a core preview anchor inside the habit initialization setup workspace.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param title Prominent descriptive label text printed adjacently to the graphic icon tile.
+ * @param color The personalized style [Color] token value applied as the visual vector asset color tint.
+ * @param icon The targeted [ImageVector] configuration asset representing the habit classification identity.
+ * @param onClick Interactive action lambda callback fired when the card asset block is tapped by the user.
+ */
 @Composable
 fun AddHabitCard(
     modifier: Modifier = Modifier,

@@ -28,6 +28,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 
+/**
+ * A highly-customized, state-driven text input field component built on top of the modern foundation API.
+ * Leverages [TextFieldState] to manage characters asynchronously within an isolated atomic buffer,
+ * embedding advanced hardware IME focus actions and custom design palettes.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param textFieldState The asynchronous backing controller pipeline managing character updates within the input field.
+ * @param label Optional structural composable slot injected to draw text descriptions near or attached to the frame.
+ * @param containerColor The design [Color] token allocated to paint the layout backdrop canvas layer.
+ * @param contentPadding Custom internal boundary spacings defining the touch-target cushioning inside the text tray.
+ * @param leadingIcon Optional symbolic composable slot pinned to the absolute starting margin of the text track.
+ * @param keyboardType The behavioral configuration constraints mapped over virtual keyboards (e.g., Number, Text, Email).
+ * @param trailingIcon Optional symbolic composable slot pinned to the absolute trailing margin of the text track.
+ * @param imeAction The software action trigger key type mounted onto the execution button of virtual keyboards (Next, Done).
+ * @param outPutTransformation Toolchain pipeline allowing post-processing text masking operations without mutating state.
+ * @param placeholder Optional descriptive helper label drawn inside the input workspace when string content remains empty.
+ * @param labelPosition Structural positional strategy defining the layout behavior of the attached label anchor.
+ * @param focusManager The parent directional coordinator pipeline tracking active viewport input nodes.
+ */
 @Composable
 fun AddHabitTextField(
     modifier: Modifier = Modifier,
@@ -67,6 +86,7 @@ fun AddHabitTextField(
             focusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
             unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSurface,
 
+            // Seamless boundary concealment keeping borders perfectly consisten
             unfocusedBorderColor = MaterialTheme.colorScheme.surfaceContainer,
             focusedBorderColor = MaterialTheme.colorScheme.surfaceContainer,
 
@@ -84,6 +104,7 @@ fun AddHabitTextField(
             keyboardType = keyboardType
         ),
         onKeyboardActions = {
+            // Contextual routing matching the software keyboard action execution path
             when(imeAction){
                 ImeAction.Done -> focusManager.clearFocus()
                 ImeAction.Next -> focusManager.moveFocus(FocusDirection.Right)
@@ -93,8 +114,15 @@ fun AddHabitTextField(
 
 }
 
+/**
+ * A state-aware trailing contextual action button.
+ * Monitors [TextFieldState] string buffers to append an operational clear handle whenever text fields carry active input.
+ *
+ * @param textFieldState The target text state controller pipeline bound to execute transactional wipe commands.
+ */
 @Composable
 fun TrailingIcon(textFieldState: TextFieldState){
+    // Evaluate the raw string representation inside the state buffer to compute node visibility states
     when (textFieldState.text.toString()) {
         "" -> {}
         else -> {

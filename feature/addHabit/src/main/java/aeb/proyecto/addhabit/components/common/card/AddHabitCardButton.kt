@@ -20,6 +20,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * An interactive, elevated navigational row button styled as a full-width container tile.
+ * Displays a descriptive title aligned to the left edge and an auto-mirrored forward indicator arrow
+ * pushed to the right boundary, commonly used to route users toward deep configuration parameter dialogs.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param title The text string printed on the leading edge of the tile identifying its destination or parameter state.
+ * @param onClick Interactive action lambda execution trigger dispatched when the card layout is pressed.
+ */
 @Composable
 fun AddHabitCardButton(
     modifier: Modifier = Modifier,
@@ -43,6 +52,7 @@ fun AddHabitCardButton(
 
                 BodyMediumText(title)
 
+                // Elastic spacing spacer to dynamically drive the forward arrow icon onto the trailing boundary edge
                 Spacer(modifier = Modifier.weight(1f))
 
                 Icon(

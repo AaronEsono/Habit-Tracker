@@ -37,14 +37,33 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 
+// ============================================================================
+// GRID DIMENSIONAL ARCHITECTURE METRICS
+// ============================================================================
+
 const val ROWS = 3
 val itemSize = 30.dp
-
 val verticalPadding = spacing4
 val verticalSpacing = spacing8
 
+/**
+ * Strict structural height constraint blueprint calculating the exact vertical boundary allocation.
+ * Limits the container footprint dynamically to a clean 3-row viewport ceiling.
+ */
 val height: Dp = ((ROWS - 0.5) * itemSize) + ((ROWS - 1) * verticalSpacing) + (verticalPadding * 2)
 
+/**
+ * A highly tailored adaptive selection grid sheet designed to manage asset customization pipelines.
+ * Displays a fluid, column-wrapping inventory dashboard accommodating either programmatic canvas vector
+ * paint spots or illustrative symbols depending on the active [GridOption] branch state.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param lazyGridState Backing interaction coordinator pipeline managing state indexing for the inner grid layout.
+ * @param gridOption Structural filtering parameter flag defining whether to render a color palette array or an icon ledger sheet.
+ * @param colorSelected The primary active design [Color] token defining the current configuration boundary.
+ * @param iconSelected The targeted [ImageVector] asset token identifying the current functional choice index.
+ * @param onClickGridOption Polymorphic data-result callback carrier lambda emitting selected values downstream.
+ */
 @Composable
 fun AddHabitGrid(
     modifier:Modifier = Modifier,
@@ -113,12 +132,18 @@ fun AddHabitGrid(
     }
 }
 
+/**
+ * Calculates a dynamic [BorderStroke] focus marker to map around the currently selected active color node.
+ */
 @Composable
 fun colorSelected(color: Color, colorSelected: Color): BorderStroke {
     return if (color == colorSelected) BorderStroke(2.dp, MaterialTheme.colorScheme.onSurface)
     else BorderStroke(0.dp, Color.Transparent)
 }
 
+/**
+ * Evaluates tactical tint distribution parameters across symbolic glyph grids based on active focus indices.
+ */
 @Composable
 fun iconSelected(icon: ImageVector, iconSelected: ImageVector, color: Color): Color {
     return if (icon == iconSelected) color else MaterialTheme.colorScheme.onSurface

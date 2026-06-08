@@ -31,6 +31,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 
+/**
+ * A specialized layout row tailored to configure custom rolling interval habit iterations.
+ * Pairs a localized calendar trigger card (60% width layout block) with a numerical sequence
+ * text track field to let users define precise rolling frequency boundaries.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param focusManager The parent directional coordinator pipeline tracking active viewport input nodes.
+ * @param intervalTextFieldState Asynchronous backing text state buffer holding the physical cyclic gap integer characters.
+ * @param color The primary active design [Color] token representation allocated to paint functional asset nodes.
+ * @param date The underlying [LocalDate] timestamp snapshot representing the calculated baseline cycle start day.
+ * @param onClick Interactive action callback lambda targeted to inflate date picker overlay sheets.
+ */
 @Composable
 fun RecurringTypeHabit(
     modifier:Modifier = Modifier,
@@ -41,6 +53,7 @@ fun RecurringTypeHabit(
     onClick:() -> Unit = {}
 ){
 
+    // Intercept input variations defensively to ensure only digital numbers populate the state buffer
     IsOnlyDigit(intervalTextFieldState)
 
     Column(
@@ -81,6 +94,13 @@ fun RecurringTypeHabit(
 
 }
 
+/**
+ * Transforms an isolated [LocalDate] snapshot instance into a fully localized, human-readable layout string.
+ * Extracts string references using structural key tokens to maintain grammar accuracy across system language shifts.
+ *
+ * @param localDate The physical time coordinate model parameter targeted for structural parsing.
+ * @return A completely assembled localized date string template.
+ */
 @Composable
 fun getDate(localDate: LocalDate):String{
     val day = localDate.dayOfWeek.name

@@ -22,6 +22,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
+/**
+ * An enriched interactive container tile featuring a contextual leading graphic asset icon.
+ * Displays a descriptive text label centered alongside the leading anchor, utilizing an elastic spacer
+ * to align an auto-mirrored directional arrow indicator flush against the trailing layout edge.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param leadingIcon The primary illustrative [ImageVector] asset pinned to the starting edge of the tile layer.
+ * @param title The text content printed next to the leading icon identifying the selection target or option context.
+ * @param color Personalized design [Color] token representation applied as a tint over the leading vector icon.
+ * @param onClick Interactive action lambda execution trigger dispatched when the card layout is pressed.
+ */
 @Composable
 fun CardLeadingIconButton(
     modifier:Modifier = Modifier,
@@ -54,6 +65,7 @@ fun CardLeadingIconButton(
 
                 LabelLargeText(title, modifier = Modifier.padding(start = spacing8))
 
+                // Elastic layout spacer pushing the navigation chevron to the absolute trailing margin bounds
                 Spacer(modifier = Modifier.weight(1f))
 
                 Icon(

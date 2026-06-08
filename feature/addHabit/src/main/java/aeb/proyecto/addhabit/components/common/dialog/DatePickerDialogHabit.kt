@@ -22,6 +22,16 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
+/**
+ * A highly-customized modal system date picker dialog tailored for habit timeline definitions.
+ * Synchronizes selected epoch timestamps into standard localized [LocalDate] primitives while
+ * overriding the core Material 3 design palette to align with user-selected theme accent tokens.
+ *
+ * @param onDismissRequest Contextual callback lambda fired when the dialogue layer mounts a cancellation execution.
+ * @param colorSelected The personalized custom design [Color] allocated to highlight active selection nodes.
+ * @param contrastColor An accessible, high-contrast [Color] mapped onto text nodes inside highlighted selection states.
+ * @param onClickDate Event callback lambda carrying the finalized [LocalDate] object selected by the user.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerDialogHabit(
@@ -38,6 +48,7 @@ fun DatePickerDialogHabit(
         confirmButton = {
             CustomRipple {
                 TextButton(onClick = {
+                    // Cast selected epoch milliseconds into standard localized calendar primitives
                     val localDate = datePickerState.selectedDateMillis?.let { millis ->
                         Instant.ofEpochMilli(millis)
                             .atZone(ZoneId.systemDefault())
@@ -67,6 +78,7 @@ fun DatePickerDialogHabit(
             colors = DatePickerDefaults.colors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
 
+                // Dynamic chosen color customization vectors
                 selectedDayContainerColor = colorSelected,
                 selectedYearContainerColor = colorSelected,
 
@@ -99,5 +111,4 @@ fun DatePickerDialogHabit(
                 )
             ))
     }
-
 }

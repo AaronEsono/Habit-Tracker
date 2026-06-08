@@ -49,6 +49,20 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * A composite interactive row card that displays individual reminder profiles.
+ * Polymorphically adapts its visual structure in real time according to the underlying [TypeNotification]
+ * strategy: inflating interval step pickers for cyclic schedules or weekday button matrices for specific recurring calendars.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param notification Core configuration state data token managing IDs, unique timestamps, and behavioral schemas.
+ * @param startDayOfWeek Locality boundary token defining the standard calendar start index anchor. Defaults to [DayOfWeek.MONDAY].
+ * @param color The personalized brand [Color] token representation allocated to paint focus state nodes and icons.
+ * @param contrastColor An accessible high-contrast [Color] reference targeted to tint internal text elements inside selected nodes.
+ * @param onClickDelete Event callback lambda dispatched downstream to command a record wipe.
+ * @param onClickEdit Event callback lambda triggered to pass focus onto deep time tuning dialog workspaces.
+ * @param onClickTypeNotification State-mutation callback hub transmitting specialized [TypeNotificationResult] outcomes upstream.
+ */
 @Composable
 fun NotificationComponent(
     modifier: Modifier = Modifier,
@@ -61,6 +75,7 @@ fun NotificationComponent(
     onClickTypeNotification: (TypeNotificationResult) -> Unit = {}
 ){
 
+    // Structural optimization calculating day index distribution arrays cleanly across recompositions
     val orderedDays = remember(startDayOfWeek) {
         getOrderedDays(startDayOfWeek)
     }
@@ -95,6 +110,7 @@ fun NotificationComponent(
 
                     Spacer(modifier = Modifier.weight(1f))
 
+                    // CONDITION 1: INFLATE CYCLIC INCREMENT INTERVAL STEP CONTROL
                     if(notification.type is TypeNotification.Recurring){
 
                         ArrowCyclicButton(icon = Icons.Filled.Remove,
@@ -139,6 +155,7 @@ fun NotificationComponent(
                     }
                 }
 
+                // CONDITION 2: INFLATE THE ADAPTIVE WEEKDAY REGISTRY MATRIX BUTTON BANNER
                 if(notification.type is TypeNotification.Daily){
                     Row (
                         modifier = Modifier
@@ -173,6 +190,9 @@ fun NotificationComponent(
     }
 }
 
+/**
+ * An atomic increment/decrement step button component wrapped inside a primary background surface container.
+ */
 @Composable
 fun ArrowCyclicButton(
     modifier: Modifier = Modifier,
@@ -193,6 +213,9 @@ fun ArrowCyclicButton(
     }
 }
 
+/**
+ * A highly compact state-driven micro-chip button that represents an individual isolated day selection target.
+ */
 @Composable
 fun NotificationDayButton(
     modifier: Modifier = Modifier,
@@ -228,6 +251,9 @@ fun NotificationDayButton(
     }
 }
 
+/**
+ * Evaluates the containment state of a specific target day primitive against a registry checklist.
+ */
 @Composable fun isDaySelected(list:List<DayOfWeek>,day:DayOfWeek):Boolean{
     return list.contains(day)
 }

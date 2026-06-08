@@ -47,6 +47,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import java.time.LocalTime
 
+/**
+ * A highly customizable, adaptive time picker dialog component.
+ * Features an internal togglable layout state shifting seamlessly between a classical circular analog clock dial
+ * layout and a structured hardware keyboard numeric matrix field, tracking user-chosen accent design pallets.
+ *
+ * @param modifier Structural [Modifier] assembly to alter or extend the layout constraints.
+ * @param notification The underlying active [AddHabitNotification] metadata token supplying the foundational initial time snapshot.
+ * @param color The personalized brand [Color] token representation allocated to paint primary active visual highlight nodes.
+ * @param contrastColor An accessible, high-contrast [Color] reference mapped onto text layers inside highlighted selection states.
+ * @param initialTimeMode The baseline input display view structure flag (true sets the Analog Dial wheel, false defaults to Text Input fields).
+ * @param onDismissRequest Contextual closure callback lambda fired to unmount or close the dialog overlay layer workspace.
+ * @param onConfirm Action commitment callback lambda carrying the finalized, transformed [LocalTime] object instance parameters.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimePickerDialog(
@@ -62,6 +75,7 @@ fun TimePickerDialog(
     val selectedHour = remember { mutableIntStateOf(notification.time.hour) }
     val selectedMinute = remember { mutableIntStateOf(notification.time.minute) }
 
+    // Intercept state configuration dependencies utilizing the core system format key to reset buffers cleanly
     val timePickerState = key(is24hoursMode.value) {
         rememberTimePickerState(
             is24Hour = is24hoursMode.value,
@@ -83,6 +97,7 @@ fun TimePickerDialog(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
+            // Contextual input structure routing branch evaluation
             if(timeMode){
                 TimePicker(state = timePickerState,
                     colors = timePickerColors(color, contrastColor),
@@ -94,6 +109,7 @@ fun TimePickerDialog(
                 )
             }
 
+            // Interactive format configuration row toggling 12/24 hour modes
             Row (
                 modifier = Modifier.fillMaxWidth().padding(start = spacing8, bottom = spacing8),
                 verticalAlignment = Alignment.CenterVertically,
@@ -116,6 +132,7 @@ fun TimePickerDialog(
                     fontSize = 16.sp)
             }
 
+            // Structural row tracking utility navigation paths and confirmation anchors
             Row (
                 modifier = Modifier
                     .fillMaxWidth()
@@ -166,7 +183,14 @@ fun TimePickerDialog(
     }
 }
 
-
+/**
+ * Compiles a centralized Material 3 [TimePickerColors] structural ledger.
+ * Overrides base platform templates to introduce customized transparencies and high-contrast accessibility layers.
+ *
+ * @param color The dominant custom style [Color] token representation targeted onto active selectors.
+ * @param contrastColor Accessible high-contrast background [Color] layer mapped onto highlighted texts.
+ * @return A unified, tailored [TimePickerColors] theme package configuration instance.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun timePickerColors(color: Color, contrastColor: Color): TimePickerColors {

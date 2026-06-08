@@ -34,6 +34,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * A modal system dialogue panel that serves as a specific reminder behavior configuration gateway.
+ * Prompts the user to define their alarm layout rule (Daily fixed grid or Rolling cyclic sequence)
+ * by mapping dynamic metadata entries onto reuse-optimized input button structures.
+ *
+ * @param onDismissRequest Contextual closure callback lambda fired to unmount the dialog overlay viewport layer.
+ * @param onClickButton Callback action lambda carrying the targeted polymorphic [TypeNotification] domain behavior payload.
+ */
 @Composable
 fun PickTypeNotificationDialog(
     onDismissRequest: () -> Unit = {},
@@ -51,6 +59,7 @@ fun PickTypeNotificationDialog(
                 .padding(horizontal = spacing10, vertical = spacing12)
         ) {
 
+            // Header asset arrangement layer managing close anchors and background vectors
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -77,6 +86,7 @@ fun PickTypeNotificationDialog(
                 }
             }
 
+            // Central prominent alert instruction label header
             LabelLargeText(
                 stringResource(R.string.add_habit_dialog_notification_title),
                 modifier = Modifier.padding(bottom = spacing4, top = spacing10)
@@ -86,6 +96,7 @@ fun PickTypeNotificationDialog(
                 textAlign = TextAlign.Center
             )
 
+            // Scroll-defended iterative option node generator loop
             Column (
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
@@ -106,5 +117,4 @@ fun PickTypeNotificationDialog(
             }
         }
     }
-
 }
