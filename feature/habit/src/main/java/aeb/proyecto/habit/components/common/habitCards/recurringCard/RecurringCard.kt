@@ -66,6 +66,21 @@ import androidx.compose.ui.unit.sp
 import java.math.RoundingMode
 import java.time.LocalDate
 
+/**
+ * A display card specifically for recurring habits.
+ *
+ * This component visualizes progress for habits that occur at specific intervals.
+ * It manages visual feedback differently based on whether the habit is "due" today
+ * ([isDayActive] == 0) or scheduled for a future date, providing countdown labels
+ * and dimming the interaction area when inactive.
+ *
+ * @param modifier Modifier for layout constraints.
+ * @param selectedDate The target date being viewed.
+ * @param habit Container for habit definitions and progress history.
+ * @param onClickCard Callback for main card click actions.
+ * @param onClick Callback for recording progress on a specific date.
+ * @param onLongClick Callback for secondary progress interactions (e.g., reset).
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RecurringCard(
@@ -77,10 +92,12 @@ fun RecurringCard(
     onLongClick: (id: Long, date: LocalDate) -> Unit
 ) {
 
+    // Retrieve specific day record for the selected date
     val habitDaySelected = remember(habit) {
         getSelected(selectedDate, habit.dailyHabits)
     }
 
+    // Determine if today is an active recurrence day
     val isDayActive = remember (selectedDate){
         isDayActiveForRecurringHabit(habit.habit,selectedDate)
     }
@@ -135,6 +152,7 @@ fun RecurringCard(
         )
     ) {
         Box{
+            // Main Content: Fades out if the habit is not active for the selected date
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -142,7 +160,7 @@ fun RecurringCard(
                     .padding(horizontal = spacing8, vertical = spacing10),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                //Icono
+                // Icon Display
                 Box(
                     modifier = Modifier
                         .size(45.dp)
@@ -158,7 +176,7 @@ fun RecurringCard(
                     )
                 }
 
-                // Nombre y descripcion
+                // Metadata Section
                 Column(
                     modifier = Modifier
                         .padding(start = spacing12, end = spacing6)
@@ -183,7 +201,7 @@ fun RecurringCard(
                     }
                 }
 
-                // Metas
+                // Goal Progress
                 Column(
                     modifier = Modifier
                         .padding(end = spacing12, start = spacing6),
@@ -209,7 +227,7 @@ fun RecurringCard(
                     )
                 }
 
-                // Progresion
+                // Interaction Box: Handles the "add", "progress", or "check" visuals
                 Box(
                     modifier = Modifier
                         .size(45.dp)
@@ -261,7 +279,7 @@ fun RecurringCard(
                 }
             }
 
-
+            // Countdown Label for inactive days
             androidx.compose.animation.AnimatedVisibility(
                 visible = isDayActive != 0,
                 modifier = Modifier
@@ -287,6 +305,7 @@ fun RecurringCard(
                 )
             }
 
+            // Divider for inactive state visual emphasis
             androidx.compose.animation.AnimatedVisibility(
                 visible = isDayActive != 0,
                 modifier = Modifier

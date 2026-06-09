@@ -16,14 +16,23 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-// NOTA: Iconos de flaticon y svgRepo
+// NOTA: Iconos de flaticon y svgRepo, poner que los he utilizado y darles credito
 
 // Mirar en un futuro el horizontalRow con los dias, optimizarlo
 // Mirar en addHabit como hacer que se deslice los mensuales
 
-/** Pantalla para mostrar los hábitos e intercactuar con ellos,
- * como añadir nuevos dailyHabits, borrar hábitos o editarlos.
- * */
+/**
+ * The entry point for the Habit dashboard screen.
+ *
+ * This screen is responsible for observing the [HabitViewModel] state and
+ * delegating the rendering logic based on the device's current orientation.
+ * It acts as a "Fat Screen" or Controller, transforming the reactive stream
+ * of data into either a [VerticalHabitScreen] or a [HorizontalHabitScreen].
+ *
+ * @param viewModel The ViewModel providing the reactive UI state.
+ * @param navigateToAddHabit Action to route the user to the habit creation/edit flow.
+ * @param navigateToTimer Action to route the user to the active timer screen.
+ */
 @Composable
 fun HabitScreen(
     viewModel: HabitViewModel = hiltViewModel(),
@@ -31,8 +40,10 @@ fun HabitScreen(
     navigateToTimer : () -> Unit
 ){
 
+    // Detect device orientation to determine the UI layout strategy
     val orientation = getOrientation()
 
+    // Collect all relevant UI states from the ViewModel
     val pagerTypesUIState = viewModel.availablePagerTypesUiState.collectAsStateWithLifecycle().value
     val currentPagerSelected = viewModel.currentPagerType.collectAsStateWithLifecycle().value
     val selectedTimeRange = viewModel.selectedTimeRangeUiState.collectAsStateWithLifecycle().value
@@ -41,15 +52,18 @@ fun HabitScreen(
     val bottomSheetUIState = viewModel.bottomSheetUIState.collectAsStateWithLifecycle().value
     val startDayOfWeek = viewModel.startDayOfWeek.collectAsStateWithLifecycle().value
 
+    // Configure the AppBar
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.habit_topbar), fontSize = 20.sp)
     }
 
+    // Configure the context-aware action icons
     ActionIconHabitScreen(
         selectedTimeRange = selectedTimeRange,
         selectedDate = selectedDate
     )
 
+    // Strategy Pattern: Switch UI based on orientation
     when(orientation){
         Orientation.Portrait -> {
             VerticalHabitScreen(

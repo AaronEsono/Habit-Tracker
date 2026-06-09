@@ -43,6 +43,15 @@ import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.launch
 
 
+/**
+ * Destructive action modal sheet used to confirm habit removal.
+ * Employs high-contrast iconography and dual-action buttons to ensure
+ * clear intent before executing permanent data deletion.
+ *
+ * @param colorButton The habit's unique brand color used for the confirmation button.
+ * @param onDismiss Callback to handle the modal cancellation/dismissal flow.
+ * @param onAcceptDelete Callback to trigger the permanent deletion logic.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeleteHabitBottomSheet (
@@ -70,6 +79,7 @@ fun DeleteHabitBottomSheet (
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            // Header: Warning Icon and Title
             Row (
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -89,6 +99,7 @@ fun DeleteHabitBottomSheet (
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
+            // Subtitle: Warning explanation
             LabelLargeText(
                 stringResource(R.string.bt_delete_subtitle),
                 textAlign = TextAlign.Center,
@@ -97,13 +108,14 @@ fun DeleteHabitBottomSheet (
 
             Spacer(modifier = Modifier.padding(spacing2))
 
+            // Actions Row: Cancel & Confirm
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = spacing12)
             ) {
 
-
+                // Cancel Button
                 CustomRipple (){
                     OutlinedButton(
                         shape = RoundedCornerShape(spacing12),
@@ -134,6 +146,7 @@ fun DeleteHabitBottomSheet (
 
                 Spacer(Modifier.padding(horizontal = spacing8))
 
+                // Delete Button
                 CustomRipple (){
                     OutlinedButton(
                         shape = RoundedCornerShape(spacing12),
@@ -168,6 +181,5 @@ fun DeleteHabitBottomSheet (
             }
         }
     }
-
 }
 

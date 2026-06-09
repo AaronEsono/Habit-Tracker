@@ -23,6 +23,20 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
+/**
+ * A vertical list screen for displaying weekly habits, optimized for mobile devices.
+ *
+ * This screen differentiates between weekly goal types ([UniqueWeeklyCard] vs
+ * [SeparateWeeklyCard]) and renders them within a [LazyColumn]. It applies
+ * staggered entry animations and list-specific padding to ensure optimal
+ * readability on narrow screens.
+ *
+ * @param weekTimeRange Current weekly range state (start/end dates).
+ * @param habits The list of weekly habits to display.
+ * @param onClickCard Callback for main card interactions.
+ * @param onLongClick Callback for secondary interactions on calendar dates.
+ * @param onClick Callback for direct progress updates.
+ */
 @Composable
 fun VerticalWeeklyHabitScreen(
     weekTimeRange: TimeRangeUiState.Weekly,
@@ -96,5 +110,4 @@ fun VerticalWeeklyHabitScreen(
             }
         }
     }
-
 }

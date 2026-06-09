@@ -32,6 +32,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
+/**
+ * A display card component for habit information configured with a daily frequency.
+ *
+ * This component renders the habit details, including its icon, name, and progress goal,
+ * within a row layout. It also provides a dismiss action to close the BottomSheet.
+ *
+ * @param habit The [Habit] object containing the configuration and metadata of the habit to be displayed.
+ * @param onDismissBottomSheet Callback function invoked when the dismiss icon is clicked,
+ * passing the current [TypeBottomSheet] to manage UI state transition.
+ */
 @Composable
 fun DailyHabitCard(
     habit: Habit,

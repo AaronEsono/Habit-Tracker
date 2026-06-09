@@ -11,6 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+/**
+ * A floating action button component used to initiate the habit creation flow.
+ *
+ * This component provides a circular action button centered on the screen or
+ * anchored to the UI, which triggers navigation to the "Add Habit" screen.
+ *
+ * @param modifier Modifier to be applied to the button layout.
+ * @param navigateToAddHabit Callback function triggered when the button is clicked.
+ * Accepts a [Long] representing the ID of the habit (typically -1 for new habit creation).
+ */
 @Composable
 fun AddHabitButton(
     modifier: Modifier = Modifier,

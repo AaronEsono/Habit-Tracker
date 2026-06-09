@@ -19,6 +19,19 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
+/**
+ * A vertical list screen for displaying daily habits, optimized for mobile devices.
+ *
+ * This screen renders a list of [HabitWithDailyHabit] items using a [LazyColumn].
+ * It mirrors the staggered entry animation logic found in the horizontal variant,
+ * ensuring a consistent and fluid user experience across different form factors.
+ *
+ * @param selectedDate The currently active date for the habit view.
+ * @param habits The list of daily habits to be displayed.
+ * @param onClickCard Callback for main card interactions.
+ * @param onLongClick Callback for secondary interactions on habit cards.
+ * @param onClick Callback for direct progress updates.
+ */
 @Composable
 fun VerticalDailyHabitScreen(
     selectedDate: LocalDate,

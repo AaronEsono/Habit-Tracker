@@ -20,6 +20,15 @@ import androidx.compose.ui.res.stringResource
 import java.math.BigDecimal
 import java.time.LocalDate
 
+/**
+ * Orchestrator component responsible for switching between quantitative and temporal
+ * edit modes based on the habit's unit configuration.
+ *
+ * @param habitWithDay Operational data model containing habit settings and current day progression.
+ * @param onRestart Dispatches a reset event for a specific habit ID at a target date.
+ * @param onClickTimer Routes to the Chronometer module, passing the habit context triple.
+ * @param onClick Commits the modified progression value (goalDone) to the persistent database.
+ */
 @Composable
 fun IncompleteDay(
     habitWithDay: HabitWithDay,
@@ -28,11 +37,11 @@ fun IncompleteDay(
     onClick:(id:Long, date: LocalDate, goalDone:BigDecimal) -> Unit
 ){
 
+    // Memoized progressive milestone calculations
     val timesLeft = remember { timesLeft(habitWithDay.habit.goal, habitWithDay.day.goalDone) }
     val halfTimesLeft = remember { halfTimesLeft(timesLeft, habitWithDay.habit.unit) }
 
-    /**Informacion seleccion y faltantes*/
-    /** Si quedan habitos por hacer, esta pantalla */
+    // Informational label
     LabelLargeText(
         stringResource(R.string.habit_edit_habit_day_times_label),
         modifier = Modifier
@@ -40,6 +49,7 @@ fun IncompleteDay(
             .padding(top = spacing16)
     )
 
+    // Mode routing gateway: bifurcates logic based on quantitative vs. temporal units
     when{
         habitWithDay.habit.unit !in unitsHourMode -> {
             UnitIncompleteMode(

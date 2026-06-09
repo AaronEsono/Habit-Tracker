@@ -69,7 +69,23 @@ import java.math.RoundingMode
 import java.time.DayOfWeek
 import java.time.LocalDate
 
-
+/**
+ * A monthly calendar view component specifically tailored for habit tracking.
+ *
+ * This component orchestrates the display of a full month's worth of habit data,
+ * utilizing [getDates] to map daily progress records. It provides interaction
+ * handlers for individual dates to manage habit logs and triggers for card actions.
+ *
+ * @param modifier Modifier to be applied to the layout.
+ * @param startOfMonth The [LocalDate] representing the first day of the month to display.
+ * @param firstDayOfWeek The [DayOfWeek] to set as the starting column, defaulting to Monday.
+ * @param selectedDate The currently highlighted [LocalDate].
+ * @param horizontalDayPadding Spacing to apply between individual day components.
+ * @param habit The data wrapper containing habit definitions and progress history.
+ * @param onClickCard Callback invoked when the overall card is clicked.
+ * @param onClick Callback invoked for a primary action on a specific date.
+ * @param onLongClick Callback invoked for a secondary (long press) action on a specific date.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SeparateMonthlyCard(
@@ -112,7 +128,7 @@ fun SeparateMonthlyCard(
         }
     }
 
-    // Para animar el progreso
+    // To animate de progress
     val animatedProgress by animateFloatAsState(
         targetValue = currentProgress,
         animationSpec = tween(
@@ -122,7 +138,7 @@ fun SeparateMonthlyCard(
         label = "progressAnimation"
     )
 
-    // Control de estado visual
+    // Control of the state of the card
     val visualState = when {
         animatedProgress == 0f -> "add"
         animatedProgress >= 1f -> "check"
@@ -159,7 +175,7 @@ fun SeparateMonthlyCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                //Icono
+                //Icon
                 Box(
                     modifier = Modifier
                         .size(45.dp)
@@ -175,7 +191,7 @@ fun SeparateMonthlyCard(
                     )
                 }
 
-                // Nombre y descripcion
+                //Name and description
                 Column(
                     modifier = Modifier
                         .padding(start = spacing12, end = spacing6)
@@ -200,7 +216,7 @@ fun SeparateMonthlyCard(
                     }
                 }
 
-                // Metas
+                //Goals
                 Column(
                     modifier = Modifier
                         .padding(end = spacing12, start = spacing6),
@@ -218,7 +234,7 @@ fun SeparateMonthlyCard(
                     )
                 }
 
-                // Progresion
+                //Progression
                 Box(
                     modifier = Modifier
                         .size(45.dp)

@@ -7,6 +7,9 @@ import aeb.proyecto.room.model.classes.RECURRING_TAG
 import aeb.proyecto.room.model.classes.WEEKLY_TAG
 import androidx.annotation.StringRes
 
+/**
+ * Enterprise-grade structural definitions mapping navigational nodes and localized resource signatures.
+ */
 enum class PagerElement(
     val tag:String,
     @StringRes val title:Int,
@@ -29,10 +32,17 @@ enum class PagerElement(
     )
 }
 
+/**
+ * Evaluates raw identification tags defensively to resolve their corresponding Enum instances.
+ * Falls back safely to the standard daily index trace if database records return unknown signatures.
+ */
 fun findPagerElement(tag:String): PagerElement {
     return PagerElement.entries.find { it.tag == tag } ?: PagerElement.DAILY
 }
 
+/**
+ * Absolute inmutable structural matrix tracking the presentation order of categories inside layout tab rows.
+ */
 val orderPagerElements = listOf(
     PagerElement.DAILY,
     PagerElement.WEEKLY,

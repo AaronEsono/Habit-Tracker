@@ -26,12 +26,16 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 
 /**
- * Pantalla por defecto de carga de hábitos.
+ * A loading state component for habit-related screens.
+ *
+ * Displays an animated circular pulse effect using [rememberInfiniteTransition]
+ * to provide visual feedback during data fetching or background operations.
  */
 @Composable
 fun HabitLoading(){
     val infiniteTransition = rememberInfiniteTransition(label = "habit loading")
 
+    // Animates the pulsing effect of the loading circle
     val progress by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
@@ -45,10 +49,12 @@ fun HabitLoading(){
         modifier = Modifier.fillMaxSize().padding(top = spacing16),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        // Pulsing circle container
         Box(
             modifier = Modifier
                 .size(spacing64)
                 .graphicsLayer {
+                    // Visual pulse effect: grows while fading out
                     scaleX = progress
                     scaleY = progress
                     alpha = 1f - progress
@@ -60,6 +66,7 @@ fun HabitLoading(){
                 )
         )
 
+        // Loading status text
         LabelMediumText(stringResource(R.string.habit_loading),
             modifier = Modifier.padding(top = spacing10))
     }

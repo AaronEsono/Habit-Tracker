@@ -20,6 +20,39 @@ import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * The root screen component for the Habit dashboard in landscape mode.
+ *
+ * This component acts as a high-level state machine. It evaluates the [pagerTypesUIState]
+ * to determine the appropriate view:
+ * 1. [PagerTypesUiState.Loading]: Displays a loading indicator.
+ * 2. [PagerTypesUiState.Error]: Handles error states.
+ * 3. [PagerTypesUiState.Success]: Renders the habit dashboard [HorizontalHabitContentScreen]
+ * or the [NoHabitScreen] if no habit categories are available.
+ * * It also manages the global entry point for adding new habits via [AddHabitButton].
+ *
+ * @param pagerTypesUIState The state of available habit categories.
+ * @param filteredHabitsUiState The state of the habit list for the current category.
+ * @param currentPagerSelected The current tab selection state.
+ * @param selectedTimeRangeUiState The active time range state.
+ * @param bottomSheetUIState State for all modal bottom sheets.
+ * @param startDayOfWeek User configuration for the start day of the calendar week.
+ * @param dateSelected The currently active date.
+ * @param navigateToAddHabit Action to navigate to the "Add New Habit" screen.
+ * @param onClickTab Callback to change the active habit category.
+ * @param onClickTimeRange Action to update the time range.
+ * @param onBottomSheetSelectDateSelected Action to open the date picker.
+ * @param onDismissBottomSheet Action to close any open bottom sheet.
+ * @param onRestart Action to reset habit progress.
+ * @param onClickConfigureHabit Action to record progress on a habit.
+ * @param onClickTimer Action to launch a habit timer.
+ * @param onClickCard Action to view habit details.
+ * @param onLongClick Callback for secondary interactions on habit cards.
+ * @param onClick Callback for primary progress interactions.
+ * @param onClickEdit Action to enter edit mode for a habit.
+ * @param onClickDelete Action to initiate habit deletion.
+ * @param onAcceptDeleteHabit Action to finalize habit deletion.
+ */
 @Composable
 fun HorizontalHabitScreen(
     pagerTypesUIState: PagerTypesUiState,

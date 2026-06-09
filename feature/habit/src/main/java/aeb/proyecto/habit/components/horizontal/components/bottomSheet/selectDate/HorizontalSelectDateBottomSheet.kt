@@ -34,6 +34,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+/**
+ * A modal bottom sheet providing a custom calendar interface to select a specific [LocalDate].
+ *
+ * This component displays a calendar grid (header, days of week, and day buttons),
+ * allowing the user to navigate through months and select a date. It handles the
+ * selection lifecycle and interacts with the [SelectDateViewModel] to update the calendar state.
+ *
+ * @param viewModel ViewModel responsible for managing calendar data (YearMonth, dates).
+ * @param selectedDate The currently active date to highlight in the calendar.
+ * @param onDismiss Callback invoked to close the bottom sheet.
+ * @param onClick Callback triggered when a date is selected, providing the [LocalDate] and a confirmation flag.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HorizontalSelectDateBottomSheet(

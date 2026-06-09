@@ -28,6 +28,35 @@ import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * The primary habit dashboard container for vertical orientations.
+ *
+ * This component orchestrates the vertical layout by layering the action bar,
+ * tab navigation, time range selectors, and the specific habit screen content.
+ * It monitors [BottomSheetUIState] to inject the appropriate modal bottom sheets
+ * into the composition overlay.
+ *
+ * @param pagerElements List of categories to display in the tab row.
+ * @param filteredHabitsUIState Current state of habit data (Loading/Success/Empty).
+ * @param currentPagerSelected The active tab selection.
+ * @param selectedTimeRangeUiState The active time range configuration.
+ * @param bottomSheetUIState Global state controlling the visibility of bottom sheets.
+ * @param startDayOfWeek User configuration for the start day of the week.
+ * @param selectedDate The currently active date.
+ * @param onClickTab Callback to change the active habit category.
+ * @param onBottomSheetSelectDateSelected Action to trigger the date selection sheet.
+ * @param onDismissBottomSheet Action to close any active bottom sheet.
+ * @param onRestart Action to reset habit progress.
+ * @param onClickConfigureHabit Action to record habit progress.
+ * @param onClickTimer Action to launch a habit timer.
+ * @param onClickTimeRange Action to update the time range.
+ * @param onClickCard Action to view habit details.
+ * @param onLongClick Callback for secondary interactions on habit cards.
+ * @param onClick Callback for primary progress interactions.
+ * @param onClickEdit Action to navigate to the habit edit form.
+ * @param onClickDelete Action to initiate habit deletion.
+ * @param onAcceptDeleteHabit Action to confirm and perform habit deletion.
+ */
 @Composable
 fun VerticalHabitContentScreen(
     pagerElements: List<PagerElement>,

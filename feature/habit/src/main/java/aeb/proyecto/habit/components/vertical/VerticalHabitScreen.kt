@@ -20,6 +20,39 @@ import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * The root container screen for the habit dashboard in vertical orientation.
+ *
+ * This component acts as the high-level state orchestrator. It evaluates the
+ * [pagerTypesUIState] to determine the UI state:
+ * - [PagerTypesUiState.Loading]: Renders a loading state.
+ * - [PagerTypesUiState.Success]: Renders the dashboard via [VerticalHabitContentScreen]
+ * or the [NoHabitScreen] if no categories exist.
+ *
+ * It positions the [AddHabitButton] globally at the bottom-right of the screen.
+ *
+ * @param pagerTypesUIState State containing available habit categories.
+ * @param filteredHabitsUiState Current list of habits to display.
+ * @param currentPagerSelected The currently active tab.
+ * @param selectedTimeRangeUiState The active time range configuration.
+ * @param bottomSheetUIState State for active modal bottom sheets.
+ * @param startDayOfWeek User configuration for the start day of the week.
+ * @param dateSelected The currently selected date.
+ * @param navigateToAddHabit Action to navigate to the habit creation flow.
+ * @param onClickTab Callback to change categories.
+ * @param onClickTimeRange Callback to update the time range.
+ * @param onBottomSheetSelectDateSelected Action to open the date selection sheet.
+ * @param onDismissBottomSheet Action to close any active sheet.
+ * @param onRestart Action to reset habit progress.
+ * @param onClickConfigureHabit Action to log progress.
+ * @param onClickTimer Action to start a habit timer.
+ * @param onClickCard Action to view habit details.
+ * @param onLongClick Secondary calendar interaction.
+ * @param onClick Primary interaction for habit progress.
+ * @param onClickEdit Action to edit habit metadata.
+ * @param onClickDelete Action to initiate habit deletion.
+ * @param onAcceptDeleteHabit Action to confirm deletion.
+ */
 @Composable
 fun VerticalHabitScreen(
     pagerTypesUIState: PagerTypesUiState,
@@ -87,5 +120,4 @@ fun VerticalHabitScreen(
             }
         }
     }
-
 }

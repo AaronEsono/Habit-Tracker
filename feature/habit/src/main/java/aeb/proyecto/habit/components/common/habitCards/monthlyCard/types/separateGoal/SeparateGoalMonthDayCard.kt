@@ -37,6 +37,21 @@ import java.time.LocalDate
 
 // Poner modo desactivado
 
+/**
+ * A specialized calendar cell component that visualizes daily habit progress using a circular indicator.
+ *
+ * This component displays the day of the month and uses a [CircularProgressIndicator]
+ * to show completion percentage. It includes state-based animations for color transitions
+ * (based on goal completion) and content switching (showing a checkmark upon completion).
+ *
+ * @param modifier Modifier to be applied to the component layout.
+ * @param day The [LocalDate] corresponding to this calendar cell.
+ * @param monthSelected The month currently being viewed, used to dim days outside this range.
+ * @param habitWithDay Data model containing the habit definition and daily progress.
+ * @param horizontalPadding Horizontal spacing applied to the component.
+ * @param onClick Callback triggered on a standard click, returning the habit ID and the date.
+ * @param onLongClick Callback triggered on a long click, returning the habit ID and the date.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SeparateGoalMonthDayCard(

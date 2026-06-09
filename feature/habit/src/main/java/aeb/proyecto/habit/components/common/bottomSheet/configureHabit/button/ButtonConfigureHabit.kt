@@ -12,6 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * High-performance tactical button atom tailored for quantitative increment panels inside bottom sheets.
+ * Encapsulates customized ripple effects and Material 3 design constraints, passing its visible textual
+ * buffer downstream upon interaction to allow centralized parent orchestration.
+ *
+ * @param modifier Structural Modifier ecosystem parameters applied directly over the host button frame.
+ * @param text The visual alphanumeric token label displayed inside the layout container.
+ * @param onClick Intercepting action callback loop; delivers the button's underlying string token on click.
+ */
 @Composable
 fun ButtonConfigureHabit(
     modifier:Modifier = Modifier,
@@ -19,6 +28,7 @@ fun ButtonConfigureHabit(
     onClick:(String) -> Unit
 ){
 
+    // Encapsulate structural touch feedback using the custom platform ripple signature
     CustomRipple {
         ElevatedButton(
             modifier = modifier,
@@ -29,6 +39,7 @@ fun ButtonConfigureHabit(
                 containerColor = MaterialTheme.colorScheme.primary
             )
         ) {
+            // Emits standard high-hierarchy typographical labels natively
             LabelLargeText(text)
         }
     }

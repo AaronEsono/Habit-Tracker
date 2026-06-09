@@ -29,6 +29,34 @@ import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * The primary dashboard screen for habits in landscape orientation.
+ *
+ * This container orchestrates the layout by combining the tab navigation (Pager),
+ * the time range selector, and the habit list view. It also manages the visibility
+ * of modal bottom sheets based on the current [BottomSheetUIState].
+ *
+ * @param pagerElements List of categories to display in the tab row.
+ * @param filteredHabitsUIState Current state of habit data (Loading/Success/Empty).
+ * @param currentPagerSelected The active tab selection.
+ * @param selectedTimeRangeUiState The active time range configuration.
+ * @param bottomSheetUIState Global state controlling the visibility of various bottom sheets.
+ * @param startDayOfWeek User configuration for the start day of the calendar week.
+ * @param selectedDate The currently active date.
+ * @param onClickTab Callback to change the active habit category.
+ * @param onBottomSheetSelectDateSelected Action to trigger the date selection sheet.
+ * @param onDismissBottomSheet Action to close any active bottom sheet.
+ * @param onRestart Action to reset habit progress.
+ * @param onClickConfigureHabit Action to record habit progress.
+ * @param onClickTimer Action to launch a habit timer.
+ * @param onClickTimeRange Action to update the time range.
+ * @param onClickCard Action to view habit details.
+ * @param onLongClick Callback for secondary interactions on habit cards.
+ * @param onClick Callback for primary progress interactions.
+ * @param onClickEdit Action to navigate to the habit edit form.
+ * @param onClickDelete Action to initiate habit deletion.
+ * @param onAcceptDeleteHabit Action to confirm and perform habit deletion.
+ */
 @Composable
 fun HorizontalHabitContentScreen(
     pagerElements: List<PagerElement>,

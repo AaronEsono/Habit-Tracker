@@ -25,6 +25,22 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
+/**
+ * A responsive grid screen for displaying weekly habits.
+ *
+ * This screen differentiates between two types of weekly habit tracking:
+ * - **Unique weekly goals:** Rendered via [UniqueWeeklyCard].
+ * - **Separate tracking:** Rendered via [SeparateWeeklyCard].
+ *
+ * It uses a [LazyVerticalGrid] with a staggered entry animation to maintain
+ * visual consistency across all habit type views.
+ *
+ * @param weekTimeRange Current weekly range state containing start and end bounds.
+ * @param habits The list of weekly habits to display.
+ * @param onClickCard Callback for main card interactions.
+ * @param onLongClick Callback for secondary interactions on specific calendar dates.
+ * @param onClick Callback for direct progress updates on the habit.
+ */
 @Composable
 fun HorizontalWeeklyHabitScreen(
     weekTimeRange: TimeRangeUiState.Weekly,

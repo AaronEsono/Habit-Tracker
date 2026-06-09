@@ -18,6 +18,17 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * A tabbed navigation component that displays a set of [PagerElement] categories.
+ *
+ * It utilizes [PrimaryTabRow] to represent the selection state, with custom
+ * styling for the active indicator and dynamic font scaling based on the
+ * number of available tabs.
+ *
+ * @param pagerElements The list of [PagerElement] categories to display in the tabs.
+ * @param currentPagerSelected The current selection state, determining the active tab index.
+ * @param onClickTab Callback invoked when a tab is clicked, providing the selected [PagerElement].
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PageSelected(
@@ -31,7 +42,7 @@ fun PageSelected(
         else -> 0 // O un índice predeterminado si no está inicializado
     }
 
-    //Mostramos los tipos de hábitos en la tabRow
+    // Displays habit categories in a tab row with dynamic indicator and sizing
     PrimaryTabRow(selectedTabIndex = selectedTabIndex,
         indicator = {
             TabRowDefaults.PrimaryIndicator(
@@ -63,6 +74,13 @@ fun PageSelected(
     }
 }
 
+/**
+ * Helper function to determine the appropriate font size for tab labels
+ * based on the total number of tabs to prevent overflow.
+ *
+ * @param size Total number of tabs in the row.
+ * @return A [TextUnit] representing the font size.
+ */
 fun getTextSizePager(size: Int): TextUnit {
     return when (size) {
         4 -> 10.sp

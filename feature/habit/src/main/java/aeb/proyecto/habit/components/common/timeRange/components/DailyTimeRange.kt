@@ -19,6 +19,20 @@ import java.time.LocalDate
 
 val horizontalPadding = spacing6
 
+/**
+ * A horizontal scrollable list component for daily date selection.
+ *
+ * This component displays a range of dates as selectable cards. It calculates
+ * the appropriate card size based on the screen width and the number of
+ * visible elements, and initializes the scroll position to keep the
+ * [selectedDate] centrally focused.
+ *
+ * @param selectedDate The currently active/selected date.
+ * @param numberOfElements The number of items to display simultaneously.
+ * @param daysOnRange The complete list of [LocalDate] to render in the row.
+ * @param onClick Callback triggered when a day card is clicked,
+ * providing the selected date and a selection boolean.
+ */
 @Composable
 fun DailyTimeRange(
     selectedDate:LocalDate,
@@ -29,11 +43,13 @@ fun DailyTimeRange(
 
     val screenWidthDp  = LocalConfiguration.current.screenWidthDp.dp
 
+    // Dynamically calculate individual card width to fit the screen nicely
     val itemSize = remember {
         val totalSpacing = horizontalPadding * (numberOfElements - 1)
         (screenWidthDp - totalSpacing) / numberOfElements
     }
 
+    // Attempt to center the selected date by adjusting the initial scroll index
     val state = remember(daysOnRange) {
         LazyListState(
             firstVisibleItemIndex =
@@ -60,6 +76,9 @@ fun DailyTimeRange(
     }
 }
 
+/**
+ * Helper to determine if a specific day is the currently selected one.
+ */
 fun selectedDate(day:LocalDate,selectedDate:LocalDate):Boolean{
     return day == selectedDate
 }

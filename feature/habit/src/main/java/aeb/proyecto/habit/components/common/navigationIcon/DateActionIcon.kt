@@ -19,6 +19,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 
+/**
+ * A navigation icon component that displays the currently selected date.
+ *
+ * This component features a high-contrast pill-shaped container and uses
+ * [AnimatedContent] to provide a smooth transition effect when the
+ * `selectedDate` state changes.
+ *
+ * @param selectedDate The [LocalDate] to be displayed in the icon.
+ */
 @Composable
 fun DateActionIcon(
     selectedDate:LocalDate
@@ -29,6 +38,7 @@ fun DateActionIcon(
             .clip(RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp))
             .background(MaterialTheme.colorScheme.onSurface)
     ) {
+        // Smoothly animates the text transition whenever the date changes
         AnimatedContent(
             targetState = selectedDate
         ) { selectedDate ->

@@ -37,6 +37,20 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 
+/**
+ * A modal bottom sheet for configuring or updating a habit's progress,
+ * optimized for vertical screen orientations.
+ *
+ * This component mirrors the functionality of [HorizontalConfigureHabitBottomSheet],
+ * providing a context-aware UI to either restart a finished habit or log progress
+ * for an incomplete one.
+ *
+ * @param habitWithDay Data object containing the habit details and current daily progress.
+ * @param onDismiss Callback to handle the closing of the bottom sheet.
+ * @param onRestart Callback triggered to reset progress for the specific day.
+ * @param onClickTimer Callback to initiate a timer for the habit.
+ * @param onClick Callback for manual progress updates.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VerticalConfigureHabitBottomSheet(
@@ -50,6 +64,7 @@ fun VerticalConfigureHabitBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
+    // Calculate completion state
     val isFinished = remember { habitWithDay.habit.goal
         .minus(habitWithDay.day.goalDone)
         .setScale(3, RoundingMode.HALF_UP)
@@ -67,7 +82,7 @@ fun VerticalConfigureHabitBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            /**Informacion y cerrar bottomSheet*/
+            /** Header Section: Date, Habit Identity, and Close Action */
             Row (
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -115,7 +130,7 @@ fun VerticalConfigureHabitBottomSheet(
                 )
             }
 
-
+            /** Content Router based on completion status */
             when{
                 isFinished <= BigDecimal.ZERO -> {
                     RestartDay(

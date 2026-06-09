@@ -30,6 +30,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 
+/**
+ * A navigation component for weekly time ranges.
+ *
+ * Displays the current week's date interval (start and end dates) and provides
+ * navigation controls to shift the selection by one week in either direction.
+ *
+ * @param startOfWeek The [LocalDate] marking the beginning of the displayed week.
+ * @param endOfWeek The [LocalDate] marking the end of the displayed week.
+ * @param onClick Callback triggered when a navigation arrow is clicked,
+ * providing the target date and a boolean (typically for navigation direction).
+ */
 @Composable
 fun WeeklyTimeRange(
     startOfWeek:LocalDate,
@@ -43,6 +54,7 @@ fun WeeklyTimeRange(
         modifier = Modifier.fillMaxWidth().padding(vertical = spacing12),
         verticalAlignment = Alignment.CenterVertically
     ){
+        // Navigation: Previous Week
         Icon(
             Icons.AutoMirrored.Filled.ArrowBackIos,
             contentDescription = "weekly fordward button",
@@ -56,6 +68,7 @@ fun WeeklyTimeRange(
                 ) { onClick(startOfWeek.minusDays(7), false) }
         )
 
+        // Date Interval Display
         Column (
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.Center,
@@ -64,7 +77,6 @@ fun WeeklyTimeRange(
             AnimatedContent(
                 targetState = Pair(startOfWeek, endOfWeek)
             ) { (startOfWeek,endOfWeek) ->
-                // Dia semana, Dia, Mes
                 LabelLargeText(stringResource(R.string.habit_day_weekly,
                     stringResource(getDay(startOfWeek.dayOfWeek.name)),
                     startOfWeek.dayOfMonth.toString(),
@@ -79,6 +91,7 @@ fun WeeklyTimeRange(
             }
         }
 
+        // Navigation: Next Week
         Icon(
             Icons.AutoMirrored.Filled.ArrowForwardIos,
             contentDescription = "weekly fordward button",

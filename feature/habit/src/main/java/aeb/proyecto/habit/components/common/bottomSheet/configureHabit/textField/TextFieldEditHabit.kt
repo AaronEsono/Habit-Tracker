@@ -29,6 +29,18 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 
+/**
+ * Enterprise-grade text input field tailored for quantitative habit data entry.
+ * Integrates reactive field state management, smart trailing-clear UI triggers,
+ * and fine-grained focus coordination to ensure ergonomic data input flows.
+ *
+ * @param textFieldState The reactive state holder tracking input buffer changes.
+ * @param label Decorative or functional label scope.
+ * @param containerColor Background branding token for the input surface.
+ * @param keyboardType Defines input soft-keyboard layout constraints (default: Number).
+ * @param imeAction Dictates soft-keyboard finish action (Next/Done).
+ * @param focusManager External controller for managing focus shifts during IME transitions.
+ */
 @Composable
 fun TextFieldConfigureHabit(
     modifier: Modifier = Modifier,
@@ -50,10 +62,11 @@ fun TextFieldConfigureHabit(
         textFieldState = textFieldState,
         modifier = modifier
             .fillMaxWidth()
-            .clearFocusOnKeyboardDismiss(),
+            .clearFocusOnKeyboardDismiss(), // Defensive focus release
         label = label,
         placeholder = placeholder,
         trailingIcon = {
+            // Smart conditional clear-action toggle
             when (textFieldState.text.toString()) {
                 "" -> {}
                 else -> {
@@ -98,6 +111,7 @@ fun TextFieldConfigureHabit(
             keyboardType = keyboardType
         ),
         onKeyboardActions = {
+            // Coordinate focus shifts or soft-keyboard dismissal
             when(imeAction){
                 ImeAction.Done -> {
                     focusManager.clearFocus()

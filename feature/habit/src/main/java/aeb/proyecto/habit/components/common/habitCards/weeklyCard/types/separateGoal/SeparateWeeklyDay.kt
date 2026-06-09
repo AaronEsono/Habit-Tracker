@@ -48,6 +48,17 @@ import java.math.RoundingMode
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * A representative cell for a single day within a weekly habit view.
+ *
+ * Renders the day of the week, a circular progress indicator for goal tracking,
+ * and a numeric label for progress. It automatically adjusts its layout/typography
+ * based on the device orientation (Portrait vs. Landscape).
+ *
+ * @param modifier Modifier for external layout customization.
+ * @param habitWithDay Data wrapper containing habit configuration and daily progress.
+ * @param onClick Callback triggered when the day cell is clicked, providing habit ID and date.
+ */
 @Composable
 fun SeparateWeeklyDay(
     modifier: Modifier = Modifier,
@@ -110,6 +121,7 @@ fun SeparateWeeklyDay(
         }
     ){
 
+        // Adaptative typography based on screen orientation
         when(orientation){
             Orientation.Portrait -> {
                 LabelLargeText(stringResource(getAvr(dayOfWeek)))
@@ -171,6 +183,7 @@ fun SeparateWeeklyDay(
 
         Spacer(modifier = Modifier.padding(top = spacing4))
 
+        // Numerical goal display
         LabelSmallText(
             stringResource(
                 R.string.habit_week_day_goal,

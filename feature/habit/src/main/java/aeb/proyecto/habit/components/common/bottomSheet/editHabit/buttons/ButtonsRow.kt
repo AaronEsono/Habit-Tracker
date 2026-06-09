@@ -29,6 +29,17 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 
+/**
+ * A layout component that displays action buttons for habit management,
+ * typically used within a BottomSheet.
+ *
+ * Provides a row containing an edit and a delete button, allowing the user
+ * to trigger respective operations for a specific habit.
+ *
+ * @param onClickEdit Callback function to be executed when the edit action is performed.
+ * @param onClickDelete Callback function to be executed when the delete action is performed.
+ * @param sizeButton The dimension [Dp] used for both buttons in the row. Defaults to 35.dp.
+ */
 @Composable
 fun ButtonsRow(
     onClickEdit: () -> Unit,
@@ -63,8 +74,6 @@ fun ButtonsRow(
                     .align(Alignment.Center)
             )
         }
-
-        //Spacer(modifier = Modifier.weight(1f))
 
         Spacer(modifier = Modifier.padding(horizontal = spacing6))
 

@@ -58,6 +58,20 @@ import androidx.compose.ui.unit.sp
 import java.math.RoundingMode
 import java.time.LocalDate
 
+/**
+ * A display card representing a daily habit and its progress for a specific date.
+ *
+ * This component visualizes habit completion status, manages progress calculation
+ * using [BigDecimal] logic, and handles interaction events like clicks and
+ * long-clicks for daily habit logs.
+ *
+ * @param modifier Modifier to be applied to the card container.
+ * @param selectedDate The [LocalDate] for which the habit progress is displayed.
+ * @param habit The data wrapper containing the [Habit] definition and its associated [DailyHabit] list.
+ * @param onClickCard Callback invoked when the main card body is clicked, providing the habit ID.
+ * @param onClick Callback invoked on a standard click, providing the habit ID and date.
+ * @param onLongClick Callback invoked on a long click, providing the habit ID and date.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DailyCard(
@@ -85,7 +99,6 @@ fun DailyCard(
         }
     }
 
-    // Para animar el progreso
     val animatedProgress by animateFloatAsState(
         targetValue = currentProgress,
         animationSpec = tween(
@@ -95,7 +108,6 @@ fun DailyCard(
         label = "progressAnimation"
     )
 
-    // Control de estado visual
     val visualState = when {
         animatedProgress == 0f -> "add"
         animatedProgress >= 1f -> "check"
@@ -128,7 +140,7 @@ fun DailyCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            //Icono
+            // Icon display container
             Box(
                 modifier = Modifier
                     .size(45.dp)
@@ -144,7 +156,7 @@ fun DailyCard(
                 )
             }
 
-            // Nombre y descripcion
+            // Name and description section
             Column(
                 modifier = Modifier
                     .padding(start = spacing12, end = spacing6)
@@ -169,7 +181,7 @@ fun DailyCard(
                 }
             }
 
-            // Metas
+            // Goal summary section
             Column(
                 modifier = Modifier
                     .padding(end = spacing12, start = spacing6),
@@ -195,7 +207,7 @@ fun DailyCard(
                 )
             }
 
-            // Progresion
+            // Progress interaction area
             Box(
                 modifier = Modifier
                     .size(45.dp)

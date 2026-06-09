@@ -27,6 +27,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import java.time.LocalDate
 
+/**
+ * A selectable card component representing a single day in a date range picker.
+ *
+ * It provides visual feedback through smooth color transitions when selected or
+ * unselected, using custom modifier extensions to handle background and text state.
+ *
+ * @param modifier Modifier for external constraints.
+ * @param date The [LocalDate] represented by this card.
+ * @param isSelected Whether the current card is the active selection.
+ * @param onClick Callback when the card is clicked, returning the date and selection status.
+ */
 @Composable
 fun DayCard(
     modifier:Modifier = Modifier,
@@ -47,8 +58,10 @@ fun DayCard(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            // Day of week label (e.g., "Mon")
             LabelMediumText(stringResource(getAvr(date.dayOfWeek)), color = textSelected(isSelected))
 
+            // Date number box (e.g., "09")
             Box(
                 modifier = Modifier
                     .padding(top = spacing2)
@@ -67,6 +80,9 @@ fun DayCard(
     }
 }
 
+// --- Modifiers & Utility Animations ---
+
+/** Animates the background color of the container based on selection state. */
 @Composable
 fun Modifier.boxBackgroundSelected(
     isSelected: Boolean
@@ -79,6 +95,7 @@ fun Modifier.boxBackgroundSelected(
     return this.background(animatorSelected(targetColor = targetColor, label = "BoxBackgroundAnimation"))
 }
 
+/** Animates the background color of the day number area based on selection state. */
 @Composable
 fun Modifier.backgroundTextSelected(
     isSelected: Boolean
@@ -91,7 +108,7 @@ fun Modifier.backgroundTextSelected(
     return this.background(animatorSelected(targetColor = targetColor, label = "BoxBackgroundAnimation"))
 }
 
-
+/** Returns an animated color for text based on selection state. */
 @Composable
 fun textSelected(
     isSelected: Boolean
@@ -104,6 +121,7 @@ fun textSelected(
     return animatorSelected(targetColor = targetColor, label = "TextColorAnimation")
 }
 
+/** Helper function to wrap the color animation logic. */
 @Composable
 fun animatorSelected(
     targetColor:Color,

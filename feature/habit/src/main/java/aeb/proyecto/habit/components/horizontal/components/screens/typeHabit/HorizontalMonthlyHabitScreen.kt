@@ -33,6 +33,23 @@ import kotlinx.coroutines.delay
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * A responsive grid screen for displaying monthly habits.
+ *
+ * This screen differentiates between two types of monthly habit tracking:
+ * - **Unique monthly goals:** Rendered via [UniqueMonthlyCard].
+ * - **Separate tracking:** Rendered via [SeparateMonthlyCard].
+ *
+ * It features a staggered entry animation for the grid items to match the
+ * UX patterns of the daily and weekly screens.
+ *
+ * @param timeRange Current monthly range state containing the month bounds.
+ * @param startDayOfWeek User's preferred first day of the week for the calendar.
+ * @param habits The list of monthly habits to display.
+ * @param onClickCard Callback for main card interactions.
+ * @param onLongClick Callback for secondary interactions on specific calendar dates.
+ * @param onClick Callback for direct progress updates on the habit.
+ */
 @Composable
 fun HorizontalMonthlyHabitScreen(
     timeRange: TimeRangeUiState.Monthly,
@@ -45,7 +62,6 @@ fun HorizontalMonthlyHabitScreen(
 
     val visibleItems = remember { mutableStateListOf<Int>() }
 
-    // Hash de los IDs de los hábitos (solo cambia si cambian los hábitos que ves)
     val habitsHash = habits.map { it.habit.id }.hashCode()
 
     LaunchedEffect(habitsHash) {

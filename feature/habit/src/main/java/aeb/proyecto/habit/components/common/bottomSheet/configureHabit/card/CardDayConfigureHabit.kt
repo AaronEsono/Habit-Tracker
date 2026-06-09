@@ -15,11 +15,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+/**
+ * Structural elevation card container tailored for date configurations panels inside bottom sheets.
+ * Integrates native interactive ripple layers, applies uniform borders aligned with Material 3 criteria,
+ * and pre-injects centered linear rows to accommodate custom internal layouts seamlessly.
+ *
+ * @param modifier Structural Modifier ecosystem parameters applied directly over the host card frame.
+ * @param content Asynchronous declarative layout content block rendered linearly inside the centered row.
+ */
 @Composable
 fun CardDayConfigureHabit(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ){
+    // Inject centralized platform touch animations
     CustomRipple {
         ElevatedCard(
             shape = RoundedCornerShape(spacing8),
@@ -36,6 +45,7 @@ fun CardDayConfigureHabit(
                 modifier = Modifier.padding(vertical = spacing6, horizontal = spacing8),
                 verticalAlignment = Alignment.CenterVertically
             ){
+                // Inflate the decoupled declarative content block dynamically
                 content()
             }
         }

@@ -18,6 +18,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import java.time.LocalDate
 
+/**
+ * A selectable day button component for the calendar view.
+ *
+ * Renders an individual day within the calendar, visually indicating its state
+ * (enabled/disabled, selected, or current day) and handling click events to
+ * trigger date selection.
+ *
+ * @param modifier Modifier to be applied to the button layout.
+ * @param enabled Whether the button is interactable.
+ * @param isSelectedDate Whether the current date matches the user's selected date.
+ * @param date The [CalendarUIState.DateCalendar] object containing date metadata.
+ * @param onClick Callback function invoked when the date is clicked, returning the [LocalDate].
+ */
 @Composable
 fun CalendarDayButton(
     modifier: Modifier = Modifier,
@@ -46,6 +59,14 @@ fun CalendarDayButton(
     }
 }
 
+/**
+ * Modifier extension to apply background colors based on the day's state.
+ *
+ * @param isEnabled Whether the day is enabled.
+ * @param isDateSelected Whether the day is currently selected.
+ * @param isToday Whether the day represents the current system date.
+ * @return The modified [Modifier] with the appropriate background color.
+ */
 @Composable
 fun Modifier.colorBackgroundDay(isEnabled:Boolean,isDateSelected:Boolean,isToday:Boolean):Modifier =
     if(isEnabled){
@@ -61,6 +82,14 @@ fun Modifier.colorBackgroundDay(isEnabled:Boolean,isDateSelected:Boolean,isToday
     else
         this.background(MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.3f))
 
+/**
+ * Determines the text color for the day button based on its state.
+ *
+ * @param isEnabled Whether the day is enabled.
+ * @param isDateSelected Whether the day is currently selected.
+ * @param isToday Whether the day represents the current system date.
+ * @return The calculated [Color] for the text.
+ */
 @Composable
 fun isEnabledTextColor(isEnabled:Boolean,isDateSelected: Boolean,isToday: Boolean = false):Color =
     if(isEnabled){

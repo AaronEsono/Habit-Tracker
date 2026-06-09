@@ -42,6 +42,23 @@ import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * A modal bottom sheet for editing and managing a specific habit.
+ *
+ * This component acts as a control center for a habit, allowing the user to:
+ * 1. View and edit the specific configuration based on the habit type (Daily, Weekly, etc.).
+ * 2. Perform management actions (Edit metadata, Delete).
+ * 3. Interact with a calendar view to manage habit progress on individual dates.
+ *
+ * @param verticalEditHabitVM ViewModel managing the state of the habit being edited.
+ * @param idHabit The unique identifier of the habit to edit.
+ * @param startDayOfWeek The preferred start day of the week for the calendar.
+ * @param onDismiss Callback to close the bottom sheet.
+ * @param onClickEdit Action to navigate to the edit screen for the habit.
+ * @param onClickDelete Action to initiate the habit deletion process.
+ * @param onLongClick Callback for secondary interactions on specific calendar dates.
+ * @param onClick Callback for primary interactions on specific calendar dates.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HorizontalEditHabitBottomSheet(

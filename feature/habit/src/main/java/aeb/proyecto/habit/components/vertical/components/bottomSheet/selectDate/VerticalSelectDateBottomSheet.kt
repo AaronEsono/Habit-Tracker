@@ -30,6 +30,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+/**
+ * A modal bottom sheet for selecting a specific date, optimized for vertical layouts.
+ *
+ * This component provides an interactive calendar grid to navigate months and select
+ * a date. It leverages [SelectDateViewModel] to maintain the calendar's state
+ * and coordinates with [RowButtonSelectDate] for action confirmation.
+ *
+ * @param viewModel The ViewModel responsible for managing calendar state and month navigation.
+ * @param selectedDate The currently highlighted date in the calendar.
+ * @param onDismiss Callback to handle closing the bottom sheet.
+ * @param onClick Callback triggered upon successful date selection.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VerticalSelectDateBottomSheet(
@@ -54,6 +66,7 @@ fun VerticalSelectDateBottomSheet(
         sheetState = sheetState
     ) {
         Column {
+            // Header for month navigation
             CalendarHeader(
                 yearMonth = yearMonth,
                 modifier = Modifier.padding(top = spacing6, bottom = spacing12),
@@ -65,11 +78,13 @@ fun VerticalSelectDateBottomSheet(
                 }
             )
 
+            // Day of week labels
             CalendarDays(
                 modifier = Modifier.padding(horizontal = spacing16, vertical = spacing10),
                 horizontalPadding = spacing12
             )
 
+            // Grid of days
             CalendarContent(
                 modifier = Modifier.padding(horizontal = spacing16),
                 dates = calendarDates.dates,
@@ -93,6 +108,7 @@ fun VerticalSelectDateBottomSheet(
                 } ?: Box(modifier = modifier.aspectRatio(1f))
             }
 
+            // Bottom action row
             RowButtonSelectDate(
                 modifier = Modifier.padding(horizontal = spacing16),
                 scope = scope,
@@ -102,5 +118,4 @@ fun VerticalSelectDateBottomSheet(
             )
         }
     }
-
 }

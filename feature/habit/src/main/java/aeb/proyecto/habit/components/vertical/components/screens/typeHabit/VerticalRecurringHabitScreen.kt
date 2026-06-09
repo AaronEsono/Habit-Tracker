@@ -19,6 +19,20 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
+/**
+ * A vertical list screen for displaying recurring habits, optimized for mobile devices.
+ *
+ * This screen renders a list of recurring habit items using a [LazyColumn].
+ * It ensures a consistent user experience by utilizing the same staggered entry
+ * animation pattern as other habit screens, while applying vertical-specific
+ * padding modifiers to the cards.
+ *
+ * @param selectedDate The currently active date for the habit view.
+ * @param habits The list of recurring habits to be displayed.
+ * @param onClickCard Callback for main card interactions.
+ * @param onLongClick Callback for secondary interactions on calendar dates.
+ * @param onClick Callback for direct progress updates.
+ */
 @Composable
 fun VerticalRecurringHabitScreen(
     selectedDate: LocalDate,
@@ -70,5 +84,4 @@ fun VerticalRecurringHabitScreen(
             }
         }
     }
-
 }

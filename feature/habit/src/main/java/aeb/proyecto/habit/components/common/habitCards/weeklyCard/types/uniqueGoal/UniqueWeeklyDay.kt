@@ -45,6 +45,17 @@ import java.math.RoundingMode
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * A specialized day cell for habits with a unique (non-accumulative) weekly goal.
+ *
+ * Displays the day of the week and the calendar date, with specific visual
+ * emphasis for the current day. Unlike its counterparts, this component displays
+ * the raw `goalDone` value rather than a circular progress indicator.
+ *
+ * @param modifier Modifier for external layout customization.
+ * @param habitWithDay Data wrapper containing habit configuration and daily progress.
+ * @param onClick Callback triggered when the day cell is clicked, providing habit ID and date.
+ */
 @Composable
 fun UniqueWeeklyDay(
     modifier: Modifier = Modifier,

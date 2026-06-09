@@ -66,6 +66,22 @@ import androidx.compose.ui.unit.sp
 import java.math.RoundingMode
 import java.time.LocalDate
 
+/**
+ * A specialized weekly card for habits that track a single, cumulative numeric goal.
+ *
+ * Unlike the standard weekly card, this component features a [LinearProgressIndicator]
+ * at the bottom to provide a clear visual summary of the total progress achieved
+ * throughout the week relative to the habit's overall weekly goal.
+ *
+ * @param modifier Modifier for layout constraints.
+ * @param startOfWeek The [LocalDate] marking the start of the week.
+ * @param endOfWeek The [LocalDate] marking the end of the week.
+ * @param selectedDate The currently highlighted [LocalDate].
+ * @param habit Data wrapper containing habit definitions and progress records.
+ * @param onClickCard Callback for main card click actions.
+ * @param onClick Callback for recording progress on a specific date.
+ * @param onLongClick Callback for secondary progress interactions.
+ */
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun UniqueWeeklyCard(
@@ -79,8 +95,10 @@ fun UniqueWeeklyCard(
     onLongClick: (id:Long,date: LocalDate) -> Unit
 ){
 
+    // Sum of progress across the entire week
     val goalWeekCompleted = timesCompletedInAEntireWeek(habit, startOfWeek)
 
+    // Animated linear progress for the footer bar
     val animatedProgressLinear by animateFloatAsState(
         targetValue = calculatePercentage(goalWeekCompleted,habit.habit.goal),
         animationSpec = tween(
@@ -90,7 +108,7 @@ fun UniqueWeeklyCard(
         label = "progressAnimation"
     )
 
-    // Control de estado visual
+    // Visual state for the primary action button
     val visualState = when {
         animatedProgressLinear == 0f -> "add"
         animatedProgressLinear >= 1f -> "check"
@@ -120,13 +138,14 @@ fun UniqueWeeklyCard(
         Column (
             verticalArrangement = Arrangement.Center
         ){
+            // Weekly Day Grid: Renders 7 instances of UniqueWeeklyDay
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = spacing8, vertical = spacing10),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                //Icono
+                //Icons
                 Box(
                     modifier = Modifier
                         .size(45.dp)
@@ -142,7 +161,7 @@ fun UniqueWeeklyCard(
                     )
                 }
 
-                // Nombre y descripcion
+                //Name and description
                 Column(
                     modifier = Modifier
                         .padding(start = spacing12, end = spacing6)
@@ -167,7 +186,7 @@ fun UniqueWeeklyCard(
                     }
                 }
 
-                // Metas
+                //Goals
                 Column(
                     modifier = Modifier
                         .padding(end = spacing12, start = spacing6),
@@ -185,7 +204,7 @@ fun UniqueWeeklyCard(
                     )
                 }
 
-                // Progresion
+                //Progression
                 Box(
                     modifier = Modifier
                         .size(45.dp)

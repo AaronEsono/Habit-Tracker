@@ -26,6 +26,19 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
+/**
+ * A responsive grid screen for displaying daily habits.
+ *
+ * This screen renders a list of [HabitWithDailyHabit] items in a two-column grid.
+ * It features a staggered entry animation where each card slides and fades into view
+ * sequentially, providing a polished user experience.
+ *
+ * @param selectedDate The currently active date for the habit view.
+ * @param habits The list of daily habits to be displayed.
+ * @param onClickCard Callback for main card interactions (e.g., viewing details).
+ * @param onLongClick Callback for secondary interactions (e.g., context menus).
+ * @param onClick Callback for direct progress updates on the habit.
+ */
 @Composable
 fun HorizontalDailyHabitScreen(
     selectedDate: LocalDate,
@@ -35,9 +48,10 @@ fun HorizontalDailyHabitScreen(
     onClick: (id: Long, date: LocalDate) -> Unit
 ){
 
+    // State to track which items have completed their entrance animation
     val visibleItems = remember { mutableStateListOf<Int>() }
 
-    // Hash de los IDs de los hábitos (solo cambia si cambian los hábitos que ves)
+    // Re-trigger animation when the list of habits changes
     val habitsHash = habits.map { it.habit.id }.hashCode()
 
     LaunchedEffect(habitsHash) {

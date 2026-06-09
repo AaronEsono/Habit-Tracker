@@ -26,6 +26,21 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+/**
+ * A horizontal layout component containing action buttons for a BottomSheet.
+ *
+ * This component provides a "Cancel" button and a "Today" action button.
+ * It manages the sheet state by triggering a hide animation within the
+ * provided [CoroutineScope] before executing the respective dismiss or
+ * selection callbacks.
+ *
+ * @param modifier Modifier to be applied to the row container.
+ * @param scope The [CoroutineScope] used to launch the sheet dismissal animation.
+ * @param sheetState The [SheetState] of the current BottomSheet to control its visibility.
+ * @param onDismiss Callback invoked when the actions are finalized or cancelled.
+ * @param onClick Callback invoked when the "Today" button is pressed,
+ * providing the current date and a boolean flag.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RowButtonSelectDate(
@@ -77,5 +92,4 @@ fun RowButtonSelectDate(
             }
         }
     }
-
 }

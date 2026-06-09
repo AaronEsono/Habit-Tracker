@@ -30,21 +30,36 @@ import java.time.DayOfWeek
 import java.time.YearMonth
 import javax.inject.Inject
 
+/**
+ * ViewModel orchestrator for the habit modification module.
+ * Manages the reactive state lifecycle for habit-specific configurations,
+ * including date ranges, temporal offsets, and persistence identifiers.
+ *
+ * @property getHabitUseCase Interactor for retrieving individual habit entities.
+ * @property getDailyHabitUseCase Interactor for resolving daily progression data.
+ */
 @HiltViewModel
 class EditHabitVM @Inject constructor(
     getHabitUseCase: GetHabitUseCase,
     getDailyHabitUseCase: GetDailyHabitUseCase
 ): ViewModel() {
 
+    /** Identifier for the target habit currently being edited; null if initializing. */
     private val _idHabit: MutableStateFlow<Long?> = MutableStateFlow(null)
     val idHabit: Flow<Long?> = _idHabit.asStateFlow()
 
+    /** Tracks the active calendar window for habit progression analysis. */
     private val _yearMonth:MutableStateFlow<YearMonth> = MutableStateFlow(YearMonth.now())
     val yearMonth:StateFlow<YearMonth> = _yearMonth.asStateFlow()
 
+    /** Defines the weekly calendar synchronization anchor (e.g., Monday vs Sunday start). */
     private val _startDayOfWeek: MutableStateFlow<DayOfWeek?> = MutableStateFlow(null)
     val startDayOfWeek: Flow<DayOfWeek?> = _startDayOfWeek.asStateFlow()
 
+    /**
+     * Reactive pipeline that resolves calendar data based on filtered date ranges
+     * and habit context. Automatically recomputes on [yearMonth] or [startDayOfWeek] updates.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     val calendarDays: StateFlow<CalendarUIState<HabitWithDay>> =
         combine(idHabit, yearMonth, startDayOfWeek) { idHabit, yearMonth, startDayOfWeek ->
@@ -90,10 +105,15 @@ class EditHabitVM @Inject constructor(
                 initialValue = CalendarUIState(emptyList())
             )
 
+    /** Updates the target habit identifier, triggering automatic state reloading. */
     fun getIdHabit(id:Long){
         _idHabit.value = id
     }
 
+    /**
+     * Exposes the reactive state of the habit being edited.
+     * Derives [EditHabitState] by fetching the entity from [getHabitUseCase] upon ID change.
+     */
     val bottomSheetState: StateFlow<EditHabitState> = _idHabit
         .map { id ->
             id ?: return@map EditHabitState.Error("Error inesperado")
@@ -111,10 +131,12 @@ class EditHabitVM @Inject constructor(
         initialValue = EditHabitState.Loading
     )
 
+    /** Updates the active view period for the calendar grid. */
     fun onMonthButtonClicked(yearMonth: YearMonth){
         _yearMonth.update {yearMonth}
     }
 
+    /** Sets the weekly calendar synchronization anchor. */
     fun setDay(day: DayOfWeek?){
         _startDayOfWeek.update {day}
     }

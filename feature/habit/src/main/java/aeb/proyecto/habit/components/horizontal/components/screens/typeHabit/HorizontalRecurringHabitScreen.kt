@@ -22,6 +22,19 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
+/**
+ * A responsive grid screen for displaying recurring habits.
+ *
+ * This screen displays a list of [HabitWithDailyHabit] items configured as recurring.
+ * It follows the standard staggered animation pattern for grid entries, ensuring
+ * smooth transitions when the list of habits is updated or loaded.
+ *
+ * @param selectedDate The currently active date for the habit view.
+ * @param habits The list of recurring habits to be displayed.
+ * @param onClickCard Callback for main card interactions.
+ * @param onLongClick Callback for secondary interactions on specific calendar dates.
+ * @param onClick Callback for direct progress updates on the habit.
+ */
 @Composable
 fun HorizontalRecurringHabitScreen(
     selectedDate: LocalDate,
@@ -33,7 +46,6 @@ fun HorizontalRecurringHabitScreen(
 
     val visibleItems = remember { mutableStateListOf<Int>() }
 
-    // Hash de los IDs de los hábitos (solo cambia si cambian los hábitos que ves)
     val habitsHash = habits.map { it.habit.id }.hashCode()
 
     LaunchedEffect(habitsHash) {

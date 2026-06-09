@@ -21,11 +21,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 
+/**
+ * Interactive elevation card atom designed to link habit configuration sheets with the Timer module.
+ * Embeds the platform standard Material Design timer vector asset next to localized typography labels,
+ * ensuring absolute sizing parity and border layout alignment with companion bottom-sheet components.
+ *
+ * @param modifier Structural Modifier ecosystem parameters applied directly over the host card frame.
+ * @param onClick Forwarding routing callback loop executed instantly when the user taps the card canvas.
+ */
 @Composable
 fun TimerCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ){
+    // Apply centralized platform touch ripple mechanics
     CustomRipple {
         ElevatedCard(
             modifier = modifier,
@@ -45,12 +54,14 @@ fun TimerCard(
                     .padding(vertical = spacing8, horizontal = spacing8),
                 verticalAlignment = Alignment.CenterVertically
             ){
+                // System contextual vector tracking anchor
                 Icon(
                     Icons.Filled.Timer,
                     tint = MaterialTheme.colorScheme.onSurface,
                     contentDescription = ""
                 )
 
+                // High-hierarchy standardized typographical labe
                 LabelLargeText(
                     stringResource(R.string.habit_timer),
                     modifier = Modifier.padding(start = spacing4)

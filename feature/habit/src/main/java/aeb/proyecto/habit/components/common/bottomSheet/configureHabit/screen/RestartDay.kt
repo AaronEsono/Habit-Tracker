@@ -31,6 +31,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+/**
+ * Tactical confirmation overlay for habit progress reset operations.
+ * Coordinates the visual dismissal of the bottom sheet with the asynchronous
+ * data-purge transactional event.
+ *
+ * @param modifier Structural Modifier ecosystem parameters.
+ * @param habitWithDay Data model carrying the target habit entity and the operational date context.
+ * @param coroutineScope Host scope for managing asynchronous dismiss/restart lifecycle events.
+ * @param onDismiss Callback to handle the component dismissal flow.
+ * @param sheetState Reference to the parent BottomSheet host state for transactional UI control.
+ * @param onRestart Callback action triggering the database purge for a specific habit ID and date.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestartDay(
@@ -42,7 +54,7 @@ fun RestartDay(
     onRestart:(id:Long,date: LocalDate) -> Unit,
 ){
 
-
+    // Confirmation header
     LabelLargeText(
         stringResource(R.string.habit_restart_day),
         modifier = Modifier
@@ -53,7 +65,7 @@ fun RestartDay(
         fontSize = 16.sp
     )
 
-    /** Botones */
+    // Transactional action row
     Row (
         modifier = modifier
             .fillMaxWidth()
@@ -61,6 +73,7 @@ fun RestartDay(
         verticalAlignment = Alignment.CenterVertically
     ){
 
+        // Cancel/Dismiss action
         CustomRipple {
             OutlinedButton(
                 modifier = Modifier.weight(1f),
@@ -78,6 +91,7 @@ fun RestartDay(
             }
         }
 
+        // Confirm reset action with dynamic color branding
         CustomRipple {
             Button(
                 modifier = Modifier

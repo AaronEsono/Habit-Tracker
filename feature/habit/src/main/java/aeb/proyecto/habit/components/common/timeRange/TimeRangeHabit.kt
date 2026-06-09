@@ -11,6 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import java.time.LocalDate
 
+/**
+ * A selector component that renders the appropriate date range navigation UI.
+ *
+ * This component acts as a high-level router, selecting and displaying the
+ * specific time range UI (Daily, Weekly, Monthly, or Recurring) based on
+ * [selectedTimeRangeUiState]. It dynamically adjusts the number of visible
+ * elements based on the device orientation.
+ *
+ * @param selectedTimeRangeUiState The current state object defining the time range type and bounds.
+ * @param selectedDate The currently active date, used by daily/recurring ranges.
+ * @param onClickTimeRange Callback for interacting with date range changes,
+ * providing the new [LocalDate] and a boolean indicating direction/reset.
+ */
 @Composable
 fun TimeRangeHabit(
     selectedTimeRangeUiState: TimeRangeUiState,
@@ -20,6 +33,7 @@ fun TimeRangeHabit(
 
     val orientation = getOrientation()
 
+    // Adjusts the buffer of dates to display based on screen real estate
     val numberOfElements = remember {
         when(orientation){
             Orientation.Portrait -> 8
@@ -27,7 +41,7 @@ fun TimeRangeHabit(
         }
     }
 
-    //Aqui mostramos los rangos de las fechas
+    // Transitions between different time range views smoothly
     AnimatedContent(
         targetState = selectedTimeRangeUiState::class
     ) { timeRangeClass ->

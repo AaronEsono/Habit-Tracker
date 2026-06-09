@@ -40,6 +40,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.LocalDate
 
+/**
+ * A specialized calendar cell component used within the habit editing BottomSheet.
+ *
+ * This component represents a single day in the calendar, displaying the date
+ * and providing visual feedback on habit progress for that specific day. It
+ * supports click and long-click interactions to manage habit logs.
+ *
+ * @param modifier Modifier to be applied to the component layout.
+ * @param day The [LocalDate] representing the date this cell corresponds to.
+ * @param monthSelected The currently displayed month in the calendar to determine visibility of days outside the current month.
+ * @param habitWithDay The data model containing habit details and progress for this specific day.
+ * @param sizeCircle The size of the indicator dot representing the habit's color.
+ * @param fontSize The text size for the habit progress label.
+ * @param fontSizeDay The text size for the day of the month number.
+ * @param onClick Callback triggered on a standard click, returning the habit ID and the date.
+ * @param onLongClick Callback triggered on a long click, returning the habit ID and the date.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CalendarDateEditHabit(

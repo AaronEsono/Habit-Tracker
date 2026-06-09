@@ -64,6 +64,24 @@ import java.time.LocalDate
 //poner racha
 // poner el otro modo de la semana
 
+
+/**
+ * A comprehensive card component that visualizes a weekly habit's progress.
+ *
+ * This card displays habit metadata, an overall completion indicator, and a
+ * horizontal row of individual day status indicators ([SeparateWeeklyDay]).
+ * It calculates the weekly completion status and reacts to changes in daily
+ * progress via provided callbacks.
+ *
+ * @param modifier Modifier to be applied to the card layout.
+ * @param startOfWeek The [LocalDate] marking the start of the week.
+ * @param endOfWeek The [LocalDate] marking the end of the week.
+ * @param selectedDate The specific [LocalDate] currently selected/focused.
+ * @param habit Data wrapper containing habit definitions and progress records.
+ * @param onClickCard Callback invoked when the main card area is clicked.
+ * @param onClick Callback invoked for primary actions on specific days.
+ * @param onLongClick Callback invoked for secondary actions on specific days.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SeparateWeeklyCard(
@@ -77,6 +95,7 @@ fun SeparateWeeklyCard(
     onLongClick: (id:Long,date: LocalDate) -> Unit
 ){
 
+    // State derived from the selected day for the primary progress indicator
     val habitDaySelected = remember (habit){
         getSelected(selectedDate,habit.dailyHabits)
     }
@@ -93,11 +112,12 @@ fun SeparateWeeklyCard(
         }
     }
 
+    // Aggregated weekly progress for the footer summary
     val daysCompleted = remember(habit){
         daysCompletedOnAWeek(habit, startOfWeek)
     }
 
-    // Para animar el progreso
+    // Animation state for the main habit progress icon
     val animatedProgress by animateFloatAsState(
         targetValue = currentProgress,
         animationSpec = tween(
@@ -136,13 +156,14 @@ fun SeparateWeeklyCard(
         Column (
             verticalArrangement = Arrangement.Center
         ){
+            // Header Row: Icon, Title, Description, and Goal
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = spacing8, vertical = spacing10),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                //Icono
+                //Icons
                 Box(
                     modifier = Modifier
                         .size(45.dp)
@@ -158,7 +179,6 @@ fun SeparateWeeklyCard(
                     )
                 }
 
-                // Nombre y descripcion
                 Column(
                     modifier = Modifier
                         .padding(start = spacing12, end = spacing6)
@@ -183,7 +203,7 @@ fun SeparateWeeklyCard(
                     }
                 }
 
-                // Metas
+                // Goals
                 Column(
                     modifier = Modifier
                         .padding(end = spacing12, start = spacing6),
@@ -201,7 +221,7 @@ fun SeparateWeeklyCard(
                     )
                 }
 
-                // Progresion
+                // Progression
                 Box(
                     modifier = Modifier
                         .size(45.dp)
@@ -271,7 +291,6 @@ fun SeparateWeeklyCard(
                 }
             }
 
-            // Meta separada por dias
             TitleSmallText(
                 stringResource(
                     R.string.habit_week_goal_title,

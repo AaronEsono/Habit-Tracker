@@ -48,6 +48,17 @@ import androidx.compose.ui.unit.sp
 import java.math.BigDecimal
 import java.time.LocalDate
 
+/**
+ * Specialized input viewport for temporal-based habit progression tracking.
+ * Provides granular HH:mm or mm:ss entry controls with smart-fill helper buttons.
+ *
+ * @param habitWithDay Target habit entity and associated day context.
+ * @param leftTimes Remaining temporal duration to fulfill the habit goal.
+ * @param halfTimesLeft Calculated 50% milestone target for rapid progression entry.
+ * @param onRestart Dispatches a reset event.
+ * @param onClickTimer Callback for external chronometer module navigation.
+ * @param onClick Commits the time-based progress conversion to the database.
+ */
 @Composable
 fun HourIncompleteMode(
     habitWithDay: HabitWithDay,
@@ -74,6 +85,7 @@ fun HourIncompleteMode(
     val firstTextFieldState = rememberTextFieldState(initialText = "1")
     val secondTextFieldState = rememberTextFieldState()
 
+    // Enforce input sanitization constraints
     IsOnlyDigit(firstTextFieldState)
     IsOnlyZeroTo59(secondTextFieldState)
 
@@ -81,6 +93,7 @@ fun HourIncompleteMode(
         habit.unit in listTime
     }
 
+    // Header label indicating remaining time
     LabelLargeText(
         stringResource(
             R.string.habit_edit_habit_day_times_left,
@@ -92,6 +105,7 @@ fun HourIncompleteMode(
             .padding(top = spacing2)
     )
 
+    // Optional Chronometer anchor
     if(unitInListTime){
         Row (
             modifier = Modifier.fillMaxWidth().padding(top = spacing10),
@@ -103,7 +117,7 @@ fun HourIncompleteMode(
         }
     }
 
-    //** Unidades para el usuario*/
+    // Rapid input helper buttons (Smart-Fill)
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -134,6 +148,7 @@ fun HourIncompleteMode(
         }
     }
 
+    // Dual-column numeric input field block
     Row (
         Modifier
             .fillMaxWidth()
@@ -194,6 +209,7 @@ fun HourIncompleteMode(
         }
     }
 
+    // Final transactional commit controls
     RowButton(
         isEnabled = isHourInputValid(firstTextFieldState,secondTextFieldState),
         color = Color(habit.color),
@@ -204,15 +220,25 @@ fun HourIncompleteMode(
     )
 }
 
+/**
+ * Normalizes dual-field human-readable time inputs into a singular atomic base unit (seconds).
+ * Acts as the data bridge between the UI-layer inputs and the domain-layer persistence model.
+ * * @param firstTextFieldState The leading time field (Hours or Minutes depending on [unitHabit]).
+ * @param secondTextFieldState The trailing time field (Minutes or Seconds depending on [unitHabit]).
+ * @param unitHabit The configuration unit context determining the multiplier logic.
+ * @return A unified [BigDecimal] representing the total duration in atomic seconds.
+ */
 fun convertToBigDecimal(firstTextFieldState: TextFieldState, secondTextFieldState: TextFieldState, unitHabit: UnitHabit): BigDecimal {
     val first = firstTextFieldState.text.toString().toBigDecimalOrNull() ?: BigDecimal.ZERO
     val second = secondTextFieldState.text.toString().toBigDecimalOrNull() ?: BigDecimal.ZERO
 
     return when(unitHabit){
         UnitHabit.HOURS -> {
+            // Hours to seconds: (h * 3600) + (m * 60)
             first.multiply(BigDecimal(3600)).add(second.multiply(BigDecimal(60)))
         }
         UnitHabit.MINUTES -> {
+            // Minutes to seconds: (m * 60) + s
             first.multiply(BigDecimal(60)).add(second)
         }
         else -> {BigDecimal.ZERO}

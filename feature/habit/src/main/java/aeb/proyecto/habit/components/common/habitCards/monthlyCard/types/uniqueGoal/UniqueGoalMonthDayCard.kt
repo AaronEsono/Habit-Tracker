@@ -36,6 +36,21 @@ import androidx.compose.ui.unit.dp
 import java.math.RoundingMode
 import java.time.LocalDate
 
+/**
+ * A specialized calendar cell component designed for habits with a unique monthly goal.
+ *
+ * Visualizes the specific day within a monthly calendar, using a [CircularProgressIndicator]
+ * to represent the completion percentage of a goal. Includes state-based color
+ * animations to differentiate between the current day, completed goals, and standard days.
+ *
+ * @param modifier Modifier to be applied to the component layout.
+ * @param day The [LocalDate] representing the day this cell displays.
+ * @param monthSelected The month currently displayed in the calendar, used for alpha modulation.
+ * @param horizontalPadding Spacing applied to the horizontal axis of the component.
+ * @param habitWithDay Data model containing habit configuration and daily progress.
+ * @param onClick Callback triggered on a standard click, returning the habit ID and date.
+ * @param onLongClick Callback triggered on a long click, returning the habit ID and date.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UniqueGoalMonthDayCard(
@@ -72,7 +87,7 @@ fun UniqueGoalMonthDayCard(
         }
     }
 
-    // Para animar el progreso
+    // Animate the progress
     val animatedProgress by animateFloatAsState(
         targetValue = currentProgress,
         animationSpec = tween(

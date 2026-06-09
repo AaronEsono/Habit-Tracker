@@ -28,6 +28,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 
+/**
+ * A navigation component for monthly time ranges.
+ *
+ * Displays the currently selected month and year, providing navigation controls
+ * to shift the calendar view forward or backward by one month.
+ *
+ * @param startOfMonth The [LocalDate] representing the first day of the current month.
+ * @param endOfMonth The [LocalDate] representing the last day of the current month.
+ * @param onClick Callback triggered when a navigation arrow is clicked,
+ * providing the target date and a boolean (typically for navigation direction).
+ */
 @Composable
 fun MonthlyTimeRange(
     startOfMonth: LocalDate,
@@ -41,6 +52,7 @@ fun MonthlyTimeRange(
         modifier = Modifier.fillMaxWidth().padding(vertical = spacing12),
         verticalAlignment = Alignment.CenterVertically
     ){
+        // Navigation: Previous Month
         Icon(
             Icons.AutoMirrored.Filled.ArrowBackIos,
             contentDescription = "weekly fordward button",
@@ -54,6 +66,7 @@ fun MonthlyTimeRange(
                 ){ onClick(startOfMonth.minusMonths(1), false)}
         )
 
+        // Month and Year Display
         Column (
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -71,6 +84,7 @@ fun MonthlyTimeRange(
             }
         }
 
+        // Navigation: Next Month
         Icon(
             Icons.AutoMirrored.Filled.ArrowForwardIos,
             contentDescription = "weekly fordward button",

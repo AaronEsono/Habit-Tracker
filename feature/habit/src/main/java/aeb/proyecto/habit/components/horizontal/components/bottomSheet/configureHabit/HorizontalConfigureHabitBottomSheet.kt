@@ -41,6 +41,20 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 
+/**
+ * A modal bottom sheet for configuring or updating a habit's progress for a specific day.
+ *
+ * This sheet provides a contextual UI to:
+ * 1. View the current date and habit name.
+ * 2. Restart progress if the goal is already met.
+ * 3. Add progress or trigger a timer if the goal is incomplete.
+ *
+ * @param habitWithDay The data wrapper containing the habit and its specific daily progress.
+ * @param onDismiss Callback to close the bottom sheet, typically passing a [TypeBottomSheet] state.
+ * @param onRestart Callback to reset the progress for the specified habit and date.
+ * @param onClickTimer Callback to initiate a timer-based activity for the habit.
+ * @param onClick Callback to manually update/set progress for the habit.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HorizontalConfigureHabitBottomSheet(

@@ -33,6 +33,18 @@ import androidx.compose.ui.unit.sp
 import java.math.BigDecimal
 import java.time.LocalDate
 
+/**
+ * Specialized input viewport for quantitative-based habit progression tracking.
+ * Provides a singular, high-precision text entry field coupled with rapid-fill
+ * milestone buttons for efficient daily log updates.
+ *
+ * @param habitWithDay Target habit entity and associated day context.
+ * @param leftTimes Remaining quantitative quantity to fulfill the habit goal.
+ * @param halfTimesLeft Calculated 50% milestone target for rapid progression entry.
+ * @param onRestart Dispatches a reset event.
+ * @param onClickTimer Callback for external chronometer module navigation.
+ * @param onClick Commits the quantitative progress value to the database.
+ */
 @Composable
 fun UnitIncompleteMode(
     habitWithDay: HabitWithDay,
@@ -60,6 +72,7 @@ fun UnitIncompleteMode(
         habit.unit in listTime
     }
 
+    // Header label indicating remaining quantitative balance
     LabelLargeText(
         stringResource(
             R.string.habit_edit_habit_day_times_left,
@@ -72,6 +85,7 @@ fun UnitIncompleteMode(
         fontSize = 15.sp
     )
 
+    // Optional Chronometer anchor
     if(unitInListTime){
         Row (
             modifier = Modifier.fillMaxWidth().padding(top = spacing10),
@@ -83,7 +97,7 @@ fun UnitIncompleteMode(
         }
     }
 
-    //** Unidades para el usuario*/
+    // Rapid input helper buttons (Smart-Fill)
     Row (
         modifier = Modifier.fillMaxWidth().padding(top = spacing10, start =
             spacing20, end = spacing20
@@ -106,14 +120,14 @@ fun UnitIncompleteMode(
         }
     }
 
-    /** Introducción de unidades */
+    // Quantitative input field
     TextFieldConfigureHabit(
         modifier = Modifier.padding(top = spacing10, bottom = spacing4),
         textFieldState = textFieldState,
         focusManager = focusManager,
     )
 
-
+    // Final transactional commit controls
     RowButton(
         isEnabled = isValidInput(textFieldState.text.toString()),
         color = Color(habit.color),

@@ -68,6 +68,23 @@ import androidx.compose.ui.unit.sp
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * A monthly calendar card component tailored for habits with a unique monthly aggregate goal.
+ *
+ * This component visualizes the overall progress of a habit throughout a specific month
+ * by calculating the total completed amount and displaying it via a linear progress
+ * indicator. It manages the calendar grid and user interactions for individual dates.
+ *
+ * @param modifier Modifier to be applied to the layout.
+ * @param startOfMonth The [LocalDate] representing the first day of the month to display.
+ * @param firstDayOfWeek The [DayOfWeek] used as the start of the week, defaulting to Monday.
+ * @param horizontalDayPadding Spacing applied horizontally between individual day cells.
+ * @param selectedDate The currently highlighted [LocalDate] in the calendar view.
+ * @param habit The data wrapper containing the habit definition and all daily progress records.
+ * @param onClickCard Callback invoked when the main card container is clicked.
+ * @param onClick Callback invoked for a primary action on a specific date cell.
+ * @param onLongClick Callback invoked for a long press on a specific date cell.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UniqueMonthlyCard(

@@ -25,6 +25,21 @@ import kotlinx.coroutines.delay
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * A vertical list screen for displaying monthly habits, optimized for mobile devices.
+ *
+ * This screen renders a list of monthly habits using a [LazyColumn], ensuring
+ * that cards for unique monthly goals and separate tracking are displayed
+ * sequentially. It applies specific padding and staggered entry animations
+ * to provide a smooth, consistent mobile user experience.
+ *
+ * @param timeRange Current monthly range state.
+ * @param startDayOfWeek User-preferred start day of the week.
+ * @param habits The list of monthly habits to display.
+ * @param onClickCard Callback for primary card interactions.
+ * @param onLongClick Callback for secondary interactions on calendar dates.
+ * @param onClick Callback for direct progress updates.
+ */
 @Composable
 fun VerticalMonthlyHabitScreen (
     timeRange: TimeRangeUiState.Monthly,

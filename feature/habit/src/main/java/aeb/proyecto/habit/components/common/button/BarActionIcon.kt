@@ -13,6 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
+/**
+ * A reusable icon component intended for use within an App Bar, providing
+ * access to date-selection functionality.
+ *
+ * This component wraps the calendar icon with necessary container styling
+ * ([ProvideAppBarActions]) and handles the click event to trigger the
+ * display of a BottomSheet.
+ *
+ * @param onBottomSheetSelected Callback function invoked when the icon is clicked,
+ * signaling the intent to open the date-selection BottomSheet.
+ */
 @Composable
 fun BarActionIcon(
     onBottomSheetSelected: () -> Unit = {},
