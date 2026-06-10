@@ -16,6 +16,12 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 
+/**
+ * Full-screen loading overlay designed to intercept user interactions during
+ * asynchronous authentication operations.
+ * * Provides a semi-transparent surface container with a central indeterminate
+ * progress indicator, ensuring the user is aware of the background task state.
+ */
 @Composable
 fun LoginLoading(){
 

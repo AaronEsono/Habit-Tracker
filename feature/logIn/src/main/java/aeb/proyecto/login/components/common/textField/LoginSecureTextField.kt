@@ -32,6 +32,20 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
 
+/**
+ * Specialized secure input field for sensitive data (e.g., passwords, PINs).
+ * Provides a toggleable visibility state and custom visual styling consistent
+ * with the application's authentication design language.
+ *
+ * @param modifier Structural Modifier parameters.
+ * @param textFieldState Reactive state container for the text input.
+ * @param isError Flag to trigger the error visual state.
+ * @param errorText Supporting message to display when [isError] is true.
+ * @param label Placeholder label for the input field.
+ * @param leadingIcon Optional leading icon for visual context (default: Lock).
+ * @param imeAction Keyboard action behavior (Next/Done).
+ * @param focusManager Controller for handling keyboard focus transitions.
+ */
 @Composable
 fun LoginSecureTextField(
     modifier: Modifier = Modifier,

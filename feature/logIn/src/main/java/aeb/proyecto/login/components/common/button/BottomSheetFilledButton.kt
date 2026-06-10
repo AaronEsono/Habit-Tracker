@@ -21,6 +21,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 
+/**
+ * A custom filled button component specifically designed for modal bottom sheets
+ * within the authentication flow.
+ *
+ * It features a custom ripple effect, standardized corner radius, and consistent
+ * padding, ensuring a professional look that matches the app's design system.
+ *
+ * @param modifier The [Modifier] to be applied to the button layout.
+ * @param onClick The action to be performed when the button is clicked.
+ * @param isEnabled Determines whether the button can be interacted with.
+ * @param title The string resource ID for the button label.
+ */
 @Composable
 fun BottomSheetFilledButton(
     modifier: Modifier = Modifier,
@@ -59,5 +71,4 @@ fun BottomSheetFilledButton(
             }
         }
     }
-
 }

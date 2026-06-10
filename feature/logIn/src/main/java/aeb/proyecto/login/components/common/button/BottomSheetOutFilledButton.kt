@@ -20,6 +20,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 
+/**
+ * Standardized outlined button used primarily for negative or cancellation
+ * actions within the login/auth modal sheets.
+ * * Features consistent padding, rounded corners, and a border stroke that matches
+ * the application's secondary design tokens.
+ *
+ * @param modifier Structural Modifier parameters to be applied to the button.
+ * @param onClick Execution callback for the cancellation/abort action.
+ */
 @Composable
 fun BottomSheetOutFilledButton(
     modifier: Modifier = Modifier,
@@ -49,5 +58,4 @@ fun BottomSheetOutFilledButton(
             }
         }
     }
-
 }

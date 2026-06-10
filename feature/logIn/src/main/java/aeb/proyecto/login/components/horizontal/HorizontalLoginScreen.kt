@@ -58,6 +58,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 
+/**
+ * A horizontal layout implementation of the authentication screen.
+ *
+ * This composable manages the authentication UI flow based on [LoginUIState],
+ * handles transitions between login and registration modes, and exposes
+ * user interaction events via callbacks.
+ *
+ * @param uiState The current state of the UI, determining whether to show loading, error, or login content.
+ * @param dataLoginScreen Data object containing the current screen configuration, such as the active login mode.
+ * @param bottomSheetState The state object for the associated [BottomSheet].
+ * @param onClickChecked Callback triggered when the checkbox input is toggled.
+ * @param onClickLoginMode Callback triggered to switch between login and registration modes.
+ * @param onClickAccept Callback triggered when the primary action button is clicked.
+ * @param onClickGoogle Callback triggered to initiate the Google sign-in flow.
+ * @param onClickResetPassword Callback triggered to navigate to the password recovery screen.
+ * @param toSaveScreen Side-effect function invoked when a successful login state is detected.
+ * @param onDismiss Callback triggered to request the dismissal of the current screen or modal.
+ * @param onAccept Generic callback for confirming specific screen conditions or validations.
+ */
 @Composable
 fun HorizontalLoginScreen(
     uiState: LoginUIState,

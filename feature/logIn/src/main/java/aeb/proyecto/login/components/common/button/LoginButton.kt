@@ -15,6 +15,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 
+/**
+ * Primary transactional button for the authentication module.
+ * Features an elevated style with high-contrast color tokens for both active
+ * and disabled interaction states.
+ *
+ * @param modifier Structural Modifier parameters to be applied to the button.
+ * @param enabled Controls the interaction availability; maps to visual state tokens.
+ * @param shape Defines the clipping geometry for the component (default: spacing8).
+ * @param onClick Execution callback for the authentication trigger.
+ */
 @Composable
 fun LoginButton(
     modifier: Modifier = Modifier,
@@ -23,6 +33,7 @@ fun LoginButton(
     onClick: () -> Unit = {}
 ) {
 
+    // Custom ripple wrapper for brand-specific touch feedback
     CustomRipple (color = MaterialTheme.colorScheme.inverseOnSurface){
         ElevatedButton(
             onClick = onClick,

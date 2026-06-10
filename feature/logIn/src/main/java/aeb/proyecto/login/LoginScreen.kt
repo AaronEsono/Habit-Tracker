@@ -19,6 +19,16 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
+/**
+ * A screen-level wrapper that manages the authentication flow and adapts to screen orientation.
+ *
+ * This composable acts as the orchestrator for the login feature. It observes state from the
+ * [LoginViewModel], handles business logic callbacks, and delegates the UI rendering to either
+ * [VerticalLoginScreen] or [HorizontalLoginScreen] based on the device's [Orientation].
+ *
+ * @param onSaveNavigate Callback function invoked to navigate to the next screen upon successful authentication.
+ * @param viewModel The Hilt-injected [LoginViewModel] responsible for managing the screen's state and business logic.
+ */
 @Composable
 fun LoginScreen(
     onSaveNavigate: () -> Unit,

@@ -29,6 +29,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 
+/**
+ * Standard input field for non-sensitive data entry within the authentication flow.
+ * Includes a context-aware clear button and automated focus management logic.
+ *
+ * @param modifier Structural Modifier parameters.
+ * @param textFieldState Reactive state container for the text input.
+ * @param isError Flag to trigger the error visual state.
+ * @param errorText Supporting message to display when [isError] is true.
+ * @param label Placeholder label for the input field.
+ * @param containerColor Background color variant for the field container.
+ * @param leadingIcon Optional leading icon for visual context (default: Email).
+ * @param keyboardType Type of keyboard to display (default: Email).
+ * @param imeAction Keyboard action behavior (Next/Done).
+ * @param focusManager Controller for handling keyboard focus transitions.
+ */
 @Composable
 fun LoginTextField(
     modifier: Modifier = Modifier,

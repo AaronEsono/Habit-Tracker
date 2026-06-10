@@ -39,6 +39,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.launch
 
+/**
+ * Polimorphic modal bottom sheet for multi-purpose authentication workflows.
+ * Adapts its layout and interaction buttons based on the provided [dataBottomSheet] type.
+ * * @param dataBottomSheet The context-specific data model (e.g., FORGOT_PASSWORD, UNVERIFIED_EMAIL).
+ * @param emailTextFieldState Shared state for email input operations.
+ * @param onDismiss Callback for modal dismissal.
+ * @param onAccept Callback for final transactional action.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HorizontalLoginBottomSheet(
@@ -63,6 +71,7 @@ fun HorizontalLoginBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            // Header: Dynamic Icon and Title
             Row (
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -82,6 +91,7 @@ fun HorizontalLoginBottomSheet(
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
+            // Subtitle
             LabelLargeText(
                 stringResource(dataBottomSheet.subtitle),
                 textAlign = TextAlign.Center,
