@@ -11,6 +11,13 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SaveAs
 import androidx.compose.ui.graphics.vector.ImageVector
 
+/**
+ * Defines the various configurations and labels for synchronization-related bottom sheets.
+ * Each enum constant maps directly to specific UI resources.
+ * * @property title Resource ID for the header title.
+ * @property iconTitle The visual representation (icon) for the sheet header.
+ * @property label Resource ID for the primary action description or status label.
+ */
 enum class DataBottomSheet (
     @StringRes var title:Int,
     var iconTitle:ImageVector,

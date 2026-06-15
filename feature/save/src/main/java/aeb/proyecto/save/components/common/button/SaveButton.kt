@@ -16,6 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 
+/**
+ * Primary elevated button for top-level synchronization actions.
+ * Features a distinct background color ([secondaryContainer]) and a
+ * subtle border to ensure visibility within the Save screen hierarchy.
+ *
+ * @param modifier Structural Modifier parameters.
+ * @param title The text label to display inside the button.
+ * @param onClick Callback function triggered on button press.
+ */
 @Composable
 fun SaveButton(
     modifier:Modifier = Modifier,

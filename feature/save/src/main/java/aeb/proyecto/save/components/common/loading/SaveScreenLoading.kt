@@ -16,6 +16,11 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 
+/**
+ * Full-screen loading overlay specifically for synchronization operations.
+ * Blocks interaction during Firestore network calls to prevent data race
+ * conditions or accidental multi-tap triggers.
+ */
 @Composable
 fun SaveScreenLoading(){
 

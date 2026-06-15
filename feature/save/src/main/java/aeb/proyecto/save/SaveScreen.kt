@@ -23,6 +23,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 // Testing
 
+/**
+ * Main entry point for the Save/Sync screen.
+ * Orchestrates the UI layout based on device orientation and delegates
+ * business logic to the [SaveViewModel].
+ *
+ * @param onImportScreen Navigation callback to the Import/Export module.
+ * @param viewModel The Hilt-injected ViewModel managing sync state and data.
+ */
 @Composable
 fun SaveScreen(
     onImportScreen: () -> Unit,
@@ -31,10 +39,12 @@ fun SaveScreen(
 
     val orientation = getOrientation()
 
+    // Collect UI state from ViewModel
     val bottomSheetState = viewModel.bottomSheetState.collectAsStateWithLifecycle().value
     val saveUIState = viewModel.saveUIState.collectAsStateWithLifecycle().value
     val dataSaveScreen = viewModel.dataSaveScreen.collectAsStateWithLifecycle().value
 
+    // Setup Top Bar environment
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.save_topbar_title),fontSize = 20.sp)
     }
@@ -43,20 +53,21 @@ fun SaveScreen(
         NavigationIcon()
     }
 
+    // Initial data fetch
     LaunchedEffect (Unit){
         viewModel.getDataUser()
     }
 
-    //Variables pantalla
+    // Callback definitions for UI actions
     val onSaveClick = { viewModel.setBottomSheetState(DataBottomSheet.SAVE_HABIT) }
     val onRestoreClick = { viewModel.setBottomSheetState(DataBottomSheet.RESTORE_HABIT) }
     val onDeleteClick = { viewModel.setBottomSheetState(DataBottomSheet.DELETE_HABIT) }
     val onLogOutClick = { viewModel.setBottomSheetState(DataBottomSheet.LOG_OUT) }
 
-    //Varibles bottomSheet
     val onDismiss = { viewModel.closeBottomSheet() }
     val onAccept =  { viewModel.requestAcceptBottomSheet() }
 
+    // Screen Layout Strategy based on Orientation
     when(orientation){
         Orientation.Portrait -> {
             VerticalSaveScreen(
@@ -87,10 +98,4 @@ fun SaveScreen(
             )
         }
     }
-}
-
-
-@Composable
-fun CustomSpacerSave(vertical: Dp = spacing8){
-    Spacer(modifier = Modifier.padding(vertical = vertical))
 }

@@ -20,6 +20,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 
+/**
+ * High-emphasis filled button for primary transactional actions within a BottomSheet.
+ * Uses [CustomRipple] for consistent surface feedback and [onPrimaryContainer] for contrast.
+ */
 @Composable
 fun BottomSheetFilledButton(
     modifier: Modifier = Modifier,

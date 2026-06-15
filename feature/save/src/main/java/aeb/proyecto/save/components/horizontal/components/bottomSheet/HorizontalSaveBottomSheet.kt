@@ -32,6 +32,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.launch
 
+/**
+ * A specialized horizontal layout for modal bottom sheets used in the Save module.
+ * Dynamically adapts its UI (buttons and content) based on the provided [dataBottomSheet] type.
+ * It manages its own show/hide lifecycle using [ModalBottomSheetState].
+ * @param dataBottomSheet The configuration data defining the icon, title, and labels.
+ * @param onDismiss Callback triggered when the sheet is closed or cancelled.
+ * @param onAccept Callback triggered when the primary action button is pressed.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HorizontalSaveBottomSheet(
@@ -57,6 +65,7 @@ fun HorizontalSaveBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            // Header Section: Icon + Title
             Row (
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -76,6 +85,7 @@ fun HorizontalSaveBottomSheet(
 
             Spacer(modifier = Modifier.padding(vertical = spacing4))
 
+            // Body Section: Descriptive Label
             LabelLargeText(
                 stringResource(dataBottomSheet.label),
                 textAlign = TextAlign.Center,
@@ -84,12 +94,14 @@ fun HorizontalSaveBottomSheet(
 
             Spacer(modifier = Modifier.padding(spacing2))
 
+            // Action Row: Cancel and Accept buttons
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = spacing12, horizontal = spacing16)
             ) {
 
+                // Render Cancel button only for actionable states
                 when (dataBottomSheet) {
                     DataBottomSheet.SAVE_HABIT, DataBottomSheet.DELETE_HABIT, DataBottomSheet.LOG_OUT, DataBottomSheet.RESTORE_HABIT -> {
                         BottomSheetOutLinedButton(
@@ -108,6 +120,7 @@ fun HorizontalSaveBottomSheet(
                     else -> Unit
                 }
 
+                // Primary Action Button
                 BottomSheetFilledButton(
                     modifier = Modifier.weight(1f),
                     onClick = {

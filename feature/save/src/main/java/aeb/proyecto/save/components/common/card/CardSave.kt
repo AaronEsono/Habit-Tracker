@@ -27,6 +27,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import java.time.LocalDateTime
 
+/**
+ * Visual representation of the synchronization state.
+ * Displays a summary of the last cloud-save operation or a "no data" status.
+ *
+ * @param localDateTime The timestamp of the last operation; null indicates no sync history.
+ */
 @Composable
 fun CardSave(
     localDateTime: LocalDateTime? = LocalDateTime.now()
@@ -80,6 +86,9 @@ fun CardSave(
     }
 }
 
+/**
+ * Formats the [LocalDateTime] into a localized date string.
+ */
 @Composable
 fun getDate(localDateTime: LocalDateTime): String {
     val year = localDateTime.year
@@ -89,6 +98,9 @@ fun getDate(localDateTime: LocalDateTime): String {
     return stringResource(R.string.save_date_data, day, month, year)
 }
 
+/**
+ * Formats the [LocalDateTime] into a localized time string (HH:mm).
+ */
 @Composable
 fun getTime(localDateTime: LocalDateTime): String {
     val hour = localDateTime.hour.toString()

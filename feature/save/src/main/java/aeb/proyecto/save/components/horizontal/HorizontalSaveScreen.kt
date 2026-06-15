@@ -1,11 +1,11 @@
 package aeb.proyecto.save.components.horizontal
 
-import aeb.proyecto.save.CustomSpacerSave
 import aeb.proyecto.save.R
 import aeb.proyecto.save.SaveUIState
 import aeb.proyecto.save.components.common.button.SaveButton
 import aeb.proyecto.save.components.common.card.CardSave
 import aeb.proyecto.save.components.common.loading.SaveScreenLoading
+import aeb.proyecto.save.components.common.spacer.CustomSpacerSave
 import aeb.proyecto.save.components.horizontal.components.bottomSheet.HorizontalSaveBottomSheet
 import aeb.proyecto.save.model.BottomSheetState
 import aeb.proyecto.save.model.DataSaveScreen
@@ -36,6 +36,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
+/**
+ * Landscape-optimized layout for the Save/Sync screen.
+ * Divides the screen into two main columns: metadata/info on the left,
+ * and operational actions on the right.
+ *
+ * @param saveUIState The current operational state (Loading, Success, Error, LogOut).
+ * @param dataSaveScreen The data model containing user profile and sync metadata.
+ * @param bottomSheetState The state managing the visibility and content of the bottom sheet.
+ * @param onImportScreen Callback triggered to navigate to the import/export screen.
+ * @param onSaveClick Callback triggered to initiate the cloud save operation.
+ * @param onRestoreClick Callback triggered to initiate the cloud restore operation.
+ * @param onDeleteClick Callback triggered to initiate the cloud data deletion.
+ * @param onLogOutClick Callback triggered to initiate the session logout.
+ * @param onDismiss Callback triggered when the bottom sheet is dismissed.
+ * @param onAccept Callback triggered when the primary action in the bottom sheet is confirmed.
+ */
 @Composable
 fun HorizontalSaveScreen(
     saveUIState: SaveUIState,

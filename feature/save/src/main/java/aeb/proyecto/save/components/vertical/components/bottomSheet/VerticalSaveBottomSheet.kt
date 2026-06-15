@@ -31,6 +31,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.launch
 
+/**
+ * A vertical layout for modal bottom sheets used in the Save module.
+ * Designed for portrait orientation or narrow screens where vertical stacking
+ * of action buttons improves usability.
+ * @param dataBottomSheet The configuration data defining the icon, title, and labels.
+ * @param onDismiss Callback triggered when the sheet is closed or cancelled.
+ * @param onAccept Callback triggered when the primary action button is pressed.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VerticalSaveBottomSheet(

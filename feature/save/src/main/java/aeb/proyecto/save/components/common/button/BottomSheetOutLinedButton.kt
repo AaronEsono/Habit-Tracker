@@ -20,7 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 
-
+/**
+ * Secondary-emphasis outlined button for cancellation or dismissal actions
+ * within a BottomSheet.
+ * Uses a custom [BorderStroke] aligned with the application theme to maintain
+ * visual hierarchy.
+ */
 @Composable
 fun BottomSheetOutLinedButton(
     modifier: Modifier = Modifier,
