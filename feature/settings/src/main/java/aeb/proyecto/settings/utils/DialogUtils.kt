@@ -5,14 +5,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import java.time.DayOfWeek
 
+/**
+ * Utility to determine the button container color based on selection state.
+ * Reduces boilerplate by using a generic type [T] for comparison.
+ * @param current The current value of the option.
+ * @param selected The value that is currently selected.
+ * @return [MaterialTheme.colorScheme.surfaceContainer] if selected, otherwise [MaterialTheme.colorScheme.background].
+ */
 @Composable
-fun setContainerColorButton(theme: Int, themeSelected: Int): Color {
-    return if (theme == themeSelected) MaterialTheme.colorScheme.surfaceContainer else MaterialTheme.colorScheme.background
-}
-
-@Composable
-fun setContainerColorButton(language: String, languageSelected: String): Color {
-    return if (language == languageSelected) MaterialTheme.colorScheme.surfaceContainer else MaterialTheme.colorScheme.background
+fun <T> getSelectionContainerColor(current: T, selected: T): Color {
+    return if (current == selected) {
+        MaterialTheme.colorScheme.surfaceContainer
+    } else {
+        MaterialTheme.colorScheme.background
+    }
 }
 
 @Composable

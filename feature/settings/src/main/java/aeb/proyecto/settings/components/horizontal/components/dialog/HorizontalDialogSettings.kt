@@ -38,6 +38,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+/**
+ * A reusable dialog component that adapts its content based on the provided [DataDialog].
+ *
+ * @param dataDialog The configuration defining which type of options to display.
+ * @param themeSelected The current theme ID.
+ * @param languageSelected The current language string code.
+ * @param daySelected The current start-of-week day string.
+ * @param onDismissRequest Lambda to trigger when the user clicks outside the dialog.
+ * @param onClickButton Callback to return the selected [DataResult] to the ViewModel.
+ */
 @Composable
 fun HorizontalDialogSettings(
     dataDialog: DataDialog,

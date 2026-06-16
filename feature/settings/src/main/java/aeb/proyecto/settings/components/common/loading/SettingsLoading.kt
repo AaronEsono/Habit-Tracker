@@ -25,6 +25,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 
+/**
+ * A custom loading indicator for the Settings screen.
+ * Uses an infinite pulse animation to indicate processing state.
+ */
 @Composable
 fun SettingsLoading(){
     val infiniteTransition = rememberInfiniteTransition(label = "habit loading")

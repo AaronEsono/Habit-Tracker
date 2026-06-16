@@ -24,11 +24,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 
+/**
+ * Navigates the user directly to the link selected
+ */
 fun openLink(context: Context, uri:String){
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
     context.startActivity(intent)
 }
 
+/**
+ * Pre-populates an email client with app version and device information.
+ * Useful for support and feedback loops.
+ */
 fun sendEmail(context:Context){
     val intent = Intent(Intent.ACTION_SENDTO).apply {
         data = "mailto:".toUri() // Especifica el esquema mailto
@@ -46,6 +53,10 @@ fun sendEmail(context:Context){
     context.startActivity(intent)
 }
 
+/**
+ * Navigates the user directly to the system overlay permission screen
+ * for this specific package.
+ */
 fun openOverlayPermissionSettings(context: Context) {
     val packageName = context.packageName
     val intent = Intent(
@@ -56,6 +67,10 @@ fun openOverlayPermissionSettings(context: Context) {
     context.startActivity(intent)
 }
 
+/**
+ * Composable observer that monitors if the 'Draw over other apps' permission
+ * was granted when the user returns to the app.
+ */
 @Composable
 fun OnChangeOverlay(isOverlayActivated: MutableState<Boolean>, context: Context){
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -75,6 +90,9 @@ fun OnChangeOverlay(isOverlayActivated: MutableState<Boolean>, context: Context)
     }
 }
 
+/**
+ * Returns a human-readable string representing the current device hardware.
+ */
 private fun getGetLocalDateTime():String{
     val localDateTime = LocalDateTime.now()
     val zoneId = ZoneId.systemDefault() // Obtienes la zona horaria por defecto del sistema
@@ -82,6 +100,10 @@ private fun getGetLocalDateTime():String{
     return zonedDateTime.toString()
 }
 
+/**
+ * Returns the current date-time in the system's timezone,
+ * formatted as a standardized ISO string for consistent logging.
+ */
 private fun getLocalDataDevice():String{
     val deviceName = Build.MODEL // Modelo del dispositivo
     val deviceBrand = Build.BRAND // Marca del dispositivo

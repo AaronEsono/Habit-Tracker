@@ -9,6 +9,10 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Defines the configuration for each settings dialog.
+ * Encapsulates UI resources and the specific data model required for each option.
+ */
 enum class DataDialog(
     @DrawableRes val image: Int,
     @StringRes val title: Int,
@@ -31,6 +35,9 @@ enum class DataDialog(
     ),
 }
 
+/**
+ * Sealed class providing type-safe access to the data required by the dialogs.
+ */
 sealed class DialogElements {
     data class DialogTheme(val theme:List<EnumTheme>):DialogElements()
     data class DialogLanguage(val language: List<EnumLanguage>):DialogElements()

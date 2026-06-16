@@ -23,6 +23,14 @@ import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import javax.inject.Inject
 
+/**
+ * ViewModel responsible for managing the application's configuration states.
+ * Handles user preferences (theme, language, start of week) and dialog interactions.
+ *
+ * @property dataSettingsUseCase Interacts with DataStore to read/write preferences.
+ * @property setLanguageUseCase Handles the application-level locale changes.
+ * @property settingsAuthenticationUseCase Verifies the current user session.
+ */
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val dataSettingsUseCase: DataSettingsUseCase,
@@ -30,9 +38,14 @@ class SettingsViewModel @Inject constructor(
     private val settingsAuthenticationUseCase: SettingsAuthenticationUseCase
 ):ViewModel() {
 
+    // Dialog state management
     private val _settingDialogState:MutableStateFlow<SettingsDialogState> = MutableStateFlow(SettingsDialogState())
     val settingDialogState:StateFlow<SettingsDialogState> = _settingDialogState.asStateFlow()
 
+    /**
+     * Reactive state stream of the application settings.
+     * Maps the underlying DataStore flow directly to a [SettingsUIState].
+     */
     val settingsUIState:StateFlow<SettingsUIState> = dataSettingsUseCase.dataSettings
         .map<AppSettings,SettingsUIState>{
             SettingsUIState.Success(it)
@@ -45,22 +58,39 @@ class SettingsViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = SettingsUIState.Loading
         )
+
+    /**
+     * Checks if there is an active authenticated user session.
+     */
     fun getCurrentUser():Boolean{
         return settingsAuthenticationUseCase.getCurrentUser()
     }
 
+    /**
+     * Toggles the visibility of the settings dialog.
+     */
     fun setStateDialog(state:Boolean){
         _settingDialogState.update { currentState ->
             currentState.copy(showDialog = state)
         }
     }
 
+    /**
+     * Prepares and displays a specific dialog mode (e.g., Theme selection, Language selection).
+     * @param dataDialog The configuration defining which dialog to show.
+     */
     fun setDataDialogMode(dataDialog: DataDialog) {
         _settingDialogState.update { currentState ->
             currentState.copy(dataDialog = dataDialog, showDialog = true)
         }
     }
 
+    /**
+     * Processes the user's selection from a dialog, applies the specific setting,
+     * updates the DataStore, and dismisses the dialog.
+     *
+     * @param dataResult The encapsulated result from the dialog interaction.
+     */
     fun treatResultDialog(dataResult: DataResult) {
         viewModelScope.launch {
             var appSettings = dataSettingsUseCase.getAppSettings()
@@ -84,6 +114,9 @@ class SettingsViewModel @Inject constructor(
     }
 }
 
+/**
+ * Represents the UI states for the main Settings screen.
+ */
 sealed class SettingsUIState(){
     data object Loading: SettingsUIState()
     data object Error: SettingsUIState()

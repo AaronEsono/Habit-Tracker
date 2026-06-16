@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 // NOTA: Iconos de flaticon y svgRepo, poner que los he utilizado y darles credito
+// NOTA: Dar credito a la libreria utilizada en la pantalla de estadisticas
 
 // Mirar en un futuro el horizontalRow con los dias, optimizarlo
 // Mirar en addHabit como hacer que se deslice los mensuales

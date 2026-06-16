@@ -18,8 +18,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-// Future -> TODO transicion en los botones del idioma
-
+/**
+ * Main screen for the Settings module.
+ * Orchestrates the UI state, dialog handling, and orientation-specific layouts.
+ *
+ * @param onImportScreen Callback to navigate to the Import/Export screen.
+ * @param onSaveScreen Callback to navigate to the Save/Sync screen.
+ * @param viewModel The Hilt-injected ViewModel managing settings business logic.
+ */
 @Composable
 fun SettingsScreen(
     onImportScreen: () -> Unit,
@@ -32,11 +38,12 @@ fun SettingsScreen(
     val settingsDialogState = viewModel.settingDialogState.collectAsStateWithLifecycle().value
     val settingsUIState = viewModel.settingsUIState.collectAsStateWithLifecycle().value
 
+    // Screen Title Configuration
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.settings_configuration),fontSize = 20.sp)
     }
 
-    //Variables pantalla
+    // Interaction Handlers
     val onClickTheme = { viewModel.setDataDialogMode(DataDialog.THEME) }
     val onClickLanguage = { viewModel.setDataDialogMode(DataDialog.LANGUAGE) }
     val onClickGeneralSettings = { viewModel.setDataDialogMode(DataDialog.DAY_WEEK) }
@@ -48,6 +55,7 @@ fun SettingsScreen(
     val onDismissDialog = { viewModel.setStateDialog(false) }
     val onAcceptDialog = { dataResult: DataResult -> viewModel.treatResultDialog(dataResult) }
 
+    // Orientation Logic
     when(orientation){
         Orientation.Portrait -> {
             VerticalSettingsScreen(

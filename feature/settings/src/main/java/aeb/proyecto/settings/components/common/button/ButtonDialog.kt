@@ -19,6 +19,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
+/**
+ * A customized Elevated button specifically for dialog options.
+ * Fixed width of 150.dp ensures consistency in selection grids.
+ *
+ * @param modifier Modifier for external adjustments.
+ * @param containerColor Background color, usually determined by [getSelectionContainerColor].
+ * @param paddingValues Internal spacing for the button content.
+ * @param onClick Action triggered on button press.
+ * @param content The label/text or icon to display inside.
+ */
 @Composable
 fun ButtonDialog(
     modifier:Modifier = Modifier,
@@ -42,6 +52,10 @@ fun ButtonDialog(
     }
 }
 
+/**
+ * Standardized body text component for buttons inside dialogs.
+ * Ensures consistent padding, center alignment, and ellipsis for long labels.
+ */
 @Composable
 fun BodyMediumTextButtonDialog(text:String){
     BodyMediumText(

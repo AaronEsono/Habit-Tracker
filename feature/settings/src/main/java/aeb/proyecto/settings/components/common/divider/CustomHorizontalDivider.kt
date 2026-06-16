@@ -8,6 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 
+/**
+ * A wrapper for [HorizontalDivider] to maintain design consistency across the app.
+ */
 @Composable
 fun CustomHorizontalDivider(
     modifier : Modifier = Modifier,

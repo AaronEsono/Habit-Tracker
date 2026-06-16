@@ -4,7 +4,7 @@ import aeb.proyecto.language.model.EnumLanguage
 import aeb.proyecto.settings.components.common.button.BodyMediumTextButtonDialog
 import aeb.proyecto.settings.components.common.button.ButtonDialog
 import aeb.proyecto.settings.model.DataResult
-import aeb.proyecto.settings.utils.setContainerColorButton
+import aeb.proyecto.settings.utils.getSelectionContainerColor
 import aeb.proyecto.ui.dimmens.Dimmens.spacing3
 import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import androidx.compose.foundation.Image
@@ -21,6 +21,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
+/**
+ * Button component for selecting the application language within a dialog.
+ * Includes a visual icon (flag) and the language name.
+ *
+ * @param elementLanguage The [EnumLanguage] option this button represents.
+ * @param languageSelected The code of the currently selected language.
+ * @param onClickButton Callback to return the selected [DataResult.LanguageResult].
+ */
 @Composable
 fun LanguageDialogButton(
     elementLanguage: EnumLanguage,
@@ -30,7 +38,7 @@ fun LanguageDialogButton(
     ButtonDialog(
         modifier = Modifier.padding(vertical = spacing3),
         paddingValues = PaddingValues(horizontal = spacing6),
-        containerColor = setContainerColorButton(elementLanguage.value, languageSelected),
+        containerColor = getSelectionContainerColor(elementLanguage.value, languageSelected),
         onClick = { onClickButton(DataResult.LanguageResult(elementLanguage.value)) }
     ){
         Row(

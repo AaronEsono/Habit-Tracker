@@ -32,6 +32,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
+/**
+ * A standard settings row-button designed for the main Settings screen.
+ * Displays a leading icon, title, optional sub-label, and a navigation arrow.
+ *
+ * @param modifier Applied to the [ElevatedButton].
+ * @param shape Custom shape for the container.
+ * @param leadingIcon Icon resource to display at the start.
+ * @param title Primary text resource.
+ * @param label Optional secondary text resource to show status or description.
+ * @param onClick Triggered when the button is pressed.
+ */
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun ButtonSettings(

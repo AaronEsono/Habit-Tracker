@@ -39,6 +39,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+/**
+ * A vertical-optimized screen for application settings.
+ * Displays configuration options, overlay management, and external support links
+ * in a vertical layout.
+ *
+ * @param settingsUIState The current state of the settings data ([SettingsUIState.Success], [Loading], [Error]).
+ * @param dialogState The state defining whether a dialog is visible and which [DataDialog] to display.
+ * @param onClickTheme Callback to trigger the theme selection dialog.
+ * @param onClickLanguage Callback to trigger the language selection dialog.
+ * @param onClickGeneralSettings Callback to trigger the general settings (e.g., start day of the week).
+ * @param onClickOverlay Callback to navigate to the system overlay permission screen.
+ * @param onClickExport Callback to navigate to the import/export screen.
+ * @param onClickEmail Callback to open the email client with pre-filled device info.
+ * @param onClickGithub Callback to open the project repository in a browser, receiving the URL.
+ * @param onClickLinkedin Callback to open the profile in a browser, receiving the URL.
+ * @param onDismissDialog Callback to close the currently active dialog.
+ * @param onAcceptDialog Callback to process the result ([DataResult]) selected by the user in a dialog.
+ */
 @Composable
 fun VerticalSettingsScreen(
     settingsUIState: SettingsUIState,
