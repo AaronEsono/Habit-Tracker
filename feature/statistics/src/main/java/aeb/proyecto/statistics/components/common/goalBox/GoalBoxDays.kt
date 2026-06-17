@@ -22,6 +22,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Renders a compact info box to display goal-related statistics (e.g., total days
+ * or streaks). It uses [BoxWithConstraints] to automatically scale its internal
+ * typography based on the box height.
+ *
+ * @param modifier Applied to the outer container.
+ * @param title The main statistic value (e.g., "15").
+ * @param subTitle The label describing the statistic (e.g., "Best Streak").
+ */
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun GoalBoxDays(
@@ -66,5 +75,4 @@ fun GoalBoxDays(
             )
         }
     }
-
 }

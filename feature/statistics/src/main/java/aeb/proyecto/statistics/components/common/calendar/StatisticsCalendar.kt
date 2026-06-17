@@ -24,6 +24,16 @@ import androidx.compose.ui.unit.dp
 import java.time.DayOfWeek
 import java.time.YearMonth
 
+/**
+ * Main container component for the habit statistics calendar.
+ * Orchestrates the header, day-of-week labels, and the interactive calendar content.
+ *
+ * @param modifier Applied to the outer container.
+ * @param yearMonth The current [YearMonth] being displayed.
+ * @param startDayOfWeek The preferred start day for the weekly grid (e.g., Monday).
+ * @param calendarUIState Holds the list of [HabitWithDay] items for the current period.
+ * @param onMonthChange Callback triggered when the user navigates between months.
+ */
 @Composable
 fun StatisticsCalendar(
     modifier: Modifier = Modifier,

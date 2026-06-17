@@ -10,6 +10,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 
+/**
+ * Renders a custom Donut Chart on a [Canvas].
+ * Iterates through the provided [data] list to draw arcs representing
+ * habit completion segments.
+ *
+ * @param data A list of [PieChartData] representing the segments of the donut.
+ * @param modifier Applied to the [Canvas] container.
+ */
 @Composable
 fun ChartCanvas(
     data: List<PieChartData>, modifier: Modifier
@@ -43,5 +51,4 @@ fun ChartCanvas(
             currentStartAngle += pieData.value
         }
     }
-
 }

@@ -27,6 +27,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Renders an enhanced info box specifically for streak-based statistics.
+ * Displays the streak count, a descriptive label, and the associated date range.
+ *
+ * @param modifier Applied to the outer container.
+ * @param title The streak count (e.g., "12").
+ * @param dateString The date range string (e.g., "Jan 01 - Jan 12").
+ * @param subTitle The label describing the streak (e.g., "Best Streak").
+ */
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun GoalBoxStreak(
@@ -83,5 +92,4 @@ fun GoalBoxStreak(
             )
         }
     }
-
 }

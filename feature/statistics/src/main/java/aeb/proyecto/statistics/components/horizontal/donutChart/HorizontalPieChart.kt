@@ -33,6 +33,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * Renders a side-by-side dashboard component containing a Donut Chart
+ * and its corresponding descriptive legend.
+ *
+ * @param modifier Applied to the outer container.
+ * @param data The list of [PieChartData] to be visualized in the chart and legend.
+ * @param chartHeight The fixed height for the Donut Chart canvas, which
+ * influences the scaling of the legend labels.
+ */
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun HorizontalPieChart(
@@ -46,8 +55,9 @@ fun HorizontalPieChart(
             .fillMaxWidth()
             .padding(horizontal = spacing6)
             .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(spacing6))
-            .background(MaterialTheme.colorScheme.surfaceTint) // Un toque sutil
+            .background(MaterialTheme.colorScheme.surfaceTint)
     ) {
+        // Smooth transition when data updates
         AnimatedContent(
             targetState = data,
             transitionSpec = {
@@ -79,7 +89,7 @@ fun HorizontalPieChart(
                 // 2. LAS LEYENDAS (Derecha)
                 Column(
                     modifier = Modifier
-                        .weight(1.2f), // Un poco más de peso para el texto si es largo
+                        .weight(1.2f),
                     verticalArrangement = Arrangement.spacedBy(spacing8, Alignment.CenterVertically)
                 ) {
                     animatedData.forEach { pieData ->
@@ -92,5 +102,4 @@ fun HorizontalPieChart(
             }
         }
     }
-
 }

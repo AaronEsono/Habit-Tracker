@@ -29,6 +29,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
+/**
+ * Renders a descriptive header card for a habit, displaying its icon and name.
+ * The component automatically scales the typography based on the available
+ * container height.
+ *
+ * @param modifier Applied to the [BoxWithConstraints] container.
+ * @param habit The habit model containing the icon, name, and theme color.
+ */
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun HeaderTitle(
@@ -45,12 +53,13 @@ fun HeaderTitle(
             .fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
+        // Calculate font size dynamically based on the component's height
         val density = LocalDensity.current
         val textSize = with(density) {
             (maxHeight * 0.45f).toSp()
         }
 
-
+        // Habit Name (Centered)
         TitleLargeText(
             text = habit.name,
             textAlign = TextAlign.Center,
@@ -59,6 +68,7 @@ fun HeaderTitle(
             fontSize = textSize
         )
 
+        // Habit Icon (Aligned to the start)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -82,5 +92,4 @@ fun HeaderTitle(
             }
         }
     }
-
 }

@@ -15,6 +15,27 @@ import androidx.compose.runtime.Composable
 import java.time.DayOfWeek
 import java.time.YearMonth
 
+/**
+ * Entry point for the Statistics module in horizontal orientation.
+ * Acts as a state controller, delegating the UI rendering to the appropriate
+ * composable based on the current [StatisticsState].
+ *
+ * @param statisticsState The current state of the statistics data (Loading, Success, Error).
+ * @param boxUIState Statistics data for the weekly/daily view.
+ * @param graphicsState State for the trends/graphics view.
+ * @param hourlyGraphicsState State for the hourly distribution view.
+ * @param goalDoneState Progress metrics for goals.
+ * @param pieChartState Data for the donut/pie chart distribution.
+ * @param yearMonth Current [YearMonth] for the calendar view.
+ * @param yearGraphicsSelected Year selected for annual trends.
+ * @param yearHourlyGraphicsSelected Year selected for hourly trends.
+ * @param startDayOfWeek User-defined start day of the week.
+ * @param calendarUIState State holding calendar date information.
+ * @param onCLickCard Callback when a user selects a habit from the list.
+ * @param onMonthChange Callback for calendar month navigation.
+ * @param onYearSelected Callback for annual graph navigation.
+ * @param onHourYearSelected Callback for hourly graph navigation.
+ */
 @Composable
 fun HorizontalStatisticsScreen(
     statisticsState: StatisticsState,
@@ -67,5 +88,4 @@ fun HorizontalStatisticsScreen(
             }
         }
     }
-
 }

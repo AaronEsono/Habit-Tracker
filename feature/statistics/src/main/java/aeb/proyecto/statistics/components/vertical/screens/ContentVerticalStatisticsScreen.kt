@@ -28,6 +28,28 @@ import androidx.compose.ui.Modifier
 import java.time.DayOfWeek
 import java.time.YearMonth
 
+/**
+ * Master-Detail screen layout for the Statistics module, optimized for portrait orientation.
+ * Displays a list of selectable habits on the top and the detailed statistics
+ * view for the selected habit in the bottom.
+ *
+ * @param habits List of available habits to display in the selector.
+ * @param boxUIState Statistics data for the weekly/daily view.
+ * @param graphicsState State for the trends/graphics view.
+ * @param hourlyGraphicsState State for the hourly distribution view.
+ * @param goalDoneState Progress state for goal completion metrics.
+ * @param pieChartState State for the donut/pie chart distribution.
+ * @param habitSelected Currently selected habit details.
+ * @param yearMonth Current month displayed in the calendar.
+ * @param yearGraphicsSelected Year selected for annual trends.
+ * @param yearHourlyGraphicsSelected Year selected for hourly distribution.
+ * @param startDayOfWeek User preference for the calendar start day.
+ * @param calendarUIState State holding calendar date information.
+ * @param onClickCard Callback when a user selects a habit from the list.
+ * @param onMonthChange Callback for calendar month navigation.
+ * @param onYearSelected Callback for annual trend year navigation.
+ * @param onHourYearSelected Callback for hourly trends year navigation.
+ */
 @Composable
 fun ContentVerticalStatisticsScreen(
     habits: List<Habit>,
@@ -52,6 +74,7 @@ fun ContentVerticalStatisticsScreen(
         modifier = Modifier.fillMaxSize().padding(top = spacing6)
     ){
 
+        // Master Pane: Habit Selection List
         LazyRow(
             modifier = Modifier.fillMaxWidth().fillMaxHeight(0.1f).padding(horizontal = spacing8),
             horizontalArrangement = Arrangement.spacedBy(spacing8)
@@ -71,8 +94,10 @@ fun ContentVerticalStatisticsScreen(
 
         Spacer(modifier = Modifier.padding(top = spacing2))
 
+        // Visual separator
         HorizontalDivider(color = MaterialTheme.colorScheme.outline, thickness = spacing2)
 
+        // Detail Pane: Statistics Content for the selected habit
         VerticalHabitSelectedScreen(
             habitSelected = habitSelected,
             boxUIState = boxUIState,

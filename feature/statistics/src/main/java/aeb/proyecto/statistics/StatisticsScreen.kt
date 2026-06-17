@@ -12,15 +12,24 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
+/**
+ * The root entry point for the Statistics feature. This Composable monitors
+ * the device orientation and lifecycle states to delegate UI rendering to either
+ * the [VerticalStatisticsScreen] or the [HorizontalStatisticsScreen].
+ *
+ * @param viewModel The Hilt-injected ViewModel managing the statistics data flow.
+ */
 @Composable
 fun StatisticsScreen(
     viewModel: StatisticsViewModel = hiltViewModel()
 ){
 
+    // Scaffold title setup
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.topbar_habit), fontSize = 20.sp)
     }
 
+    // Observing orientation and all state flows from the ViewModel
     val orientation = getOrientation()
     val statisticsState = viewModel.statisticsState.collectAsStateWithLifecycle().value
     val yearMonth = viewModel.yearMonth.collectAsStateWithLifecycle().value
@@ -34,7 +43,7 @@ fun StatisticsScreen(
     val goalsDoneState = viewModel.goalsDoneState.collectAsStateWithLifecycle().value
     val pieChartState = viewModel.pieChartState.collectAsStateWithLifecycle().value
 
-
+    // Adaptive layout routing based on device orientation
     when(orientation){
         Orientation.Portrait -> {
             VerticalStatisticsScreen(
@@ -75,24 +84,4 @@ fun StatisticsScreen(
             )
         }
     }
-
-    // Vertical
-    // 1. Linea horizontal que separe los hábitos. Se muestran en círculos con su nombre e icono. ---- HECHO
-    // Abajo, el nombre del hábito ----- HECHO
-
-    // 2. Nombre habito y descripcion abajo ----- HECHO
-
-    // 3. Calendario con los días completados ----- HECHO
-
-    // 4. Sistema de recuadros con los días a lo habitKit ----- HECHO
-
-    // 5. Sistema de conteo de completados por mes, hacer detalle ----- HECHO
-
-    // 6. Sistema de conteo de completados por hora, hacer detalle, en este hacer histórico? ----- HECHO
-
-    // 7. Dos recuadros, en uno mostrar los completados total, y en otro la racha actual y la mejor racha ----- HECHO
-    // A lo mejor las rachas separarlos en dos ----- HECHO
-
-    // 8. Rueda donde se muestren: completados, a medio completar, no hecho, porcentaje ----- HECHO
-
 }

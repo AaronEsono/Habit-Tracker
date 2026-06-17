@@ -51,22 +51,37 @@ import java.time.temporal.TemporalAmount
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
+/**
+ * ViewModel responsible for managing statistics data and user interaction state.
+ * Handles different temporal views: monthly summaries, yearly trends, and hourly distribution.
+ *
+ * @property getHabitsStatisticsUseCase UseCase to fetch aggregated habit data.
+ * @property getHabitSelectedUseCase UseCase to fetch details of a specific habit if needed.
+ */
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
     private val getHabitsStatisticsUseCase: GetHabitsStatisticsUseCase,
     private val getHabitSelectedUseCase: GetHabitSelectedUseCase
 ) : ViewModel() {
 
+    // Represents the month currently selected for detailed view
     private val _yearMonth:MutableStateFlow<YearMonth> = MutableStateFlow(YearMonth.now())
     val yearMonth:StateFlow<YearMonth> = _yearMonth.asStateFlow()
 
+    // Represents the year selected for the general yearly graphics
     private val _yearGraphicsSelected = MutableStateFlow(LocalDate.now().year)
     val yearGraphicsSelected: StateFlow<Int> = _yearGraphicsSelected.asStateFlow()
 
+    // Represents the year selected for hourly distribution analysis
     private val _yearHourlyGraphicsSelected = MutableStateFlow(LocalDate.now().year)
     val yearHourlyGraphicsSelected: StateFlow<Int> = _yearHourlyGraphicsSelected.asStateFlow()
 
-
+    /**
+     * Main state flow for the Statistics screen.
+     * It combines habit list and selected habit streams, then fetches detailed
+     * statistics using [flatMapLatest] to ensure data remains consistent
+     * whenever the selected habit changes.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     val statisticsState: StateFlow<StatisticsState> =
         combine(
@@ -85,6 +100,7 @@ class StatisticsViewModel @Inject constructor(
                             )
                         )
                     } else {
+                        // Logic to select the current habit or fallback to the first one
                         val idSelected =
                             habits.firstOrNull { it.id == habitSelected }?.id
                                 ?: habits.first().id
@@ -118,7 +134,10 @@ class StatisticsViewModel @Inject constructor(
                 initialValue = StatisticsState.Loading
             )
 
-
+    /**
+     * Stream representing the start day of the week, transformed from
+     * the persistence layer to a [DayOfWeek] enum.
+     */
     val dayOfWeek: StateFlow<DayOfWeek> = getHabitSelectedUseCase.getDaySelected()
         .map {
             DayOfWeek.valueOf(it ?: DayOfWeek.MONDAY.name)
@@ -129,6 +148,10 @@ class StatisticsViewModel @Inject constructor(
             initialValue = DayOfWeek.MONDAY
         )
 
+    /**
+     * Calculates the calendar grid state based on the selected year/month,
+     * the week start day, and the available habit data.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     val calendarUIState: StateFlow<CalendarUIState<HabitWithDay>> =
         combine(
@@ -177,6 +200,10 @@ class StatisticsViewModel @Inject constructor(
             )
 
 
+    /**
+     * Calculates the state of individual progress boxes (e.g., the last N days streak/goal tracker).
+     * Evaluates completion status using [BigDecimal] for precision.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     val boxUIState: StateFlow<List<BoxUIState>> =
         combine(
@@ -205,7 +232,7 @@ class StatisticsViewModel @Inject constructor(
 
                                 val goal = statisticsState.state.habitSelected.habit.goal
 
-
+                                // Generates state for the last NUMBER_OF_DAYS
                                 val result = (0 until NUMBER_OF_DAYS).map { offset ->
                                     val day = today.minusDays(offset.toLong())
                                     val dailyHabit = dailyHabits[day]
@@ -246,6 +273,11 @@ class StatisticsViewModel @Inject constructor(
             )
 
 
+    /**
+     * Calculates the monthly progress chart data.
+     * Aggregates successful habit completions by month for the selected year
+     * to provide a yearly trend visualization.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     val graphicsState: StateFlow<GraphicsState> =
         combine(
@@ -310,7 +342,11 @@ class StatisticsViewModel @Inject constructor(
                 initialValue = GraphicsState()
             )
 
-
+    /**
+     * Calculates the hourly distribution chart data.
+     * Aggregates successful habit completions by hour of the day (0-23)
+     * for the selected year to show time-of-day behavioral patterns.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     val hourlyGraphicsState: StateFlow<GraphicsState> =
         combine(
@@ -330,7 +366,7 @@ class StatisticsViewModel @Inject constructor(
                                 val goal = selected.habit.goal
                                 val typeHabit = selected.habit.typeHabit
 
-                                // 1. Filtrar por año y por éxito (misma lógica que el mensual)
+                                // 1. Filter by year and goal
                                 val completedByHour = selected.dailyHabits
                                     .filter { it.date.year == year }
                                     .filter { habitDay ->
@@ -343,10 +379,10 @@ class StatisticsViewModel @Inject constructor(
                                             }
                                         }
                                     }
-                                    // 2. Agrupar por la HORA de finalización (0..23)
+                                    // 2. Group by finalization hour
                                     .groupBy { it.hourFinishDate.hour }
 
-                                // 3. Crear lista de 24 elementos (uno por cada hora del día)
+                                // 3. Create a list of 24 elements
                                 val yValues = (0..23).map { hour ->
                                     completedByHour[hour]?.size?.toDouble() ?: 0.0
                                 }
@@ -376,6 +412,10 @@ class StatisticsViewModel @Inject constructor(
             )
 
 
+    /**
+     * Calculates the comprehensive goal completion statistics, including streak analysis,
+     * consistency metrics, and total completed periods.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     val goalsDoneState: StateFlow<GoalsDoneState> =
         combine(
@@ -422,8 +462,10 @@ class StatisticsViewModel @Inject constructor(
             )
 
 
-    // Mirar el goalBox, ponerlo arriba
-    // Comprobar que en todos los moviles se vea bien
+    /**
+     * Provides data for the distribution pie chart, showing the ratio of
+     * completion states (e.g., Done vs. Not Done/Pending) based on the current habit configuration.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     val pieChartState: StateFlow<List<PieChartData>> =
         combine(
@@ -460,15 +502,27 @@ class StatisticsViewModel @Inject constructor(
             )
 
 
-
+    /**
+     * Updates the selected habit ID in the data layer.
+     * Triggered when a user clicks on a habit card.
+     * @param id The unique identifier of the habit to be selected.
+     */
     fun onCLickCard(id:Long) = viewModelScope.launch(Dispatchers.IO){
         getHabitSelectedUseCase.setHabitSelected(id)
     }
 
+    /**
+     * Updates the [YearMonth] state for the monthly statistics view.
+     * @param yearMonth The new date period to filter the statistics.
+     */
     fun onMonthButtonClicked(yearMonth: YearMonth){
         _yearMonth.update {yearMonth}
     }
 
+    /**
+     * Updates the yearly filter for the main yearly graphics.
+     * @param isNext If true, increments the year; if false, decrements it.
+     */
     fun onYearSelected(isNext: Boolean){
         _yearGraphicsSelected.update {
             if(isNext){
@@ -479,6 +533,10 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Updates the yearly filter for the hourly distribution graphics.
+     * @param isNext If true, increments the year; if false, decrements it.
+     */
     fun onHourYearSelected(isNext: Boolean){
         _yearHourlyGraphicsSelected.update {
             if(isNext){

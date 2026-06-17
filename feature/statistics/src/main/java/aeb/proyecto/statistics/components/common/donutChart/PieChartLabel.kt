@@ -22,13 +22,19 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 
+/**
+ * Renders a descriptive label for a segment of the Pie Chart.
+ * Includes a color indicator, the segment title, and its percentage value.
+ *
+ * @param containerHeight The reference height of the chart container, used to scale
+ * the text and box sizes proportionally.
+ * @param pieChartData The data object containing the segment's state, percentage, and color.
+ */
 @Composable
 fun PieChartLabel(
     containerHeight: Dp,
     pieChartData: PieChartData
 ){
-    // Definimos proporciones:
-    // Título: 8% del alto del contenedor | Subtítulo: 6% | Caja: 12%
     val titleSize = with(LocalDensity.current) { (containerHeight.toPx() * 0.10f).toSp() }
     val subtitleSize = with(LocalDensity.current) { (containerHeight.toPx() * 0.08f).toSp() }
     val boxSize = containerHeight * 0.20f

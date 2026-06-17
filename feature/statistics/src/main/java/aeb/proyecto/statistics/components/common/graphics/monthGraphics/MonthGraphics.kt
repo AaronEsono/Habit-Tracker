@@ -57,9 +57,15 @@ import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.cartesian.marker.DefaultCartesianMarker
 
 
-// Poner el año
-// Hacer label del año
-
+/**
+ * Renders a Cartesian line chart displaying habit activity trends by month.
+ * Includes interactive year selection and responsive typography scales.
+ *
+ * @param modifier Applied to the outer container.
+ * @param graphicsState Holds the [CartesianChartModel] and theme [color].
+ * @param yearGraphicsSelected The currently displayed year.
+ * @param onYearSelected Callback triggered when changing the year (true for next, false for previous).
+ */
 @Composable
 fun MonthGraphics(
     modifier: Modifier = Modifier,
@@ -71,17 +77,15 @@ fun MonthGraphics(
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
 
-    // --- Lógica Responsive ---
+    // --- Responsive logic---
     val isTablet = configuration.screenWidthDp > 600
     val scaleFactor = if (isTablet) 1.45f else 1.15f
     val titleScaleFactor = if (isTablet) 1.4f else 1.0f
 
-    // Estilos de texto adaptativos (puedes usar copy para cambiar solo el tamaño)
     val titleSize = MaterialTheme.typography.titleSmall.fontSize * titleScaleFactor
     val labelSize = MaterialTheme.typography.labelLarge.fontSize * scaleFactor
     val iconSize = 20.dp * scaleFactor
 
-    // ... (tus definiciones de myLineProvider, monthLabels, etc.)
 
     if(graphicsState.model != null){
         val context = LocalContext.current

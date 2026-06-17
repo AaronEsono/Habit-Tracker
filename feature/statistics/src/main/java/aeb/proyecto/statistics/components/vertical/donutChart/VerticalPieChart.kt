@@ -29,7 +29,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-
+/**
+ * Renders a vertical dashboard component featuring a Donut Chart placed above
+ * its descriptive legend. This layout is optimized for narrow containers.
+ *
+ * @param modifier Applied to the outer container.
+ * @param data The list of [PieChartData] to be visualized.
+ * @param chartHeight The fixed height for the Donut Chart, which
+ * dictates the scaling of the legend labels.
+ */
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun VerticalPieChart(

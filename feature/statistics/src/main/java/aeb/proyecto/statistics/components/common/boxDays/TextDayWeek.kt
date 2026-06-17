@@ -13,6 +13,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Renders a single day-of-the-week label for the calendar grid.
+ * Configured with platform-specific adjustments to remove font padding,
+ * ensuring perfect vertical centering within the allocated [size].
+ *
+ * @param modifier Applied to the [Box] container.
+ * @param text The abbreviated day name (e.g., "Mon").
+ * @param textSize The font size calculated to fit the parent container.
+ * @param size The total height allocated for this label row.
+ */
 @Composable
 fun TextDayWeek(
     modifier: Modifier = Modifier,

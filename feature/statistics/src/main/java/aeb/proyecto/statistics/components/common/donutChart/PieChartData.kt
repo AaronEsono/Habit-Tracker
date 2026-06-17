@@ -8,12 +8,23 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import com.patrykandpatrick.vico.core.common.copyColor
 
+/**
+ * Defines the possible completion statuses for a segment in the pie chart.
+ */
 enum class PieChartState{
     COMPLETED,
     UNCOMPLETED,
     NOT_DONE
 }
 
+/**
+ * Data model for a single segment of the Pie/Donut Chart.
+ *
+ * @property percentage Numerical percentage of the total for this segment.
+ * @property value The sweep angle in degrees to be used by the [Canvas].
+ * @property state The current completion status of this segment.
+ * @property habitColor The integer color representation (ARGB) of the habit.
+ */
 data class PieChartData(
     val percentage: Int,
     val value:Float,
@@ -21,6 +32,11 @@ data class PieChartData(
     val habitColor:Int = 0,
 )
 
+/**
+ * Extension to retrieve the theme-aware color for a [PieChartData] segment.
+ *
+ * @return The [Color] corresponding to the current [PieChartState].
+ */
 @Composable
 fun PieChartData.getColor(): Color{
 
@@ -33,6 +49,11 @@ fun PieChartData.getColor(): Color{
     return color
 }
 
+/**
+ * Extension to retrieve the localized title for a [PieChartData] segment.
+ *
+ * @return The [String] resource for the current [PieChartState].
+ */
 @Composable
 fun PieChartData.getTitle(): String{
 

@@ -43,9 +43,17 @@ import androidx.compose.ui.unit.dp
 import java.time.DayOfWeek
 
 
-//Faltaria por hacer cuadrar el tamaño de los textos de los dias
-// Idea, intentarlo cuadrar con el height, mirar los sp, si son muy pequeños, setearlos a uno mas grande, un minimo posible
-
+/**
+ * Renders a calendar-style grid showing habit completion status for a series of weeks.
+ * Automatically adapts the size of the squares based on the available container space.
+ *
+ * @param modifier Applied to the outer container.
+ * @param boxUIState The list of states for each day to be displayed.
+ * @param colorHabit The theme color associated with the habit being tracked.
+ * @param startDayOfWeek Defines the day of the week to start the grid (e.g., Monday).
+ * @param verticalSpacing Space between rows of the grid.
+ * @param horizontalSpacing Space between columns of the grid.
+ */
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun StatisticsBoxDays(

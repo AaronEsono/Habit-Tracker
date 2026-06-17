@@ -35,8 +35,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.LocalDate
 
-// Poner la cantidad exacta, si se ha hecho, en los dias correspondientes
-
+/**
+ * Renders an individual calendar day cell with a visual indicator of habit completion.
+ * The cell opacity changes dynamically based on whether the goal for that day was met.
+ *
+ * @param modifier Applied to the container [Box].
+ * @param day The specific [LocalDate] this cell represents.
+ * @param monthSelected The currently active month being viewed in the calendar.
+ * @param habitWithDay The data containing the habit details and the specific progress for [day].
+ */
 @Composable
 fun CalendarItem(
     modifier: Modifier = Modifier,

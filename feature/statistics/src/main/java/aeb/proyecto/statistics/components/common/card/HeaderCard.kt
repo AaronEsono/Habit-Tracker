@@ -27,6 +27,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Renders a circular card representing a habit in the statistics header.
+ * The card changes its border and background color based on the [selected] state,
+ * providing visual feedback for navigation between habits.
+ *
+ * @param modifier Applied to the column container.
+ * @param habit The habit model to display.
+ * @param selected Whether this habit is currently the active one.
+ * @param onClickCard Callback triggered when the card is clicked, returning the habit ID.
+ */
 @Composable
 fun HeaderCard(
     modifier: Modifier = Modifier,
@@ -78,6 +88,4 @@ fun HeaderCard(
             fontSize = 10.sp
         )
     }
-
-
 }

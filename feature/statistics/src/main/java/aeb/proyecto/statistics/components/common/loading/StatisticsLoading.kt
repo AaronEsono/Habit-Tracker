@@ -26,12 +26,15 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 
 /**
- * Pantalla por defecto de carga de hábitos.
+ * Renders a loading animation for the Statistics screen.
+ * Features an infinite pulse effect using [rememberInfiniteTransition]
+ * that scales and fades a circular ring.
  */
 @Composable
 fun StatisticsLoading(){
     val infiniteTransition = rememberInfiniteTransition(label = "habit loading")
 
+    // Animates a progress float from 0 to 1 repeatedly to control scaling and alpha
     val progress by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
@@ -45,13 +48,14 @@ fun StatisticsLoading(){
         modifier = Modifier.fillMaxSize().padding(top = spacing16),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        // Pulsing circular indicator
         Box(
             modifier = Modifier
                 .size(spacing64)
                 .graphicsLayer {
                     scaleX = progress
                     scaleY = progress
-                    alpha = 1f - progress
+                    alpha = 1f - progress // Fades out as it expands
                 }
                 .border(
                     width = spacing6,
@@ -60,6 +64,7 @@ fun StatisticsLoading(){
                 )
         )
 
+        // Loading message
         LabelMediumText(stringResource(R.string.statistics_loading),
             modifier = Modifier.padding(top = spacing10))
     }

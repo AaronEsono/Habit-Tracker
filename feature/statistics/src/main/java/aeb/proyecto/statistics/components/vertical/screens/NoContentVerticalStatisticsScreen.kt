@@ -19,6 +19,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
+/**
+ * Renders an empty state view when no statistical data is available for
+ * the selected habit. Displays an illustrative icon and a message to
+ * inform the user.
+ *
+ * @param modifier Applied to the [Column] container.
+ */
 @Composable
 fun NoContentVerticalStatisticsScreen(){
 

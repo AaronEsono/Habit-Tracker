@@ -39,6 +39,26 @@ import androidx.compose.ui.res.stringResource
 import java.time.DayOfWeek
 import java.time.YearMonth
 
+/**
+ * Renders the detailed statistics screen for a single habit in a horizontal
+ * layout context. Organizes various metrics (calendar, charts, goal progress)
+ * using relative height constraints.
+ *
+ * @param habitSelected The data model for the currently viewed habit.
+ * @param boxUIState List of weekly states for the habit grid.
+ * @param graphicsState State for the trends/graphics view.
+ * @param hourlyGraphicsState State for the hourly distribution view.
+ * @param goalDoneState Progress metrics for goals.
+ * @param pieChartState Data for the circular progress chart.
+ * @param yearMonth Current [YearMonth] for the calendar view.
+ * @param yearGraphicsSelected Year selected for annual trends.
+ * @param yearHourlyGraphicsSelected Year selected for hourly trends.
+ * @param startDayOfWeek User-defined start day of the week.
+ * @param calendarUIState Holds the date grid information.
+ * @param onMonthChange Callback for month navigation in the calendar.
+ * @param onYearSelected Callback for annual graph navigation.
+ * @param onHourYearSelected Callback for hourly graph navigation.
+ */
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun VerticalHabitSelectedScreen(
