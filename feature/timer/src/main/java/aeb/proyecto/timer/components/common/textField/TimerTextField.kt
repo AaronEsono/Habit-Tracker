@@ -27,6 +27,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 
+/**
+ * A highly customizable text field designed for the Timer module.
+ * Optimized for numeric input using [TextFieldState] and providing controls
+ * for keyboard and focus management.
+ *
+ * @param modifier Applied to the [BasicTextField].
+ * @param textFieldState The state holder for the text content.
+ * @param containerColor Background color of the input field.
+ * @param contentPadding Padding applied within the field.
+ * @param keyboardType Type of keyboard to display (default [KeyboardType.Number]).
+ * @param imeAction Action key for the IME (default [ImeAction.Done]).
+ * @param outPutTransformation Optional visual transformation for the input.
+ */
 @Composable
 fun TimerTextField(
     modifier: Modifier = Modifier,

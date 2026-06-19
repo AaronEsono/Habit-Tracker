@@ -18,6 +18,13 @@ import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 import javax.inject.Inject
 
+/**
+ * ViewModel for the Habit Selection process within the Timer BottomSheet.
+ * Handles the state of retrieved habits, the currently selected habit,
+ * the target date, and dialog visibility.
+ *
+ * @param getHabitUseCase Use case for fetching all available habits.
+ */
 @HiltViewModel
 class PickHabitViewModel @Inject constructor(
     private val getHabitUseCase: GetHabitUseCase
@@ -73,9 +80,11 @@ class PickHabitViewModel @Inject constructor(
     fun choseDate(date:LocalDate){
         _dateSelected.update { date }
     }
-
 }
 
+/**
+ * UI states for the habit picker flow.
+ */
 sealed class PickHabitUIState(){
     data class Success(val habits:List<Habit>):PickHabitUIState()
     object Loading:PickHabitUIState()

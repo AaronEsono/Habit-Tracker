@@ -30,6 +30,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * A selectable card component used within the habit selection BottomSheet.
+ * It displays the habit's icon (with a colored background) and name, providing
+ * clear visual feedback when selected.
+ *
+ * @param modifier Applied to the card container.
+ * @param habit The [Habit] domain model to display.
+ * @param selected Whether the card is currently selected by the user.
+ * @param onClickHabit Callback triggered when the card is pressed.
+ */
 @Composable
 fun HabitCard(
     modifier: Modifier = Modifier,
@@ -90,5 +100,4 @@ fun HabitCard(
             }
         }
     }
-
 }

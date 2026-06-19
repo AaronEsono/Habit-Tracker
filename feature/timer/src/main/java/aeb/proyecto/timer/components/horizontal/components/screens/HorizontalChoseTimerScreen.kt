@@ -39,6 +39,19 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.flow.SharedFlow
 import java.time.LocalDate
 
+/**
+ * Landscape configuration screen for the Timer module.
+ * Provides a split-screen view: the left side handles timer configuration
+ * (mode selection, duration, interval settings), while the right side
+ * displays the history of time entries.
+ *
+ * @param timerUIState The overall UI state containing timer configuration.
+ * @param listTimeEntryState The state holding historical [TimeEntry] data.
+ * @param triggerSegmentedTimer Flow to handle reset/update events for the pickers.
+ * @param onStartService Action to initialize the background timer service.
+ * @param onClickHabitButton Trigger for the habit selection sheet.
+ * @param onClickTimeEntry/Favorite/Delete Callbacks for managing history items.
+ */
 @Composable
 fun HorizontalChoseTimerScreen(
     timerUIState: TimerUiState.Success,

@@ -25,6 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 
+/**
+ * Displays a custom loading animation for the Timer module.
+ * Features an infinite pulsing circle that scales up and fades out,
+ * providing visual feedback while asynchronous operations complete.
+ */
 @Composable
 fun TimerLoading(){
     val infiniteTransition = rememberInfiniteTransition(label = "habit loading")

@@ -5,6 +5,7 @@ import aeb.proyecto.stopwatch.manager.TypeTimer
 import aeb.proyecto.stopwatch.utils.longToHMS
 import aeb.proyecto.timer.model.TimerServiceUIState
 import aeb.proyecto.ui.text.LabelLargeText
+import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -26,6 +27,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+/**
+ * Renders the visual interface for an active standard timer (Countdown).
+ * Displays a circular progress indicator that animates based on elapsed time
+ * relative to the fixed [typeTimer.time].
+ *
+ * @param serviceState The current running state from the Timer Service.
+ * @param typeTimer The configuration details for the timer (fixed duration).
+ */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun ActiveTimerScreen(
     serviceState: TimerServiceUIState.TimerRunning,

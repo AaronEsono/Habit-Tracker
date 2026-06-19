@@ -20,6 +20,18 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
+/**
+ * Configuration screen for a standard fixed-duration timer.
+ * Integrates the [TimerPicker] to allow users to select hours, minutes, and seconds.
+ * Observes [SharedFlow] to react to external configuration triggers (like clearing
+ * or resetting the timer) and maintains local picker state.
+ *
+ * @param hourSelectedState Current selection state ([HourSelectedState]).
+ * @param triggerSegmentedTimer A flow that listens for remote triggers to update picker values.
+ * @param onHourChange Callback when the hour value is updated.
+ * @param onMinuteChange Callback when the minute value is updated.
+ * @param onSecondChange Callback when the second value is updated.
+ */
 @Composable
 fun TimerSegmentedScreen(
     hourSelectedState: HourSelectedState,

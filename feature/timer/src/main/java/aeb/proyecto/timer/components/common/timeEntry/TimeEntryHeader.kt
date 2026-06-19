@@ -18,6 +18,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
+/**
+ * Header component for the Time Entry history section.
+ * Designed to provide a consistent top-rounded appearance that aligns
+ * visually with subsequent [TimeEntry] items.
+ *
+ * @param modifier Applied to the [Row] container.
+ */
 @Composable
 fun TimeEntryHeader (
     modifier: Modifier = Modifier

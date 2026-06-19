@@ -10,6 +10,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -31,7 +32,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
-
+/**
+ * A composite picker component that coordinates three [InfinitePicker] instances
+ * (Hours, Minutes, Seconds) into a unified time selection interface.
+ *
+ * @param modifier Applied to the container.
+ * @param colorGradient The background gradient color used for fading effects.
+ * @param hourListState State for the hours list.
+ * @param minuteListState State for the minutes list.
+ * @param secondListState State for the seconds list.
+ * @param onHourChange Callback when the hour changes.
+ * @param onMinuteChange Callback when the minute changes.
+ * @param onSecondChange Callback when the second changes.
+ * @param scrollToItemHour/Minute/Second Functions to programmatically trigger scroll.
+ * @param onClickCenterHour/Minute/Second Actions to perform when clicking the center of each wheel.
+ */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun TimerPicker(
     modifier: Modifier = Modifier,

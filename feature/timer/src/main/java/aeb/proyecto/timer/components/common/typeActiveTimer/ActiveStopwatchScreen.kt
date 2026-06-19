@@ -4,6 +4,12 @@ import aeb.proyecto.ui.text.LabelMediumText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
 
+/**
+ * A simple, high-visibility display component for the stopwatch timer.
+ * Focuses on readability by centering the time string with a large font size.
+ *
+ * @param hour The formatted time string to display (e.g., "00:00:00").
+ */
 @Composable
 fun ActiveStopwatchScreen(
     hour:String

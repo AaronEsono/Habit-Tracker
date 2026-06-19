@@ -27,22 +27,33 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+/**
+ * Renders the visual interface for an active timer interval.
+ * Displays a circular progress indicator that animates smoothly between
+ * progress states and shifts color based on whether a habit is linked.
+ *
+ * @param serviceState The current running state from the Timer Service.
+ * @param typeTimer The configuration details for the current interval timer.
+ */
 @Composable
 fun ActiveIntervalScreen(
     serviceState: TimerServiceUIState.TimerRunning,
     typeTimer: TypeTimer.INTERVAL
 ){
 
+    // Determine target time based on whether the current state is Work or Rest
     val totalTime = if (typeTimer.state == IntervalState.Work) {
         typeTimer.time.takeIf { it > 0 } ?: 1
     } else {
         typeTimer.rest.takeIf { it > 0 } ?: 1
     }
 
+    // Progress logic: calculates the current completion ratio
     val targetProgress = remember(serviceState.elapsedTime, totalTime) {
         (serviceState.elapsedTime.toFloat() / totalTime).coerceIn(0f, 1f)
     }
 
+    // Animate progress for a smooth visual feel
     val animatedProgress by animateFloatAsState(
         targetValue = targetProgress,
         animationSpec = tween(durationMillis = 200, easing = LinearEasing),

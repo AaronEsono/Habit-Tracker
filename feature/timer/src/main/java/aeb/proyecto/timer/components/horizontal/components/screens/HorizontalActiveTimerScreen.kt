@@ -37,6 +37,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 
+/**
+ * Landscape layout for the active timer session.
+ * Splits the screen into two halves: one for visual time display and another
+ * for interaction controls. Uses [AnimatedContent] to transition titles smoothly.
+ *
+ * @param timerStopWatchUIState The current service state containing elapsed time and habit details.
+ * @param onStopService Callback to pause/stop the timer service.
+ * @param onCancelButton Callback to cancel the current session.
+ * @param onResumeButton Callback to resume a paused timer.
+ * @param onFinishButton Callback to manually complete the interval/timer.
+ */
 @Composable
 fun HorizontalActiveTimerScreen(
     timerStopWatchUIState: TimerServiceUIState.TimerRunning,

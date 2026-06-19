@@ -15,6 +15,25 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.flow.SharedFlow
 import java.time.LocalDate
 
+/**
+ * The top-level screen container for the Timer module in landscape mode.
+ * Evaluates the [timerUiState] and delegates the UI to the appropriate
+ * screen implementation (Loading vs. Success/Main Dashboard).
+ *
+ * @param timerUiState The current state of the timer data (Loading, Success, Error).
+ * @param timerStopWatchUIState The current service state for running timers.
+ * @param listTimeEntryState The state for the timer history.
+ * @param triggerSegmentedTimer Flow for external timer configuration triggers.
+ * @param bottomSheetState Visibility for the habit selection sheet.
+ * @param onHourChange/onMinuteChange/onSecondChange Configuration callbacks.
+ * @param onTypeChange Mode switching callback.
+ * @param onStartService/onStopService/onResumeButton/onCancelButton/onFinishButton Lifecycle actions for the timer service.
+ * @param onIntervalHourChange Interval-specific duration adjustments.
+ * @param onButtonIntervalWorkChange/onButtonIntervalRestChange Mode toggles for intervals.
+ * @param onSetChange Callback for interval repetition counts.
+ * @param onClickHabitButton/onDismissHabitBottomSheet/onAcceptBottomSheet Habit selection flow.
+ * @param onClickCross/onClickTimeEntry/onClickFavorite/onClickDelete Management actions for history entries.
+ */
 @Composable
 fun HorizontalTimerScreen(
     timerUiState: TimerUiState,
@@ -87,5 +106,4 @@ fun HorizontalTimerScreen(
             }
         }
     }
-
 }

@@ -36,6 +36,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
+/**
+ * A highly customizable infinite wheel picker component.
+ * It uses a [LazyListState] to calculate which item is centered and provides
+ * haptic feedback upon selection.
+ *
+ * @param modifier Applied to the picker container.
+ * @param listState The state of the LazyColumn.
+ * @param items The data list to display.
+ * @param colorGradient Background color for the overlay effect.
+ * @param fontSizeItem The font size of the picker items.
+ * @param visibleItemsCount Number of items visible in the picker area.
+ * @param currentItemSelected Callback triggered when a new item becomes centered.
+ * @param onClickCenter Action triggered when clicking the center item.
+ * @param scrollToItem Action to programmatically scroll the picker.
+ */
 @Composable
 fun InfinitePicker(
     modifier: Modifier = Modifier,

@@ -23,6 +23,7 @@ import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
 import aeb.proyecto.ui.text.LabelMediumText
 import aeb.proyecto.ui.text.TitleMediumText
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -51,6 +52,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 
+/**
+ * A configuration screen for Interval-based timers.
+ * Manages the state for "Work" and "Rest" durations, and the total interval count.
+ * Provides callbacks to handle data updates and configuration dialog triggers.
+ *
+ * @param hourSelectedState State representing the current work time data.
+ * @param restSelectedState State representing the current rest time data.
+ * @param setInterval The current count of intervals set.
+ * @param onIntervalHourChange Callback to return the modified time (HH, MM, SS) and its timer key.
+ * @param onClickButtonWorkTime Callback to trigger the work time picker dialog.
+ * @param onClickButtonRestTime Callback to trigger the rest time picker dialog.
+ * @param onSetIntervalChange Callback to update the number of intervals.
+ */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun IntervalSegmentedScreen(
     hourSelectedState: HourSelectedState,

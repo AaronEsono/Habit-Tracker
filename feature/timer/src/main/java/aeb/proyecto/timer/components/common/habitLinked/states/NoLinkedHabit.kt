@@ -8,6 +8,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 
+/**
+ * Displays a placeholder label when no habit is currently linked to the timer.
+ * Used to guide the user to perform an action or inform them of the current status.
+ *
+ * @param modifier Applied to the [LabelLargeText] component.
+ */
 @Composable
 fun NoLinkedHabit(
     modifier: Modifier = Modifier

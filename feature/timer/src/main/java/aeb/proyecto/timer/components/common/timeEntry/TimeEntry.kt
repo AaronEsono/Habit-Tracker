@@ -38,6 +38,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
+/**
+ * A list item representing a single recorded time entry linked to a habit.
+ * Features conditional styling for the last item in a list and provides
+ * actions for selection, favorite toggling, and deletion.
+ *
+ * @param modifier Applied to the [Row] container.
+ * @param timeEntry The data object containing entry details and linked habit.
+ * @param lastOne If true, rounds the bottom corners to complete a list style.
+ * @param onClickTimeEntry Callback for selecting the entry.
+ * @param onClickFavorite Callback to toggle the favorite status.
+ * @param onClickDelete Callback to remove the entry.
+ */
 @Composable
 fun TimeEntry(
     modifier: Modifier = Modifier,

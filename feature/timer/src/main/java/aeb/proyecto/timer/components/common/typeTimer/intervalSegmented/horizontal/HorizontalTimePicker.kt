@@ -45,6 +45,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
+/**
+ * Orchestrates the selection of time intervals using three independent
+ * numeric wheels. Manages the state synchronization between the wheels and
+ * the editing dialog for granular adjustments.
+ *
+ * @param modifier Applied to the picker container.
+ * @param hourSelectedState Current state (Data or NoData) of the selection.
+ * @param label The section title or description.
+ * @param typePickState Defines the active picking mode.
+ * @param onIntervalHourChange Callback to return the final selected time (HH, MM, SS)
+ *        and the associated timer key.
+ * @param onDismissRequest Action to trigger when closing the picker view.
+ */
 @Composable
 fun HorizontalTimePicker(
     modifier: Modifier = Modifier,

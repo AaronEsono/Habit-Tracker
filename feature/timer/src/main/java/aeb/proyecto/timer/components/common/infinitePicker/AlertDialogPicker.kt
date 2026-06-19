@@ -31,6 +31,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 
+/**
+ * A dialog component that allows the user to input a specific numeric value
+ * for a given time unit (Hours, Minutes, or Seconds).
+ * * @param typeList The unit type ([TypeUnitDate]) to determine input constraints.
+ * @param initialText The pre-filled value for the text field.
+ * @param onDismissRequest Action to trigger when closing the dialog.
+ * @param onAccept Action triggered with the final integer value input by the user.
+ */
 @Composable
 fun AlertDialogPicker(
     typeList: TypeUnitDate,

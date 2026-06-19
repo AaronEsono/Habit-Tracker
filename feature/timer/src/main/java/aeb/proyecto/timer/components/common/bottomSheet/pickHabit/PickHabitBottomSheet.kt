@@ -59,6 +59,13 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
+/**
+ * A bottom sheet implementation for selecting a habit to link with the timer.
+ * * @param pickHabitViewModel The ViewModel managing the habit selection state.
+ * @param habitLinkedState The initial state passed from the parent component.
+ * @param onDismiss Callback to close the bottom sheet.
+ * @param onAccept Callback returning the [Long] ID of the habit and the [LocalDate].
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PickHabitBottomSheet(

@@ -28,6 +28,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.window.core.layout.WindowWidthSizeClass
 
+/**
+ * An adaptive row of segmented buttons used to switch between timer modes.
+ * Dynamically adjusts icon size, font size, and layout based on window width
+ * class and screen orientation.
+ *
+ * @param modifier Applied to the row container.
+ * @param segmentedList The list of available [SegmentedButtonOptions].
+ * @param onClickOption Callback triggered when a segment is selected.
+ * @param typeTimer The currently active timer mode.
+ */
 @Composable
 fun SegmentedRow(
     modifier:Modifier = Modifier,
@@ -155,5 +165,4 @@ fun SegmentedRow(
         }
 
     }
-
 }

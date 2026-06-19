@@ -21,6 +21,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * A container component representing the habit linking area.
+ * It dynamically switches between displaying habit details [LinkedHabit]
+ * or a prompt [NoLinkedHabit] based on the current [HabitLinkedState].
+ *
+ * @param modifier Applied to the [Card] container.
+ * @param linkedState The current state (Data or NoData) to determine content.
+ * @param onClickHabitLinkedButton Callback triggered to open the habit picker.
+ * @param onClickCross Callback triggered when the 'clear' icon is pressed (only in [HabitLinkedState.Data]).
+ */
 @Composable
 fun HabitLinkedButton(
     modifier: Modifier = Modifier,

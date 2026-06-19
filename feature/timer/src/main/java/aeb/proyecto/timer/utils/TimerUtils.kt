@@ -9,6 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import java.util.Locale
 
+/**
+ * Returns a human-readable title based on the active timer type and state.
+ * Translates low-level states (e.g., [IntervalState.Work]) into localized
+ * descriptive strings for the UI.
+ *
+ * @param timerStopWatchUIState The current active state of the running timer.
+ * @return A localized [String] representing the current timer phase.
+ */
 @Composable
 fun getTitleActiveScreen(timerStopWatchUIState: TimerServiceUIState.TimerRunning):String{
     return when(timerStopWatchUIState.typeTimer){
@@ -49,6 +57,13 @@ fun getTitleActiveScreen(timerStopWatchUIState: TimerServiceUIState.TimerRunning
     }
 }
 
+/**
+ * Converts a raw duration in seconds into a formatted H:M:S or M:S string.
+ * Optimizes readability by hiding the hour component if the duration is less than an hour.
+ *
+ * @param seconds The total duration in seconds.
+ * @return A formatted [String] (e.g., "05:00" or "01:05:00").
+ */
 fun convertToHours(seconds: Long): String {
     val hours = seconds / 3600
     val minutes = (seconds % 3600) / 60

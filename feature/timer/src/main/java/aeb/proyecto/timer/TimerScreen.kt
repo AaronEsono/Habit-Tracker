@@ -12,23 +12,34 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
+/**
+ * The main screen entry point for the Timer module.
+ * Responsible for gathering states from [TimerViewModel], observing the
+ * device orientation, and providing the appropriate UI (Portrait or Landscape).
+ *
+ * @param viewModel The Hilt-injected ViewModel managing timer logic and UI state.
+ */
 @Composable
 fun TimerScreen(
     viewModel: TimerViewModel = hiltViewModel()
 ){
 
+    // Collect UI states from ViewModel
     val timerDataUIState = viewModel.timerData.collectAsStateWithLifecycle().value
     val timerStopWatchUIState = viewModel.timerStopWatchUIState.collectAsStateWithLifecycle().value
     val bottomSheetState = viewModel.bottomSheetState.collectAsStateWithLifecycle().value
     val timeEntryState = viewModel.historyEntries.collectAsStateWithLifecycle().value
     val triggerSegmentedTimer = viewModel.triggerSegmentedTimer
 
+    // Detect device orientation for responsive layout selection
     val orientation = getOrientation()
 
+    // Setup Top App Bar
     ProvideAppBarTitle {
         LabelLargeText(stringResource(R.string.timer_title), fontSize = 20.sp)
     }
 
+    // Navigation/Layout Router
     when(orientation){
         Orientation.Portrait -> {
             VerticalTimerScreen(

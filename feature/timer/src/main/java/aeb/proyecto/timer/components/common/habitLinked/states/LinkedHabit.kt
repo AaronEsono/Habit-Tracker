@@ -31,6 +31,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+/**
+ * Displays the currently linked habit information within the Timer screen.
+ * Shows the habit icon, its name, the target date, and provides a clear
+ * action to unlink (remove) the habit.
+ *
+ * @param modifier Applied to the [Row] container.
+ * @param linkedState The [HabitLinkedState.Data] containing habit and day details.
+ * @param onClickCross Callback triggered when the user taps the 'clear' icon.
+ */
 @Composable
 fun LinkedHabit(
     modifier: Modifier = Modifier,

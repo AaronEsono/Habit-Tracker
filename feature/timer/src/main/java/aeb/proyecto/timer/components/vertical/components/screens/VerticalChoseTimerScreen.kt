@@ -36,6 +36,28 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.flow.SharedFlow
 import java.time.LocalDate
 
+/**
+ * Vertical configuration screen for the Timer module.
+ * Provides a stacked layout: the top half is dedicated to timer configuration
+ * (mode selection, duration, interval settings), while the bottom half displays
+ * the history of time entries, optimized for single-handed portrait interaction.
+ *
+ * @param timerUIState The current UI state representing the timer configuration.
+ * @param listTimeEntryState The state holding the historical [TimeEntry] data.
+ * @param triggerSegmentedTimer Flow to handle reset/update events for the pickers.
+ * @param bottomSheetState Visibility state for the habit selection sheet.
+ * @param onHourChange/onMinuteChange/onSecondChange Callbacks for time components.
+ * @param onTypeChange Callback to change the active timer mode.
+ * @param onStartService Action to initialize the background timer service.
+ * @param onSetChange Callback to update the number of intervals.
+ * @param onIntervalHourChange Callback to return the modified interval time and key.
+ * @param onButtonIntervalWorkChange/onButtonIntervalRestChange Mode toggles for work/rest.
+ * @param onClickHabitButton Trigger for the habit selection sheet.
+ * @param onDismissHabitBottomSheet Callback to close the habit selection sheet.
+ * @param onAcceptBottomSheet Callback to save the selected habit association.
+ * @param onClickCross Action for the close button.
+ * @param onClickTimeEntry/onClickFavorite/onClickDelete Management actions for history items.
+ */
 @Composable
 fun VerticalChoseTimerScreen(
     timerUIState: TimerUiState.Success,

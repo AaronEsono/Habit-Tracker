@@ -6,6 +6,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
+/**
+ * Encapsulates responsive metrics calculated based on the available screen constraints.
+ * Used to ensure UI consistency across different device sizes.
+ *
+ * @param fontSize Font size for primary titles.
+ * @param labelFontSize Font size for content labels.
+ * @param buttonSize Dimension for interactive button elements.
+ * @param labelWidth Constraint width for text labels to prevent overflow.
+ */
 data class ResponsiveSizes(
     val fontSize: TextUnit,
     val labelFontSize: TextUnit,
@@ -13,6 +22,14 @@ data class ResponsiveSizes(
     val labelWidth: Dp
 )
 
+/**
+ * Calculates adaptive UI sizes based on available [maxWidth] and [maxHeight].
+ * Applies a scaling factor if the screen is too narrow to ensure ergonomic touch targets.
+ *
+ * @param maxWidth The available horizontal space.
+ * @param maxHeight The available vertical space.
+ * @return A [ResponsiveSizes] object containing calculated dimensions and font sizes.
+ */
 @Composable
 fun calculateResponsiveSizes(maxWidth: Dp, maxHeight: Dp): ResponsiveSizes {
     val density = LocalDensity.current

@@ -32,6 +32,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * A highly configurable button component for timer controls.
+ * Designed for consistent styling across the timer interface while allowing
+ * dynamic color and icon injection.
+ *
+ * @param modifier Applied to the [ElevatedButton].
+ * @param iconButton The [ImageVector] displayed at the start of the button.
+ * @param title The text label displayed next to the icon.
+ * @param colorButton The background color of the button.
+ * @param contentColorButton The color applied to both the icon and the text.
+ * @param onClick The action triggered upon clicking the button.
+ */
 @Composable
 fun TimerButton(
     modifier: Modifier = Modifier,
@@ -77,6 +89,9 @@ fun TimerButton(
     }
 }
 
+/**
+ * Action button to resume a paused timer.
+ */
 @Composable
 fun ResumeButton(
     modifier: Modifier = Modifier,
@@ -91,6 +106,9 @@ fun ResumeButton(
     ){ onClick() }
 }
 
+/**
+ * Action button to cancel the current timer session.
+ */
 @Composable
 fun CancelButton(
     modifier: Modifier = Modifier,
@@ -105,6 +123,9 @@ fun CancelButton(
     ){ onClick() }
 }
 
+/**
+ * Action button to stop/pause the running timer.
+ */
 @Composable
 fun StopButton(
     modifier: Modifier = Modifier,
@@ -119,6 +140,9 @@ fun StopButton(
     ){ onClick() }
 }
 
+/**
+ * Action button to finish the session and record data.
+ */
 @Composable
 fun FinishButton(
     modifier: Modifier = Modifier,

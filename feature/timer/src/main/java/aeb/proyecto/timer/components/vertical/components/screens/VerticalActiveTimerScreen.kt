@@ -18,6 +18,7 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing24
 import aeb.proyecto.ui.dimmens.Dimmens.spacing32
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.text.LabelLargeText
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -37,6 +38,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 
+/**
+ * Vertical layout for the active timer session.
+ * Organizes the screen into a vertical stack, placing the title and timer
+ * information at the top and interaction controls below.
+ * Ideal for portrait orientation and mobile usage.
+ *
+ * @param timerStopWatchUIState The current service state of the timer.
+ * @param onStopService Callback to pause/stop the timer service.
+ * @param onCancelButton Callback to abort the current session.
+ * @param onResumeButton Callback to resume a paused timer.
+ * @param onFinishButton Callback to mark the session as manually completed.
+ */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun VerticalActiveTimerScreen(
     timerStopWatchUIState: TimerServiceUIState.TimerRunning,

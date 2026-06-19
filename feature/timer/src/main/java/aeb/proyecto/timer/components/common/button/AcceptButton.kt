@@ -27,6 +27,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * A primary action button for starting the timer service.
+ * Features haptic feedback and context-aware enabled/disabled states.
+ *
+ * @param timerUIState The current success state containing configuration and button enablement status.
+ * @param onStartService Callback triggered when the button is pressed.
+ */
 @Composable
 fun AcceptButton(
     timerUIState: TimerUiState.Success,
@@ -68,5 +75,4 @@ fun AcceptButton(
             }
         }
     }
-
 }

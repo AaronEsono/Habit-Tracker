@@ -22,6 +22,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * A specialized button that supports continuous clicking (acceleration)
+ * when held down. Ideal for incrementing/decrementing timer values.
+ *
+ * @param modifier Applied to the [Box] container.
+ * @param icon The [ImageVector] to display in the center of the button.
+ * @param size The size of the button (default 44.dp).
+ * @param onClickListener The action to trigger upon click or repeating click.
+ */
 @Composable
 fun InternalSegmentedButton(
     modifier: Modifier = Modifier,
