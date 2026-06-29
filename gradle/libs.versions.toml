@@ -44,6 +44,7 @@ material = "1.12.0"
 coreKtxVersion = "1.6.1"
 lifecycleProcess = "2.8.4"
 places = "4.2.0"
+turbine = "1.0.0"
 vico = "2.0.0-alpha.28"
 
 # ---------------------------------- Libraries
@@ -138,11 +139,12 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-version" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
-# Testing (Mockito & MockK)
+# Testing (Mockito,MockK,Turbine)
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 mockito-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoMockitoCore" }
 mockk-mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
 places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 # Vico Charts
 vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }

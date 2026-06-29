@@ -40,6 +40,7 @@ class TestingPluginConvention: Plugin<Project> {
                 add("testImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
                 add("testImplementation", libs.findLibrary("mockito-mockito-core").get())
                 add("testImplementation", libs.findLibrary("mockito-kotlin").get())
+                add("testImplementation", libs.findLibrary("turbine").get())
             }
         }
     }
