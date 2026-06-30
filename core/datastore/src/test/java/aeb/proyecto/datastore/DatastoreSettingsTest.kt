@@ -15,6 +15,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import kotlin.math.exp
 
 
 class DatastoreSettingsTest{
@@ -118,7 +119,7 @@ class DatastoreSettingsTest{
         }
     }
 
-    //GET SETTINGS
+    //GET SETTINGS ----------------------------------------------------------------
     @Test
     fun `given a expected AppSettings when called getSettings function on repository then return the same value`() = runTest{
         // GIVEN
@@ -131,6 +132,106 @@ class DatastoreSettingsTest{
         //THEN
         assertEquals(expectedAppSettings, result)
         coVerify { datastoreRepository.getAppSettings() }
+    }
+
+    @Test
+    fun `given a expected AppSettings when called getSettings function on datastore then return the same value`() = runTest{
+        // GIVEN
+        val expectedAppSettings = AppSettings()
+        coEvery { datastoreManager.getAppSettings() } returns expectedAppSettings
+
+        //When
+        val result = datastoreManager.getAppSettings()
+
+        //THEN
+        assertEquals(expectedAppSettings, result)
+        coVerify { datastoreManager.getAppSettings() }
+    }
+
+
+    //SET SETTINGS ----------------------------------------------------------------
+    @Test
+    fun `given a expected AppSettings when called setSettings function on repository then calls the function`() = runTest{
+        // GIVEN
+        val expectedAppSettings = AppSettings()
+        coEvery { datastoreRepository.setAppSettings(expectedAppSettings) } returns Unit
+
+        //When
+        datastoreRepository.setAppSettings(expectedAppSettings)
+
+        //THEN
+        coVerify { datastoreRepository.setAppSettings(expectedAppSettings) }
+    }
+
+    @Test
+    fun `given a expected AppSettings when called setSettings function on datastore then calls the function`() = runTest{
+        // GIVEN
+        val expectedAppSettings = AppSettings()
+        coEvery { datastoreManager.saveAppSettings(expectedAppSettings) } returns Unit
+
+        //When
+        datastoreManager.saveAppSettings(expectedAppSettings)
+
+        //THEN
+        coVerify { datastoreManager.saveAppSettings(expectedAppSettings) }
+    }
+
+    //SET FIRST DAY OF WEEK ----------------------------------------------------------------
+    @Test
+    fun `given nothing when called setFirstDayOfWeek function on repository then calls the function`() = runTest{
+        // GIVEN
+        coEvery { datastoreRepository.setFirstDayOfWeek() } returns Unit
+
+        //When
+        datastoreRepository.setFirstDayOfWeek()
+
+        //THEN
+        coVerify { datastoreRepository.setFirstDayOfWeek() }
+    }
+
+    @Test
+    fun `given nothing when called setFirstDayOfWeek function on datastore then calls the function`() = runTest{
+        // GIVEN
+        coEvery { datastoreManager.setFirstDayOfWeek() } returns Unit
+
+        //When
+        datastoreManager.setFirstDayOfWeek()
+
+        //THEN
+        coVerify { datastoreManager.setFirstDayOfWeek() }
+    }
+
+    //APP SETTINGS ----------------------------------------------------------------
+    @Test
+    fun `given a mock appSettings when called appSettings function on repository then returns the same value`() = runTest{
+        // GIVEN
+        val expectedAppSettings = AppSettings()
+        coEvery { datastoreRepository.appSettings } returns flowOf(expectedAppSettings)
+
+        //When
+        datastoreRepository.appSettings.test {
+
+            //Then
+            assertEquals(expectedAppSettings, awaitItem())
+
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `given a mock appSettings when called appSettings function on datastore then returns the same value`() = runTest{
+        // GIVEN
+        val expectedAppSettings = AppSettings()
+        coEvery { datastoreManager.appSettings } returns flowOf(expectedAppSettings)
+
+        //When
+        datastoreManager.appSettings.test {
+
+            //Then
+            assertEquals(expectedAppSettings, awaitItem())
+
+            awaitComplete()
+        }
     }
 
 }
