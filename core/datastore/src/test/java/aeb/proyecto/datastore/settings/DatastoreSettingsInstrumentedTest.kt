@@ -1,5 +1,7 @@
-package aeb.proyecto.datastore
+package aeb.proyecto.datastore.settings
 
+import aeb.proyecto.datastore.DataStoreManager
+import aeb.proyecto.datastore.MainDispatcherRuleUnit
 import aeb.proyecto.datastore.model.AppSettings
 import aeb.proyecto.datastore.repository.DatastoreRepository
 import androidx.datastore.core.DataStore

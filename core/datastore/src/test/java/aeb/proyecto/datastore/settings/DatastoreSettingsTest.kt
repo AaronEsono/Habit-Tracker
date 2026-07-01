@@ -1,5 +1,7 @@
-package aeb.proyecto.datastore
+package aeb.proyecto.datastore.settings
 
+import aeb.proyecto.datastore.DataStoreManager
+import aeb.proyecto.datastore.MainDispatcherRuleUnit
 import aeb.proyecto.datastore.model.AppSettings
 import aeb.proyecto.datastore.repository.DatastoreRepository
 import app.cash.turbine.test
@@ -7,15 +9,11 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import kotlin.math.exp
 
 
 class DatastoreSettingsTest{
