@@ -264,6 +264,9 @@ class DatastoreRepository @Inject constructor(
     // TIMER SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 
+    // STOPWATCH SERVICE ----------------------------------------------------------------
+    // *******************************************************************************************
+
     override val timerLinkedAndFinished: Flow<Boolean>
         get() = dataStoreManager.timerLinkedAndFinished
 
@@ -293,4 +296,7 @@ class DatastoreRepository @Inject constructor(
     override suspend fun setIsLinkedHabitAndFinished(isLinked: Boolean) {
         dataStoreManager.setIsLinkedHabitAndFinished(isLinked)
     }
+
+    // STOPWATCH SERVICE ----------------------------------------------------------------
+    // *******************************************************************************************
 }

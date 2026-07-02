@@ -64,7 +64,7 @@ class DatastoreStatisticsInstrumentedTest {
     }
 
     @Test
-    fun `given nothing when called habitSelected function then returns the dafeult value`() = runTest {
+    fun `given nothing when called habitSelected function then returns the default value`() = runTest {
         //Given nothing
 
         //When
