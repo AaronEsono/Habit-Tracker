@@ -37,6 +37,8 @@ class TestingPluginConvention: Plugin<Project> {
                 add("androidTestImplementation", libs.findLibrary("androidx-junit").get())
                 add("androidTestImplementation", libs.findLibrary("androidx-espresso-core").get())
                 add("androidTestImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
+                add("androidTestImplementation", libs.findLibrary("mockk-mockk").get())
+                add("androidTestImplementation", libs.findLibrary("turbine").get())
                 add("testImplementation", libs.findLibrary("mockk-mockk").get())
                 add("testImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
                 add("testImplementation", libs.findLibrary("mockito-mockito-core").get())
