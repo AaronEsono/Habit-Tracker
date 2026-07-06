@@ -46,6 +46,7 @@ lifecycleProcess = "2.8.4"
 places = "4.2.0"
 turbine = "1.0.0"
 vico = "2.0.0-alpha.28"
+roboelectric = "4.11.1"
 
 # ---------------------------------- Libraries
 [libraries]
@@ -145,6 +146,7 @@ mockito-mockito-core = { module = "org.mockito:mockito-core", version.ref = "moc
 mockk-mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
 places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+roboelectric = { group = "org.robolectric", name = "robolectric", version.ref = "roboelectric" }
 
 # Vico Charts
 vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }

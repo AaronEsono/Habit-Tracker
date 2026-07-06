@@ -39,11 +39,13 @@ class TestingPluginConvention: Plugin<Project> {
                 add("androidTestImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
                 add("androidTestImplementation", libs.findLibrary("mockk-mockk").get())
                 add("androidTestImplementation", libs.findLibrary("turbine").get())
+                add("androidTestImplementation", libs.findLibrary("roboelectric").get())
                 add("testImplementation", libs.findLibrary("mockk-mockk").get())
                 add("testImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
                 add("testImplementation", libs.findLibrary("mockito-mockito-core").get())
                 add("testImplementation", libs.findLibrary("mockito-kotlin").get())
                 add("testImplementation", libs.findLibrary("turbine").get())
+                add("testImplementation", libs.findLibrary("roboelectric").get())
             }
         }
     }
