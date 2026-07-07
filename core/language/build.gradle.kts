@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.habittracker.android.library.plugin.convention)
     alias(libs.plugins.habittracker.hilt.plugin.convention)
+    alias(libs.plugins.habittracker.testing.plugin.convention)
 }
 
 android {
