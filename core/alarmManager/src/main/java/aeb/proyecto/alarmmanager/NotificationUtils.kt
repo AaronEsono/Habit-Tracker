@@ -57,52 +57,46 @@ class NotificationUtils @Inject constructor(
      * and polymorphic notification recurrence specifications.
      */
     fun setUpAlarm(alarmItem: NotificationWithNameAndColor) {
+        val now = java.time.LocalDateTime.now()
+        val currentDayOfWeek = now.dayOfWeek
 
         var timeInMillis:Long
 
-        when(alarmItem.typeNotification){
+        when (alarmItem.typeNotification) {
             is TypeNotification.Daily -> {
-                val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-                val currentMinute = Calendar.getInstance().get(Calendar.MINUTE)
+                val dailyConfig = alarmItem.typeNotification as TypeNotification.Daily
 
-                val isTodayValid = (alarmItem.typeNotification as TypeNotification.Daily)
-                    .days.contains(LocalDate.now().dayOfWeek)
-
-                val isTimeValid = (alarmItem.time.hour > currentHour) ||
-                        (alarmItem.time.hour == currentHour && alarmItem.time.minute > currentMinute)
+                val isTodayValid = dailyConfig.days.contains(currentDayOfWeek)
+                val isTimeValid = alarmItem.time.isAfter(now.toLocalTime())
 
                 if (isTodayValid && isTimeValid) {
-                    timeInMillis = Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, alarmItem.time.hour)
-                        set(Calendar.MINUTE, alarmItem.time.minute)
-                        set(Calendar.SECOND, 0)
-                    }.timeInMillis
+                    timeInMillis = now.with(alarmItem.time)
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toInstant()
+                        .toEpochMilli()
                 } else {
-                    val nextDay = getNextDay(
-                        (alarmItem.typeNotification as TypeNotification.Daily).days,
-                        LocalDate.now().dayOfWeek
-                    )
+                    val nextDay = getNextDay(dailyConfig.days, currentDayOfWeek)
 
-                    timeInMillis = Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, alarmItem.time.hour)
-                        set(Calendar.MINUTE, alarmItem.time.minute)
-                        set(Calendar.SECOND, 0)
-                    }.timeInMillis + (INTERVAL * nextDay)
+                    timeInMillis = now.plusDays(nextDay.toLong())
+                        .with(alarmItem.time)
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toInstant()
+                        .toEpochMilli()
                 }
-
             }
 
             is TypeNotification.Recurring -> {
+                val recurringConfig = alarmItem.typeNotification as TypeNotification.Recurring
 
-                val intervalDays = (alarmItem.typeNotification as TypeNotification.Recurring).interval
+                var targetDateTime = now.with(alarmItem.time)
 
-                timeInMillis = Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, alarmItem.time.hour)
-                    set(Calendar.MINUTE, alarmItem.time.minute)
-                    set(Calendar.SECOND, 0)
-                }.timeInMillis
+                if (targetDateTime.isBefore(now)) {
+                    targetDateTime = targetDateTime.plusDays(recurringConfig.interval.toLong())
+                }
 
-                if(timeInMillis < System.currentTimeMillis()) timeInMillis += (INTERVAL * intervalDays)
+                timeInMillis = targetDateTime.atZone(java.time.ZoneId.systemDefault())
+                    .toInstant()
+                    .toEpochMilli()
             }
         }
 
