@@ -23,10 +23,6 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 import java.util.Calendar
 
-// IMPORTANTE --------------------------------------------------
-//Pequeña fuga en los relojes, puede que no se seteen bien, mirar esto
-// En un futuro, en el codigo, inyectar el clock, para no depender del localDate
-
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33])
 class NotificationUtilsTest {
@@ -43,7 +39,15 @@ class NotificationUtilsTest {
         context = RuntimeEnvironment.getApplication()
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         shadowAlarmManager = shadowOf(alarmManager)
-        notificationUtils = NotificationUtils(context)
+
+        val zoneId = java.time.ZoneId.systemDefault()
+        val fixedInstant = java.time.ZonedDateTime.of(
+            2026, 7, 8, 10, 0, 0, 0, zoneId
+        ).toInstant()
+
+        val fixedClock = java.time.Clock.fixed(fixedInstant, zoneId)
+
+        notificationUtils = NotificationUtils(context, fixedClock)
     }
 
     @Test
@@ -83,15 +87,20 @@ class NotificationUtilsTest {
     @Test
     fun `given recurring notification in the past when setUpAlarm is called then schedules alarm shifting days forward by interval`() {
         // --- GIVEN ---
-        val fixedCalendarNow = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 16)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-        android.os.SystemClock.setCurrentTimeMillis(fixedCalendarNow.timeInMillis)
+        val zoneId = java.time.ZoneId.systemDefault()
 
-        val pastTime = LocalTime.of(14, 0)
+        // 🗓️ Fijamos el "Ahora" del test usando java.time: Hoy a las 16:00
+        // Usamos el año/mes/día actual, pero forzamos que sean las 16:00
+        val nowToday = java.time.LocalDate.now()
+        val fixedInstant = java.time.LocalDateTime.of(nowToday, java.time.LocalTime.of(16, 0))
+            .atZone(zoneId)
+            .toInstant()
+
+        // Configuramos el reloj estático para este test y actualizamos la instancia
+        val fixedClock = java.time.Clock.fixed(fixedInstant, zoneId)
+        notificationUtils = NotificationUtils(context, fixedClock)
+
+        val pastTime = java.time.LocalTime.of(14, 0) // La alarma era a las 14:00 (ya pasó respecto a las 16:00)
         val intervalDays = 2
 
         val alarmItem = NotificationWithNameAndColor(
@@ -102,15 +111,14 @@ class NotificationUtilsTest {
             typeNotification = TypeNotification.Recurring(interval = intervalDays)
         )
 
-        val expectedCalendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 14)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-
-        val oneDayMillis = 86400000L
-        val expectedTimeInMillis = expectedCalendar.timeInMillis + (oneDayMillis * intervalDays)
+        // Calculamos el tiempo esperado usando la misma API moderna:
+        // Al haber pasado la hora hoy (14:00 < 16:00), tu código le sumará los días de intervalo
+        val expectedTimeInMillis = java.time.LocalDateTime.ofInstant(fixedInstant, zoneId)
+            .with(pastTime)             // Ponemos las 14:00
+            .plusDays(intervalDays.toLong()) // Le sumamos los 2 días de intervalo
+            .atZone(zoneId)
+            .toInstant()
+            .toEpochMilli()
 
         // --- WHEN ---
         notificationUtils.setUpAlarm(alarmItem)
@@ -119,30 +127,27 @@ class NotificationUtilsTest {
         val scheduledAlarm = shadowAlarmManager.peekNextScheduledAlarm()
         assertNotNull("La alarma debería haberse programada en el futuro", scheduledAlarm)
 
-        // Comprobamos que el cálculo de tu 'when' sumó los 2 días de intervalo correctamente
         assertEquals(
             expectedTimeInMillis.toDouble(),
             scheduledAlarm?.triggerAtTime?.toDouble() ?: 0.0,
-            1000.0 // Margen de 1 segundo de tolerancia
+            1000.0
         )
     }
 
     @Test
     fun `given daily type notification in the future when setUpAlarm is called then schedules alarm at exact same day time`() {
         // --- GIVEN ---
-        val fixedCalendarNow = Calendar.getInstance().apply {
-            set(Calendar.YEAR, 2026)
-            set(Calendar.MONTH, Calendar.JULY)
-            set(Calendar.DAY_OF_MONTH, 7)
-            set(Calendar.HOUR_OF_DAY, 10)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
+        val zoneId = java.time.ZoneId.systemDefault()
 
-        android.os.SystemClock.setCurrentTimeMillis(fixedCalendarNow.timeInMillis)
+        val fixedInstant = java.time.ZonedDateTime.of(
+            2026, 7, 7, 10, 0, 0, 0, zoneId
+        ).toInstant()
 
-        val futureTime = LocalTime.of(23, 59)
+        // Configuramos nuestro reloj inyectado para congelar el tiempo del test
+        val fixedClock = java.time.Clock.fixed(fixedInstant, zoneId)
+        notificationUtils = NotificationUtils(context, fixedClock)
+
+        val futureTime = java.time.LocalTime.of(23, 59)
         val alarmItem = NotificationWithNameAndColor(
             id = 123L,
             name = "Ir al gimnasio",
@@ -151,13 +156,11 @@ class NotificationUtilsTest {
             typeNotification = TypeNotification.Daily(days = listOf(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.TUESDAY))
         )
 
-        // 2. CONSTRUIMOS EL TIEMPO ESPERADO EN EL MISMO DÍA CONGELADO:
-        val expectedTimeInMillis = Calendar.getInstance().apply {
-            timeInMillis = fixedCalendarNow.timeInMillis
-            set(Calendar.HOUR_OF_DAY, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 0)
-        }.timeInMillis
+        val expectedTimeInMillis = java.time.LocalDateTime.ofInstant(fixedInstant, zoneId)
+            .with(futureTime) // Cambiamos la hora a las 23:59
+            .atZone(zoneId)
+            .toInstant()
+            .toEpochMilli()
 
         // --- WHEN ---
         notificationUtils.setUpAlarm(alarmItem)
@@ -228,27 +231,31 @@ class NotificationUtilsTest {
     @Test
     fun `given daily notification when setRepeatedAlarm is called then schedules next execution skipping days correctly`() {
         // --- GIVEN ---
-        // Como hoy es , el día más cercano en el futuro de esta lista es THURSDAY (Jueves), que está a 2 días.
+        val zoneId = java.time.ZoneId.systemDefault()
+
+        val fixedInstant = java.time.ZonedDateTime.of(
+            2026, 7, 7, 10, 0, 0, 0, zoneId
+        ).toInstant()
+
+        val fixedClock = java.time.Clock.fixed(fixedInstant, zoneId)
+        notificationUtils = NotificationUtils(context, fixedClock)
+
         val alarmItem = NotificationWithNameAndColor(
             id = 789L,
             name = "Estudiar Ingeniería",
             color = 0x9C27B0,
-            time = LocalTime.of(18, 0), // A las 18:00
+            time = java.time.LocalTime.of(18, 0),
             typeNotification = TypeNotification.Daily(
                 days = listOf(DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY)
             )
         )
 
-        val baseCalendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 18)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-
-        val oneDayMillis = 86400000L
-        val daysToWait = 2L
-        val expectedTimeInMillis = baseCalendar.timeInMillis + (oneDayMillis * daysToWait)
+        val expectedTimeInMillis = java.time.LocalDateTime.ofInstant(fixedInstant, zoneId)
+            .plusDays(2) // Desplazamos los 2 días del salto (Martes a Jueves)
+            .with(alarmItem.time) // Ponemos las 18:00
+            .atZone(zoneId)
+            .toInstant()
+            .toEpochMilli()
 
         // --- WHEN ---
         notificationUtils.setRepeatedAlarm(alarmItem)
@@ -262,7 +269,7 @@ class NotificationUtilsTest {
         assertEquals(
             expectedTimeInMillis.toDouble(),
             scheduledAlarm?.triggerAtTime?.toDouble() ?: 0.0,
-            1000.0 // Margen de tolerancia por si Calendar.getInstance() difiere por milisegundos
+            1000.0
         )
     }
 

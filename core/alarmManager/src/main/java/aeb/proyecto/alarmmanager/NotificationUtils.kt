@@ -2,6 +2,7 @@ package aeb.proyecto.alarmmanager
 
 import aeb.proyecto.alarmmanager.constants.INTERVAL
 import aeb.proyecto.alarmmanager.constants.REMINDER
+import aeb.proyecto.alarmmanager.di.ClockModule
 import aeb.proyecto.alarmmanager.gsonProvider.GsonProvider
 import aeb.proyecto.alarmmanager.service.AlarmService
 import aeb.proyecto.room.model.NotificationWithNameAndColor
@@ -13,6 +14,7 @@ import android.content.Intent
 import android.util.Log
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.time.Clock
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.util.Calendar
@@ -33,7 +35,8 @@ import javax.inject.Singleton
  */
 @Singleton
 class NotificationUtils @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val clock: Clock
 ){
 
     /**
@@ -57,7 +60,7 @@ class NotificationUtils @Inject constructor(
      * and polymorphic notification recurrence specifications.
      */
     fun setUpAlarm(alarmItem: NotificationWithNameAndColor) {
-        val now = java.time.LocalDateTime.now()
+        val now = java.time.LocalDateTime.now(clock)
         val currentDayOfWeek = now.dayOfWeek
 
         var timeInMillis:Long
@@ -140,12 +143,14 @@ class NotificationUtils @Inject constructor(
      * lifecycle chaining validation.
      */
     fun setRepeatedAlarm(alarmItem: NotificationWithNameAndColor) {
+        val now = java.time.LocalDateTime.now(clock)
+        val currentDayOfWeek = now.dayOfWeek
 
         val intervalDays: Int = when (alarmItem.typeNotification) {
             is TypeNotification.Daily -> {
                 getNextDay(
                     (alarmItem.typeNotification as TypeNotification.Daily).days,
-                    LocalDate.now().dayOfWeek
+                    currentDayOfWeek
                 )
             }
 
@@ -153,12 +158,11 @@ class NotificationUtils @Inject constructor(
                 (alarmItem.typeNotification as TypeNotification.Recurring).interval
             }
         }
-
-        val timeInMillis = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, alarmItem.time.hour)
-            set(Calendar.MINUTE, alarmItem.time.minute)
-            set(Calendar.SECOND, 0)
-        }.timeInMillis + (INTERVAL * intervalDays)
+        val timeInMillis = now.plusDays(intervalDays.toLong())
+            .with(alarmItem.time)
+            .atZone(java.time.ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
 
         val intent = Intent(context, AlarmService::class.java).apply {
             putExtra(REMINDER, GsonProvider.gson.toJson(alarmItem))

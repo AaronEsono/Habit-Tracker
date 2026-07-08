@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 
@@ -35,6 +36,7 @@ import javax.inject.Inject
  * Finally, it delegates execution backward to [NotificationUtils.setRepeatedAlarm] to ensure uninterrupted
  * chronological scheduling perpetuity.
  */
+@AndroidEntryPoint
 class AlarmService : BroadcastReceiver() {
 
     @Inject
