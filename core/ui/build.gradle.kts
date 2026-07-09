@@ -7,6 +7,15 @@ plugins {
 
 android {
     namespace = "aeb.proyecto.ui"
+
+    packaging {
+        resources {
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+            // excludes += "/META-INF/LICENSE.txt"
+            // excludes += "/META-INF/NOTICE.txt"
+        }
+    }
 }
 
 dependencies {
@@ -19,4 +28,6 @@ dependencies {
 
     //Mas iconos
     implementation(libs.material.icons.extended)
+
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

@@ -99,7 +99,7 @@ fun IsOnlyZeroTo59(textFieldState: TextFieldState) {
                 textFieldState.edit {
                     replace(0, text.length, "0$text")
                 }
-            } else if (value > 59 || text.length >= 3) {
+            } else if (value!in 0..59) {
                 textFieldState.edit {
                     delete(text.length - 1, text.length)
                 }
@@ -123,7 +123,7 @@ fun IsOnlyZeroTo99(textFieldState: TextFieldState) {
 
         val value = text.toIntOrNull()
         if (value != null) {
-            if (value > 99 || text.length >= 3) {
+            if (value!in 0..99) {
                 textFieldState.edit {
                     delete(text.length - 1, text.length)
                 }
@@ -147,7 +147,7 @@ fun OneTo99(textFieldState: TextFieldState) {
 
         val value = text.toIntOrNull()
         if (value != null) {
-            if (value > 99 || value < 1) {
+            if (value !in 1..99) {
                 textFieldState.edit {
                     delete(text.length - 1, text.length)
                 }

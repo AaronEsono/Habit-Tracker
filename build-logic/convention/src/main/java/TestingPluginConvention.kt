@@ -31,15 +31,16 @@ class TestingPluginConvention: Plugin<Project> {
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
             }
-
             dependencies {
                 add("testImplementation", libs.findLibrary("junit").get())
                 add("androidTestImplementation", libs.findLibrary("androidx-junit").get())
+                add("androidTestImplementation", libs.findLibrary("androidx-ui-test-junit4").get())
                 add("androidTestImplementation", libs.findLibrary("androidx-espresso-core").get())
                 add("androidTestImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
                 add("androidTestImplementation", libs.findLibrary("mockk-mockk").get())
                 add("androidTestImplementation", libs.findLibrary("turbine").get())
-                add("androidTestImplementation", libs.findLibrary("roboelectric").get())
+                add("androidTestImplementation", libs.findLibrary("mockito-mockito-core").get())
+                add("androidTestImplementation", libs.findLibrary("mockito-kotlin").get())
                 add("testImplementation", libs.findLibrary("mockk-mockk").get())
                 add("testImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
                 add("testImplementation", libs.findLibrary("mockito-mockito-core").get())
