@@ -24,7 +24,11 @@ class DataStoreAddHabitUseCase @Inject constructor(
      * @return The functional [DayOfWeek] instance representing the baseline for calendar calculations.
      */
     suspend fun getDayOfWeek():DayOfWeek{
-        return DayOfWeek.valueOf(datastoreInterface.getAppSettings().dayStartWeek)
+        return runCatching {
+            DayOfWeek.valueOf(datastoreInterface.getAppSettings().dayStartWeek)
+        }.getOrElse {
+            DayOfWeek.MONDAY
+        }
     }
 
 }
