@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,7 +37,9 @@ fun LanguageDialogButton(
     onClickButton: (DataResult) -> Unit
 ){
     ButtonDialog(
-        modifier = Modifier.padding(vertical = spacing3),
+        modifier = Modifier
+            .padding(vertical = spacing3)
+            .testTag("dialog_language_option_${elementLanguage.value}"),
         paddingValues = PaddingValues(horizontal = spacing6),
         containerColor = getSelectionContainerColor(elementLanguage.value, languageSelected),
         onClick = { onClickButton(DataResult.LanguageResult(elementLanguage.value)) }

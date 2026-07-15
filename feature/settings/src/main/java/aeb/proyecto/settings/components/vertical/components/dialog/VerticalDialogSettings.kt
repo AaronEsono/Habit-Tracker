@@ -31,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -56,7 +57,9 @@ fun VerticalDialogSettings(
     onClickButton: (DataResult) -> Unit
 ){
     CustomDialog(
-        modifier = Modifier.fillMaxWidth(0.8f),
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .testTag("vertical_settings_dialog"),
         onDismissRequest = onDismissRequest,
         containerColor = MaterialTheme.colorScheme.primary
     ) {
@@ -87,7 +90,8 @@ fun VerticalDialogSettings(
                         modifier = Modifier
                             .size(35.dp)
                             .align(Alignment.TopEnd)
-                            .clickable { onDismissRequest() },
+                            .clickable { onDismissRequest() }
+                            .testTag("vertical_settings_dialog_close"),
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }

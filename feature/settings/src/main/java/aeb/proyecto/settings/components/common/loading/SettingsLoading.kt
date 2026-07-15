@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 
 /**
@@ -43,7 +44,9 @@ fun SettingsLoading(){
     )
 
     Column (
-        modifier = Modifier.fillMaxSize().padding(top = spacing16),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = spacing16),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Box(
@@ -63,6 +66,9 @@ fun SettingsLoading(){
 
         LabelMediumText(
             stringResource(R.string.settings_loading),
-            modifier = Modifier.padding(top = spacing10))
+            modifier = Modifier
+                .padding(top = spacing10)
+                .testTag("settings_loading")
+        )
     }
 }

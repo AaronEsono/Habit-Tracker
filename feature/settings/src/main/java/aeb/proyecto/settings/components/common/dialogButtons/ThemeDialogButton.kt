@@ -9,6 +9,7 @@ import aeb.proyecto.ui.theme.EnumTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 
 /**
@@ -25,7 +26,9 @@ fun ThemeDialogButton(
     onClickButton: (DataResult) -> Unit
 ){
     ButtonDialog(
-        modifier = Modifier.padding(vertical = spacing3),
+        modifier = Modifier
+            .padding(vertical = spacing3)
+            .testTag("dialog_theme_option_${elementTheme.theme}"),
         containerColor = getSelectionContainerColor(elementTheme.theme, themeSelected),
         onClick = { onClickButton(DataResult.ThemeResult(elementTheme.theme)) }
     ){

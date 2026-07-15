@@ -35,6 +35,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -98,7 +99,9 @@ fun VerticalSettingsScreen(
                 )
 
                 ButtonSettings(
-                    modifier = Modifier.padding(top = spacing6),
+                    modifier = Modifier
+                        .padding(top = spacing6)
+                        .testTag("settings_button_theme"),
                     title = R.string.settings_theme,
                     label = getTitle(settingsUIState.data.themeMode),
                     leadingIcon = R.drawable.ic_palette,
@@ -113,7 +116,8 @@ fun VerticalSettingsScreen(
                         title = R.string.settings_language,
                         leadingIcon = R.drawable.ic_language,
                         label = returnStringValue(settingsUIState.data.language),
-                        onClick = onClickLanguage
+                        onClick = onClickLanguage,
+                        modifier = Modifier.testTag("settings_button_language")
                     )
 
                     CustomHorizontalDivider()
@@ -123,7 +127,8 @@ fun VerticalSettingsScreen(
                     title = R.string.settings_day_title,
                     label = getDay(settingsUIState.data.dayStartWeek),
                     leadingIcon = R.drawable.ic_calendar_day,
-                    onClick = onClickGeneralSettings
+                    onClick = onClickGeneralSettings,
+                    modifier = Modifier.testTag("settings_button_dayWeek")
                 )
 
                 CustomHorizontalDivider()
@@ -132,7 +137,8 @@ fun VerticalSettingsScreen(
                     title = R.string.settings_overlay,
                     leadingIcon = R.drawable.ic_overlay,
                     label = if(overlayActivated.value) R.string.settings_enabled else R.string.settings_disabled,
-                    onClick = onClickOverlay
+                    onClick = onClickOverlay,
+                    modifier = Modifier.testTag("settings_button_overlay")
                 )
 
                 CustomHorizontalDivider()
@@ -141,7 +147,8 @@ fun VerticalSettingsScreen(
                     title = R.string.settings_export_import,
                     leadingIcon = R.drawable.ic_save,
                     shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
-                    onClick = onClickExport
+                    onClick = onClickExport,
+                    modifier = Modifier.testTag("settings_button_export")
                 )
 
                 Spacer(modifier = Modifier.padding(vertical = spacing16))
@@ -153,7 +160,9 @@ fun VerticalSettingsScreen(
                 )
 
                 ButtonSettings(
-                    modifier = Modifier.padding(top = spacing6),
+                    modifier = Modifier
+                        .padding(top = spacing6)
+                        .testTag("settings_button_email"),
                     title = R.string.settings_email,
                     leadingIcon = R.drawable.ic_email,
                     shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
@@ -165,7 +174,8 @@ fun VerticalSettingsScreen(
                 ButtonSettings(
                     title = R.string.settings_github,
                     leadingIcon = R.drawable.ic_github,
-                    onClick = { onClickGithub(SettingsConstants.LINK_GITHUB) }
+                    onClick = { onClickGithub(SettingsConstants.LINK_GITHUB) },
+                    modifier = Modifier.testTag("settings_button_github")
                 )
 
                 CustomHorizontalDivider()
@@ -174,7 +184,8 @@ fun VerticalSettingsScreen(
                     title = R.string.settings_link,
                     leadingIcon = R.drawable.ic_link,
                     shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
-                    onClick = { onClickLinkedin(SettingsConstants.LINK_LINKEDN) }
+                    onClick = { onClickLinkedin(SettingsConstants.LINK_LINKEDN) },
+                    modifier = Modifier.testTag("settings_button_media")
                 )
 
                 Spacer(modifier = Modifier.padding(vertical = spacing6))

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 
 /**
@@ -27,7 +28,9 @@ fun DayWeekDialogButton(
     onClickButton: (DataResult) -> Unit
 ){
     ButtonDialog(
-        modifier = Modifier.padding(vertical = spacing3),
+        modifier = Modifier
+            .padding(vertical = spacing3)
+            .testTag("dialog_day_option_${dayOfWeek.id}"),
         containerColor = getSelectionContainerColor(dayOfWeek.id.toString(), daySelected),
         onClick = { onClickButton(DataResult.DayOfWeekResult(dayOfWeek.id)) }
     ){

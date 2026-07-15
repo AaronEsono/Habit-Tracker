@@ -1,27 +1,23 @@
 package aeb.proyecto.settings
 
-import aeb.proyecto.language.model.EnumLanguage
-import aeb.proyecto.settings.components.dialog.DialogSettings
+import aeb.proyecto.datastore.model.AppSettings
+import aeb.proyecto.settings.components.vertical.VerticalSettingsScreen
+import aeb.proyecto.settings.components.vertical.components.dialog.VerticalDialogSettings
 import aeb.proyecto.settings.model.DataDialog
-import aeb.proyecto.ui.theme.EnumTheme
-import android.content.Context
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import aeb.proyecto.settings.model.DataResult
+import aeb.proyecto.settings.model.SettingsDialogState
+import android.os.Build
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.SdkSuppress
 import androidx.test.filters.SmallTest
-import org.junit.*
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
+import org.junit.Rule
 import org.junit.Test
-import org.junit.Assert.*
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
@@ -31,281 +27,498 @@ class SettingsScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    val context = ApplicationProvider.getApplicationContext<Context>()
-
-
     @Test
-    fun settingsScreenShowCorrectly() {
+    fun givenLoadingState_whenScreenRendered_thenShowLoadingLayout() {
+        // --- WHEN ---
         composeTestRule.setContent {
-            SettingsScreen(
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Loading,
+                dialogState = SettingsDialogState(showDialog = false),
                 onClickTheme = {},
                 onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {}
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
             )
         }
 
-        //Texto configuracion
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_configuration))
-            .assertExists().assertIsDisplayed()
-
-        //Texto acerda de
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_about)).assertExists()
-            .assertIsDisplayed()
-
-        //Botones
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_theme)).assertExists()
-            .assertIsDisplayed()
-
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_language)).assertExists()
-            .assertIsDisplayed()
-
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_export_import))
-            .assertExists().assertIsDisplayed()
-
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_email)).assertExists()
-            .assertIsDisplayed()
-
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_github)).assertExists()
-            .assertIsDisplayed()
-
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_link)).assertExists()
-            .assertIsDisplayed()
-
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("settings_loading").assertIsDisplayed()
     }
 
     @Test
-    fun settingsButtonPerformCorrectly() {
-        var clickedTheme = false
-        var clickedLanguage = false
-        var clickedExport = false
-        var clickedEmail = false
-        var clickedGithub = false
-        var clickedLinkedin = false
+    fun givenSuccessState_whenClickThemeOption_thenTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var themeClicked = false
+        val fakeSettings = AppSettings(language = "es")
 
         composeTestRule.setContent {
-            SettingsScreen(
-                onClickTheme = { clickedTheme = true },
-                onClickLanguage = { clickedLanguage = true },
-                onClickExport = { clickedExport = true },
-                onClickEmail = { clickedEmail = true },
-                onClickGithub = { clickedGithub = true },
-                onClickLinkedin = { clickedLinkedin = true }
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
+                onClickTheme = {themeClicked = true},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = {},
+                onClickGithub = {},
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
             )
         }
 
-        assertFalse(clickedTheme)
-        assertFalse(clickedLanguage)
-        assertFalse(clickedExport)
-        assertFalse(clickedEmail)
-        assertFalse(clickedGithub)
-        assertFalse(clickedLinkedin)
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("settings_button_theme").performClick()
 
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_theme)).performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_language)).performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_export_import)).performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_email)).performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_github)).performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_link)).performClick()
-
-        assertTrue(clickedTheme)
-        assertTrue(clickedLanguage)
-        assertTrue(clickedExport)
-        assertTrue(clickedEmail)
-        assertTrue(clickedGithub)
-        assertTrue(clickedLinkedin)
+        // --- THEN ---
+        assertTrue(themeClicked)
     }
 
     @Test
-    fun settingsDialogThemeShowCorrectly() {
-        composeTestRule.setContent {
-            DialogSettings(
-                dataDialog = DataDialog.THEME,
-                themeSelected = 1,
-                languageSelected = "English",
-                onDismissRequest = {},
-                onClickButton = {}
-            )
-        }
-
-        //Texto configuracion
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_theme_pick)).assertExists().assertIsDisplayed()
-
-        //Imagen dialog
-        composeTestRule.onNodeWithContentDescription("image dialog").assertExists().assertIsDisplayed()
-
-        //Botones
-        EnumTheme.entries.forEach {
-            composeTestRule.onNodeWithText(context.getString(it.title)).assertExists()
-                .assertIsDisplayed()
-        }
-    }
-
-    @Test
-    fun settingsDialogLanguageShowCorrectly() {
-        composeTestRule.setContent {
-            DialogSettings(
-                dataDialog = DataDialog.LANGUAGE,
-                themeSelected = 1,
-                languageSelected = "English",
-                onDismissRequest = {},
-                onClickButton = {}
-            )
-        }
-
-        //Texto configuracion
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_language_pick)).assertExists().assertIsDisplayed()
-
-        //Imagen dialog
-        composeTestRule.onNodeWithContentDescription("image dialog").assertExists().assertIsDisplayed()
-
-        //Botones
-        EnumLanguage.entries.forEach {
-            composeTestRule.onNodeWithText(context.getString(it.title)).assertExists()
-                .assertIsDisplayed()
-        }
-    }
-
-    @Test
-    fun dialogNotDisplayWhenItsClosed(){
-        var isEnabled = true
+    fun givenSuccessState_whenClickDay_thenTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var dayClicked = false
+        val fakeSettings = AppSettings(language = "es")
 
         composeTestRule.setContent {
-            DialogSettings(
-                dataDialog = DataDialog.LANGUAGE,
-                themeSelected = 1,
-                languageSelected = "English",
-                onDismissRequest = { isEnabled = false },
-                onClickButton = {}
-            )
-        }
-
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_language_pick))
-            .assertExists().assertIsDisplayed()
-
-        composeTestRule.onNodeWithContentDescription("close button").performClick()
-
-        assertFalse(isEnabled)
-
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_language_pick))
-            .isNotDisplayed()
-    }
-
-    @Test
-    fun dialogDoesntShowWhenSettingsIsShow(){
-        var showDialog = false
-
-        composeTestRule.setContent {
-            SettingsScreen(
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
                 onClickTheme = {},
                 onClickLanguage = {},
+                onClickGeneralSettings = {dayClicked = true},
+                onClickOverlay = {},
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {}
-            )
-
-            if(showDialog){
-                DialogSettings(
-                    dataDialog = DataDialog.LANGUAGE,
-                    themeSelected = 1,
-                    languageSelected = "English",
-                    onDismissRequest = { },
-                    onClickButton = {}
-                )
-            }
-        }
-
-        //Texto configuracion
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_configuration))
-            .assertExists().assertIsDisplayed()
-
-        //Texto acerda de
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_about)).assertExists()
-            .assertIsDisplayed()
-
-
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_language_pick))
-            .isNotDisplayed()
-    }
-
-    @Test
-    fun performClickDialogSettings(){
-        var clicked = false
-
-        composeTestRule.setContent {
-            DialogSettings(
-                dataDialog = DataDialog.LANGUAGE,
-                themeSelected = 1,
-                languageSelected = "English",
-                onDismissRequest = { },
-                onClickButton = { clicked = true }
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
             )
         }
 
-        assertFalse(clicked)
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("settings_button_dayWeek").performClick()
 
-        EnumLanguage.entries.forEach {
-            composeTestRule.onNodeWithText(context.getString(it.title)).performClick()
-        }
-
-        assertTrue(clicked)
+        // --- THEN ---
+        assertTrue(dayClicked)
     }
 
     @Test
-    fun settingsButtonDisplaysTheCorrectDialog(){
-        var dataDialog = DataDialog.LANGUAGE
+    fun givenSuccessState_whenClickOverlay_thenTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var overlayClicked = false
+        val fakeSettings = AppSettings(language = "es")
 
         composeTestRule.setContent {
-            var isShow by remember { mutableStateOf(false) }
-
-            SettingsScreen(
-                onClickTheme = { dataDialog = DataDialog.THEME; isShow = true },
-                onClickLanguage = { dataDialog = DataDialog.LANGUAGE; isShow = true },
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
+                onClickTheme = {},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = { overlayClicked = true},
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {}
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
             )
-
-            if(isShow){
-                DialogSettings(
-                    dataDialog = dataDialog,
-                    themeSelected = 1,
-                    languageSelected = "English",
-                    onDismissRequest = { isShow = false },
-                    onClickButton = {})
-            }
-
         }
 
-        //DIALOG DISABLED
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_configuration))
-            .assertExists().assertIsDisplayed()
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("settings_button_overlay").performClick()
 
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_about)).assertExists()
-            .assertIsDisplayed()
+        // --- THEN ---
+        assertTrue(overlayClicked)
+    }
 
-        composeTestRule.onNodeWithContentDescription("image dialog").assertIsNotDisplayed()
-        assertTrue(DataDialog.LANGUAGE == dataDialog)
+    @Test
+    fun givenSuccessState_whenClickExport_thenTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var exportClicked = false
+        val fakeSettings = AppSettings(language = "es")
 
-        // DIALOG ENABLED, THEME MODE
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_theme)).performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_theme_pick))
-            .assertExists().assertIsDisplayed()
-        assertTrue(DataDialog.THEME == dataDialog)
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
+                onClickTheme = {},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = { exportClicked = true},
+                onClickEmail = {},
+                onClickGithub = {},
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
+            )
+        }
 
-        // DIALOG DISABLED
-        composeTestRule.onNodeWithContentDescription("close button").performClick()
-        composeTestRule.onNodeWithContentDescription("image dialog").assertIsNotDisplayed()
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("settings_button_export").performClick()
 
-        // DIALOG, ENABLED, LANGUAGE MODE
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_language)).performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.settings_language_pick))
-            .assertExists().assertIsDisplayed()
-        assertTrue(DataDialog.LANGUAGE == dataDialog)
+        // --- THEN ---
+        assertTrue(exportClicked)
+    }
+
+    @Test
+    fun givenSuccessState_whenClickEmail_thenTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var emailClicked = false
+        val fakeSettings = AppSettings(language = "es")
+
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
+                onClickTheme = {},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = { emailClicked = true},
+                onClickGithub = {},
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
+            )
+        }
+
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("settings_button_email").performClick()
+
+        // --- THEN ---
+        assertTrue(emailClicked)
+    }
+
+    @Test
+    fun givenSuccessState_whenClickGithub_thenTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var githubClicked = false
+        val fakeSettings = AppSettings(language = "es")
+
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
+                onClickTheme = {},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = {},
+                onClickGithub = {githubClicked = true},
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
+            )
+        }
+
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("settings_button_github").performClick()
+
+        // --- THEN ---
+        assertTrue(githubClicked)
+    }
+
+    @Test
+    fun givenSuccessState_whenClickMedia_thenTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var mediaClicked = false
+        val fakeSettings = AppSettings(language = "es")
+
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
+                onClickTheme = {},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = {},
+                onClickGithub = {},
+                onClickLinkedin = { mediaClicked = true},
+                onDismissDialog = {},
+                onAcceptDialog = {}
+            )
+        }
+
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("settings_button_media").performClick()
+
+        // --- THEN ---
+        assertTrue(mediaClicked)
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.TIRAMISU)
+    fun givenSuccessState_whenClickLanguage_thenTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var languageClicked = false
+        val fakeSettings = AppSettings(language = "es")
+
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
+                onClickTheme = {},
+                onClickLanguage = {languageClicked = true},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = {},
+                onClickGithub = {},
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
+            )
+        }
+
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("settings_button_language").performClick()
+
+        // --- THEN ---
+        assertTrue(languageClicked)
+    }
+
+    @Test
+    @SdkSuppress(
+        minSdkVersion = Build.VERSION_CODES.O,
+        maxSdkVersion = Build.VERSION_CODES.S_V2
+    )
+    fun givenSuccessState_whenClickLanguageAndPreviousSDK_thenNoTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var languageClicked = false
+        val fakeSettings = AppSettings(language = "es")
+
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
+                onClickTheme = {},
+                onClickLanguage = { languageClicked = true },
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = {},
+                onClickGithub = {},
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
+            )
+        }
+
+        // --- WHEN & THEN ---
+        composeTestRule.onNodeWithTag("settings_button_language").assertDoesNotExist()
+    }
+
+    @Test
+    fun givenShowDialogTrue_whenScreenRendered_thenShowDialogComposable() {
+        // --- GIVEN ---
+        val dialogState = SettingsDialogState(
+            showDialog = true,
+            dataDialog = DataDialog.THEME // O el tipo de diálogo correspondiente
+        )
+        val fakeSettings = AppSettings(language = "es")
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = dialogState,
+                onClickTheme = {},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = {},
+                onClickGithub = {},
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
+            )
+        }
+
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("vertical_settings_dialog").assertIsDisplayed()
+    }
+
+    @Test
+    fun givenShowDialogFalse_whenScreenRendered_thenDoNotShowDialogComposable() {
+        // --- GIVEN ---
+        val dialogState = SettingsDialogState(showDialog = false)
+        val fakeSettings = AppSettings(language = "es")
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = dialogState,
+                onClickTheme = {},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = {},
+                onClickGithub = {},
+                onClickLinkedin = {},
+                onDismissDialog = {},
+                onAcceptDialog = {}
+            )
+        }
+
+        // --- THEN ---
+        // Comprobamos que el nodo del diálogo no existe en el árbol de Compose
+        composeTestRule.onNodeWithTag("vertical_settings_dialog").assertDoesNotExist()
+    }
+
+    @Test
+    fun givenOpenDialog_whenOnDismissTriggeredInDialog_thenCallOnDismissDialog() {
+        // --- GIVEN ---
+        var dismissCalled = false
+        val dialogState = SettingsDialogState(
+            showDialog = true,
+            dataDialog = DataDialog.THEME
+        )
+        val fakeSettings = AppSettings(language = "es")
+
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = dialogState,
+                onClickTheme = {},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = {},
+                onClickGithub = {},
+                onClickLinkedin = {},
+                onDismissDialog = { dismissCalled = true }, // Capturamos la acción
+                onAcceptDialog = {}
+            )
+        }
+
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("vertical_settings_dialog_close").performClick()
+
+        // --- THEN ---
+        assertTrue(dismissCalled)
+    }
+
+    @Test
+    fun givenAnyDialog_whenClickCloseIcon_thenTriggerOnDismissRequest() {
+        // --- GIVEN ---
+        var dismissClicked = false
+
+        val fakeDialogData = DataDialog.LANGUAGE
+
+        composeTestRule.setContent {
+            VerticalDialogSettings(
+                dataDialog = fakeDialogData,
+                themeSelected = 0,
+                languageSelected = "es",
+                daySelected = "MONDAY",
+                onDismissRequest = { dismissClicked = true },
+                onClickButton = {}
+            )
+        }
+
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("vertical_settings_dialog_close").performClick()
+
+        // --- THEN ---
+        assertTrue(dismissClicked)
+    }
+
+    @Test
+    fun givenLanguageDialog_whenLanguageSelected_thenTriggerOnClickButtonWithLanguageResult() {
+        // --- GIVEN ---
+        var resultCaptured: DataResult? = null
+
+        val fakeDialogData = DataDialog.LANGUAGE
+
+        composeTestRule.setContent {
+            VerticalDialogSettings(
+                dataDialog = fakeDialogData,
+                themeSelected = 0,
+                languageSelected = "es",
+                daySelected = "MONDAY",
+                onDismissRequest = {},
+                onClickButton = { result -> resultCaptured = result }
+            )
+        }
+
+        // --- THEN---
+        composeTestRule.onNodeWithTag("vertical_settings_dialog").assertIsDisplayed()
+
+        // --- WHEN (Interacción) ---
+        composeTestRule.onNodeWithTag("dialog_language_option_en").performClick()
+
+        // --- THEN (Verificación lógica) ---
+        assertTrue(resultCaptured is DataResult.LanguageResult)
+        assertEquals("en", (resultCaptured as DataResult.LanguageResult).language)
+    }
+
+    @Test
+    fun givenThemeDialog_whenThemeSelected_thenTriggerOnClickButtonWithThemeResult() {
+        // --- GIVEN ---
+        var resultCaptured: DataResult? = null
+        val fakeDialogData = DataDialog.THEME
+
+        composeTestRule.setContent {
+            VerticalDialogSettings(
+                dataDialog = fakeDialogData,
+                themeSelected = 0,
+                languageSelected = "es",
+                daySelected = "MONDAY",
+                onDismissRequest = {},
+                onClickButton = { result -> resultCaptured = result }
+            )
+        }
+
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("dialog_theme_option_1").performClick()
+
+        // --- THEN ---
+        assertTrue(resultCaptured is DataResult.ThemeResult)
+        assertEquals(1, (resultCaptured as DataResult.ThemeResult).theme)
+    }
+
+    @Test
+    fun givenDayWeekDialog_whenDaySelected_thenTriggerOnClickButtonWithDayOfWeekResult() {
+        // --- GIVEN ---
+        var resultCaptured: DataResult? = null
+        val fakeDialogData = DataDialog.DAY_WEEK
+
+        composeTestRule.setContent {
+            VerticalDialogSettings(
+                dataDialog = fakeDialogData,
+                themeSelected = 0,
+                languageSelected = "es",
+                daySelected = "MONDAY",
+                onDismissRequest = {},
+                onClickButton = { result -> resultCaptured = result }
+            )
+        }
+
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("dialog_day_option_MONDAY").performClick()
+
+        // --- THEN ---
+        assertTrue(resultCaptured is DataResult.DayOfWeekResult)
+        assertEquals("MONDAY", (resultCaptured as DataResult.DayOfWeekResult).dayOfWeek.name)
     }
 
 }

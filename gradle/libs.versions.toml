@@ -47,6 +47,8 @@ places = "4.2.0"
 turbine = "1.0.0"
 vico = "2.0.0-alpha.28"
 roboelectric = "4.11.1"
+uiVersion = "1.11.4"
+espresoIntents = "3.6.1"
 
 # ---------------------------------- Libraries
 [libraries]
@@ -105,6 +107,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 # AndroidX Testing
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresoIntents" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 
@@ -152,6 +155,7 @@ roboelectric = { group = "org.robolectric", name = "robolectric", version.ref = 
 vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
 vico-compose-m2 = { group = "com.patrykandpatrick.vico", name = "compose-m2", version.ref = "vico" }
 vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "uiVersion" }
 
 # ---------------------------------- Plugins
 [plugins]

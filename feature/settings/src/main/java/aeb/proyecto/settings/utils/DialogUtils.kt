@@ -20,8 +20,3 @@ fun <T> getSelectionContainerColor(current: T, selected: T): Color {
         MaterialTheme.colorScheme.background
     }
 }
-
-@Composable
-fun setContainerColorButton(day: DayOfWeek, daySelected: String): Color {
-    return if (day.toString() == daySelected) MaterialTheme.colorScheme.surfaceContainer else MaterialTheme.colorScheme.background
-}
