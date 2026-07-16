@@ -1,21 +1,22 @@
 package aeb.proyecto.save
 
-import aeb.proyecto.save.components.bottomSheet.SaveBottomSheet
+import aeb.proyecto.save.components.vertical.VerticalSaveScreen
+import aeb.proyecto.save.model.BottomSheetState
 import aeb.proyecto.save.model.DataBottomSheet
 import aeb.proyecto.save.model.DataSaveScreen
 import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import junit.framework.TestCase.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @RunWith(AndroidJUnit4::class)
@@ -28,167 +29,361 @@ class SaveScreenTest {
     val context = ApplicationProvider.getApplicationContext<Context>()
 
     @Test
-    fun saveScreenShowCorrectly(){
+    fun givenLoadingState_whenScreenRendered_thenShowLoadingLayout() {
+        // --- WHEN ---
         composeTestRule.setContent {
-
-            SaveScreen(
-                saveUIState = SaveUIState.Success,
-                dataSaveScreen = DataSaveScreen(name = "Aarón"),
-                onImportScreen = {},
-                onSaveClick = {},
-                onRestoreClick = {},
-                onDeleteClick = {},
-                onLogOutClick = {}
-            )
-        }
-
-        composeTestRule.onNodeWithText(context.getString(R.string.save_email, "Aarón"))
-            .assertExists().assertIsDisplayed()
-
-        composeTestRule.onNodeWithText(context.getString(R.string.save_save_habit))
-            .assertExists().assertIsDisplayed()
-    }
-
-    @Test
-    fun buttonWorksPerfectly(){
-        var clickedSave = false
-        var clickedRestore = false
-        var clickedDelete = false
-        var clickedLogOut = false
-
-        composeTestRule.setContent {
-            SaveScreen(
-                saveUIState = SaveUIState.Success,
-                dataSaveScreen = DataSaveScreen(name = "Aarón",localDateTime = LocalDateTime.now()),
-                onImportScreen = {},
-                onSaveClick = { clickedSave = true },
-                onRestoreClick = { clickedRestore = true },
-                onDeleteClick = { clickedDelete = true },
-                onLogOutClick = { clickedLogOut = true }
-            )
-        }
-
-        composeTestRule.onNodeWithText(context.getString(R.string.save_save_habit)).performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.save_restore_habit)).performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.save_delete_habit)).performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.save_log_out)).performClick()
-
-        assert(clickedSave)
-        assert(clickedRestore)
-        assert(clickedDelete)
-        assert(clickedLogOut)
-    }
-
-    @Test
-    fun logOutStateWorks(){
-        var goOnImport = false
-
-        composeTestRule.setContent {
-            SaveScreen(
-                saveUIState = SaveUIState.LogOut,
-                dataSaveScreen = DataSaveScreen(name = "Aarón",localDateTime = LocalDateTime.now()),
-                onImportScreen = { goOnImport = true },
-                onSaveClick = {},
-                onRestoreClick = {},
-                onDeleteClick = {},
-                onLogOutClick = {}
-            )
-        }
-
-        assert(goOnImport)
-    }
-
-    @Test
-    fun loadingStateWorks(){
-        composeTestRule.setContent {
-            SaveScreen(
+            VerticalSaveScreen(
                 saveUIState = SaveUIState.Loading,
-                dataSaveScreen = DataSaveScreen(name = "Aarón",localDateTime = LocalDateTime.now()),
+                dataSaveScreen = DataSaveScreen(),
+                bottomSheetState = BottomSheetState(),
                 onImportScreen = {},
                 onSaveClick = {},
                 onRestoreClick = {},
                 onDeleteClick = {},
-                onLogOutClick = {}
-            )
-        }
-
-        composeTestRule.onNodeWithTag("Loading overlay")
-            .assertExists().assertIsDisplayed()
-
-    }
-
-    @Test
-    fun withoutNameNoDisplay(){
-        composeTestRule.setContent {
-            SaveScreen(
-                saveUIState = SaveUIState.Loading,
-                dataSaveScreen = DataSaveScreen(name = null,localDateTime = LocalDateTime.now()),
-                onImportScreen = {},
-                onSaveClick = {},
-                onRestoreClick = {},
-                onDeleteClick = {},
-                onLogOutClick = {}
-            )
-        }
-
-        composeTestRule.onNodeWithText(context.getString(R.string.save_email, "Aarón"))
-            .assertIsNotDisplayed()
-
-    }
-
-    @Test
-    fun withoutDateNoDisplay(){
-        composeTestRule.setContent {
-            SaveScreen(
-                saveUIState = SaveUIState.Loading,
-                dataSaveScreen = DataSaveScreen(name = null,localDateTime = null),
-                onImportScreen = {},
-                onSaveClick = {},
-                onRestoreClick = {},
-                onDeleteClick = {},
-                onLogOutClick = {}
-            )
-        }
-
-        composeTestRule.onNodeWithText(context.getString(R.string.save_restore_habit))
-            .assertIsNotDisplayed()
-
-        composeTestRule.onNodeWithText(context.getString(R.string.save_delete_habit))
-            .assertIsNotDisplayed()
-    }
-
-    @Test
-    fun withDateNoDisplay(){
-        composeTestRule.setContent {
-            SaveScreen(
-                saveUIState = SaveUIState.Loading,
-                dataSaveScreen = DataSaveScreen(name = null,localDateTime = LocalDateTime.now()),
-                onImportScreen = {},
-                onSaveClick = {},
-                onRestoreClick = {},
-                onDeleteClick = {},
-                onLogOutClick = {}
-            )
-        }
-
-        composeTestRule.onNodeWithText(context.getString(R.string.save_restore_habit))
-            .assertExists().assertIsDisplayed()
-
-        composeTestRule.onNodeWithText(context.getString(R.string.save_delete_habit))
-            .assertExists().assertIsDisplayed()
-    }
-
-    @Test
-    fun stateBottomSheetCorrect(){
-        composeTestRule.setContent {
-            SaveBottomSheet(
-                dataBottomSheet = DataBottomSheet.DELETE_HABIT,
+                onLogOutClick = {},
                 onDismiss = {},
                 onAccept = {}
             )
         }
 
-        composeTestRule.onNodeWithText(context.getString(R.string.data_bottomSheet_delete_label))
-            .assertExists().assertIsDisplayed()
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("Save overlay").assertIsDisplayed()
+    }
+
+    @Test
+    fun givenLogOutState_whenScreenRendered_thenFunchImportScreenWorks() {
+        //Given
+        var importClicked = false
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.LogOut,
+                dataSaveScreen = DataSaveScreen(),
+                bottomSheetState = BottomSheetState(),
+                onImportScreen = { importClicked = true },
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        // --- THEN ---
+        assertTrue(importClicked)
+    }
+
+    @Test
+    fun givenACorrectName_WhenSaveScreenIsShow_ThenShowTheNameCorrectly() {
+        //Given
+        var name = "aaron@prueba.com"
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(name = name),
+                bottomSheetState = BottomSheetState(),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("save_title_user").assertExists()
+    }
+
+    @Test
+    fun givenAnInvalidName_WhenSaveScreenIsShow_ThenShowTheNameCorrectly() {
+        //Given
+        var name = ""
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(name = name),
+                bottomSheetState = BottomSheetState(),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("save_title_user").assertDoesNotExist()
+    }
+
+    @Test
+    fun givenACorrectDate_WhenSaveScreenIsShow_ThenShowTheRestoreButtonCorrectly() {
+        //Given
+        var date = LocalDateTime.now()
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(localDateTime = date),
+                bottomSheetState = BottomSheetState(),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("save_button_restore").assertExists()
+    }
+
+    @Test
+    fun givenAnInvalidtDate_WhenSaveScreenIsShow_ThenShowTheRestoreButtonCorrectly() {
+        //Given
+        var date = null
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(localDateTime = date),
+                bottomSheetState = BottomSheetState(),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("save_button_restore").assertDoesNotExist()
+    }
+
+    @Test
+    fun givenACorrectDate_WhenSaveScreenIsShow_ThenRestoreButtonPerformsClick() {
+        //Given
+        val date = LocalDateTime.now()
+        var restoreClicked = false
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(localDateTime = date),
+                bottomSheetState = BottomSheetState(),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = { restoreClicked = true },
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("save_button_restore").performClick()
+        assertTrue(restoreClicked)
+    }
+
+    @Test
+    fun givenACorrectDate_WhenSaveScreenIsShow_ThenShowTheDeleteButtonCorrectly() {
+        //Given
+        var date = LocalDateTime.now()
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(localDateTime = date),
+                bottomSheetState = BottomSheetState(),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("save_button_delete").assertExists()
+    }
+
+    @Test
+    fun givenAnInvalidtDate_WhenSaveScreenIsShow_ThenShowTheDeleteButtonCorrectly() {
+        //Given
+        var date = null
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(localDateTime = date),
+                bottomSheetState = BottomSheetState(),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("save_button_delete").assertDoesNotExist()
+    }
+
+    @Test
+    fun givenACorrectDate_WhenSaveScreenIsShow_ThenButtonPerformsClick() {
+        //Given
+        val date = LocalDateTime.now()
+        var deleteClicked = false
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(localDateTime = date),
+                bottomSheetState = BottomSheetState(),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {deleteClicked = true  },
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("save_button_delete").performClick()
+        assertTrue(deleteClicked)
+    }
+
+    @Test
+    fun whenSaveScreenIsShow_ThenLogOutPerformsClick() {
+        //Given
+        val date = LocalDateTime.now()
+        var logOutClicked = false
+
+        // --- WHEN ---
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(localDateTime = date),
+                bottomSheetState = BottomSheetState(),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = { logOutClicked = true },
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        // --- THEN ---
+        composeTestRule.onNodeWithTag("save_button_logOut").performClick()
+        assertTrue(logOutClicked)
+    }
+
+    @Test
+    fun whenBottomSheetStateIsActive_thenShowTheBottomSheet(){
+        //When
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(),
+                bottomSheetState = BottomSheetState(showBottomSheet = true),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = {}
+            )
+        }
+
+        //Then
+        composeTestRule.onNodeWithTag("vertical_settings_dialog").assertIsDisplayed()
+    }
+
+    @Test
+    fun givenAValueWhenBottomSheetStateIsActive_thenAcceptButtonWorks(){
+        //Given
+        var acceptClicked = false
+
+        //When
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(),
+                bottomSheetState = BottomSheetState(showBottomSheet = true),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {},
+                onAccept = { acceptClicked = true }
+            )
+        }
+
+        //Then
+        composeTestRule.onNodeWithTag("vertical_settings_dialog_accept").performClick()
+        assertTrue(acceptClicked)
+    }
+
+    @Test
+    fun givenAValueWhenBottomSheetStateIsActiveAndValidState_thenAcceptButtonWorks(){
+        //Given
+        var cancelClicked = false
+
+        //When
+        composeTestRule.setContent {
+            VerticalSaveScreen(
+                saveUIState = SaveUIState.Success,
+                dataSaveScreen = DataSaveScreen(),
+                bottomSheetState = BottomSheetState(showBottomSheet = true, dataBottomSheet = DataBottomSheet.DELETE_HABIT),
+                onImportScreen = {},
+                onSaveClick = {},
+                onRestoreClick = {},
+                onDeleteClick = {},
+                onLogOutClick = {},
+                onDismiss = {cancelClicked = true},
+                onAccept = {}
+            )
+        }
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule.onNodeWithTag("vertical_settings_dialog_cancel")
+            .assertExists()
+            .performClick()
+
+        composeTestRule.waitForIdle()
+
+        // Then
+        assertTrue(cancelClicked)
     }
 }

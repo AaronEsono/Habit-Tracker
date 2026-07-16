@@ -29,7 +29,7 @@ fun SaveScreenLoading(){
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.8f))
             .zIndex(1f)
-            .testTag("Loading overlay")
+            .testTag("Save overlay")
             .clickable(enabled = false) {}
     ) {
         Column(

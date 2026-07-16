@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
@@ -89,7 +90,10 @@ fun VerticalSaveScreen(
             when (targetState) {
                 null,"" -> Unit
                 else -> {
-                    TitleLargeText(stringResource(R.string.save_email, targetState))
+                    TitleLargeText(
+                        stringResource(R.string.save_email, targetState),
+                        modifier = Modifier.testTag("save_title_user")
+                    )
                 }
             }
         }
@@ -114,7 +118,10 @@ fun VerticalSaveScreen(
             when(targetState){
                 null -> Unit
                 else -> {
-                    SaveButton(title = stringResource(R.string.save_restore_habit), onClick = onRestoreClick)
+                    SaveButton(
+                        title = stringResource(R.string.save_restore_habit), onClick = onRestoreClick,
+                        modifier = Modifier.testTag("save_button_restore")
+                    )
                 }
             }
         }
@@ -127,7 +134,10 @@ fun VerticalSaveScreen(
             when(targetState){
                 null -> Unit
                 else -> {
-                    SaveButton(title = stringResource(R.string.save_delete_habit), onClick = onDeleteClick)
+                    SaveButton(
+                        title = stringResource(R.string.save_delete_habit), onClick = onDeleteClick,
+                        modifier = Modifier.testTag("save_button_delete")
+                    )
                 }
             }
         }
@@ -138,7 +148,7 @@ fun VerticalSaveScreen(
             title = stringResource(R.string.save_log_out), onClick = onLogOutClick,
             modifier = Modifier.windowInsetsPadding(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)
-            )
+            ).testTag("save_button_logOut")
         )
     }
 
