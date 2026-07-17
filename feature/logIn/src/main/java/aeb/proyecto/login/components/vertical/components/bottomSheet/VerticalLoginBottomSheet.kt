@@ -32,6 +32,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -111,7 +112,9 @@ fun VerticalLoginBottomSheet(
                         imeAction = ImeAction.Done,
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         keyboardType = KeyboardType.Email,
-                        modifier = Modifier.padding(vertical = spacing2)
+                        modifier = Modifier
+                            .padding(vertical = spacing2)
+                            .testTag("login_textField_dialog_forgot"),
                     )
 
                 }
@@ -132,7 +135,9 @@ fun VerticalLoginBottomSheet(
                         horizontalArrangement = Arrangement.Center,
                     ){
                         BottomSheetOutFilledButton(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("login_button_cancel_dialog"),
                             onClick = {
                                 coroutineScope.launch {
                                     sheetState.hide()
@@ -144,7 +149,9 @@ fun VerticalLoginBottomSheet(
                         Spacer(modifier = Modifier.padding(horizontal = spacing4))
 
                         BottomSheetFilledButton(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("login_button_accept_dialog"),
                             title = title,
                             isEnabled = isButtonEnabled(dataBottomSheet,emailTextFieldState),
                             onClick = {
@@ -157,7 +164,10 @@ fun VerticalLoginBottomSheet(
                 }
                 else -> {
                     BottomSheetFilledButton(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = spacing8),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = spacing8)
+                            .testTag("login_button_accept_dialog_general"),
                         onClick = {
                             coroutineScope.launch {
                                 sheetState.hide()

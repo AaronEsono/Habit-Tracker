@@ -158,7 +158,8 @@ fun VerticalLoginScreen(
                     label = stringResource(R.string.login_textField_email_label),
                     errorText = stringResource(R.string.login_textField_email_error),
                     imeAction = ImeAction.Next,
-                    focusManager = focusManager
+                    focusManager = focusManager,
+                    modifier = Modifier.testTag("login_email_textField")
                 )
 
                 LoginSecureTextField(
@@ -167,7 +168,8 @@ fun VerticalLoginScreen(
                     label = stringResource(R.string.login_textField_password_label),
                     errorText = stringResource(R.string.login_textField_password_error),
                     imeAction = if (isLoginMode) ImeAction.Done else ImeAction.Next,
-                    focusManager = focusManager
+                    focusManager = focusManager,
+                    modifier = Modifier.testTag("login_password_textField")
                 )
 
                 if (!isLoginMode) {
@@ -180,7 +182,8 @@ fun VerticalLoginScreen(
                         label = stringResource(R.string.login_textField_remember_password_label),
                         errorText = stringResource(R.string.login_textField_remember_password_error),
                         imeAction = ImeAction.Done,
-                        focusManager = focusManager
+                        focusManager = focusManager,
+                        modifier = Modifier.testTag("login_repeat_password_textField")
                     )
                 }
 
@@ -192,7 +195,7 @@ fun VerticalLoginScreen(
                         horizontalArrangement = Arrangement.Start,
                         modifier = Modifier
                             .wrapContentWidth()
-                            .testTag("Checkbox row")
+                            .testTag("Login_checkbox_row")
                             .toggleable(
                                 value = dataLoginScreen.isChecked,
                                 onValueChange = { onClickChecked() },
@@ -223,13 +226,13 @@ fun VerticalLoginScreen(
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clickable {
                             onClickResetPassword()
-                        }.testTag("Forgot password"))
+                        }.testTag("Login_forgot_password"))
                 }
 
                 Spacer(modifier = Modifier.padding(vertical = spacing6))
 
                 LoginButton(
-                    modifier = Modifier.fillMaxWidth().testTag("login button"),
+                    modifier = Modifier.fillMaxWidth().testTag("login_button_accept"),
                     enabled = isButtonEnabled(
                         dataLoginScreen.emailTextFieldState,
                         dataLoginScreen.passwordTextFieldState,
@@ -252,7 +255,7 @@ fun VerticalLoginScreen(
                     Spacer(modifier = Modifier.padding(vertical = spacing6))
 
                     LoginGoogleButton(
-                        modifier = Modifier.fillMaxWidth().testTag("Google button"),
+                        modifier = Modifier.fillMaxWidth().testTag("Login_google_button"),
                         onClick = onClickGoogle
                     )
                 }
@@ -270,7 +273,7 @@ fun VerticalLoginScreen(
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clickable {
                             onClickLoginMode()
-                        }.testTag("Login mode")
+                        }.testTag("Login_change_mode_button")
                     )
                 }
             }

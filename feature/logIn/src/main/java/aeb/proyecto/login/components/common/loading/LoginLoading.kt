@@ -30,7 +30,7 @@ fun LoginLoading(){
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.8f))
             .zIndex(1f)
-            .testTag("Loading overlay")
+            .testTag("Login overlay")
             .clickable(enabled = false) {}
     ) {
         Column(
