@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -66,7 +67,10 @@ fun TimerPicker(
     onClickCenterSecond: (String) -> Unit = {}
 ) {
 
-    BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
+    BoxWithConstraints(modifier = modifier
+            .fillMaxWidth()
+            .testTag("time_picker_chose_screen")
+    ) {
         val density = LocalDensity.current
 
         val (rawFontSize, labelFontSize) = remember(maxWidth, maxHeight, density) {

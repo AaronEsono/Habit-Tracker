@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -75,6 +76,12 @@ fun InfinitePicker(
         derivedStateOf {
             //Items en pantalla
             val visibleItems = listState.layoutInfo.visibleItemsInfo
+
+            // Proteccion
+            if (visibleItems.isEmpty()) {
+                return@derivedStateOf 0
+            }
+
             // Centro de la pantalla
             val centerY = heightItem * visibleItemsCount / 2
 
@@ -95,7 +102,11 @@ fun InfinitePicker(
                 }
             }
 
-            closestIndex % items.size
+            if (closestIndex < 0) {
+                0
+            } else {
+                closestIndex % items.size
+            }
         }
     }
 
@@ -105,7 +116,9 @@ fun InfinitePicker(
     }
 
     Box(
-        modifier = modifier.height(heightItem * visibleItemsCount).width(heightItem)
+        modifier = modifier
+            .height(heightItem * visibleItemsCount)
+            .width(heightItem)
     ){
         LazyColumn (
             state = listState,
@@ -125,6 +138,7 @@ fun InfinitePicker(
                     modifier = Modifier
                         .height(heightItem)
                         .wrapContentWidth()
+                        .testTag("picker_item_index_$index")
                         .clickable (
                             interactionSource = null,
                             indication = null

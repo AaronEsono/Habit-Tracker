@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 /**
@@ -43,7 +44,8 @@ fun HabitLinkedButton(
             Card(
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(50.dp),
+                    .height(50.dp)
+                    .testTag("timer_habit_linked_button"),
                 shape = RoundedCornerShape(spacing8),
                 onClick = onClickHabitLinkedButton,
                 colors = CardDefaults.elevatedCardColors(

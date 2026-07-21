@@ -9,6 +9,15 @@ plugins {
 
 android {
     namespace = "aeb.proyecto.timer"
+
+    packaging {
+        resources {
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+            // excludes += "/META-INF/LICENSE.txt"
+            // excludes += "/META-INF/NOTICE.txt"
+        }
+    }
 }
 
 dependencies {
@@ -34,4 +43,6 @@ dependencies {
 
     //Adaptative
     implementation(libs.material3.adaptive.navigation.suite)
+
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

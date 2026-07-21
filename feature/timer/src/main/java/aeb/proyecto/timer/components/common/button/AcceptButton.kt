@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -52,7 +53,8 @@ fun AcceptButton(
                 containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
             ),
             shape = RoundedCornerShape(spacing12),
-            enabled = timerUIState.timerDataUIState.buttonEnabled
+            enabled = timerUIState.timerDataUIState.buttonEnabled,
+            modifier = Modifier.testTag("timer_accept_button_start_service")
         ) {
             Row (
                 verticalAlignment = Alignment.CenterVertically,

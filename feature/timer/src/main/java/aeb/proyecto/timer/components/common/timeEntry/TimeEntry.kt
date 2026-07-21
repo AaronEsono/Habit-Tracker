@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -77,7 +78,8 @@ fun TimeEntry(
                 .border(1.dp, MaterialTheme.colorScheme.outline,clip)
                 .background(MaterialTheme.colorScheme.primary)
                 .clickable(onClick = {onClickTimeEntry(timeEntry.timeEntry.id)})
-                .padding(vertical = spacing8, horizontal = spacing12),
+                .padding(vertical = spacing8, horizontal = spacing12)
+                .testTag("timer_time_entry_principal_button"),
             verticalAlignment = Alignment.CenterVertically
         ){
             Column (
@@ -173,7 +175,8 @@ fun TimeEntry(
                                         timeEntry.timeEntry.id,
                                         false
                                     )
-                                })
+                                }
+                                .testTag("timer_time_entry_favorite_clicked_button"))
                     } else {
                         Image(
                             painterResource(R.drawable.im_no_favorite),
@@ -187,7 +190,8 @@ fun TimeEntry(
                                         timeEntry.timeEntry.id,
                                         true
                                     )
-                                },
+                                }
+                                .testTag("timer_time_entry_favorite_no_clicked_button"),
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface))
                     }
                 }
@@ -208,6 +212,7 @@ fun TimeEntry(
                         ){
                             onClickDelete(timeEntry.timeEntry.id)
                         }
+                        .testTag("timer_time_entry_delete_button")
                 )
             }
         }

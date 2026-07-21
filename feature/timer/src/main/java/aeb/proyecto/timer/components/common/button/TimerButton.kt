@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -98,7 +99,7 @@ fun ResumeButton(
     onClick: () -> Unit
 ){
     TimerButton(
-        modifier = modifier,
+        modifier = modifier.testTag("timer_resume_button"),
         iconButton = Icons.Filled.PlayArrow,
         title = stringResource(R.string.timer_button_resume),
         colorButton = MaterialTheme.colorScheme.surfaceContainerLowest,
@@ -115,7 +116,7 @@ fun CancelButton(
     onClick: () -> Unit
 ){
     TimerButton(
-        modifier = modifier,
+        modifier = modifier.testTag("timer_cancel_button"),
         iconButton = Icons.Filled.Close,
         title = stringResource(R.string.timer_button_cancel),
         colorButton = MaterialTheme.colorScheme.onBackground,
@@ -132,7 +133,7 @@ fun StopButton(
     onClick: () -> Unit
 ){
     TimerButton(
-        modifier = modifier,
+        modifier = modifier.testTag("timer_stop_button"),
         iconButton = Icons.Filled.Stop,
         title = stringResource(R.string.timer_button_stop),
         colorButton = MaterialTheme.colorScheme.error,
@@ -149,7 +150,7 @@ fun FinishButton(
     onClick: () -> Unit
 ){
     TimerButton(
-        modifier = modifier,
+        modifier = modifier.testTag("timer_finish_button"),
         iconButton = Icons.Filled.Check,
         title = stringResource(R.string.timer_button_finish),
         colorButton = MaterialTheme.colorScheme.onSurface,

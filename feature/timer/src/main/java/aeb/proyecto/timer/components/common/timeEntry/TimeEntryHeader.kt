@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
@@ -37,7 +38,8 @@ fun TimeEntryHeader (
             .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
             .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
             .background(MaterialTheme.colorScheme.primary)
-            .padding(horizontal = spacing8, vertical = spacing12),
+            .padding(horizontal = spacing8, vertical = spacing12)
+            .testTag("timer_time_entry_header"),
     ){
 
         LabelLargeText(

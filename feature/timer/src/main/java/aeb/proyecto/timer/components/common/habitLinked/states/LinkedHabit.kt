@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 /**
@@ -60,7 +61,8 @@ fun LinkedHabit(
                 .background(
                     Color(linkedState.data.habit.color).copy(alpha = 0.75f),
                     RoundedCornerShape(spacing8)
-                ),
+                )
+                .testTag("timer_linked_habit_box"),
             contentAlignment = Alignment.Center
         ){
             Icon(
@@ -90,6 +92,7 @@ fun LinkedHabit(
                     .clickable {
                         onClickCross()
                     }
+                    .testTag("timer_linked_habit_cross")
             )
         }
     }

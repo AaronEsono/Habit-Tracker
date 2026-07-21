@@ -6,6 +6,7 @@ import aeb.proyecto.stopwatch.manager.TypeTimer
 import aeb.proyecto.stopwatch.utils.longToHMS
 import aeb.proyecto.timer.model.TimerServiceUIState
 import aeb.proyecto.ui.text.LabelLargeText
+import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -35,6 +37,7 @@ import androidx.compose.ui.unit.dp
  * @param serviceState The current running state from the Timer Service.
  * @param typeTimer The configuration details for the current interval timer.
  */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun ActiveIntervalScreen(
     serviceState: TimerServiceUIState.TimerRunning,
@@ -76,7 +79,8 @@ fun ActiveIntervalScreen(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxHeight()
-            .aspectRatio(1f),
+            .aspectRatio(1f)
+            .testTag("timer_interval_screen_active"),
         contentAlignment = Alignment.Center
     ) {
         val circleSize = maxWidth

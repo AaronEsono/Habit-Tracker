@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -67,7 +68,8 @@ fun ActiveTimerScreen(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxHeight()
-            .aspectRatio(1f),
+            .aspectRatio(1f)
+            .testTag("timer_stopwatch_label"),
         contentAlignment = Alignment.Center
     ) {
         val circleSize = maxWidth

@@ -47,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -114,7 +115,9 @@ fun IntervalSegmentedScreen(
         ){
 
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .testTag("interval_segmented_screen"),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
@@ -153,6 +156,7 @@ fun IntervalSegmentedScreen(
                             )
                         }.wrapContentWidth()
                             .padding(horizontal = spacing12)
+                            .testTag("timer_interval_work_time")
                     )
 
                     InternalSegmentedButton (
@@ -200,6 +204,7 @@ fun IntervalSegmentedScreen(
                             )
                         }.wrapContentWidth()
                             .padding(horizontal = spacing12)
+                            .testTag("timer_interval_rest_time")
                     )
 
                     InternalSegmentedButton (
@@ -237,7 +242,8 @@ fun IntervalSegmentedScreen(
                             .padding(horizontal = spacing20)
                             .clickable {
                                 showSetDialog = true
-                            },
+                            }
+                            .testTag("timer_interval_interval_time"),
                         textAlign = TextAlign.Center
                     )
 
@@ -302,7 +308,8 @@ fun SetDialog(
         Column(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
-                .padding(start = spacing12, end = spacing4, bottom = spacing8, top = spacing20),
+                .padding(start = spacing12, end = spacing4, bottom = spacing8, top = spacing20)
+                .testTag("timer_alert_dialog"),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column {
@@ -328,7 +335,8 @@ fun SetDialog(
                 CustomRipple {
                     TextButton(
                         onClick = onDismissRequest,
-                        shape = RoundedCornerShape(spacing12)
+                        shape = RoundedCornerShape(spacing12),
+                        modifier = Modifier.testTag("timer_alert_dialog_cancel"),
                     ) {
                         LabelLargeText(
                             stringResource(R.string.timer_cancel),
@@ -346,7 +354,8 @@ fun SetDialog(
                             onAccept(number)
                             onDismissRequest()
                         },
-                        shape = RoundedCornerShape(spacing12)
+                        shape = RoundedCornerShape(spacing12),
+                        modifier = Modifier.testTag("timer_alert_dialog_accept"),
                     ) {
                         LabelLargeText(
                             stringResource(R.string.timer_accept),

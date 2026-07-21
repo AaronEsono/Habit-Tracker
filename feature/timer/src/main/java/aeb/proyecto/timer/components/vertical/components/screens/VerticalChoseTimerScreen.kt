@@ -33,6 +33,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import kotlinx.coroutines.flow.SharedFlow
 import java.time.LocalDate
 
@@ -83,7 +84,9 @@ fun VerticalChoseTimerScreen(
 ){
     val segmentedOptions = remember { SegmentedButtonOptions.entries }
 
-    Column (){
+    Column (
+        modifier = Modifier.testTag("vertical_chose_timer_screen")
+    ){
         Column (
             modifier = Modifier
                 .fillMaxWidth()
