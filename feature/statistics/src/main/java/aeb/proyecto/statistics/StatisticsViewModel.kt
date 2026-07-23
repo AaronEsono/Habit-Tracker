@@ -139,8 +139,8 @@ class StatisticsViewModel @Inject constructor(
      * the persistence layer to a [DayOfWeek] enum.
      */
     val dayOfWeek: StateFlow<DayOfWeek> = getHabitSelectedUseCase.getDaySelected()
-        .map {
-            DayOfWeek.valueOf(it ?: DayOfWeek.MONDAY.name)
+        .map { dayName ->
+            runCatching { DayOfWeek.valueOf(dayName ?: "") }.getOrDefault(DayOfWeek.MONDAY)
         }
         .stateIn(
             scope = viewModelScope,

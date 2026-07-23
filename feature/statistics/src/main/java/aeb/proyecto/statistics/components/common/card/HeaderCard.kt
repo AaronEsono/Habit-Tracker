@@ -24,6 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -67,9 +70,13 @@ fun HeaderCard(
                 .aspectRatio(1f)
                 .border(spacing1, border, CircleShape)
                 .background(background)
+                .semantics {
+                    this.selected = selected
+                }
                 .clickable{
                     onClickCard(habit.id)
                 }
+                .testTag("statistics_header_card_${habit.id}")
         ){
 
             Icon(

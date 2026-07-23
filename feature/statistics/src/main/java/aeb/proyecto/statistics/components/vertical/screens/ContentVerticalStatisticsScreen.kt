@@ -25,6 +25,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import java.time.DayOfWeek
 import java.time.YearMonth
 
@@ -71,7 +72,10 @@ fun ContentVerticalStatisticsScreen(
 ){
 
     Column (
-        modifier = Modifier.fillMaxSize().padding(top = spacing6)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = spacing6)
+            .testTag("statistics_vertical_screen_content")
     ){
 
         // Master Pane: Habit Selection List

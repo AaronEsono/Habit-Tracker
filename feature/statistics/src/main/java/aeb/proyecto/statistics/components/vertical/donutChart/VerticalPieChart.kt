@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -52,6 +53,7 @@ fun VerticalPieChart(
             .padding(horizontal = spacing6)
             .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(spacing6))
             .background(MaterialTheme.colorScheme.surfaceTint)
+            .testTag("pie_chart_label")
     ) {
         AnimatedContent(
             targetState = data,

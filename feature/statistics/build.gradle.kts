@@ -9,6 +9,15 @@ plugins {
 
 android {
     namespace = "aeb.proyecto.statistics"
+
+    packaging {
+        resources {
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+            // excludes += "/META-INF/LICENSE.txt"
+            // excludes += "/META-INF/NOTICE.txt"
+        }
+    }
 }
 
 dependencies {
@@ -32,4 +41,6 @@ dependencies {
     implementation(libs.vico.compose)
     implementation(libs.vico.compose.m2)
     implementation(libs.vico.compose.m3)
+
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

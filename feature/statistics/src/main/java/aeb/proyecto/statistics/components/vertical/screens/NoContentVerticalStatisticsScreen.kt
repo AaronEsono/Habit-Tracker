@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -39,7 +40,9 @@ fun NoContentVerticalStatisticsScreen(){
             painter = painterResource(R.drawable.ic_no_statistics),
             contentDescription = "no content statistics",
             tint = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.size(150.dp)
+            modifier = Modifier
+                .size(150.dp)
+                .testTag("statistics_no_content_screen")
         )
 
         Spacer(modifier = Modifier.padding(vertical = spacing8))
