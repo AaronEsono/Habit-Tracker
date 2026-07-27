@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 
@@ -60,14 +61,17 @@ fun DailyTimeRange(
 
     LazyRow (
         state = state,
-        modifier = Modifier.padding(vertical = spacing6),
+        modifier = Modifier
+            .padding(vertical = spacing6)
+            .testTag("habit_dailyTimeRange"),
         contentPadding = PaddingValues(horizontal = itemSize / 2),
         horizontalArrangement = Arrangement.spacedBy(horizontalPadding),
     ){
         items(daysOnRange.size, key = {it}){ index ->
             DayCard(
                 modifier = Modifier
-                    .width(itemSize),
+                    .width(itemSize)
+                    .testTag("habit_day_card_${daysOnRange[index]}"),
                 date = daysOnRange[index],
                 isSelected = selectedDate(daysOnRange[index], selectedDate),
                 onClick = onClick

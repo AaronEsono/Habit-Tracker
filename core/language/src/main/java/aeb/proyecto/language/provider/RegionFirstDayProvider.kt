@@ -14,7 +14,7 @@ import javax.inject.Inject
  *
  * @property context The global [ApplicationContext] used to query system locale configuration baselines.
  */
-class RegionFirstDayProvider @Inject constructor(
+open class RegionFirstDayProvider @Inject constructor(
     @ApplicationContext val context: Context
 ){
     /**
@@ -22,7 +22,7 @@ class RegionFirstDayProvider @Inject constructor(
      *
      * @return The specific [DayOfWeek] representing the localized start of a calendar week (e.g., Monday or Sunday).
      */
-    fun getFirstDayOfWeekByLocale(): DayOfWeek {
+    open fun getFirstDayOfWeekByLocale(): DayOfWeek {
         return getCountryCode(resolveCountryCode(context))
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 
 /**
  * A floating action button component used to initiate the habit creation flow.
@@ -32,6 +33,7 @@ fun AddHabitButton(
             onClick = { navigateToAddHabit(-1) },
             modifier = modifier
                 .padding(spacing16)
+                .testTag("add_habit_button"),
         ) {
             Icon(Icons.Filled.Add, contentDescription = "Floating action button")
         }

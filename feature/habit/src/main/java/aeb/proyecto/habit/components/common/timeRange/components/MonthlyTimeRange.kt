@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
@@ -49,7 +50,10 @@ fun MonthlyTimeRange(
     val interactionSource = remember { MutableInteractionSource() }
 
     Row (
-        modifier = Modifier.fillMaxWidth().padding(vertical = spacing12),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = spacing12)
+            .testTag("habit_monthlyTimeRange"),
         verticalAlignment = Alignment.CenterVertically
     ){
         // Navigation: Previous Month
@@ -60,6 +64,7 @@ fun MonthlyTimeRange(
             modifier = Modifier
                 .padding(start = spacing20, end = spacing8)
                 .size(25.dp)
+                .testTag("habit_monthly_prev_button")
                 .clickable (
                     interactionSource = interactionSource,
                     indication = null
@@ -92,6 +97,7 @@ fun MonthlyTimeRange(
             modifier = Modifier
                 .padding(end = spacing20, start = spacing8)
                 .size(25.dp)
+                .testTag("habit_monthly_next_button")
                 .clickable (
                     interactionSource = interactionSource,
                     indication = null

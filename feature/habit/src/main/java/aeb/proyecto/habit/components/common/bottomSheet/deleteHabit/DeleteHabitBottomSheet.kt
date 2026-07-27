@@ -38,6 +38,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.launch
@@ -120,7 +121,9 @@ fun DeleteHabitBottomSheet (
                     OutlinedButton(
                         shape = RoundedCornerShape(spacing12),
                         contentPadding = PaddingValues(vertical = spacing12),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .testTag("bt_delete_cancel_habit"),
                         onClick = {
                             coroutineScope.launch {
                                 sheetState.hide()
@@ -146,12 +149,14 @@ fun DeleteHabitBottomSheet (
 
                 Spacer(Modifier.padding(horizontal = spacing8))
 
-                // Delete Button
+                // AcceptDelete Button
                 CustomRipple (){
                     OutlinedButton(
                         shape = RoundedCornerShape(spacing12),
                         contentPadding = PaddingValues(vertical = spacing12),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .testTag("bt_on_accept_delete_cancel_habit"),
                         onClick = {
                             coroutineScope.launch {
                                 sheetState.hide()

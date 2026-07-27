@@ -51,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -216,7 +217,8 @@ fun DailyCard(
                     .combinedClickable(
                         onClick = { onClick(habit.habit.id, selectedDate) },
                         onLongClick = { onLongClick(habit.habit.id, selectedDate) }
-                    ),
+                    )
+                    .testTag("habit_progress_area"),
                 contentAlignment = Alignment.Center
             ) {
                 AnimatedContent(

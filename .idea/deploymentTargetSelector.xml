@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-07-23T12:25:15.905286700Z">
+        <DropdownSelection timestamp="2026-07-23T12:28:47.997544Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=E:\AndroidAVDs\Pixel_2_Android_8_Api_27.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=E:\AndroidAVDs\Pixel_6_Android_13_API_33.avd" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -16,11 +16,16 @@
       <SelectionState runConfigName="StatisticsScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="when_boxUIState_requires_alignment_drops_overflow_days_correctly()">
+      <SelectionState runConfigName="HabitScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="when_boxUIState_has_full_weeks_getWeeks_returns_list_chunked_into_groups_of_7()">
-        <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2026-07-27T14:17:42.653181600Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=E:\AndroidAVDs\Pixel_6_Android_13_API_33.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
     </selectionStates>
   </component>

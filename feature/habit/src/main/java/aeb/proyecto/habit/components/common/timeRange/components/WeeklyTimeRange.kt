@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -51,17 +52,21 @@ fun WeeklyTimeRange(
     val interactionSource = remember { MutableInteractionSource() }
 
     Row (
-        modifier = Modifier.fillMaxWidth().padding(vertical = spacing12),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = spacing12)
+            .testTag("habit_weeklyTimeRange"),
         verticalAlignment = Alignment.CenterVertically
     ){
         // Navigation: Previous Week
         Icon(
             Icons.AutoMirrored.Filled.ArrowBackIos,
-            contentDescription = "weekly fordward button",
+            contentDescription = "weekly back button",
             tint = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .padding(start = spacing20, end = spacing6)
                 .size(25.dp)
+                .testTag("habit_weekly_prev_button")
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null
@@ -94,11 +99,12 @@ fun WeeklyTimeRange(
         // Navigation: Next Week
         Icon(
             Icons.AutoMirrored.Filled.ArrowForwardIos,
-            contentDescription = "weekly fordward button",
+            contentDescription = "weekly forward button",
             tint = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .padding(end = spacing20, start = spacing6)
                 .size(25.dp)
+                .testTag("habit_weekly_next_button")
                 .clickable (
                     interactionSource = interactionSource,
                     indication = null

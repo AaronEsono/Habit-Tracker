@@ -24,6 +24,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -86,7 +87,9 @@ fun VerticalHabitContentScreen(
     )
 
     Column (
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("habit_content_screen")
     ){
 
         PageSelected(

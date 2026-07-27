@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
@@ -76,7 +77,9 @@ fun RestartDay(
         // Cancel/Dismiss action
         CustomRipple {
             OutlinedButton(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .testTag("habit_cancel_button_restart_day"),
                 onClick = {
                     coroutineScope.launch {
                         sheetState.hide()
@@ -96,7 +99,8 @@ fun RestartDay(
             Button(
                 modifier = Modifier
                     .padding(start = spacing10)
-                    .weight(1f),
+                    .weight(1f)
+                    .testTag("habit_confirm_button_restart_day"),
                 onClick = {
                     coroutineScope.launch {
                         coroutineScope.launch {
