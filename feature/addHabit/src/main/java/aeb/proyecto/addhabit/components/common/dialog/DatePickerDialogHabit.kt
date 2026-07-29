@@ -17,6 +17,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import java.time.Instant
 import java.time.LocalDate
@@ -44,7 +45,8 @@ fun DatePickerDialogHabit(
 
     DatePickerDialog(
         onDismissRequest = onDismissRequest,
-        modifier = Modifier.verticalScroll(rememberScrollState()),
+        modifier = Modifier
+            .verticalScroll(rememberScrollState()),
         confirmButton = {
             CustomRipple {
                 TextButton(onClick = {
@@ -58,7 +60,9 @@ fun DatePickerDialogHabit(
                     onClickDate(localDate)
                     onDismissRequest()
                 }) {
-                    LabelLargeText(stringResource(R.string.add_habit_accept))
+                    LabelLargeText(
+                        stringResource(R.string.add_habit_accept),
+                        modifier = Modifier.testTag("add_habit_date_picker_accept_button"))
                 }
             }
         },

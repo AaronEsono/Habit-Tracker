@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -68,7 +69,8 @@ fun RecurringTypeHabit(
 
             CardLeadingIconButton(
                 modifier = Modifier
-                    .fillMaxWidth(0.6f),
+                    .fillMaxWidth(0.6f)
+                    .testTag("add_habit_recurring_date"),
                 leadingIcon = Icons.Filled.DateRange,
                 color = color,
                 title = getDate(date),

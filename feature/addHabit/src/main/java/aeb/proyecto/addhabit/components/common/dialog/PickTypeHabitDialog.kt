@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -74,7 +75,8 @@ fun PickTypeHabitDialog(
                         modifier = Modifier
                             .size(35.dp)
                             .align(Alignment.TopEnd)
-                            .clickable { onDismissRequest() },
+                            .clickable { onDismissRequest() }
+                            .testTag("add_habit_dialog_close_button"),
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -88,7 +90,8 @@ fun PickTypeHabitDialog(
                     PickTypeHabitButton(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = spacing8),
+                            .padding(vertical = spacing8)
+                            .testTag("add_habit_dialog_button_${typeHabit.name}"),
                         title = stringResource(typeHabit.title),
                         subtitle = stringResource(typeHabit.subtitle),
                         onClick = {

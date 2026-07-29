@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 /**
@@ -54,7 +55,8 @@ fun AddHabitCard(
                 shape = RoundedCornerShape(spacing8),
                 modifier = Modifier
                     .clip(RoundedCornerShape(spacing8))
-                    .clickable { onClick() },
+                    .clickable { onClick() }
+                    .testTag("add_habit_card"),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
                 )

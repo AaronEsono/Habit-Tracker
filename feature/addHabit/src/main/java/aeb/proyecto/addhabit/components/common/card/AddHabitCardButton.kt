@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 /**
@@ -39,7 +40,7 @@ fun AddHabitCardButton(
     CustomRipple {
         ElevatedCard(
             onClick = onClick,
-            modifier = modifier,
+            modifier = modifier.testTag("add_habit_card_button"),
             shape = RoundedCornerShape(spacing8),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer

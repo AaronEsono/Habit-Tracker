@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -100,7 +101,9 @@ fun MonthlyTypeHabit(
             }
 
             Switch(
-                modifier = Modifier.padding(start = spacing8),
+                modifier = Modifier
+                    .padding(start = spacing8)
+                    .testTag("add_habit_monthly_switch"),
                 checked = monthlyGoal,
                 onCheckedChange = {onCheckedMonthly()},
                 colors = SwitchDefaults.colors(
@@ -115,7 +118,10 @@ fun MonthlyTypeHabit(
             visible = !monthlyGoal
         ) {
             Column {
-                LabelMediumText(stringResource(R.string.add_habit_monthly_type_title))
+                LabelMediumText(
+                    stringResource(R.string.add_habit_monthly_type_title),
+                    modifier = Modifier.testTag("add_habit_monthly_title")
+                )
 
                 NumberPicker(
                     modifier = Modifier.padding(top = spacing8),

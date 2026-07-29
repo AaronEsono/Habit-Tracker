@@ -31,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.launch
@@ -121,7 +122,9 @@ fun AddBottomSheet(
                                     }
                                 },
                                 shape = RoundedCornerShape(spacing8),
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .testTag("add_habit_delete_notification")
                             ) {
                                 LabelLargeText(stringResource(R.string.add_habit_cancel))
                             }
@@ -135,7 +138,9 @@ fun AddBottomSheet(
                 // Primary confirmation execution target node
                 CustomRipple {
                     Button(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .testTag("add_habit_accept_bottom_sheet"),
                         shape = RoundedCornerShape(spacing8),
                         onClick = {
                             onAccept()

@@ -88,6 +88,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -195,6 +196,7 @@ fun VerticalAddHabitScreen(
             .padding(start = spacing12, end = spacing12, top = spacing12)
             .windowInsetsPadding(WindowInsets.navigationBars)
             .verticalScroll(rememberScrollState())
+            .testTag("add_habit_screen_vertical")
     ){
 
         // ============================================================================
@@ -375,7 +377,8 @@ fun VerticalAddHabitScreen(
                         modifier = Modifier
                             .weight(1f)
                             .height(45.dp)
-                            .padding(top = spacing2),
+                            .padding(top = spacing2)
+                            .testTag("add_habit_number_input"),
                         focusManager = focusManager,
                         trailingIcon = { TrailingIcon(habit.numberTimesTextField) },
                         imeAction = ImeAction.Done,
@@ -386,7 +389,9 @@ fun VerticalAddHabitScreen(
                     // MODE B: CHRONO TWIN FOCUS METRICS TRAILING SPLIT ROW (E.G. HOURS : MINUTES)
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
+                            .testTag("add_habit_chrono_input")
                     ) {
                         // COARSE HIGHER ORDER STEP CHRONO INPUT (HOURS / MINUTES)
                         Column (
@@ -475,7 +480,10 @@ fun VerticalAddHabitScreen(
 
             CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
-            LabelLargeText(stringResource(R.string.add_habit_notifications_title))
+            LabelLargeText(
+                stringResource(R.string.add_habit_notifications_title),
+                modifier = Modifier.testTag("add_habit_notifications_title")
+            )
 
             // TRIGGER BUTTON SHEET TO APPEND NEW ALARM CONFIGURATION TEMPLATES
             CardLeadingIconButton(
@@ -535,7 +543,10 @@ fun VerticalAddHabitScreen(
 
             CustomHorizontalDivider(modifier = Modifier.padding(top = spacing28, bottom = spacing16))
 
-            LabelMediumText(stringResource(R.string.add_habit_no_permissions))
+            LabelMediumText(
+                stringResource(R.string.add_habit_no_permissions),
+                modifier = Modifier.testTag("add_habit_no_permissions")
+            )
 
             // ACTION BUTTON FORWARDING USER HARDWARE INSTRUCTIONS STRAIGHT TO OPERATING SYSTEM OPTIONS
             Button(onClick = {

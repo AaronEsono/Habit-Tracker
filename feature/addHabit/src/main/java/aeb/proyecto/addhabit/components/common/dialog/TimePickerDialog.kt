@@ -42,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -99,13 +100,17 @@ fun TimePickerDialog(
         ){
             // Contextual input structure routing branch evaluation
             if(timeMode){
-                TimePicker(state = timePickerState,
+                TimePicker(
+                    state = timePickerState,
                     colors = timePickerColors(color, contrastColor),
-                    layoutType = TimePickerLayoutType.Vertical
+                    layoutType = TimePickerLayoutType.Vertical,
+                    modifier = Modifier.testTag("add_habit_time_picker_time_picker")
                 )
             }else{
-                TimeInput(state = timePickerState,
-                    colors = timePickerColors(color, contrastColor)
+                TimeInput(
+                    state = timePickerState,
+                    colors = timePickerColors(color, contrastColor),
+                    modifier = Modifier.testTag("add_habit_time_picker_time_input")
                 )
             }
 
@@ -146,7 +151,8 @@ fun TimePickerDialog(
                         Icon(
                             icon,
                             contentDescription = "Date Picker Icon",
-                            tint = MaterialTheme.colorScheme.onSurface
+                            tint = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.testTag("add_habit_time_picker_icon_time_mode")
                         )
                     }
                 }
@@ -157,9 +163,11 @@ fun TimePickerDialog(
                     TextButton(
                         onClick = onDismissRequest,
                     ) {
-                        LabelLargeText(stringResource(R.string.add_habit_cancel),
+                        LabelLargeText(
+                            stringResource(R.string.add_habit_cancel),
                             fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold)
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.testTag("add_habit_time_picker_cancel_button"))
                     }
                 }
 
@@ -173,9 +181,11 @@ fun TimePickerDialog(
                             onConfirm(selectedTime)
                         },
                     ) {
-                        LabelLargeText(stringResource(R.string.add_habit_accept),
+                        LabelLargeText(
+                            stringResource(R.string.add_habit_accept),
                             fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold)
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.testTag("add_habit_time_picker_confirm_button"))
                     }
                 }
             }

@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 
 /**
@@ -36,7 +37,8 @@ fun PickTypeHabitButton(
     CustomRipple {
         OutlinedButton(
             onClick = onClick,
-            modifier = modifier,
+            modifier = modifier
+                .testTag("add_habit_dialog_button_pick_type_habit"),
             shape = RoundedCornerShape(spacing8),
             border = BorderStroke(spacing2, MaterialTheme.colorScheme.surfaceContainer)
         ) {

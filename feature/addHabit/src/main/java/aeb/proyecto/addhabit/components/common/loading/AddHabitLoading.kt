@@ -31,7 +31,7 @@ fun AddHabitLoading (){
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.8f))
             .zIndex(1f)
-            .testTag("Loading overlay")
+            .testTag("add_habit_loading_overlay")
             // Prevent downstream action pipelines from firing while an operations transition executes
             .clickable(enabled = false) {}
     ) {

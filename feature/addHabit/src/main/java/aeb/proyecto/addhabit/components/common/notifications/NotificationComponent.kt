@@ -42,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -88,7 +89,8 @@ fun NotificationComponent(
                 onClick = {onClickEdit(notification.id,notification.time)},
                 colors = CardDefaults.elevatedCardColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
-                )
+                ),
+                modifier = Modifier.testTag("add_habit_notification_card")
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = spacing8),
@@ -127,6 +129,7 @@ fun NotificationComponent(
                                 .height(40.dp).aspectRatio(1f)
                                 .clip(RoundedCornerShape(spacing8))
                                 .background(MaterialTheme.colorScheme.background)
+                                .testTag("add_habit_recurring_date_box")
                         ){
                             LabelLargeText(notification.type.interval.toString(),
                                 modifier = Modifier.align(Alignment.Center),
@@ -149,7 +152,9 @@ fun NotificationComponent(
                                 Icons.Filled.Delete,
                                 contentDescription = "Delete icon",
                                 tint = color,
-                                modifier = Modifier.size(28.dp)
+                                modifier = Modifier
+                                    .size(28.dp)
+                                    .testTag("add_habit_notification_delete_button")
                             )
                         }
                     }
@@ -166,6 +171,7 @@ fun NotificationComponent(
                                 bottom = spacing6,
                                 top = spacing4
                             )
+                            .testTag("add_habit_notification_day_row")
                     ) {
                         orderedDays.forEach { day ->
                             NotificationDayButton(
@@ -209,6 +215,7 @@ fun ArrowCyclicButton(
                 .background(MaterialTheme.colorScheme.primaryContainer)
                 .size(40.dp)
                 .clickable { onClick() }
+                .testTag("add_habit_arrow_button")
         )
     }
 }
@@ -234,7 +241,8 @@ fun NotificationDayButton(
         ElevatedCard(
             modifier = modifier
                 .padding(horizontal = spacing2)
-                .height(35.dp),
+                .height(35.dp)
+                .testTag("add_habit_notification_day_button"),
             onClick = onClick,
             shape = RoundedCornerShape(spacing8),
             colors = CardDefaults.cardColors(

@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
@@ -105,6 +106,7 @@ fun AddHabitGrid(
                                         .clickable {
                                             onClickGridOption(GridOptionResult.colorResult(color))
                                         }
+                                        .testTag("add_habit_grid_color_${color.hashCode()}"),
                                 ) {
                                     drawCircle(color = color,radius = size.minDimension / 2)
                                 }
@@ -120,7 +122,8 @@ fun AddHabitGrid(
                                     modifier = Modifier.size(itemSize)
                                         .clickable {
                                             onClickGridOption(GridOptionResult.iconResult(icon))
-                                        },
+                                        }
+                                        .testTag("add_habit_grid_icon_${icon.hashCode()}"),
                                     tint = iconSelected(icon, iconSelected, colorSelected)
                                 )
                             }

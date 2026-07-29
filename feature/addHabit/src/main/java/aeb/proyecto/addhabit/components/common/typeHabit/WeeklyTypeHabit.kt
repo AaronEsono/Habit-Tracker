@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -83,7 +84,9 @@ fun WeeklyTypeHabit(
             }
 
             Switch(
-                modifier = Modifier.padding(start = spacing8),
+                modifier = Modifier
+                    .padding(start = spacing8)
+                    .testTag("add_habit_weekly_switch"),
                 checked = weeklyGoal,
                 onCheckedChange = {onCheckedChange()},
                 colors = SwitchDefaults.colors(
@@ -101,7 +104,9 @@ fun WeeklyTypeHabit(
                 LabelMediumText(stringResource(R.string.add_habit_weekly_type_title))
 
                 Row (
-                    modifier = modifier.fillMaxWidth(),
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .testTag("add_habit_weekly_row"),
                     horizontalArrangement = Arrangement.Center
                 ){
 
@@ -152,7 +157,8 @@ fun WeeklyButton(
         ElevatedCard(
             modifier = modifier
                 .padding(horizontal = spacing2)
-                .height(40.dp),
+                .height(40.dp)
+                .testTag("weekly_button_$number"),
             onClick = onClick,
             shape = RoundedCornerShape(spacing8),
             colors = CardDefaults.cardColors(
