@@ -68,6 +68,15 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+            // excludes += "/META-INF/LICENSE.txt"
+            // excludes += "/META-INF/NOTICE.txt"
+        }
+    }
 }
 
 dependencies {
@@ -170,4 +179,25 @@ dependencies {
 
     //Adaptative
     implementation(libs.material3.adaptive.navigation.suite)
+
+    //Android test
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.intents)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.mockk.mockk)
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(libs.mockito.mockito.core)
+    androidTestImplementation(libs.mockito.kotlin)
+
+    //Test
+    testImplementation(libs.mockk.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.turbine)
+    testImplementation(libs.roboelectric)
+
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

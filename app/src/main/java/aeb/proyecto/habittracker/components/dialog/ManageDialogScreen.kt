@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -68,7 +69,9 @@ fun ManageDialogScreen (
 
             CustomDialog(
                 containerColor = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("main_manage_dialog_screen"),
                 onDismissRequest = onDismissRequest
             ) {
                 Column (
@@ -109,12 +112,14 @@ fun ManageDialogScreen (
                     ){
                         TextButton(
                             onClick = onDismissRequest,
+                            modifier = Modifier.testTag("main_cancel_button_dialog")
                         ) {
                             LabelLargeText(stringResource(R.string.dialog_cancel))
                         }
 
                         TextButton(
                             onClick = onConfirm,
+                            modifier = Modifier.testTag("main_accept_button_dialog")
                         ) {
                             LabelLargeText(stringResource(R.string.dialog_accept))
                         }

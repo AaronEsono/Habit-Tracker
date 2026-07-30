@@ -54,6 +54,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 
+// Por hacer despues del testing y antes de la seguridad.
+// Pantalla condiciones de servicio, lo que necesite la app:
+// Agradecer a la pagina de iconos tambien
+// Pantalla de bienvenida
+
+
 /**
  * The primary host [ComponentActivity] and single-activity entry point for the application.
  *
