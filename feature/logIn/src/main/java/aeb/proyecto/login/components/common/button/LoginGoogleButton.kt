@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 
 /**
  * Social authentication button for Google sign-in integration.
@@ -46,7 +48,9 @@ fun LoginGoogleButton(
                 verticalAlignment = Alignment.CenterVertically
             ){
                 // Social provider branding icon
-                Image(painterResource(R.drawable.ic_google), contentDescription = "Google image")
+                Image(painterResource(R.drawable.im_google),
+                    contentDescription = "Google image",
+                    modifier = Modifier.size(35.dp))
 
                 Spacer(modifier = Modifier.padding(horizontal = spacing4))
 
