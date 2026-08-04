@@ -35,6 +35,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -54,6 +55,7 @@ import androidx.compose.ui.unit.dp
  * @param onClickEmail Callback to open the email client with pre-filled device info.
  * @param onClickGithub Callback to open the project repository in a browser, receiving the URL.
  * @param onClickLinkedin Callback to open the profile in a browser, receiving the URL.
+ * @param onClickAttributions Callback to navigate to the attributions screen.
  * @param onDismissDialog Callback to close the currently active dialog.
  * @param onAcceptDialog Callback to process the result ([DataResult]) selected by the user in a dialog.
  */
@@ -69,6 +71,7 @@ fun HorizontalSettingsScreen(
     onClickEmail: () -> Unit,
     onClickGithub: (String) -> Unit,
     onClickLinkedin: (String) -> Unit,
+    onClickAttributions: () -> Unit,
     onDismissDialog: () -> Unit,
     onAcceptDialog: (DataResult) -> Unit
 ) {
@@ -180,13 +183,22 @@ fun HorizontalSettingsScreen(
                         onClick = { onClickGithub(SettingsConstants.LINK_GITHUB) }
                     )
 
-                    CustomHorizontalDivider()
+
 
                     ButtonSettings(
                         title = R.string.settings_link,
                         leadingIcon = R.drawable.ic_link,
-                        shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
                         onClick = { onClickLinkedin(SettingsConstants.LINK_LINKEDN) }
+                    )
+
+                    CustomHorizontalDivider()
+
+                    ButtonSettings(
+                        title = R.string.settings_attributions,
+                        leadingIcon = R.drawable.ic_attributions,
+                        shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
+                        onClick = { onClickAttributions() },
+                        modifier = Modifier.testTag("settings_button_attributions")
                     )
                 }
             }

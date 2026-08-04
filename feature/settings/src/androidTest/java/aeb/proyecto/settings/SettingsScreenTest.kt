@@ -42,6 +42,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -69,6 +70,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -99,6 +101,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -129,6 +132,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -159,6 +163,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -189,6 +194,7 @@ class SettingsScreenTest {
                 onClickEmail = { emailClicked = true},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -219,6 +225,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {githubClicked = true},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -249,6 +256,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = { mediaClicked = true},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -280,6 +288,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -314,6 +323,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -345,6 +355,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -373,6 +384,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -405,6 +417,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = {},
+                onClickAttributions = {},
                 onDismissDialog = { dismissCalled = true }, // Capturamos la acción
                 onAcceptDialog = {}
             )
@@ -519,6 +532,37 @@ class SettingsScreenTest {
         // --- THEN ---
         assertTrue(resultCaptured is DataResult.DayOfWeekResult)
         assertEquals("MONDAY", (resultCaptured as DataResult.DayOfWeekResult).dayOfWeek.name)
+    }
+
+    @Test
+    fun givenSuccessState_whenClickAttributions_thenTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var attributionsClicked = false
+        val fakeSettings = AppSettings(language = "es")
+
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
+                onClickTheme = {},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = {},
+                onClickGithub = {},
+                onClickLinkedin = {},
+                onClickAttributions = { attributionsClicked = true },
+                onDismissDialog = {},
+                onAcceptDialog = {}
+            )
+        }
+
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("settings_button_attributions").performClick()
+
+        // --- THEN ---
+        assertTrue(attributionsClicked)
     }
 
 }

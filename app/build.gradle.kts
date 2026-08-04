@@ -98,6 +98,7 @@ dependencies {
     implementation(projects.feature.habit)
     implementation(projects.feature.statistics)
     implementation(projects.feature.timer)
+    implementation(projects.feature.attributions)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)

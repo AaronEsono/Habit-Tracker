@@ -24,12 +24,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
  *
  * @param onImportScreen Callback to navigate to the Import/Export screen.
  * @param onSaveScreen Callback to navigate to the Save/Sync screen.
+ * @param onAttributionsScreen Callback to navigate to the Attributions screen.
  * @param viewModel The Hilt-injected ViewModel managing settings business logic.
  */
 @Composable
 fun SettingsScreen(
     onImportScreen: () -> Unit,
     onSaveScreen: () -> Unit,
+    onAttributionsScreen: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -52,6 +54,7 @@ fun SettingsScreen(
     val onClickEmail = { sendEmail(context) }
     val onClickGithub = { uri: String -> openLink(context, uri) }
     val onClickLinkedin = { uri: String -> openLink(context, uri) }
+    val onClickAttributions = { onAttributionsScreen() }
     val onDismissDialog = { viewModel.setStateDialog(false) }
     val onAcceptDialog = { dataResult: DataResult -> viewModel.treatResultDialog(dataResult) }
 
@@ -69,6 +72,7 @@ fun SettingsScreen(
                 onClickEmail = onClickEmail,
                 onClickGithub = onClickGithub,
                 onClickLinkedin = onClickLinkedin,
+                onClickAttributions = onClickAttributions,
                 onDismissDialog = onDismissDialog,
                 onAcceptDialog = onAcceptDialog
             )
@@ -85,6 +89,7 @@ fun SettingsScreen(
                 onClickEmail = onClickEmail,
                 onClickGithub = onClickGithub,
                 onClickLinkedin = onClickLinkedin,
+                onClickAttributions = onClickAttributions,
                 onDismissDialog = onDismissDialog,
                 onAcceptDialog = onAcceptDialog
             )

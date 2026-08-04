@@ -38,4 +38,6 @@
     Date: %s\n
     Version: %s
     </string>
+
+    <string name="settings_attributions">Attributions</string>
 </resources>

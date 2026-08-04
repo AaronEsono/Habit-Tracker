@@ -36,4 +36,6 @@
     Fecha: %s\n
     Versión: %s
     </string>
+
+    <string name="settings_attributions">Atribuciones</string>
 </resources>

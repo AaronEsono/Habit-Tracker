@@ -23,8 +23,11 @@ fun NavController.navigateToSettings(){
  * @param onImportScreen Callback to navigate to the Import/Export module.
  * @param onSaveScreen Callback to navigate to the Save/Sync module.
  */
-fun NavGraphBuilder.settingsScreen(onImportScreen: () -> Unit, onSaveScreen: () -> Unit) {
+fun NavGraphBuilder.settingsScreen(
+    onImportScreen: () -> Unit,
+    onSaveScreen: () -> Unit,
+    onAttributionsScreen: () -> Unit) {
     composable<Settings> {
-        SettingsScreen(onImportScreen, onSaveScreen)
+        SettingsScreen(onImportScreen, onSaveScreen, onAttributionsScreen)
     }
 }

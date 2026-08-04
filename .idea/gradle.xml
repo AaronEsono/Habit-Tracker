@@ -39,6 +39,7 @@
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/addHabit" />
+            <option value="$PROJECT_DIR$/feature/attributions" />
             <option value="$PROJECT_DIR$/feature/habit" />
             <option value="$PROJECT_DIR$/feature/logIn" />
             <option value="$PROJECT_DIR$/feature/save" />

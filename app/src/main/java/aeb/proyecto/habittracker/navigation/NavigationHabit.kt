@@ -19,6 +19,8 @@ import aeb.proyecto.ui.controllerProvider.LocalNavController
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
+import com.example.attributions.navigation.attributionsScreen
+import com.example.attributions.navigation.navigateToAttributions
 
 /**
  * The central Navigation Graph and [NavHost] orchestrator for the entire application.
@@ -47,7 +49,8 @@ fun NavigationHabit(){
 
         settingsScreen(
             onImportScreen = {navController.navigateToLogin()},
-            onSaveScreen = {navController.navigateToSave()}
+            onSaveScreen = {navController.navigateToSave()},
+            onAttributionsScreen = {navController.navigateToAttributions()}
         )
 
         addHabitScreen {
@@ -75,5 +78,7 @@ fun NavigationHabit(){
         }
 
         timerScreen()
+
+        attributionsScreen()
     }
 }

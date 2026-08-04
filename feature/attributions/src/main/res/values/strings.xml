@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">attributions</string>
+
+    <string name="attributions_title_topbar">Attributions</string>
+
+    <string name="attribution_label_title">
+        Acknowledgments and attribution of the icons and graphic resources used in the application.
+    </string>
+
+    <string name="attribution_flaticon_web_title">
+        Flaticon website icons
+    </string>
+
+
+    <string name="attributions_flaticon_alarm">- Free alarm icons</string>
+    <string name="attributions_flaticon_notificaciones">- Free notification icons</string>
+    <string name="attributions_flaticon_lifeStyle">- Free healthy lifestyle icons</string>
+
+    <string name="attribution_svgRepo_web_title_cc">
+        Icons from the SVGRepo website are licensed under the CC Attribution License (link to the license here)
+    </string>
+
+    <string name="attribution_svgRepo_web_title_mit">
+        Icons from the SVGRepo website are licensed under the MIT License (link to the license here)
+    </string>
+
+    <string name="attribution_svgRepo_web_title_free">
+        Icons from the SVGRepo website are licensed under the CC0 and PD Licenses
+    </string>
+
+    <string name="attribution_svgRepo_author_created_by">
+        - %1$s created by %2$s
+    </string>
+
+</resources>
