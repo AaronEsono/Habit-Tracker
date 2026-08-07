@@ -1,6 +1,6 @@
 # Política de Privacidad de Habit Tracker
 
-**Fecha de actualización:** 06/08/2026
+**Fecha de actualización:** 07/08/2026
 
 Esta Política de Privacidad ha sido elaborada de conformidad con el Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo (Reglamento General de Protección de Datos o RGPD), la Ley Orgánica 3/2018 (LOPDGDD) y teniendo en consideración otras normativas internacionales de protección de datos que puedan resultar aplicables.
 
@@ -106,7 +106,7 @@ Nos reservamos el derecho de actualizar esta Política de Privacidad si añadimo
 
 Si tienes alguna pregunta o duda sobre esta política de privacidad, puedes contactar con el desarrollador con la siguiente información:
 * **Responsable del tratamiento:** Aaron Esono
-* **Correo electrónico:** x@gmail.com
+* **Correo electrónico:** habittrackerappae@gmail.com
 * **País:** España
 
 La aplicación ofrece una función para reportar problemas mediante el cliente de correo electrónico del usuario. En ese caso, el borrador del mensaje podrá incluir información técnica como la versión de la aplicación, el modelo del dispositivo, la zona horaria o la fecha y hora, con el único fin de facilitar la resolución de incidencias. El usuario podrá revisar, modificar o eliminar dicha información antes de enviar el correo.
