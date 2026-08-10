@@ -150,7 +150,7 @@ fun VerticalSaveScreen(
             modifier = Modifier.testTag("save_button_logOut")
         )
 
-        CustomSpacerSave()
+        CustomSpacerSave(spacing6)
 
         SaveButton(
             title = stringResource(R.string.save_delete_account), onClick = onDeleteAccountClick,
