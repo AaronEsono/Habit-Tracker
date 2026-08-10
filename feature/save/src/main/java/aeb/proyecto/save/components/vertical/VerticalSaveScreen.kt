@@ -59,6 +59,7 @@ fun VerticalSaveScreen(
     onRestoreClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {},
     onLogOutClick: () -> Unit = {},
+    onDeleteAccountClick: () -> Unit = {},
     onDismiss: () -> Unit = {},
     onAccept: () -> Unit = {}
 ){
@@ -146,9 +147,16 @@ fun VerticalSaveScreen(
 
         SaveButton(
             title = stringResource(R.string.save_log_out), onClick = onLogOutClick,
+            modifier = Modifier.testTag("save_button_logOut")
+        )
+
+        CustomSpacerSave()
+
+        SaveButton(
+            title = stringResource(R.string.save_delete_account), onClick = onDeleteAccountClick,
             modifier = Modifier.windowInsetsPadding(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)
-            ).testTag("save_button_logOut")
+            ).testTag("save_button_deleteAccount")
         )
     }
 

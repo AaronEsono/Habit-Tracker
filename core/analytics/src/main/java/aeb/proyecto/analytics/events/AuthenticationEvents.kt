@@ -24,6 +24,8 @@ object AuthenticationEvents {
     private val RECONNECTED = TypeLog("RECONNECTED", true)
     private val ERROR = TypeLog("ERROR_AUTHENTICATION", false)
 
+    private val DELETED_ACCOUNT = TypeLog("DELETED_ACCOUNT", true)
+
 
     /**
      * Constructs a tracking token capturing standard credential validation success coordinates.
@@ -156,4 +158,23 @@ object AuthenticationEvents {
             )
         )
     }
+
+    /**
+     * Constructs a tracking token capturing the absolute creation milestone of a new user profile registry.
+     * Useful for monitoring the deleted accounts.
+     *
+     * @param userId The newly generated unique structural identifier associated with the registration entry.
+     * @return A compiled [AnalyticsEvent] anchoring the sign-up conversion metric.
+     */
+    fun deletedAccount(userId: String): AnalyticsEvent {
+        return AnalyticsEvent(
+            type = DELETED_ACCOUNT,
+            extras = mapOf(
+                "user_id" to userId,
+                "fecha" to "$userId - ${getDateTime()}"
+            )
+        )
+    }
+
+
 }

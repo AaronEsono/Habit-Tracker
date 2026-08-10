@@ -519,4 +519,109 @@ class AuthenticationTest {
         // --- THEN ---
         assertEquals("", result)
     }
+
+    @Test
+    fun `given active user session when deleteAccount is called then deletes account and returns Success`() = runTest {
+        // --- GIVEN ---
+        val voidTask: Task<Void> = mockk()
+        val mockUid = "uid_delete_123"
+
+        every { auth.currentUser } returns firebaseUser
+        every { firebaseUser.uid } returns mockUid
+
+        // Mockear user.delete().await()
+        every { firebaseUser.delete() } returns voidTask
+        coEvery { voidTask.isComplete } returns true
+        coEvery { voidTask.isCanceled } returns false
+        coEvery { voidTask.exception } returns null
+        coEvery { voidTask.result } returns null
+
+        // --- WHEN & THEN (Turbine) ---
+        authenticationManager.deleteAccount().test {
+            // 1. Emite Loading de inmediato
+            assertEquals(AuthResponseAuthentication.Loading, awaitItem())
+
+            // 2. Emite Success tras el borrado
+            assertEquals(AuthResponseAuthentication.Success, awaitItem())
+
+            awaitComplete()
+        }
+
+        // --- VERIFICATIONS ---
+        // Verificamos que se llamó a la función delete() del usuario
+        verify(exactly = 1) { firebaseUser.delete() }
+
+        // Verificamos el evento de analítica con la UID correcta
+        verify(exactly = 1) {
+            analyticsManager.logEvent(match { event ->
+                event.type.name == "DELETED_ACCOUNT" || event.extras["user_id"] == mockUid
+            })
+        }
+    }
+
+    @Test
+    fun `given no active user session when deleteAccount is called then returns Error state`() = runTest {
+        // --- GIVEN ---
+        every { auth.currentUser } returns null
+        val expectedErrorResId = R.string.error_auth_default // O el ID que devuelva treatError para excepción genérica
+
+        // --- WHEN & THEN (Turbine) ---
+        authenticationManager.deleteAccount().test {
+            assertEquals(AuthResponseAuthentication.Loading, awaitItem())
+
+            val errorResult = awaitItem() as AuthResponseAuthentication.Error
+            assertEquals(expectedErrorResId, errorResult.message)
+
+            awaitComplete()
+        }
+
+        // --- VERIFICATIONS ---
+        // Al no haber usuario activo, se ejecuta el signOut defensivo del catch
+        verify(exactly = 1) { auth.signOut() }
+
+        verify(exactly = 1) {
+            analyticsManager.logEvent(match { event ->
+                event.type.name == "ERROR_AUTHENTICATION"
+            })
+        }
+    }
+
+    @Test
+    fun `given user deletion fails when deleteAccount is called then signs out and returns Error state`() = runTest {
+        // --- GIVEN ---
+        val voidTask: Task<Void> = mockk()
+        every { auth.currentUser } returns firebaseUser
+        every { firebaseUser.uid } returns "uid_delete_error"
+
+        val deletionException = Exception("FirebaseAuthRecentLoginRequiredException")
+        val expectedErrorResId = R.string.error_auth_default // El ID mapeado por treatError(e)
+
+        // Forzamos fallo al llamar a user.delete()
+        every { firebaseUser.delete() } returns voidTask
+        coEvery { voidTask.isComplete } returns true
+        coEvery { voidTask.isCanceled } returns false
+        coEvery { voidTask.exception } returns deletionException
+        coEvery { voidTask.result } throws deletionException
+
+        // --- WHEN & THEN (Turbine) ---
+        authenticationManager.deleteAccount().test {
+            assertEquals(AuthResponseAuthentication.Loading, awaitItem())
+
+            val errorResult = awaitItem() as AuthResponseAuthentication.Error
+            assertEquals(expectedErrorResId, errorResult.message)
+
+            awaitComplete()
+        }
+
+        // --- VERIFICATIONS ---
+        // Al fallar, el bloque catch debe llamar a auth.signOut() por seguridad
+        verify(exactly = 1) { auth.signOut() }
+
+        verify(exactly = 1) {
+            analyticsManager.logEvent(match { event ->
+                event.type.name == "ERROR_AUTHENTICATION" &&
+                        event.extras["message"] == "FirebaseAuthRecentLoginRequiredException"
+            })
+        }
+    }
 }

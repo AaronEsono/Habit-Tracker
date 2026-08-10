@@ -98,7 +98,7 @@ fun VerticalSaveBottomSheet(
             ) {
 
                 when (dataBottomSheet) {
-                    DataBottomSheet.SAVE_HABIT, DataBottomSheet.DELETE_HABIT, DataBottomSheet.LOG_OUT, DataBottomSheet.RESTORE_HABIT -> {
+                    DataBottomSheet.SAVE_HABIT, DataBottomSheet.DELETE_HABIT, DataBottomSheet.LOG_OUT, DataBottomSheet.RESTORE_HABIT,DataBottomSheet.DELETE_ACCOUNT -> {
                         BottomSheetOutLinedButton(
                             modifier = Modifier
                                 .weight(1f)

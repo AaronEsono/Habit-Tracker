@@ -15,6 +15,7 @@
     <string name="save_restore_habit">Restaurar Hábitos</string>
     <string name="save_delete_habit">Borrar hábitos</string>
     <string name="save_log_out">Cerrar sesión</string>
+    <string name="save_delete_account">Borrar cuenta</string>
 
     <string name="save_bottom_sheet_acept">Aceptar</string>
     <string name="save_bottom_sheet_cancel">Cancelar</string>
@@ -30,6 +31,9 @@
 
     <string name="data_bottomSheet_logOut_title">Cerrar sesión</string>
     <string name="data_bottomSheet_logOut_label">¿Deseas cerrar sesión?</string>
+
+    <string name="data_bottomSheet_delete_Account_title">Borrar cuenta</string>
+    <string name="data_bottomSheet_delete_Account_label">¿Estás seguro de que quieres borrar tu cuenta?</string>
 
     <string name="data_bottomSheet_error_title">Atención</string>
     <string name="data_bottomSheet_error_label">Ha ocurrido un error inesperado. Vuelva a intentarlo de nuevo.</string>

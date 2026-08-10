@@ -61,6 +61,11 @@ interface AuthenticationInterface {
     suspend fun forgotPassword(email: String): Flow<AuthResponseAuthentication>
 
     /**
+     * Dispatches an asynchronous credential recovery payload to allow to delete the current account
+     */
+    suspend fun deleteAccount(): Flow<AuthResponseAuthentication>
+
+    /**
      * Terminates the active user session context, purging local runtime security token caches immediately.
      */
     fun logOut()

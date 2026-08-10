@@ -3,6 +3,7 @@ package aeb.proyecto.save.model
 import aeb.proyecto.save.R
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.CloudDone
 import androidx.compose.material.icons.filled.Delete
@@ -43,6 +44,11 @@ enum class DataBottomSheet (
         R.string.data_bottomSheet_logOut_title,
         Icons.AutoMirrored.Filled.Logout,
         R.string.data_bottomSheet_logOut_label
+    ),
+    DELETE_ACCOUNT(
+        R.string.data_bottomSheet_delete_Account_title,
+        Icons.AutoMirrored.Filled.ExitToApp,
+        R.string.data_bottomSheet_delete_Account_label
     ),
     ERROR(
         R.string.data_bottomSheet_error_title,

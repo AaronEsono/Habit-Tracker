@@ -2,6 +2,7 @@ package aeb.proyecto.settings
 
 import aeb.proyecto.settings.components.horizontal.HorizontalSettingsScreen
 import aeb.proyecto.settings.components.vertical.VerticalSettingsScreen
+import aeb.proyecto.settings.constants.SettingsConstants
 import aeb.proyecto.settings.model.DataDialog
 import aeb.proyecto.settings.model.DataResult
 import aeb.proyecto.settings.utils.openLink
@@ -55,6 +56,7 @@ fun SettingsScreen(
     val onClickGithub = { uri: String -> openLink(context, uri) }
     val onClickLinkedin = { uri: String -> openLink(context, uri) }
     val onClickAttributions = { onAttributionsScreen() }
+    val onClickPrivacy = { uri: String ->  openLink(context, uri) }
     val onDismissDialog = { viewModel.setStateDialog(false) }
     val onAcceptDialog = { dataResult: DataResult -> viewModel.treatResultDialog(dataResult) }
 
@@ -73,6 +75,7 @@ fun SettingsScreen(
                 onClickGithub = onClickGithub,
                 onClickLinkedin = onClickLinkedin,
                 onClickAttributions = onClickAttributions,
+                onClickPrivacy = onClickPrivacy,
                 onDismissDialog = onDismissDialog,
                 onAcceptDialog = onAcceptDialog
             )
@@ -90,6 +93,7 @@ fun SettingsScreen(
                 onClickGithub = onClickGithub,
                 onClickLinkedin = onClickLinkedin,
                 onClickAttributions = onClickAttributions,
+                onClickPrivacy = onClickPrivacy,
                 onDismissDialog = onDismissDialog,
                 onAcceptDialog = onAcceptDialog
             )

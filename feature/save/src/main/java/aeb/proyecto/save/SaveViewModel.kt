@@ -1,6 +1,8 @@
 package aeb.proyecto.save
 
+import aeb.proyecto.domain.usecase.save.DeleteAccountResult
 import aeb.proyecto.domain.usecase.save.SaveAuthenticationUseCase
+import aeb.proyecto.domain.usecase.save.SaveDeleteAccountUseCase
 import aeb.proyecto.domain.usecase.save.SaveFirestoreUseCase
 import aeb.proyecto.domain.usecase.save.SaveHabitsRepositoryUseCase
 import aeb.proyecto.domain.usecase.save.SaveNotificationUseCase
@@ -24,6 +26,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
+import kotlin.concurrent.timerTask
 
 /**
  * ViewModel orchestrator for cloud synchronization and local data persistence.
@@ -34,13 +37,15 @@ import javax.inject.Inject
  * @property saveNotificationUseCase Manages scheduled tasks and alarms.
  * @property saveFirestoreUseCase Bridges the gap between local state and cloud database.
  * @property saveAuthenticationUseCase Orchestrates session management and identity.
+ * @property saveDeleteAccountUseCase Cleans up user data and credentials.
  */
 @HiltViewModel
 class SaveViewModel @Inject constructor(
     private val saveHabitsRepositoryUseCase: SaveHabitsRepositoryUseCase,
     private val saveNotificationUseCase: SaveNotificationUseCase,
     private val saveFirestoreUseCase: SaveFirestoreUseCase,
-    private val saveAuthenticationUseCase: SaveAuthenticationUseCase
+    private val saveAuthenticationUseCase: SaveAuthenticationUseCase,
+    private val saveDeleteAccountUseCase: SaveDeleteAccountUseCase
 ):ViewModel() {
 
     /** Orchestrates the visibility and content state of the UI bottom sheets. */
@@ -135,6 +140,7 @@ class SaveViewModel @Inject constructor(
             DataBottomSheet.RESTORE_HABIT -> { restoreHabit() }
             DataBottomSheet.DELETE_HABIT -> { deleteHabit() }
             DataBottomSheet.LOG_OUT -> { logOut() }
+            DataBottomSheet.DELETE_ACCOUNT -> { deleteAccount() }
             else -> { closeBottomSheet() }
         }
     }
@@ -254,6 +260,59 @@ class SaveViewModel @Inject constructor(
                 treatError(R.string.save_error_generic)
             }
         }
+    }
+
+    /**
+     * Triggers the asynchronous user account teardown pipeline within the [viewModelScope].
+     *
+     * Coordinates the sequential destruction of cloud database records and authentication credentials
+     * through [saveDeleteAccountUseCase], managing UI state mutations, bottom sheet dismissals,
+     * and presentation layer error side-effects.
+     *
+     * ### Execution Pipeline Lifecycle:
+     * 1. **Preparation Phase:** Immediately sets [_saveUIState] to [SaveUIState.Loading] and closes
+     *    active presentation sheets via [closeBottomSheet].
+     * 2. **Session Identification:** Synchronously fetches the current authenticated client token
+     *    using [saveAuthenticationUseCase.getCurrentId].
+     * 3. **Reactive Stream Binding:** Invokes [SaveDeleteAccountUseCase.deleteAccount] and collects
+     *    emitted [DeleteAccountResult] lifecycle events:
+     *    * **[DeleteAccountResult.Loading]:** Guarantees persistent loading indicators across execution steps.
+     *    * **[DeleteAccountResult.Success]:** Updates state to [SaveUIState.LogOut] to trigger navigation
+     *      toward unauthenticated onboarding screens.
+     *    * **[DeleteAccountResult.Error]:** Transitions state to [SaveUIState.Error] and dispatches localized
+     *      res IDs to [treatError] for UI feedback display.
+     * 4. **Exception Boundary:** Encapsulates initialization or coroutine setup failures within a local `try-catch`
+     *    block, falling back to [SaveUIState.Error] and logging generic failure resource keys (`R.string.save_error_generic`).
+     */
+    private fun deleteAccount(){
+        viewModelScope.launch {
+            try {
+                _saveUIState.update { SaveUIState.Loading }
+                closeBottomSheet()
+
+                val userId = saveAuthenticationUseCase.getCurrentId()
+
+                saveDeleteAccountUseCase.deleteAccount(userId)
+                    .collect { task ->
+                        when(task){
+                            DeleteAccountResult.Loading -> {
+                                _saveUIState.update { SaveUIState.Loading }
+                            }
+                            DeleteAccountResult.Success -> {
+                                _saveUIState.update { SaveUIState.LogOut }
+                            }
+                            is DeleteAccountResult.Error -> {
+                                _saveUIState.update { SaveUIState.Error }
+                                treatError(message = task.messageResId)
+                            }
+                        }
+                    }
+            } catch (e: Exception){
+                _saveUIState.update { SaveUIState.Error }
+                treatError(R.string.save_error_generic)
+            }
+        }
+
     }
 
     /**

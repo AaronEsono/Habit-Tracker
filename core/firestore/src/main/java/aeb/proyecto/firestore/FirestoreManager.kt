@@ -117,6 +117,8 @@ class FirestoreManager @Inject constructor(
             emit(AuthResponseFirestore.Success(null))
 
         } catch (e: Exception) {
+            if (e is kotlinx.coroutines.CancellationException) throw e
+
             // 4. Intercept potential permission blocks or network dropouts instantly
             analyticsManagerInterface.logEvent(FirestoreEvents.error(e.message.toString()))
 

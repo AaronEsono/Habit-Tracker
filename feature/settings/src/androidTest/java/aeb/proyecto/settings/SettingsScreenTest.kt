@@ -43,6 +43,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -71,6 +72,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -102,6 +104,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -133,6 +136,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -164,6 +168,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -195,6 +200,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -226,6 +232,7 @@ class SettingsScreenTest {
                 onClickGithub = {githubClicked = true},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -256,6 +263,7 @@ class SettingsScreenTest {
                 onClickEmail = {},
                 onClickGithub = {},
                 onClickLinkedin = { mediaClicked = true},
+                onClickPrivacy = {},
                 onClickAttributions = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
@@ -289,6 +297,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -324,6 +333,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -356,6 +366,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -385,6 +396,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -418,6 +430,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = {},
+                onClickPrivacy = {},
                 onDismissDialog = { dismissCalled = true }, // Capturamos la acción
                 onAcceptDialog = {}
             )
@@ -553,6 +566,7 @@ class SettingsScreenTest {
                 onClickGithub = {},
                 onClickLinkedin = {},
                 onClickAttributions = { attributionsClicked = true },
+                onClickPrivacy = {},
                 onDismissDialog = {},
                 onAcceptDialog = {}
             )
@@ -564,5 +578,38 @@ class SettingsScreenTest {
         // --- THEN ---
         assertTrue(attributionsClicked)
     }
+
+    @Test
+    fun givenSuccessState_whenClickPrivacy_thenTriggerOnClickLanguageLambda() {
+        // --- GIVEN ---
+        var privacyClicked = false
+        val fakeSettings = AppSettings(language = "es")
+
+        composeTestRule.setContent {
+            VerticalSettingsScreen(
+                settingsUIState = SettingsUIState.Success(fakeSettings),
+                dialogState = SettingsDialogState(showDialog = false),
+                onClickTheme = {},
+                onClickLanguage = {},
+                onClickGeneralSettings = {},
+                onClickOverlay = {},
+                onClickExport = {},
+                onClickEmail = {},
+                onClickGithub = {},
+                onClickLinkedin = {},
+                onClickAttributions = {},
+                onClickPrivacy = { privacyClicked = true  },
+                onDismissDialog = {},
+                onAcceptDialog = {}
+            )
+        }
+
+        // --- WHEN ---
+        composeTestRule.onNodeWithTag("settings_button_privacy").performClick()
+
+        // --- THEN ---
+        assertTrue(privacyClicked)
+    }
+
 
 }

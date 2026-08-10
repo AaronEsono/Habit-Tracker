@@ -63,6 +63,7 @@ fun SaveScreen(
     val onRestoreClick = { viewModel.setBottomSheetState(DataBottomSheet.RESTORE_HABIT) }
     val onDeleteClick = { viewModel.setBottomSheetState(DataBottomSheet.DELETE_HABIT) }
     val onLogOutClick = { viewModel.setBottomSheetState(DataBottomSheet.LOG_OUT) }
+    val onDeleteAccountClick = { viewModel.setBottomSheetState(DataBottomSheet.DELETE_ACCOUNT) }
 
     val onDismiss = { viewModel.closeBottomSheet() }
     val onAccept =  { viewModel.requestAcceptBottomSheet() }
@@ -79,6 +80,7 @@ fun SaveScreen(
                 onRestoreClick = onRestoreClick,
                 onDeleteClick = onDeleteClick,
                 onLogOutClick = onLogOutClick,
+                onDeleteAccountClick = onDeleteAccountClick,
                 onDismiss = onDismiss,
                 onAccept = onAccept
             )
@@ -93,6 +95,7 @@ fun SaveScreen(
                 onRestoreClick = onRestoreClick,
                 onDeleteClick = onDeleteClick,
                 onLogOutClick = onLogOutClick,
+                onDeleteAccountClick = onDeleteAccountClick,
                 onDismiss = onDismiss,
                 onAccept = onAccept
             )

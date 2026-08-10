@@ -56,6 +56,7 @@ import androidx.compose.ui.unit.dp
  * @param onClickGithub Callback to open the project repository in a browser, receiving the URL.
  * @param onClickLinkedin Callback to open the profile in a browser, receiving the URL.
  * @param onClickAttributions Callback to navigate to the attributions screen.
+ * @param onClickPrivacy Callback to navigate to the privacy policy screen.
  * @param onDismissDialog Callback to close the currently active dialog.
  * @param onAcceptDialog Callback to process the result ([DataResult]) selected by the user in a dialog.
  */
@@ -72,6 +73,7 @@ fun HorizontalSettingsScreen(
     onClickGithub: (String) -> Unit,
     onClickLinkedin: (String) -> Unit,
     onClickAttributions: () -> Unit,
+    onClickPrivacy: (String) -> Unit,
     onDismissDialog: () -> Unit,
     onAcceptDialog: (DataResult) -> Unit
 ) {
@@ -196,8 +198,17 @@ fun HorizontalSettingsScreen(
                     ButtonSettings(
                         title = R.string.settings_attributions,
                         leadingIcon = R.drawable.ic_attributions,
-                        shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
                         onClick = { onClickAttributions() },
+                        modifier = Modifier.testTag("settings_button_attributions")
+                    )
+
+                    CustomHorizontalDivider()
+
+                    ButtonSettings(
+                        title = R.string.settings_privacy,
+                        leadingIcon = R.drawable.ic_attributions,
+                        shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
+                        onClick = { onClickPrivacy(SettingsConstants.LINK_POLICY) },
                         modifier = Modifier.testTag("settings_button_attributions")
                     )
                 }

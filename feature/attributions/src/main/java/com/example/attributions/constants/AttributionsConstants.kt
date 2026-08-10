@@ -26,6 +26,9 @@ const val IC_INTERVAL_TIMER_URI = "https://www.svgrepo.com/svg/533708/repeat"
 const val IM_NO_FAVORITE_TIMER_NAME = "Heart SVG Vector"
 const val IM_NO_FAVORITE_TIMER_URI = "https://www.svgrepo.com/svg/532473/heart"
 
+const val IC_PRIVACY_SETTINGS_NAME = "User Shield SVG Vector"
+const val IC_PRIVACY_SETTINGS_URI = "https://www.svgrepo.com/svg/532392/user-shield"
+
 //---------------------------------- CC Attribution SVGREPO Icons by catalin fertu
 const val CATALIN_FERTU_AUTHOR = "Catalin Fertu"
 

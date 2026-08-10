@@ -382,6 +382,44 @@ internal class AuthenticationManager @Inject constructor(
 
 
     /**
+     * Executes a sequential, asynchronous account deletion pipeline.
+     *
+     * ### Execution Pipeline Lifecycle:
+     * 1. **Visual State Initialization:** Emits [AuthResponseAuthentication.Loading].
+     * 2. **Session Audit:** Validates if an active [currentUser] session context exists.
+     * 3. **Terminal Emission:** Emits [AuthResponseAuthentication.Success] and logs telemetry metrics.
+     *
+     * @return A cold [Flow] streaming state transitions ([Loading], [Success], [Error]).
+     */
+    override suspend fun deleteAccount(): Flow<AuthResponseAuthentication> = flow {
+        emit(AuthResponseAuthentication.Loading)
+
+        try {
+            val user = auth.currentUser ?: throw Exception("No active user session context found to perform deletion.")
+            val uid = user.uid
+
+            // Delete the acount
+            user.delete().await()
+
+            analyticsManagerInterface.logEvent(AuthenticationEvents.deletedAccount(uid))
+            emit(AuthResponseAuthentication.Success)
+
+        } catch (e: Exception) {
+            if (e is kotlinx.coroutines.CancellationException) throw e
+
+            auth.signOut()
+
+            val errorResId = treatError(e)
+            analyticsManagerInterface.logEvent(
+                AuthenticationEvents.error(
+                    e.localizedMessage ?: e.toString()
+                )
+            )
+            emit(AuthResponseAuthentication.Error(errorResId))
+        }
+    }
+
+    /**
      * Terminates the active cloud session context securely.
      *
      * This function handles session sanitization by logging transactional metrics before invoking

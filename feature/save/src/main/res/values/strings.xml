@@ -15,6 +15,7 @@
     <string name="save_restore_habit">Restore habits</string>
     <string name="save_delete_habit">Delete habits</string>
     <string name="save_log_out">Log out</string>
+    <string name="save_delete_account">Delete account</string>
 
     <string name="save_bottom_sheet_acept">Accept</string>
     <string name="save_bottom_sheet_cancel">Cancel</string>
@@ -31,6 +32,9 @@
 
     <string name="data_bottomSheet_logOut_title">Log Out</string>
     <string name="data_bottomSheet_logOut_label">Do you want to log out?</string>
+
+    <string name="data_bottomSheet_delete_Account_title">Delete account</string>
+    <string name="data_bottomSheet_delete_Account_label">Are you sure you want to delete your account?</string>
 
     <string name="data_bottomSheet_error_title">Attention</string>
     <string name="data_bottomSheet_error_label">An unexpected error has occurred. Please try again.</string>

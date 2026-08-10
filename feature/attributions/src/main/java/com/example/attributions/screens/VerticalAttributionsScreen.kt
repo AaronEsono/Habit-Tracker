@@ -62,6 +62,8 @@ import com.example.attributions.constants.IC_OVERLAY_SETTINGS_NAME
 import com.example.attributions.constants.IC_OVERLAY_SETTINGS_URI
 import com.example.attributions.constants.IC_PALETTE_SETTINGS_NAME
 import com.example.attributions.constants.IC_PALETTE_SETTINGS_URI
+import com.example.attributions.constants.IC_PRIVACY_SETTINGS_NAME
+import com.example.attributions.constants.IC_PRIVACY_SETTINGS_URI
 import com.example.attributions.constants.IC_SAVE_SETTINGS_NAME
 import com.example.attributions.constants.IC_SAVE_SETTINGS_URI
 import com.example.attributions.constants.IC_SETTINGS_APP_NAME
@@ -227,6 +229,13 @@ fun VerticalAttributionsScreen(){
             iconName = IM_NO_FAVORITE_TIMER_NAME,
             authorName = UI_DAZZLE_UI_AUTHOR,
             uri = IM_NO_FAVORITE_TIMER_URI,
+            onClick = { uri -> uriHandler.openUri(uri) }
+        )
+
+        AuthorButton(
+            iconName = IC_PRIVACY_SETTINGS_NAME,
+            authorName = UI_DAZZLE_UI_AUTHOR,
+            uri = IC_PRIVACY_SETTINGS_URI,
             onClick = { uri -> uriHandler.openUri(uri) }
         )
 
