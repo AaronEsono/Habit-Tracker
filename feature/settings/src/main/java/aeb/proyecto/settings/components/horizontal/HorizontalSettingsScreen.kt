@@ -71,7 +71,7 @@ fun HorizontalSettingsScreen(
     onClickExport: () -> Unit,
     onClickEmail: () -> Unit,
     onClickGithub: (String) -> Unit,
-    onClickLinkedin: (String) -> Unit,
+    onClickTerms: (String) -> Unit,
     onClickAttributions: () -> Unit,
     onClickPrivacy: (String) -> Unit,
     onDismissDialog: () -> Unit,
@@ -185,14 +185,6 @@ fun HorizontalSettingsScreen(
                         onClick = { onClickGithub(SettingsConstants.LINK_GITHUB) }
                     )
 
-
-
-                    ButtonSettings(
-                        title = R.string.settings_link,
-                        leadingIcon = R.drawable.ic_link,
-                        onClick = { onClickLinkedin(SettingsConstants.LINK_LINKEDN) }
-                    )
-
                     CustomHorizontalDivider()
 
                     ButtonSettings(
@@ -200,6 +192,15 @@ fun HorizontalSettingsScreen(
                         leadingIcon = R.drawable.ic_attributions,
                         onClick = { onClickAttributions() },
                         modifier = Modifier.testTag("settings_button_attributions")
+                    )
+
+                    CustomHorizontalDivider()
+
+                    ButtonSettings(
+                        title = R.string.settings_terms,
+                        leadingIcon = R.drawable.ic_terms,
+                        onClick = { onClickTerms(SettingsConstants.LINK_TERMS) },
+                        modifier = Modifier.testTag("settings_button_terms")
                     )
 
                     CustomHorizontalDivider()

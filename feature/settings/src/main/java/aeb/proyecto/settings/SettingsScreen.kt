@@ -54,7 +54,7 @@ fun SettingsScreen(
     val onClickExport = { (if (viewModel.getCurrentUser()) onSaveScreen else onImportScreen)() }
     val onClickEmail = { sendEmail(context) }
     val onClickGithub = { uri: String -> openLink(context, uri) }
-    val onClickLinkedin = { uri: String -> openLink(context, uri) }
+    val onClickTerms = { uri: String -> openLink(context, uri) }
     val onClickAttributions = { onAttributionsScreen() }
     val onClickPrivacy = { uri: String ->  openLink(context, uri) }
     val onDismissDialog = { viewModel.setStateDialog(false) }
@@ -73,7 +73,7 @@ fun SettingsScreen(
                 onClickExport = onClickExport,
                 onClickEmail = onClickEmail,
                 onClickGithub = onClickGithub,
-                onClickLinkedin = onClickLinkedin,
+                onClickTerms = onClickTerms,
                 onClickAttributions = onClickAttributions,
                 onClickPrivacy = onClickPrivacy,
                 onDismissDialog = onDismissDialog,
@@ -91,7 +91,7 @@ fun SettingsScreen(
                 onClickExport = onClickExport,
                 onClickEmail = onClickEmail,
                 onClickGithub = onClickGithub,
-                onClickLinkedin = onClickLinkedin,
+                onClickTerms = onClickTerms,
                 onClickAttributions = onClickAttributions,
                 onClickPrivacy = onClickPrivacy,
                 onDismissDialog = onDismissDialog,

@@ -10,4 +10,6 @@ object SettingsConstants {
     const val EMAIL = "habittrackerappae@gmail.com"
 
     const val LINK_POLICY = "https://github.com/AaronEsono/Habit-Tracker/blob/dev/privacy.md"
+
+    const val LINK_TERMS = "https://github.com/AaronEsono/Habit-Tracker/blob/dev/terms.md"
 }

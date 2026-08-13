@@ -98,6 +98,12 @@ const val GARUDA_TECHNOLOGY_AUTHOR = "Garuda Technology"
 const val IM_GOOGLE_LOGIN_NAME = "Google SVG Vector"
 const val IM_GOOGLE_LOGIN_URI = "https://www.svgrepo.com/svg/452216/google"
 
+//---------------------------------- MIT Attribution SVGREPO Icons by scarlab
+const val SCARLAB_AUTHOR = "scarlab"
+
+const val IC_TERMS_SETTINGS_NAME = "License SVG Vector"
+const val IC_TERMS_SETTINGS_URI = "https://www.svgrepo.com/svg/507347/license"
+
 //---------------------------------- MIT Attribution SVGREPO Icons by vmware
 const val VMWARE_AUTHOR = "VMware"
 

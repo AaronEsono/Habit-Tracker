@@ -39,4 +39,5 @@
 
     <string name="settings_attributions">Atribuciones</string>
     <string name="settings_privacy">Política de privacidad</string>
+    <string name="settings_terms">Términos de condiciones y de uso</string>
 </resources>

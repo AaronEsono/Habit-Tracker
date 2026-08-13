@@ -70,6 +70,8 @@ import com.example.attributions.constants.IC_SETTINGS_APP_NAME
 import com.example.attributions.constants.IC_SETTINGS_APP_URI
 import com.example.attributions.constants.IC_STATISTICS_APP_NAME
 import com.example.attributions.constants.IC_STATISTICS_APP_URI
+import com.example.attributions.constants.IC_TERMS_SETTINGS_NAME
+import com.example.attributions.constants.IC_TERMS_SETTINGS_URI
 import com.example.attributions.constants.IC_TIMER_APP_NAME
 import com.example.attributions.constants.IC_TIMER_APP_URI
 import com.example.attributions.constants.IM_CALENDAR_SETTINGS_NAME
@@ -102,6 +104,7 @@ import com.example.attributions.constants.KRYSTONSCHWARZE_AUTHOR
 import com.example.attributions.constants.MOUDESAIN_AUTHOR
 import com.example.attributions.constants.PAOMEEDIA_AUTHOR
 import com.example.attributions.constants.PETR_BILEK_AUTHOR
+import com.example.attributions.constants.SCARLAB_AUTHOR
 import com.example.attributions.constants.SOFTWARE_MANSION_AUTHOR
 import com.example.attributions.constants.SOLAR_ICONS_AUTHOR
 import com.example.attributions.constants.SVG_REPO_AUTHOR
@@ -361,6 +364,13 @@ fun VerticalAttributionsScreen(){
             iconName = IM_STOPWATCH_TIMER_NAME,
             authorName = SOFTWARE_MANSION_AUTHOR,
             uri = IM_STOPWATCH_TIMER_URI,
+            onClick = { uri -> uriHandler.openUri(uri) }
+        )
+
+        AuthorButton(
+            iconName = IC_TERMS_SETTINGS_NAME,
+            authorName = SCARLAB_AUTHOR,
+            uri = IC_TERMS_SETTINGS_URI,
             onClick = { uri -> uriHandler.openUri(uri) }
         )
 

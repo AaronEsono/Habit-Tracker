@@ -41,7 +41,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -70,7 +70,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -102,7 +102,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -134,7 +134,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -166,7 +166,7 @@ class SettingsScreenTest {
                 onClickExport = { exportClicked = true},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -198,7 +198,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = { emailClicked = true},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -230,7 +230,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {githubClicked = true},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -248,7 +248,7 @@ class SettingsScreenTest {
     @Test
     fun givenSuccessState_whenClickMedia_thenTriggerOnClickLanguageLambda() {
         // --- GIVEN ---
-        var mediaClicked = false
+        var termsClicked = false
         val fakeSettings = AppSettings(language = "es")
 
         composeTestRule.setContent {
@@ -262,7 +262,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = { mediaClicked = true},
+                onClickTerms = { termsClicked = true},
                 onClickPrivacy = {},
                 onClickAttributions = {},
                 onDismissDialog = {},
@@ -271,10 +271,10 @@ class SettingsScreenTest {
         }
 
         // --- WHEN ---
-        composeTestRule.onNodeWithTag("settings_button_media").performClick()
+        composeTestRule.onNodeWithTag("settings_button_terms").performClick()
 
         // --- THEN ---
-        assertTrue(mediaClicked)
+        assertTrue(termsClicked)
     }
 
     @Test
@@ -295,7 +295,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -331,7 +331,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -364,7 +364,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -394,7 +394,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -428,7 +428,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = {},
                 onDismissDialog = { dismissCalled = true }, // Capturamos la acción
@@ -564,7 +564,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = { attributionsClicked = true },
                 onClickPrivacy = {},
                 onDismissDialog = {},
@@ -596,7 +596,7 @@ class SettingsScreenTest {
                 onClickExport = {},
                 onClickEmail = {},
                 onClickGithub = {},
-                onClickLinkedin = {},
+                onClickTerms = {},
                 onClickAttributions = {},
                 onClickPrivacy = { privacyClicked = true  },
                 onDismissDialog = {},
