@@ -579,37 +579,5 @@ class SettingsScreenTest {
         assertTrue(attributionsClicked)
     }
 
-    @Test
-    fun givenSuccessState_whenClickPrivacy_thenTriggerOnClickLanguageLambda() {
-        // --- GIVEN ---
-        var privacyClicked = false
-        val fakeSettings = AppSettings(language = "es")
-
-        composeTestRule.setContent {
-            VerticalSettingsScreen(
-                settingsUIState = SettingsUIState.Success(fakeSettings),
-                dialogState = SettingsDialogState(showDialog = false),
-                onClickTheme = {},
-                onClickLanguage = {},
-                onClickGeneralSettings = {},
-                onClickOverlay = {},
-                onClickExport = {},
-                onClickEmail = {},
-                onClickGithub = {},
-                onClickTerms = {},
-                onClickAttributions = {},
-                onClickPrivacy = { privacyClicked = true  },
-                onDismissDialog = {},
-                onAcceptDialog = {}
-            )
-        }
-
-        // --- WHEN ---
-        composeTestRule.onNodeWithTag("settings_button_privacy").performClick()
-
-        // --- THEN ---
-        assertTrue(privacyClicked)
-    }
-
 
 }

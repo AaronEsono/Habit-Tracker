@@ -54,7 +54,7 @@ import androidx.compose.ui.unit.dp
  * @param onClickExport Callback to navigate to the import/export screen.
  * @param onClickEmail Callback to open the email client with pre-filled device info.
  * @param onClickGithub Callback to open the project repository in a browser, receiving the URL.
- * @param onClickLinkedin Callback to open the profile in a browser, receiving the URL.
+ * @param onClickTerms Callback to open the profile in a browser, receiving the URL.
  * @param onClickAttributions Callback to navigate to the attributions screen.
  * @param onClickPrivacy Callback to navigate to the privacy policy screen.
  * @param onDismissDialog Callback to close the currently active dialog.
@@ -207,10 +207,10 @@ fun HorizontalSettingsScreen(
 
                     ButtonSettings(
                         title = R.string.settings_privacy,
-                        leadingIcon = R.drawable.ic_attributions,
+                        leadingIcon = R.drawable.ic_privacy,
                         shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
                         onClick = { onClickPrivacy(SettingsConstants.LINK_POLICY) },
-                        modifier = Modifier.testTag("settings_button_attributions")
+                        modifier = Modifier.testTag("settings_button_privacy")
                     )
                 }
             }
