@@ -266,6 +266,8 @@ interface DatastoreInterface {
     // TIMER SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 
+    // STOPWATCH SERVICE ----------------------------------------------------------------
+    // *******************************************************************************************
     /**
      * Cold reactive stream tracking the stateful validation marker verifying if the active
      * tracking session completed successfully with an attached habit connection profile.
@@ -292,5 +294,27 @@ interface DatastoreInterface {
      * @param time The current absolute time metric sequence to persist.
      */
     suspend fun setTimePassedTimer(time:Long)
+    // STOPWATCH SERVICE ----------------------------------------------------------------
+    // *******************************************************************************************
+
+    // ONBOARD SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Observes the current onboarding screen state.
+     *
+     * Emits `true` when the onboarding screen has been completed,
+     * or `false` otherwise.
+     */
+    val onboardScreen: Flow<Boolean>
+
+    /**
+     * Updates the onboarding screen state.
+     *
+     * @param onboardState `true` to mark the onboarding screen as completed,
+     * or `false` to mark it as incomplete.
+     */
+    suspend fun setOnboardScreen(onboardState: Boolean)
+    // ONBOARD SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
 
 }

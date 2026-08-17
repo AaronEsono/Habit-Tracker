@@ -179,6 +179,18 @@ class DataStoreManager @Inject constructor(
         private val IS_LINKED_HABIT_AND_FINISHED = booleanPreferencesKey("isLinkedHabitAndFinished")
         // STOPWATCH SERVICE ----------------------------------------------------------------
         // *******************************************************************************************
+
+        // ONBOARD SCREEN ----------------------------------------------------------------
+        // *******************************************************************************************
+        /**
+         * Stores whether the onboarding screen has been completed.
+         *
+         * `true` indicates that the onboarding screen has been completed,
+         * while `false` indicates that it still needs to be shown.
+         */
+        private val ONBOARD_SCREEN = booleanPreferencesKey("onboardScreen")
+        // ONBOARD SCREEN ----------------------------------------------------------------
+        // *******************************************************************************************
     }
 
     // SETTINGS ----------------------------------------------------------------
@@ -573,5 +585,31 @@ class DataStoreManager @Inject constructor(
         }
     }
     // STOPWATCH SERVICE ----------------------------------------------------------------
+    // *******************************************************************************************
+
+    // ONBOARD SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    /**
+     * Observes the current onboarding screen state.
+     *
+     * Emits `true` when the onboarding screen has been completed,
+     * or `false` when no onboarding state has been stored yet.
+     */
+    val onboardScreen: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[ONBOARD_SCREEN] ?: false
+    }
+
+    /**
+     * Updates the onboarding screen state in the data store.
+     *
+     * @param onboardState `true` to mark the onboarding screen as completed,
+     * or `false` to mark it as incomplete.
+     */
+    suspend fun setOnboardScreen(onboardState: Boolean){
+        dataStore.edit { preferences ->
+            preferences[ONBOARD_SCREEN] = onboardState
+        }
+    }
+    // ONBOARD SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 }

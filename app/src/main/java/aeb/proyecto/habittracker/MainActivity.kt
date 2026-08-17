@@ -55,7 +55,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 // Por hacer despues del testing y antes de la seguridad.
-// Pantalla condiciones de servicio, lo que necesite la app, crear un boton en save que sea borrar la cuenta
+// Pantalla condiciones de servicio, lo que necesite la app, crear un boton en save que sea borrar la cuenta -- Hecho
 // Agradecer a la pagina de iconos tambien -- Hecho
 // Pantalla de bienvenida
 

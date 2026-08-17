@@ -16,9 +16,6 @@
       <SelectionState runConfigName="feature.attributions">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="StatisticsScreenTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="AttributionsScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

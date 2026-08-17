@@ -299,4 +299,21 @@ class DatastoreRepository @Inject constructor(
 
     // STOPWATCH SERVICE ----------------------------------------------------------------
     // *******************************************************************************************
+
+    // ONBOARD SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
+    override val onboardScreen: Flow<Boolean>
+        get() = dataStoreManager.onboardScreen
+
+    /**
+     * Updates the onboarding screen state through the data store manager.
+     *
+     * @param onboardState `true` to mark the onboarding screen as completed,
+     * or `false` to mark it as incomplete.
+     */
+    override suspend fun setOnboardScreen(onboardState: Boolean) {
+        dataStoreManager.setOnboardScreen(onboardState)
+    }
+    // ONBOARD SCREEN ----------------------------------------------------------------
+    // *******************************************************************************************
 }

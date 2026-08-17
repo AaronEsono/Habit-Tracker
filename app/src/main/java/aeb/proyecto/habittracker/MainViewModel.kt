@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker
 import aeb.proyecto.domain.usecase.main.ManageDatastoreUseCase
 import aeb.proyecto.domain.usecase.main.ManageDialogTimerUseCase
 import aeb.proyecto.domain.usecase.main.ManageHabitsUseCase
+import aeb.proyecto.domain.usecase.main.ManageOnboardingScreenUseCase
 import aeb.proyecto.domain.usecase.main.ShowDialogState
 import aeb.proyecto.language.model.EnumLanguage
 import aeb.proyecto.language.model.findLanguage
@@ -27,20 +28,24 @@ import javax.inject.Inject
  * Core ViewModel for the application's main entry point.
  *
  * This ViewModel acts as the orchestrator for global application states and side effects.
- * It manages cross-cutting concerns such as user preferences persistent storage via [ManageDatastoreUseCase],
- * regional calendar configurations through [RegionFirstDayProvider], global application dialog timers,
- * and essential background routine synchronizations using [ManageHabitsUseCase].
+ * It manages cross-cutting concerns such as persistent user preferences via
+ * [ManageDatastoreUseCase], regional calendar configurations through
+ * [RegionFirstDayProvider], global application dialog timers, onboarding screen state
+ * through [ManageOnboardingScreenUseCase], and essential background routine
+ * synchronizations using [ManageHabitsUseCase].
  *
  * Since it is scoped to the main hosting activity or root navigation graph, it ensures that
- * foundational user configurations (e.g., theme settings, language preferences, and global UI events)
- * are eagerly loaded and sustained throughout the application lifecycle.
+ * foundational user configurations (e.g., theme settings, language preferences, onboarding
+ * state, and global UI events) are eagerly loaded and sustained throughout the application
+ * lifecycle.
  */
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val manageDatastoreUseCase: ManageDatastoreUseCase,
     private val firstDayProvider: RegionFirstDayProvider,
     manageDialogTimerUseCase: ManageDialogTimerUseCase,
-    private val manageHabitsUseCase: ManageHabitsUseCase
+    private val manageHabitsUseCase: ManageHabitsUseCase,
+    private val manageOnboardingScreenUseCase: ManageOnboardingScreenUseCase
 ) : ViewModel(){
 
     private val _dataSet = MutableStateFlow(false)
