@@ -302,17 +302,17 @@ class DatastoreRepository @Inject constructor(
 
     // ONBOARD SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
-    override val onboardScreen: Flow<Boolean>
-        get() = dataStoreManager.onboardScreen
+    override val showOnboardScreen: Flow<Boolean>
+        get() = dataStoreManager.showOnboardScreen
 
     /**
-     * Updates the onboarding screen state through the data store manager.
+     * Updates whether the onboarding screen should be displayed through the data store manager.
      *
-     * @param onboardState `true` to mark the onboarding screen as completed,
-     * or `false` to mark it as incomplete.
+     * @param showOnboardScreen `true` to display the onboarding screen,
+     * or `false` to prevent it from being displayed.
      */
-    override suspend fun setOnboardScreen(onboardState: Boolean) {
-        dataStoreManager.setOnboardScreen(onboardState)
+    override suspend fun setShowOnboardScreen(showOnboardScreen: Boolean) {
+        dataStoreManager.setShowOnboardScreen(showOnboardScreen)
     }
     // ONBOARD SCREEN ----------------------------------------------------------------
     // *******************************************************************************************

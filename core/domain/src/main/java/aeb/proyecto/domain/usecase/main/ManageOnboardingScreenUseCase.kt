@@ -23,16 +23,16 @@ class ManageOnboardingScreenUseCase @Inject constructor(
      * Emits `true` when the onboarding screen is enabled,
      * or `false` when it should not be shown.
      */
-    val showOnboardingScreen = datastoreInterface.onboardScreen
+    val showOnboardingScreen = datastoreInterface.showOnboardScreen
 
     /**
      * Updates the onboarding screen state.
      *
-     * @param onboardState `true` to mark the onboarding screen as completed,
+     * @param showOnboardScreen `true` to mark the onboarding screen as completed,
      * or `false` to mark it as incomplete.
      */
-    suspend fun setOnboardingScreen(onboardState: Boolean){
-        datastoreInterface.setOnboardScreen(onboardState)
+    suspend fun setShowOnboardingScreen(showOnboardScreen: Boolean){
+        datastoreInterface.setShowOnboardScreen(showOnboardScreen)
     }
 
 }

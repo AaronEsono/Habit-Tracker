@@ -3,6 +3,7 @@ package aeb.proyecto.habittracker
 import aeb.proyecto.habittracker.components.bottomBars.BottomNavigationHabit
 import aeb.proyecto.habittracker.components.bottomBars.bottomRail.BottomRailHabit
 import aeb.proyecto.habittracker.components.dialog.ManageDialogScreen
+import aeb.proyecto.habittracker.components.onboardScreen.OnboardScreen
 import aeb.proyecto.habittracker.components.toast.ManageToastFinish
 import aeb.proyecto.habittracker.components.topbar.TopBarHabit
 import aeb.proyecto.habittracker.navigation.NavigationHabit
@@ -21,6 +22,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -124,6 +126,7 @@ class MainActivity : ComponentActivity() {
             val themeMode = mainViewModel.themeMode.collectAsState().value
             val showDialogTimer = mainViewModel.showDialogTimer.collectAsStateWithLifecycle().value
             val toastFinishState = mainViewModel.showToast.collectAsStateWithLifecycle().value
+            val showOnboardScreen = mainViewModel.showOnboardScreen.collectAsStateWithLifecycle().value
 
             val navController = rememberNavController()
 
@@ -148,8 +151,16 @@ class MainActivity : ComponentActivity() {
                     mainViewModel.clearToast()
                 }
 
-                // Mount core responsive interface scaffolding
-                AppContent(navController)
+                // Render onboarding screen or the content of the app
+                AnimatedContent(
+                    targetState = showOnboardScreen
+                ) { showOnboardState ->
+                    when(showOnboardState){
+                        true -> { OnboardScreen() }
+                        false -> { AppContent(navController) }
+                    }
+                }
+
             }
         }
     }

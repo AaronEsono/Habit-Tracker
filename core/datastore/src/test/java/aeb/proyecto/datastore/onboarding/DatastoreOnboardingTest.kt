@@ -24,10 +24,10 @@ class DatastoreOnboardingTest {
     fun `given a value when called onboardScreen function on datastore then return the same value`() = runTest {
         //Given
         val onboardSelected = true
-        coEvery { datastoreManager.onboardScreen } returns flowOf(onboardSelected)
+        coEvery { datastoreManager.showOnboardScreen } returns flowOf(onboardSelected)
 
         //When
-        datastoreManager.onboardScreen.test {
+        datastoreManager.showOnboardScreen.test {
             //Then
             assertEquals(onboardSelected, awaitItem())
 
@@ -39,13 +39,13 @@ class DatastoreOnboardingTest {
     fun `given a value when called setOnboardScreen function on repository then return the same value`() = runTest {
         //Given
         val onboardSelected = true
-        coEvery { datastoreRepository.setOnboardScreen(onboardSelected) } returns Unit
+        coEvery { datastoreRepository.setShowOnboardScreen(onboardSelected) } returns Unit
 
         //When
-        datastoreRepository.setOnboardScreen(onboardSelected)
+        datastoreRepository.setShowOnboardScreen(onboardSelected)
 
         //Then
-        coEvery { datastoreRepository.setOnboardScreen(onboardSelected) }
+        coEvery { datastoreRepository.setShowOnboardScreen(onboardSelected) }
     }
 
 }

@@ -300,20 +300,20 @@ interface DatastoreInterface {
     // ONBOARD SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
     /**
-     * Observes the current onboarding screen state.
+     * Observes whether the onboarding screen should be displayed.
      *
-     * Emits `true` when the onboarding screen has been completed,
-     * or `false` otherwise.
+     * Emits `true` when the onboarding screen should be shown,
+     * or `false` when it should not be displayed.
      */
-    val onboardScreen: Flow<Boolean>
+    val showOnboardScreen: Flow<Boolean>
 
     /**
-     * Updates the onboarding screen state.
+     * Updates whether the onboarding screen should be displayed.
      *
-     * @param onboardState `true` to mark the onboarding screen as completed,
-     * or `false` to mark it as incomplete.
+     * @param showOnboardScreen `true` to display the onboarding screen,
+     * or `false` to prevent it from being displayed.
      */
-    suspend fun setOnboardScreen(onboardState: Boolean)
+    suspend fun setShowOnboardScreen(showOnboardScreen: Boolean)
     // ONBOARD SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
 

@@ -61,6 +61,20 @@ class MainViewModel @Inject constructor(
         )
 
     /**
+     * Exposes the current onboarding screen state as a [StateFlow].
+     *
+     * The flow is collected while the ViewModel is active and subscribed to,
+     * and defaults to `false` until the first value is emitted.
+     */
+    val showOnboardScreen:StateFlow<Boolean> = manageOnboardingScreenUseCase.showOnboardingScreen
+        .stateIn(
+            scope = viewModelScope,
+            initialValue = true,
+            started = SharingStarted.WhileSubscribed(5000)
+        )
+
+
+    /**
      * Emits the user's selected UI theme mode preference from the persistent storage.
      * Represented as an integer index for theme selection.
      */
@@ -160,6 +174,19 @@ class MainViewModel @Inject constructor(
      */
     fun clearToast(){
         _showToast.update { false }
+    }
+
+    /**
+     * Updates the onboarding screen state.
+     *
+     * Launches a coroutine within the ViewModel scope to persist the new onboarding
+     * state through [ManageOnboardingScreenUseCase].
+     *
+     * @param onboardState `true` to mark the onboarding screen as completed,
+     * or `false` to mark it as incomplete.
+     */
+    fun setOnboardScreen(onboardState: Boolean) = viewModelScope.launch {
+        manageOnboardingScreenUseCase.setShowOnboardingScreen(onboardState)
     }
 
 }

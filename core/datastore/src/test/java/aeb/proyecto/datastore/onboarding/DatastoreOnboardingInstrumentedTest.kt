@@ -53,10 +53,10 @@ class DatastoreOnboardingInstrumentedTest {
         val onboardScreen = true
 
         //When
-        datastoreRepository.setOnboardScreen(onboardScreen)
+        datastoreRepository.setShowOnboardScreen(onboardScreen)
 
         //Then
-        datastoreRepository.onboardScreen.test {
+        datastoreRepository.showOnboardScreen.test {
 
             assertEquals(onboardScreen, awaitItem())
             cancelAndIgnoreRemainingEvents()

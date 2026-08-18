@@ -4,6 +4,7 @@ import aeb.proyecto.datastore.model.AppSettings
 import aeb.proyecto.domain.usecase.main.ManageDatastoreUseCase
 import aeb.proyecto.domain.usecase.main.ManageDialogTimerUseCase
 import aeb.proyecto.domain.usecase.main.ManageHabitsUseCase
+import aeb.proyecto.domain.usecase.main.ManageOnboardingScreenUseCase
 import aeb.proyecto.domain.usecase.main.ShowDialogState
 import aeb.proyecto.language.model.EnumLanguage
 import aeb.proyecto.language.provider.RegionFirstDayProvider
@@ -38,6 +39,8 @@ class MainViewModelTest {
     private val manageDialogTimerUseCase: ManageDialogTimerUseCase = mockk(relaxed = true)
     private val manageHabitsUseCase: ManageHabitsUseCase = mockk(relaxed = true)
 
+    private val manageOnboardingScreenUseCase: ManageOnboardingScreenUseCase = mockk(relaxed = true)
+
     private val showDialogTimerFlow = MutableStateFlow<ShowDialogState>(ShowDialogState.NoShowDialog)
     private val themeModeFlow = MutableStateFlow(0)
 
@@ -54,7 +57,8 @@ class MainViewModelTest {
             manageDatastoreUseCase = manageDatastoreUseCase,
             firstDayProvider = firstDayProvider,
             manageDialogTimerUseCase = manageDialogTimerUseCase,
-            manageHabitsUseCase = manageHabitsUseCase
+            manageHabitsUseCase = manageHabitsUseCase,
+            manageOnboardingScreenUseCase = manageOnboardingScreenUseCase
         )
     }
 
@@ -162,6 +166,21 @@ class MainViewModelTest {
         coVerify(exactly = 0) { manageHabitsUseCase.updateHabit(any(), any(), any()) }
         coVerify(exactly = 1) { manageDatastoreUseCase.closeDialog() }
         assertTrue(viewModel.showToast.value)
+    }
+
+    @Test
+    fun `setOnboardScreen should delegate onboarding state to use case`() = runTest {
+        // GIVEN
+        val onboardState = true
+
+        // WHEN
+        viewModel.setOnboardScreen(onboardState)
+        mainDispatchersRule.testDispatcher.scheduler.advanceUntilIdle()
+
+        // THEN
+        coVerify(exactly = 1) {
+            manageOnboardingScreenUseCase.setShowOnboardingScreen(onboardState)
+        }
     }
 
 }

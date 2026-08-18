@@ -183,12 +183,12 @@ class DataStoreManager @Inject constructor(
         // ONBOARD SCREEN ----------------------------------------------------------------
         // *******************************************************************************************
         /**
-         * Stores whether the onboarding screen has been completed.
+         * Stores whether the onboarding screen should be displayed.
          *
-         * `true` indicates that the onboarding screen has been completed,
-         * while `false` indicates that it still needs to be shown.
+         * `true` indicates that the onboarding screen should be shown,
+         * while `false` indicates that it should not be displayed.
          */
-        private val ONBOARD_SCREEN = booleanPreferencesKey("onboardScreen")
+        private val SHOW_ONBOARD_SCREEN = booleanPreferencesKey("onboardScreen")
         // ONBOARD SCREEN ----------------------------------------------------------------
         // *******************************************************************************************
     }
@@ -590,24 +590,26 @@ class DataStoreManager @Inject constructor(
     // ONBOARD SCREEN ----------------------------------------------------------------
     // *******************************************************************************************
     /**
-     * Observes the current onboarding screen state.
+     * Observes whether the onboarding screen should be displayed.
      *
-     * Emits `true` when the onboarding screen has been completed,
-     * or `false` when no onboarding state has been stored yet.
+     * Emits `true` when the onboarding screen should be shown,
+     * or `false` when it should not be displayed.
+     *
+     * Defaults to `true` when no value has been stored yet.
      */
-    val onboardScreen: Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[ONBOARD_SCREEN] ?: false
+    val showOnboardScreen: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[SHOW_ONBOARD_SCREEN] ?: true
     }
 
     /**
-     * Updates the onboarding screen state in the data store.
+     * Updates whether the onboarding screen should be displayed.
      *
-     * @param onboardState `true` to mark the onboarding screen as completed,
-     * or `false` to mark it as incomplete.
+     * @param showOnboardScreen `true` to display the onboarding screen,
+     * or `false` to prevent it from being displayed.
      */
-    suspend fun setOnboardScreen(onboardState: Boolean){
+    suspend fun setShowOnboardScreen(showOnboardScreen: Boolean){
         dataStore.edit { preferences ->
-            preferences[ONBOARD_SCREEN] = onboardState
+            preferences[SHOW_ONBOARD_SCREEN] = showOnboardScreen
         }
     }
     // ONBOARD SCREEN ----------------------------------------------------------------
