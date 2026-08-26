@@ -127,6 +127,7 @@ class MainActivity : ComponentActivity() {
             val showDialogTimer = mainViewModel.showDialogTimer.collectAsStateWithLifecycle().value
             val toastFinishState = mainViewModel.showToast.collectAsStateWithLifecycle().value
             val showOnboardScreen = mainViewModel.showOnboardScreen.collectAsStateWithLifecycle().value
+            val onboardingPageSelected = mainViewModel.onboardingPageSelected.collectAsStateWithLifecycle().value
 
             val navController = rememberNavController()
 
@@ -155,9 +156,21 @@ class MainActivity : ComponentActivity() {
                 AnimatedContent(
                     targetState = showOnboardScreen
                 ) { showOnboardState ->
-                    when(showOnboardState){
-                        true -> { OnboardScreen() }
-                        false -> { AppContent(navController) }
+                    when (showOnboardState) {
+                        true -> {
+                            OnboardScreen(
+                                pageSelected = onboardingPageSelected,
+                                onClickResultOption = { option ->
+                                    mainViewModel.manageResultOptionOnboardingPage(
+                                        option
+                                    )
+                                }
+                            )
+                        }
+
+                        false -> {
+                            AppContent(navController)
+                        }
                     }
                 }
 

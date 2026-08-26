@@ -16,4 +16,26 @@
 
     <string name="dialog_accept">Aceptar</string>
     <string name="dialog_cancel">Cancelar</string>
+
+    <!-- Onboading page -->
+    <string name="onboarding_skip">Omitir</string>
+    <string name="onboarding_next">Siguiente</string>
+    <string name="onboarding_previous">Anterior</string>
+    <string name="onboarding_start">Empezar</string>
+
+    <string name="onboarding_page_1_title">¡Bienvenido a Habit Tracker!</string>
+    <string name="onboarding_page_1_subtitle">Construye mejores hábitos, mantén la disciplina y alcanza tus objetivos día a día.</string>
+
+    <string name="onboarding_page_2_title">Diseñado a tu medida</string>
+    <string name="onboarding_page_2_subtitle">Crea hábitos diarios, semanales, mensuales, o cíclicos adaptados a tus necesidades y con notificaciones personalizadas.</string>
+
+    <string name="onboarding_page_3_title">Mide tu tiempo</string>
+    <string name="onboarding_page_3_subtitle">Utiliza todos los temporizadores y cronómetros disponibles y vinculados directamente a tus hábitos.</string>
+
+    <string name="onboarding_page_4_title">Visualiza tu progreso</string>
+    <string name="onboarding_page_4_subtitle">Analiza tu evolución diaria y constante mediante gráficos detallados de rendimiento.</string>
+
+    <string name="onboarding_page_5_title">Tus datos siempre a salvo</string>
+    <string name="onboarding_page_5_subtitle">Sincroniza de forma opcional tu cuenta en la nube para pasar tus hábitos a otro dispositivo.</string>
+
 </resources>

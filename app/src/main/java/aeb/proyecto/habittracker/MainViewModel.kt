@@ -5,6 +5,9 @@ import aeb.proyecto.domain.usecase.main.ManageDialogTimerUseCase
 import aeb.proyecto.domain.usecase.main.ManageHabitsUseCase
 import aeb.proyecto.domain.usecase.main.ManageOnboardingScreenUseCase
 import aeb.proyecto.domain.usecase.main.ShowDialogState
+import aeb.proyecto.habittracker.components.onboardScreen.components.constants.OnboardingPage
+import aeb.proyecto.habittracker.components.onboardScreen.components.constants.ResultOptions
+import aeb.proyecto.habittracker.components.onboardScreen.components.constants.onboardingPages
 import aeb.proyecto.language.model.EnumLanguage
 import aeb.proyecto.language.model.findLanguage
 import aeb.proyecto.language.provider.RegionFirstDayProvider
@@ -49,6 +52,9 @@ class MainViewModel @Inject constructor(
 ) : ViewModel(){
 
     private val _dataSet = MutableStateFlow(false)
+
+    private val _onboardingPageSelected: MutableStateFlow<OnboardingPage> = MutableStateFlow(OnboardingPage.First)
+    val onboardingPageSelected: StateFlow<OnboardingPage> = _onboardingPageSelected.asStateFlow()
 
     /**
      * Emits the global visibility and scheduling status of the final timer dialog.
@@ -187,6 +193,43 @@ class MainViewModel @Inject constructor(
      */
     fun setOnboardScreen(onboardState: Boolean) = viewModelScope.launch {
         manageOnboardingScreenUseCase.setShowOnboardingScreen(onboardState)
+    }
+
+    /**
+     * Handles the selected option on an onboarding page.
+     *
+     * @param resultOptions The action selected by the user for the current onboarding page.
+     */
+    fun manageResultOptionOnboardingPage(resultOptions: ResultOptions){
+        when(resultOptions){
+            ResultOptions.Skip -> setOnboardScreen(false)
+            ResultOptions.Next -> getNextPage()
+            ResultOptions.Previous -> getPreviousPage()
+            ResultOptions.Finish -> setOnboardScreen(false)
+        }
+    }
+
+    /**
+     * Moves to the next onboarding page.
+     *
+     * If the current page is the last one, the selection remains unchanged. **/
+    fun getNextPage(){
+        val currentIndex = onboardingPages.indexOf(_onboardingPageSelected.value)
+        val nextIndex = (currentIndex + 1).coerceIn(0, onboardingPages.lastIndex)
+
+        _onboardingPageSelected.value = onboardingPages[nextIndex]
+    }
+
+    /**
+     * Moves to the previous onboarding page.
+     *
+     * If the current page is the first one, the selection remains unchanged.
+     */
+    fun getPreviousPage() {
+        val currentIndex = onboardingPages.indexOf(_onboardingPageSelected.value)
+        val previousIndex = (currentIndex - 1).coerceIn(0, onboardingPages.lastIndex)
+
+        _onboardingPageSelected.value = onboardingPages[previousIndex]
     }
 
 }

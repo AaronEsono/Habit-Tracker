@@ -14,4 +14,26 @@
 
     <string name="dialog_accept">Accept</string>
     <string name="dialog_cancel">Cancel</string>
+
+    <!-- Onboading page -->
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_previous">Previous</string>
+    <string name="onboarding_start">Start</string>
+
+    <string name="onboarding_page_1_title">Welcome to Habit Tracker!</string>
+    <string name="onboarding_page_1_subtitle">Build better habits, stay disciplined, and achieve your goals every day.</string>
+
+    <string name="onboarding_page_2_title">Designed to suit your needs</string>
+    <string name="onboarding_page_2_subtitle">Create daily, weekly, monthly, or cyclical habits tailored to your needs with personalized notifications.</string>
+
+    <string name="onboarding_page_3_title">Measure your time</string>
+    <string name="onboarding_page_3_subtitle">Use all available timers and stopwatches directly linked to your habits.</string>
+
+    <string name="onboarding_page_4_title">View your progress</string>
+    <string name="onboarding_page_4_subtitle">Analyze your daily and continuous progress with detailed performance charts.</string>
+
+    <string name="onboarding_page_5_title">Your data is always safe</string>
+    <string name="onboarding_page_5_subtitle">Optionally sync your account to the cloud to transfer your habits to another device.</string>
+
 </resources>
