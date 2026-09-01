@@ -15,6 +15,12 @@
     <string name="attributions_flaticon_alarm">- Free alarm icons</string>
     <string name="attributions_flaticon_notificaciones">- Free notification icons</string>
     <string name="attributions_flaticon_lifeStyle">- Free healthy lifestyle icons</string>
+    <string name="attributions_flaticon_telephone">- Free smartphone telephone icons</string>
+    <string name="attributions_flaticon_clipboard">- Free clipboard icons</string>
+    <string name="attributions_flaticon_timer">- Free timer icons</string>
+    <string name="attributions_flaticon_investigation">- Free investigation icons</string>
+    <string name="attributions_flaticon_save">- Free server security icons</string>
+
 
     <string name="attribution_svgRepo_web_title_cc">
         Icons from the SVGRepo website are licensed under the CC Attribution License (link to the license here)

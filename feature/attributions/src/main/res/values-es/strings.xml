@@ -16,6 +16,13 @@
     <string name="attributions_flaticon_alarm">- Iconos de alarma gratis</string>
     <string name="attributions_flaticon_notificaciones">- Iconos de notificaciones gratis</string>
     <string name="attributions_flaticon_lifeStyle">- Iconos de estilo saludable gratis</string>
+    <string name="attributions_flaticon_telephone">- Iconos de teléfono inteligente gratis</string>
+    <string name="attributions_flaticon_clipboard">- Iconos de portapapeles icono gratis</string>
+    <string name="attributions_flaticon_timer">- Iconos de temporizador icono gratis</string>
+    <string name="attributions_flaticon_investigation">- Iconos de investigación icono gratis</string>
+    <string name="attributions_flaticon_save">- Iconos de seguridad del servidor icono gratis</string>
+
+
 
     <string name="attribution_svgRepo_web_title_cc">
         Iconos de la página web de SVGRepo bajo la licencia CC Attribution License (enlace a la licencia aquí)

@@ -1,6 +1,16 @@
 package aeb.proyecto.habittracker.components.onboardScreen.components.constants
 import aeb.proyecto.habittracker.R
 
+/**
+ * Represents a page in the onboarding flow.
+ *
+ * Each page contains the resources required to display its title,
+ * subtitle, and illustration.
+ *
+ * @property title String resource ID for the page title.
+ * @property subtitle String resource ID for the page subtitle.
+ * @property image Drawable resource ID for the page illustration.
+ */
 sealed class OnboardingPage(
     val title: Int,
     val subtitle: Int,
@@ -35,6 +45,12 @@ sealed class OnboardingPage(
     )
 }
 
+/**
+ * Ordered list of all pages available in the onboarding flow.
+ *
+ * The order of this list determines the navigation sequence
+ * when moving between onboarding pages.
+ */
 val onboardingPages: List<OnboardingPage> = listOf(
     OnboardingPage.First,
     OnboardingPage.Second,

@@ -110,9 +110,14 @@ import com.example.attributions.constants.TWITTER_AUTHOR
 import com.example.attributions.constants.UI_DAZZLE_UI_AUTHOR
 import com.example.attributions.constants.URI_ALARM_ICONS
 import com.example.attributions.constants.URI_CC_BY_LICENSE
+import com.example.attributions.constants.URI_CLIPBOARD_ICONS
+import com.example.attributions.constants.URI_INVESTIGATION_ICONS
 import com.example.attributions.constants.URI_LIFESTYLE_ICONS
 import com.example.attributions.constants.URI_MIT_LICENSE
 import com.example.attributions.constants.URI_NOTIFICATION_ICONS
+import com.example.attributions.constants.URI_SAVE_ICONS
+import com.example.attributions.constants.URI_TELEPHONE_ICONS
+import com.example.attributions.constants.URI_TIMER_ICONS
 import com.example.attributions.constants.VMWARE_AUTHOR
 import com.example.attributions.constants.WISHFORGE_GAMES_AUTHOR
 
@@ -173,6 +178,36 @@ fun HorizontalAttributionsScreen(){
         FlaticonButton(
             title = R.string.attributions_flaticon_lifeStyle,
             uri = URI_LIFESTYLE_ICONS,
+            onClick = { uri -> uriHandler.openUri(uri) }
+        )
+
+        FlaticonButton(
+            title = R.string.attributions_flaticon_telephone,
+            uri = URI_TELEPHONE_ICONS,
+            onClick = { uri -> uriHandler.openUri(uri) }
+        )
+
+        FlaticonButton(
+            title = R.string.attributions_flaticon_clipboard,
+            uri = URI_CLIPBOARD_ICONS,
+            onClick = { uri -> uriHandler.openUri(uri) }
+        )
+
+        FlaticonButton(
+            title = R.string.attributions_flaticon_timer,
+            uri = URI_TIMER_ICONS,
+            onClick = { uri -> uriHandler.openUri(uri) }
+        )
+
+        FlaticonButton(
+            title = R.string.attributions_flaticon_investigation,
+            uri = URI_INVESTIGATION_ICONS,
+            onClick = { uri -> uriHandler.openUri(uri) }
+        )
+
+        FlaticonButton(
+            title = R.string.attributions_flaticon_save,
+            uri = URI_SAVE_ICONS,
             onClick = { uri -> uriHandler.openUri(uri) }
         )
 

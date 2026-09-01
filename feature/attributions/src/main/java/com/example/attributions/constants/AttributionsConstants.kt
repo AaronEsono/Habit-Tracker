@@ -4,6 +4,11 @@ package com.example.attributions.constants
 const val URI_ALARM_ICONS = "https://www.flaticon.es/iconos-gratis/alarma"
 const val URI_NOTIFICATION_ICONS = "https://www.flaticon.es/iconos-gratis/notificacion"
 const val URI_LIFESTYLE_ICONS = "https://www.flaticon.es/iconos-gratis/estilo-de-vida-saludable"
+const val URI_TELEPHONE_ICONS = "https://www.flaticon.es/icono-gratis/telefono-inteligente_3930510?related_id=3930529&origin=search"
+const val URI_CLIPBOARD_ICONS = "https://www.flaticon.es/icono-gratis/portapapeles_5833361?related_id=5832454&origin=search"
+const val URI_TIMER_ICONS = "https://www.flaticon.es/icono-gratis/temporizador_5931983"
+const val URI_INVESTIGATION_ICONS = "https://www.flaticon.es/icono-gratis/investigacion_3063525?term=estadisticas&page=1&position=17&origin=search&related_id=3063525"
+const val URI_SAVE_ICONS = "https://www.flaticon.es/icono-gratis/seguridad-del-servidor_19011305?term=copia-seguridad&page=1&position=52&origin=search&related_id=19011305"
 
 //---------------------------------- CC Attribution SVGREPO Icons by UI DAZZLE
 const val UI_DAZZLE_UI_AUTHOR = "Dazzle UI"

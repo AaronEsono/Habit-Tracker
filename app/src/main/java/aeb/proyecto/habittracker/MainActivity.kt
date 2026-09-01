@@ -23,6 +23,12 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -154,7 +160,16 @@ class MainActivity : ComponentActivity() {
 
                 // Render onboarding screen or the content of the app
                 AnimatedContent(
-                    targetState = showOnboardScreen
+                    targetState = showOnboardScreen,
+                    transitionSpec = {
+                        if (targetState) {
+                            (fadeIn(animationSpec = tween(400)) + scaleIn(initialScale = 0.95f))
+                                .togetherWith(fadeOut(animationSpec = tween(300)) + scaleOut(targetScale = 1.05f))
+                        } else {
+                            (fadeIn(animationSpec = tween(durationMillis = 400, delayMillis = 100)) + scaleIn(initialScale = 0.92f, animationSpec = tween(400)))
+                                .togetherWith(fadeOut(animationSpec = tween(300)) + scaleOut(targetScale = 0.96f, animationSpec = tween(300)))
+                        }
+                    },
                 ) { showOnboardState ->
                     when (showOnboardState) {
                         true -> {

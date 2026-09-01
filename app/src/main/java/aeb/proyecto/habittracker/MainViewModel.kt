@@ -75,7 +75,7 @@ class MainViewModel @Inject constructor(
     val showOnboardScreen:StateFlow<Boolean> = manageOnboardingScreenUseCase.showOnboardingScreen
         .stateIn(
             scope = viewModelScope,
-            initialValue = true,
+            initialValue = false,
             started = SharingStarted.WhileSubscribed(5000)
         )
 
