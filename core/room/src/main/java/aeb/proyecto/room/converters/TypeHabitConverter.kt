@@ -5,6 +5,7 @@ import aeb.proyecto.room.model.classes.MONTHLY_TAG
 import aeb.proyecto.room.model.classes.RECURRING_TAG
 import aeb.proyecto.room.model.classes.TypeHabit
 import aeb.proyecto.room.model.classes.WEEKLY_TAG
+import android.util.Log
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -15,7 +16,6 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
-import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -43,7 +43,8 @@ class TypeHabitConverter {
      */
     @TypeConverter
     fun fromTypeHabit(type:TypeHabit): String {
-        return gson.toJson(type)
+        val json = gson.toJson(type, TypeHabit::class.java)
+        return json
     }
 
     /**
@@ -54,8 +55,8 @@ class TypeHabitConverter {
      */
     @TypeConverter
     fun toTypeHabit(json: String): TypeHabit {
-        val type = object : TypeToken<TypeHabit>() {}.type
-        return gson.fromJson(json, type)
+        val result = gson.fromJson(json, TypeHabit::class.java)
+        return result
     }
 }
 
@@ -133,7 +134,9 @@ class TypeHabitAdapter : JsonSerializer<TypeHabit>, JsonDeserializer<TypeHabit> 
                 date = LocalDate.parse(jsonObject.get("date")?.asString),
                 interval = jsonObject.get("interval")?.asInt ?: 1
             )
-            else -> TypeHabit.Daily
+            else -> error(
+                "Unknown TypeHabit tag: '$type'. JSON: $jsonObject"
+            )
         }
     }
 }

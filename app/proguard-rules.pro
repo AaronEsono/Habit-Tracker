@@ -24,3 +24,21 @@
 -keep class androidx.credentials.playservices.** {
   *;
 }
+
+-keepnames class aeb.proyecto.habit.navigation.**
+-keepnames class aeb.proyecto.statistics.navigation.**
+-keepnames class aeb.proyecto.timer.navigation.**
+-keepnames class aeb.proyecto.settings.navigation.**
+
+-keep class androidx.compose.material.icons.filled.*Kt { *; }
+
+-keep class aeb.proyecto.firestore.model.FirestoreData {
+    *;
+}
+
+-keep class aeb.proyecto.room.utils.CompressUtilsKt { *; }
+
+-keep class aeb.proyecto.room.dto.* { *; }
+-keep class aeb.proyecto.room.model.* { *; }
+
+-keep class aeb.proyecto.room.converters.IconConverter { *; }

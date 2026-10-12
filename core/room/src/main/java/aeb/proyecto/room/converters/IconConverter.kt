@@ -45,13 +45,3 @@ class IconConverter {
         return method.invoke(null, Icons.Filled) as ImageVector
     }
 }
-
-// ===================================================================================================
-// REQUIRED PROGUARD/R8 RULES FOR PRODUCTION RELEASE
-// ===================================================================================================
-// Copy and paste the following rules inside your project's 'proguard-rules.pro' file:
-//
-// # Conservar los nombres de las clases de iconos y sus métodos de extensión para la reflexión de Room
-// -keep class androidx.compose.material.icons.filled.** { *; }
-// -keep class androidx.compose.material.icons.automirrored.filled.** { *; }
-// ===================================================================================================

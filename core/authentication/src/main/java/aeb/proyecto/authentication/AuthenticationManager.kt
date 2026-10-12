@@ -11,6 +11,8 @@ import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -258,7 +260,14 @@ internal class AuthenticationManager @Inject constructor(
             } else {
                 throw Exception("Received unsupported credential type token boundary: ${credential.type}")
             }
-        } catch (e: Exception){
+        }
+        catch (e: GetCredentialCancellationException) {
+            emit(AuthResponseAuthentication.Cancelled)
+        }
+        catch (e: NoCredentialException) {
+            emit(AuthResponseAuthentication.NoCredential)
+        }
+        catch (e: Exception){
             // 6. Centralized safety perimeter: purge session logs and propagate localized presentation markers
             auth.signOut()
             val errorResId = treatError(e)
@@ -501,6 +510,16 @@ interface AuthResponseAuthentication {
      * but access remains structurally restricted until physical email validation verification is complete.
      */
     data object UnverifiedEmail: AuthResponseAuthentication
+
+    /**
+     * A conditional validation roadblock signaling that the requested authentication operation
+     */
+    data object Cancelled: AuthResponseAuthentication
+
+    /**
+     * A conditional validation roadblock signaling that the requested authentication operation
+     */
+    data object NoCredential: AuthResponseAuthentication
 
     /**
      * A terminal failure node encapsulating an immutable pointer reference to a localized user-facing

@@ -3,7 +3,6 @@ package aeb.proyecto.room.converters
 import aeb.proyecto.room.model.classes.TypeNotification
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.time.DayOfWeek
 
 /**
@@ -32,6 +31,7 @@ class TypeNotificationConverter {
             is TypeNotification.Daily -> {
                 "daily:" + gson.toJson(type.days)
             }
+
             is TypeNotification.Recurring -> {
                 "recurring:${type.interval}"
             }
@@ -52,20 +52,25 @@ class TypeNotificationConverter {
         return when {
             value.startsWith("daily:") -> {
                 val json = value.removePrefix("daily:")
-                val listType = object : TypeToken<List<DayOfWeek>>() {}.type
+
                 val days: List<DayOfWeek> = try {
-                    gson.fromJson(json, listType) ?: emptyList()
+                    gson.fromJson(
+                        json,
+                        Array<DayOfWeek>::class.java
+                    )?.toList() ?: emptyList()
                 } catch (e: Exception) {
                     emptyList()
                 }
+
                 TypeNotification.Daily(days)
             }
+
             value.startsWith("recurring:") -> {
                 val interval = value.removePrefix("recurring:").toIntOrNull() ?: 1
                 TypeNotification.Recurring(interval)
             }
+
             else -> {
-                // Defensive fallback strategy to safeguard release builds against unexpected data shapes
                 TypeNotification.Daily(emptyList())
             }
         }

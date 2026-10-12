@@ -27,7 +27,6 @@ import java.time.LocalDate
  * @return A unified [HabitWithNotification] domain data token ready for persistence layers.
  */
 fun fromHabitScreen(habitScreen: AddHabit): HabitWithNotification {
-    Log.d("HabitScreen", habitScreen.toString())
     return HabitWithNotification(
         Habit(
             name = habitScreen.nameTextField.text.toString(),

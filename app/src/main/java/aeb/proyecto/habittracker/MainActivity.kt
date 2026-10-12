@@ -62,9 +62,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 
-// Por hacer antes de la pantalla de bienvenida y crear la cuenta de desarrolador
-// Investigar sobre la seguridad y ofuscacion del codigo
+// Arreglar notificaciones ciclicas, y que sea mas claro
+// Crear una variable y un apartado que sea fecha de comienzo, asi el usuario podra ver cuando empieza
+// De esta forma, si se updatea, se podra saber con certeza que dias toca que se muestre la notificacion
 
+// Despues de esto, ver por que se lagea la version ofuscada, y si este cambio afecta al mismo.
 
 /**
  * The primary host [ComponentActivity] and single-activity entry point for the application.

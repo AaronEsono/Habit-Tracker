@@ -45,6 +45,7 @@ class EntireHabitRepo @Inject constructor(
      */
     fun setData(data:String):List<NotificationWithNameAndColor>{
         val habits = decompressJsonFirestore(data)
-        return completeDaoHabit.setData(habits)
+        val result = completeDaoHabit.setData(habits)
+        return result
     }
 }

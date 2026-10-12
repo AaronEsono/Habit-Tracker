@@ -173,6 +173,12 @@ class LoginViewModel @Inject constructor(
                     is AuthResponseAuthentication.UnverifiedEmail -> {
                         // Tratar si fuera necesario en un futuro
                     }
+                    is AuthResponseAuthentication.Cancelled -> {
+                        _uiState.update { LoginUIState.Success }
+                    }
+                    is AuthResponseAuthentication.NoCredential -> {
+                        setError(R.string.login_no_credential_exception)
+                    }
                 }
             }
                 .onStart {

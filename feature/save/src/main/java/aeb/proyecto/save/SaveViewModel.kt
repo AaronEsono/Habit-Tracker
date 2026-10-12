@@ -219,7 +219,6 @@ class SaveViewModel @Inject constructor(
 
                     }
             }catch (e:Exception){
-                Log.e("Error",e.message.toString())
                 _saveUIState.update { SaveUIState.Error }
                 treatError(R.string.save_error_generic)
             }

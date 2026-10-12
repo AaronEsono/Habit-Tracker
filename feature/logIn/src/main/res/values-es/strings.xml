@@ -52,4 +52,6 @@
 
     <string name="login_forgot_password_sent_title">Enlace enviado</string>
     <string name="login_forgot_password_sent_subtitle">El enlace para enviar la contraseña ha sido enviado correctamente, revisa tu bandeja de entrada para reestrablecer tu cuenta</string>
+
+    <string name="login_no_credential_exception">No se ha detectado ninguna credencial. Para continuar con Google, inicia sesión primero con tu cuenta de Google.</string>
 </resources>

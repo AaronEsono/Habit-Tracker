@@ -19,3 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepattributes Signature
+
+-keep class aeb.proyecto.room.converters.TypeHabitAdapter
+-keep class aeb.proyecto.room.converters.TypeHabitConverter
+
+-keep class aeb.proyecto.room.converters.TypeNotificationConverter {
+    *;
+}

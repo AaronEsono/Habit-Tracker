@@ -54,4 +54,5 @@
     <string name="login_forgot_password_sent_title">Link sent</string>
     <string name="login_forgot_password_sent_subtitle">The link to reset your password has been sent successfully. Check your inbox to restore your account.</string>
 
+    <string name="login_no_credential_exception">No credentials detected. To continue with Google, please sign in with your Google account first.</string>
 </resources>
