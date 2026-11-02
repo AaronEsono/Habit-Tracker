@@ -52,7 +52,7 @@
     <string name="add_habit_cyclic_notification_label">Define cada cuántos días quieres recibir notificaciones</string>
 
     <string name="add_habit_notificacionWeek">Selecciona los días de la semana para cada notificación</string>
-    <string name="add_habit_notificacionRecurring">Selecciona el intervalo de días para cada notificación</string>
+    <string name="add_habit_notificacionRecurring">Selecciona el inicio y el intervalo de días para cada notificación</string>
 
     <string name="add_habit_weekly_goal">Usar una única meta total para la semana</string>
     <string name="add_habit_weekly_type_label">"Elige si quieres una única meta semanal o una meta para cada día seleccionado</string>

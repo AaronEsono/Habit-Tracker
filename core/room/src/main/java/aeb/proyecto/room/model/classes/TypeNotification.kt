@@ -1,6 +1,7 @@
 package aeb.proyecto.room.model.classes
 
 import java.time.DayOfWeek
+import java.time.LocalDate
 
 /**
  * Sealed architectural hierarchy modeling the notification scheduling and dispatch behavior rules.
@@ -24,5 +25,5 @@ sealed class TypeNotification(val tag:String) {
      *
      * @property interval The quantitative frequency gap (e.g., every 'X' days) tracking execution steps.
      */
-    data class Recurring(val interval: Int = 1) : TypeNotification(RECURRING_TAG)
+    data class Recurring(val interval: Int = 1, val startDate: LocalDate = LocalDate.now()) : TypeNotification(RECURRING_TAG)
 }

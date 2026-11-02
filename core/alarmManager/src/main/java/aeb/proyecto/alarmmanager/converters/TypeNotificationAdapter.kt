@@ -10,6 +10,7 @@ import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import java.lang.reflect.Type
 import java.time.DayOfWeek
+import java.time.LocalDate
 
 /**
  * A custom polymorphic Gson adapter tailored for handling the [TypeNotification] sealed class hierarchy.
@@ -37,6 +38,7 @@ class TypeNotificationAdapter : JsonSerializer<TypeNotification>, JsonDeserializ
             }
             is TypeNotification.Recurring -> {
                 jsonObject.addProperty("interval", src.interval)
+                jsonObject.addProperty("startDate", src.startDate.toString())
             }
             else -> {}
         }
@@ -54,7 +56,19 @@ class TypeNotificationAdapter : JsonSerializer<TypeNotification>, JsonDeserializ
                 val days = daysArray?.map { DayOfWeek.valueOf(it.asString) } ?: listOf(DayOfWeek.MONDAY)
                 TypeNotification.Daily(days)
             }
-            "RECURRING" -> TypeNotification.Recurring(jsonObject.get("interval")?.asInt ?: 1)
+            "RECURRING" -> {
+                val interval = jsonObject.get("interval")?.asInt ?: 1
+
+                val startDate = jsonObject.get("startDate")
+                    ?.asString
+                    ?.let(LocalDate::parse)
+                    ?: LocalDate.now()
+
+                TypeNotification.Recurring(
+                    interval = interval,
+                    startDate = startDate
+                )
+            }
             else -> TypeNotification.Daily(listOf(DayOfWeek.MONDAY))
         }
     }

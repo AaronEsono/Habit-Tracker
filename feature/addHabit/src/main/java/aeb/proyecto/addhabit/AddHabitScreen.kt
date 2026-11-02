@@ -98,6 +98,7 @@ fun AddHabitScreen(
     val onCheckedMonthlyChange = viewModel::onCheckedMonthlyChange
     val onClickTypeNotificationResult = viewModel::onClickTypeNotificationResult
     val onClickEditNotification = viewModel::onEditNotification
+    val onClickNotificationRecurring = viewModel::onClickDateNotificationRecurring
 
     // Persistent Bottom Sheet structural event binding maps
     val onDismiss = viewModel::closeBottomSheet
@@ -127,6 +128,7 @@ fun AddHabitScreen(
                 onCheckedMonthlyChange = onCheckedMonthlyChange,
                 onClickDeleteNotification = onClickDeleteNotification,
                 onClickTypeNotificationResult = onClickTypeNotificationResult,
+                onClickNotificationRecurring = onClickNotificationRecurring,
                 onClickEditNotification = onClickEditNotification,
                 onDismiss = onDismiss,
                 onAccept = onAccept
@@ -152,6 +154,7 @@ fun AddHabitScreen(
                 onCheckedMonthlyChange = onCheckedMonthlyChange,
                 onClickDeleteNotification = onClickDeleteNotification,
                 onClickTypeNotificationResult = onClickTypeNotificationResult,
+                onClickNotificationRecurring = onClickNotificationRecurring,
                 onClickEditNotification = onClickEditNotification,
                 onDismiss = onDismiss,
                 onAccept = onAccept

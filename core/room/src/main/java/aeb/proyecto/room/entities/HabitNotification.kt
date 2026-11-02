@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import java.time.LocalDate
 import java.time.LocalTime
 
 /**
@@ -36,5 +37,5 @@ data class HabitNotification(
     var habitId:Long = 0,
     val time:LocalTime = LocalTime.now(),
     @TypeConverters(TypeNotificationConverter::class)
-    val type: TypeNotification = TypeNotification.Recurring(1)
+    val type: TypeNotification = TypeNotification.Recurring(1, LocalDate.now())
 )

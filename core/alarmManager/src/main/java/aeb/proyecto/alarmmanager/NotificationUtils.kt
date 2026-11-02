@@ -89,15 +89,27 @@ class NotificationUtils @Inject constructor(
             }
 
             is TypeNotification.Recurring -> {
-                val recurringConfig = alarmItem.typeNotification as TypeNotification.Recurring
+                val interval = (alarmItem.typeNotification as TypeNotification.Recurring).interval
+                val startDay = (alarmItem.typeNotification as TypeNotification.Recurring).startDate
 
-                var targetDateTime = now.with(alarmItem.time)
+                val daysSinceStart = java.time.temporal.ChronoUnit.DAYS.between(startDay, now)
 
-                if (targetDateTime.isBefore(now)) {
-                    targetDateTime = targetDateTime.plusDays(recurringConfig.interval.toLong())
+                val cyclesElapsed = if (daysSinceStart <= 0) {
+                    0L
+                } else {
+                    (daysSinceStart + interval - 1) / interval
                 }
 
-                timeInMillis = targetDateTime.atZone(java.time.ZoneId.systemDefault())
+                var targetDateTime = startDay
+                    .plusDays(cyclesElapsed * interval.toLong())
+                    .atTime(alarmItem.time)
+
+                if (targetDateTime.isBefore(now)) {
+                    targetDateTime = targetDateTime.plusDays(interval.toLong())
+                }
+
+                timeInMillis = targetDateTime
+                    .atZone(java.time.ZoneId.systemDefault())
                     .toInstant()
                     .toEpochMilli()
             }

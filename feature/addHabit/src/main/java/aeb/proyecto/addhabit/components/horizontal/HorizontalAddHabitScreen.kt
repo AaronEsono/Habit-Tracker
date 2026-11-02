@@ -150,6 +150,7 @@ fun HorizontalAddHabitScreen(
     onCheckedWeeklyChange:() -> Unit,
     onCheckedMonthlyChange:() -> Unit,
     onClickTypeNotificationResult: (TypeNotificationResult) -> Unit = {},
+    onClickNotificationRecurring: (String) -> Unit = {},
     onClickEditNotification: (String, LocalTime) -> Unit = { _, _ ->},
     onDismiss: () -> Unit = {},
     onAccept: () -> Unit = {}
@@ -552,6 +553,7 @@ fun HorizontalAddHabitScreen(
                                 startDayOfWeek = dataAddHabit.dayStartWeek,
                                 onClickDelete = onClickDeleteNotification,
                                 onClickTypeNotification = onClickTypeNotificationResult,
+                                onClickNotificationRecurring = onClickNotificationRecurring,
                                 onClickEdit = onClickEditNotification,
                                 modifier = Modifier
                                     .weight(1f)
@@ -590,6 +592,7 @@ fun HorizontalAddHabitScreen(
                                 startDayOfWeek = dataAddHabit.dayStartWeek,
                                 onClickDelete = onClickDeleteNotification,
                                 onClickTypeNotification = onClickTypeNotificationResult,
+                                onClickNotificationRecurring = onClickNotificationRecurring,
                                 onClickEdit = onClickEditNotification,
                                 modifier = Modifier
                                     .weight(1f)

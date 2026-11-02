@@ -145,6 +145,7 @@ fun VerticalAddHabitScreen(
     onCheckedWeeklyChange:() -> Unit,
     onCheckedMonthlyChange:() -> Unit,
     onClickTypeNotificationResult: (TypeNotificationResult) -> Unit = {},
+    onClickNotificationRecurring: (String) -> Unit = {},
     onClickEditNotification: (String, LocalTime) -> Unit = { _, _ ->},
     onDismiss: () -> Unit = {},
     onAccept: () -> Unit = {}
@@ -511,6 +512,7 @@ fun VerticalAddHabitScreen(
                         startDayOfWeek = dataAddHabit.dayStartWeek,
                         onClickDelete = onClickDeleteNotification,
                         onClickTypeNotification = onClickTypeNotificationResult,
+                        onClickNotificationRecurring = onClickNotificationRecurring,
                         onClickEdit = onClickEditNotification,
                         modifier = Modifier.padding(bottom = spacing8)
                     )
@@ -529,6 +531,7 @@ fun VerticalAddHabitScreen(
                         contrastColor = dataAddHabit.contrastColor,
                         onClickDelete = onClickDeleteNotification,
                         onClickTypeNotification = onClickTypeNotificationResult,
+                        onClickNotificationRecurring = onClickNotificationRecurring,
                         onClickEdit = onClickEditNotification,
                         modifier = Modifier.padding(bottom = spacing8)
                     )
@@ -600,7 +603,8 @@ fun VerticalAddHabitScreen(
                     onDismissRequest = onDismissDialog,
                     colorSelected = habit.color,
                     contrastColor = dataAddHabit.contrastColor,
-                    onClickDate = onDateSelected)
+                    onClickDate = onDateSelected
+                )
             }
 
             // ROUTE C: INFLATE SCALAR UNIT SPECS OVERLAY MATRIX (TIMES, HOURS, MINUTES, SECONDS)

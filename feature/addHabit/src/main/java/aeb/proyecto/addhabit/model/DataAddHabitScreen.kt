@@ -1,6 +1,7 @@
 package aeb.proyecto.addhabit.model
 
 import aeb.proyecto.addhabit.constants.PICK_TYPE_HABIT
+import aeb.proyecto.addhabit.model.enum.DatePickerTarget
 import aeb.proyecto.ui.constants.getContrastColor
 import aeb.proyecto.ui.constants.listColors
 import androidx.compose.ui.graphics.Color
@@ -28,6 +29,8 @@ data class DataAddHabitScreen(
 
     var isColorSelected:Boolean = false,
     var isIconSelected:Boolean = false,
+
+    var datePickerTarget: DatePickerTarget = DatePickerTarget.HabitStartDate,
 
     val showDialog:Boolean = false,
     val typeDialog:Int = PICK_TYPE_HABIT,

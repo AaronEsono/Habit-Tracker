@@ -1,5 +1,7 @@
 package aeb.proyecto.addhabit.components.common.notifications
 
+import aeb.proyecto.addhabit.components.common.card.CardLeadingIconButton
+import aeb.proyecto.addhabit.components.common.typeHabit.getDate
 import aeb.proyecto.addhabit.constants.TypeNotificationResult
 import aeb.proyecto.addhabit.model.AddHabitNotification
 import aeb.proyecto.room.model.classes.TypeNotification
@@ -12,6 +14,8 @@ import aeb.proyecto.ui.dimmens.Dimmens.spacing6
 import aeb.proyecto.ui.dimmens.Dimmens.spacing8
 import aeb.proyecto.ui.ripple.CustomRipple
 import aeb.proyecto.ui.text.LabelLargeText
+import aeb.proyecto.ui.text.LabelMediumText
+import aeb.proyecto.ui.text.LabelSmallText
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,9 +31,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -73,7 +81,8 @@ fun NotificationComponent(
     contrastColor:Color,
     onClickDelete: (String) -> Unit = {},
     onClickEdit: (String,LocalTime) -> Unit = {_,_ -> },
-    onClickTypeNotification: (TypeNotificationResult) -> Unit = {}
+    onClickTypeNotification: (TypeNotificationResult) -> Unit = {},
+    onClickNotificationRecurring: (String) -> Unit = {}
 ){
 
     // Structural optimization calculating day index distribution arrays cleanly across recompositions
@@ -161,37 +170,67 @@ fun NotificationComponent(
                 }
 
                 // CONDITION 2: INFLATE THE ADAPTIVE WEEKDAY REGISTRY MATRIX BUTTON BANNER
-                if(notification.type is TypeNotification.Daily){
-                    Row (
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = spacing8,
-                                end = spacing8,
-                                bottom = spacing6,
-                                top = spacing4
-                            )
-                            .testTag("add_habit_notification_day_row")
-                    ) {
-                        orderedDays.forEach { day ->
-                            NotificationDayButton(
-                                title = day.string,
-                                selected = isDaySelected(notification.type.days,day.id),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(horizontal = spacing1),
-                                colorSelected = color,
-                                contrastColor = contrastColor,
-                                onClick = {
-                                    onClickTypeNotification(
-                                        TypeNotificationResult.Daily(day.id,notification.id)
-                                    )
-                                }
-                            )
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = spacing8,
+                            end = spacing8,
+                            bottom = spacing6,
+                            top = spacing4
+                        )
+                        .testTag("add_habit_notification_day_row")
+                ) {
+                    when(notification.type){
+                        is TypeNotification.Daily -> {
+                            orderedDays.forEach { day ->
+                                NotificationDayButton(
+                                    title = day.string,
+                                    selected = isDaySelected(notification.type.days,day.id),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(horizontal = spacing1),
+                                    colorSelected = color,
+                                    contrastColor = contrastColor,
+                                    onClick = {
+                                        onClickTypeNotification(
+                                            TypeNotificationResult.Daily(day.id,notification.id)
+                                        )
+                                    }
+                                )
+                            }
                         }
+                        is TypeNotification.Recurring -> {
+
+                            Button(
+                                onClick = { onClickNotificationRecurring(notification.id)},
+                                shape = RoundedCornerShape(spacing12),
+                                colors =  ButtonDefaults.buttonColors(
+                                    containerColor =  MaterialTheme.colorScheme.background,
+                                )
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Icon(
+                                        Icons.Filled.DateRange,
+                                        contentDescription = "Icon Leading",
+                                        tint = color,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+
+                                    Spacer(modifier = Modifier.padding(horizontal = spacing4))
+
+                                    LabelLargeText(getDate(notification.type.startDate))
+                                }
+                            }
+                        }
+
                     }
                 }
             }
+
         }
     }
 }

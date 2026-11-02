@@ -52,7 +52,7 @@
     <string name="add_habit_cyclic_notification_label">Set the specific interval of days that you want to receive notifications</string>
 
     <string name="add_habit_notificacionWeek">Select the days for each notification</string>
-    <string name="add_habit_notificacionRecurring">Select the interval of days for each notification</string>
+    <string name="add_habit_notificacionRecurring">Select the start and the interval of days for each notification</string>
 
     <string name="add_habit_weekly_goal">Use a single total goal for the week</string>
     <string name="add_habit_weekly_type_label">Choose between a single goal for the entire week or individual goals for each selected day</string>

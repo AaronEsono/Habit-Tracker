@@ -2,6 +2,7 @@ package aeb.proyecto.addhabit
 
 import aeb.proyecto.addhabit.constants.GridOption
 import aeb.proyecto.addhabit.constants.GridOptionResult
+import aeb.proyecto.addhabit.constants.PICK_DATE
 import aeb.proyecto.addhabit.constants.PICK_NOTIFICATION
 import aeb.proyecto.addhabit.constants.TypeHabit
 import aeb.proyecto.addhabit.constants.TypeNotificationResult
@@ -12,6 +13,7 @@ import aeb.proyecto.addhabit.model.BottomSheetState
 import aeb.proyecto.addhabit.model.DEFAULT_TIME
 import aeb.proyecto.addhabit.model.DataAddHabitScreen
 import aeb.proyecto.addhabit.model.DataBottomSheet
+import aeb.proyecto.addhabit.model.enum.DatePickerTarget
 import aeb.proyecto.domain.usecase.addHabit.DataStoreAddHabitUseCase
 import aeb.proyecto.domain.usecase.addHabit.RoomRepositoryAddHabitUseCase
 import aeb.proyecto.domain.usecase.addHabit.SetNotificationAddHabitUseCase
@@ -175,7 +177,8 @@ class AddHabitViewModel @Inject constructor(
         _dataAddHabit.update { currentState ->
             currentState.copy(
                 showDialog = true,
-                typeDialog = typeDialog
+                typeDialog = typeDialog,
+                datePickerTarget = DatePickerTarget.HabitStartDate
             )
         }
     }
@@ -237,10 +240,29 @@ class AddHabitViewModel @Inject constructor(
      * @param localDate The [LocalDate] configuration marking the formal starting point of tracking.
      */
     fun onClickDate(localDate:LocalDate){
-        _dataAddHabit.update { currentState->
-            currentState.copy(
-                habitScreen = currentState.habitScreen.copy(dateRecurringStartDate = localDate)
-            )
+
+        when(_dataAddHabit.value.datePickerTarget){
+            DatePickerTarget.HabitStartDate -> {
+                _dataAddHabit.update { currentState->
+                    currentState.copy(
+                        habitScreen = currentState.habitScreen.copy(dateRecurringStartDate = localDate)
+                    )
+                }
+            }
+            DatePickerTarget.RecurringNotificationStartDate -> {
+                _dataAddHabit.update { currentState ->
+                    currentState.copy(
+                        habitScreen = currentState.habitScreen.copy(
+                            notifications = currentState.habitScreen.notifications.map {
+                                if (it.id == _dataAddHabit.value.notificationSelected.id) {
+                                    val interval = it.type as TypeNotification.Recurring
+                                    it.copy(type = TypeNotification.Recurring(startDate = localDate,interval = interval.interval))
+                                } else it
+                            }
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -454,6 +476,7 @@ class AddHabitViewModel @Inject constructor(
 
         if (notification.type is TypeNotification.Recurring) {
             val intervalDays = notification.type.interval
+            val date = notification.type.startDate
 
             // Guard validation to block intervals from falling below single-day cycle bounds
             if (editNotification.action || intervalDays != 1) {
@@ -464,7 +487,7 @@ class AddHabitViewModel @Inject constructor(
                         habitScreen = currentState.habitScreen.copy(
                             notifications = currentState.habitScreen.notifications.map {
                                 if (it.id == editNotification.id) {
-                                    it.copy(type = TypeNotification.Recurring(newInterval))
+                                    it.copy(type = TypeNotification.Recurring(newInterval,date))
                                 } else it
                             }
                         )
@@ -639,6 +662,23 @@ class AddHabitViewModel @Inject constructor(
                 bottomSheetState = BottomSheetState(
                     isVisible = true,
                     dataBottomSheet = dataBottomSheet)
+            )
+        }
+    }
+
+    /**
+     * Handles the selection of a recurring notification date by updating the selected
+     * notification and opening the date picker dialog.
+     *
+     * @param id The identifier of the recurring notification.
+     */
+    fun onClickDateNotificationRecurring(id:String){
+        _dataAddHabit.update { currentState ->
+            currentState.copy(
+                notificationSelected = DEFAULT_TIME.copy(id = id, type = TypeNotification.Recurring()),
+                showDialog = true,
+                typeDialog = PICK_DATE,
+                datePickerTarget = DatePickerTarget.RecurringNotificationStartDate
             )
         }
     }

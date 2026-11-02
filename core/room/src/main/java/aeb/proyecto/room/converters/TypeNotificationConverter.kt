@@ -4,6 +4,7 @@ import aeb.proyecto.room.model.classes.TypeNotification
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import java.time.DayOfWeek
+import java.time.LocalDate
 
 /**
  * Advanced polymorphic persistence bridge for [TypeNotification] sealed class structures.
@@ -33,7 +34,7 @@ class TypeNotificationConverter {
             }
 
             is TypeNotification.Recurring -> {
-                "recurring:${type.interval}"
+                "recurring:${type.interval}:${type.startDate}"
             }
         }
     }
@@ -66,8 +67,23 @@ class TypeNotificationConverter {
             }
 
             value.startsWith("recurring:") -> {
-                val interval = value.removePrefix("recurring:").toIntOrNull() ?: 1
-                TypeNotification.Recurring(interval)
+                val parts = value.removePrefix("recurring:")
+                    .split(":", limit = 2)
+
+                val interval = parts[0].toIntOrNull() ?: 1
+
+                val startDate = try {
+                    parts.getOrNull(1)
+                        ?.let(LocalDate::parse)
+                        ?: LocalDate.now()
+                } catch (e: Exception) {
+                    LocalDate.now()
+                }
+
+                TypeNotification.Recurring(
+                    interval = interval,
+                    startDate = startDate
+                )
             }
 
             else -> {
